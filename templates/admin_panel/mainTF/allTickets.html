@@ -1,0 +1,411 @@
+{% extends 'base/main_admin_base.html' %} {% load static %} {% load hosts %} {% block title %} All Tickets
+{% endblock title %} {% block headercss %}
+<link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/mainTF/support.css" /> {% endblock headercss %}
+{% block content %}
+<main>
+    <div class="container">
+        <div class="ticket-filter">
+            <div class="row">
+                <div class="col-md-1 text-start">
+                    <span class="overLine btn fw-bolder">SL</span>
+                </div>
+                <div class="col-md-3">
+                    <span class="underline ticketFilterBtn btn active fw-bolder personal">Personal Cybersecurity</span>
+                </div>
+                <div class="col-md-3">
+                    <span class="underline ticketFilterBtn btn fw-bolder business">Business Cybersecurity</span>
+                </div>
+                <div class="col-md-3">
+                    <span class="underline ticketFilterBtn btn fw-bolder academy">Academy</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="table-container">
+            <table class="table notification-table" id="personal-tickets-table">
+                <thead class="text-center">
+                    <tr>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="first">1</td>
+                        <td>
+                            <div class="container border border-1 border-primary-dark">
+                                <div class="d-flex justify-content-between mt-4">
+                                    <p class="ticket-user-info"><span class="fw-bold">User Name: </span> Md. Hasanul Haq
+                                    </p>
+                                    <button class="btn status text-primary">Pending</button>
+                                </div>
+                                <a href="{% host_url 'main_admin_tickets_detail' %}"
+                                    class="ticket-user-info text-underline"><span class="fw-bold text-primary">Ticket
+                                        Number: </span>12345</a>
+                                <p class="ticket-user-info"><span class="fw-bold text-success">Submission Date:
+                                    </span>02.05.2020</p>
+                                <p class="fw-bolder"><span class="fw-bold text-primary">Service Name: </span>Social
+                                    media hacking recovery (PCS)</p>
+                                <p class="fw-bolder"><span class="fw-bold">Title: </span>Lorem ipsum dolor sit amet
+                                    consectetur adipisicing elit. Fugiat.</p>
+                                <p>
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta, soluta voluptas?
+                                    Enim molestias nam fugiat ratione minus incidunt labore tenetur, laboriosam dolorem
+                                    dignissimos! Voluptates odio inventore impedit nesciunt recusandae mollitia,
+                                    voluptatibus
+                                    similique, ab quia ratione omnis laborum quidem minus eos esse hic repudiandae et
+                                    praesentium?......
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="first">2</td>
+                        <td>
+                            <div class="container border border-1 border-primary-dark">
+                                <div class="d-flex justify-content-between mt-4">
+                                    <p class="ticket-user-info"><span class="fw-bold">User Name: </span> Md. Hasanul Haq
+                                    </p>
+                                    <button class="btn status text-success">Solved</button>
+                                </div>
+                                <a href="{% host_url 'main_admin_tickets_detail' %}"
+                                    class="ticket-user-info text-underline"><span class="fw-bold text-primary">Ticket
+                                        Number: </span>12345</a>
+                                <p class="ticket-user-info"><span class="fw-bold text-success">Submission Date:
+                                    </span>02.05.2020</p>
+                                <p class="fw-bolder"><span class="fw-bold text-primary">Service Name: </span>Social
+                                    media hacking recovery (PCS)</p>
+                                <p class="fw-bolder"><span class="fw-bold">Title: </span>Lorem ipsum dolor sit amet
+                                    consectetur adipisicing elit. Fugiat.</p>
+                                <p>
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta, soluta voluptas?
+                                    Enim molestias nam fugiat ratione minus incidunt labore tenetur, laboriosam dolorem
+                                    dignissimos! Voluptates odio inventore impedit nesciunt recusandae mollitia,
+                                    voluptatibus
+                                    similique, ab quia ratione omnis laborum quidem minus eos esse hic repudiandae et
+                                    praesentium?......
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="first">1</td>
+                        <td>
+                            <div class="container border border-1 border-primary-dark">
+                                <div class="d-flex justify-content-between mt-4">
+                                    <p class="ticket-user-info"><span class="fw-bold">User Name: </span> Md. Hasanul Haq
+                                    </p>
+                                    <button class="btn status text-primary">Pending</button>
+                                </div>
+                                <a href="{% host_url 'main_admin_tickets_detail' %}"
+                                    class="ticket-user-info text-underline"><span class="fw-bold text-primary">Ticket
+                                        Number: </span>12345</a>
+                                <p class="ticket-user-info"><span class="fw-bold text-success">Submission Date:
+                                    </span>02.05.2020</p>
+                                <p class="fw-bolder"><span class="fw-bold text-primary">Service Name: </span>Social
+                                    media hacking recovery (PCS)</p>
+                                <p class="fw-bolder"><span class="fw-bold">Title: </span>Lorem ipsum dolor sit amet
+                                    consectetur adipisicing elit. Fugiat.</p>
+                                <p>
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta, soluta voluptas?
+                                    Enim molestias nam fugiat ratione minus incidunt labore tenetur, laboriosam dolorem
+                                    dignissimos! Voluptates odio inventore impedit nesciunt recusandae mollitia,
+                                    voluptatibus
+                                    similique, ab quia ratione omnis laborum quidem minus eos esse hic repudiandae et
+                                    praesentium?......
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="first">2</td>
+                        <td>
+                            <div class="container border border-1 border-primary-dark">
+                                <div class="d-flex justify-content-between mt-4">
+                                    <p class="ticket-user-info"><span class="fw-bold">User Name: </span> Md. Hasanul Haq
+                                    </p>
+                                    <button class="btn status text-success">Solved</button>
+                                </div>
+                                <a href="{% host_url 'main_admin_tickets_detail' %}"
+                                    class="ticket-user-info text-underline"><span class="fw-bold text-primary">Ticket
+                                        Number: </span>12345</a>
+                                <p class="ticket-user-info"><span class="fw-bold text-success">Submission Date:
+                                    </span>02.05.2020</p>
+                                <p class="fw-bolder"><span class="fw-bold text-primary">Service Name: </span>Social
+                                    media hacking recovery (PCS)</p>
+                                <p class="fw-bolder"><span class="fw-bold">Title: </span>Lorem ipsum dolor sit amet
+                                    consectetur adipisicing elit. Fugiat.</p>
+                                <p>
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta, soluta voluptas?
+                                    Enim molestias nam fugiat ratione minus incidunt labore tenetur, laboriosam dolorem
+                                    dignissimos! Voluptates odio inventore impedit nesciunt recusandae mollitia,
+                                    voluptatibus
+                                    similique, ab quia ratione omnis laborum quidem minus eos esse hic repudiandae et
+                                    praesentium?......
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table notification-table" id="business-tickets-table">
+                <thead class="text-center">
+                    <tr>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="first">5</td>
+                        <td>
+                            <div class="container border border-1 border-primary-dark">
+                                <div class="d-flex justify-content-between mt-4">
+                                    <p class="ticket-user-info"><span class="fw-bold">User Name: </span> Md. Hasanul Haq
+                                    </p>
+                                    <button class="btn status text-primary">Pending</button>
+                                </div>
+                                <a href="{% host_url 'main_admin_tickets_detail' %}"
+                                    class="ticket-user-info text-underline"><span class="fw-bold text-primary">Ticket
+                                        Number: </span>12345</a>
+                                <p class="ticket-user-info"><span class="fw-bold text-success">Submission Date:
+                                    </span>02.05.2020</p>
+                                <p class="fw-bolder"><span class="fw-bold text-primary">Service Name: </span>Social
+                                    media hacking recovery (BCS)</p>
+                                <p class="fw-bolder"><span class="fw-bold">Title: </span>Lorem ipsum dolor sit amet
+                                    consectetur adipisicing elit. Fugiat.</p>
+                                <p>
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta, soluta voluptas?
+                                    Enim molestias nam fugiat ratione minus incidunt labore tenetur, laboriosam dolorem
+                                    dignissimos! Voluptates odio inventore impedit nesciunt recusandae mollitia,
+                                    voluptatibus
+                                    similique, ab quia ratione omnis laborum quidem minus eos esse hic repudiandae et
+                                    praesentium?......
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="first">6</td>
+                        <td>
+                            <div class="container border border-1 border-primary-dark">
+                                <div class="d-flex justify-content-between mt-4">
+                                    <p class="ticket-user-info"><span class="fw-bold">User Name: </span> Md. Hasanul Haq
+                                    </p>
+                                    <button class="btn status text-success">Solved</button>
+                                </div>
+                                <a href="{% host_url 'main_admin_tickets_detail' %}"
+                                    class="ticket-user-info text-underline"><span class="fw-bold text-primary">Ticket
+                                        Number: </span>12345</a>
+                                <p class="ticket-user-info"><span class="fw-bold text-success">Submission Date:
+                                    </span>02.05.2020</p>
+                                <p class="fw-bolder"><span class="fw-bold text-primary">Service Name: </span>Social
+                                    media hacking recovery (PCS)</p>
+                                <p class="fw-bolder"><span class="fw-bold">Title: </span>Lorem ipsum dolor sit amet
+                                    consectetur adipisicing elit. Fugiat.</p>
+                                <p>
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta, soluta voluptas?
+                                    Enim molestias nam fugiat ratione minus incidunt labore tenetur, laboriosam dolorem
+                                    dignissimos! Voluptates odio inventore impedit nesciunt recusandae mollitia,
+                                    voluptatibus
+                                    similique, ab quia ratione omnis laborum quidem minus eos esse hic repudiandae et
+                                    praesentium?......
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="first">7</td>
+                        <td>
+                            <div class="container border border-1 border-primary-dark">
+                                <div class="d-flex justify-content-between mt-4">
+                                    <p class="ticket-user-info"><span class="fw-bold">User Name: </span> Md. Hasanul Haq
+                                    </p>
+                                    <button class="btn status text-primary">Pending</button>
+                                </div>
+                                <a href="{% host_url 'main_admin_tickets_detail' %}"
+                                    class="ticket-user-info text-underline"><span class="fw-bold text-primary">Ticket
+                                        Number: </span>12345</a>
+                                <p class="ticket-user-info"><span class="fw-bold text-success">Submission Date:
+                                    </span>02.05.2020</p>
+                                <p class="fw-bolder"><span class="fw-bold text-primary">Service Name: </span>Social
+                                    media hacking recovery (PCS)</p>
+                                <p class="fw-bolder"><span class="fw-bold">Title: </span>Lorem ipsum dolor sit amet
+                                    consectetur adipisicing elit. Fugiat.</p>
+                                <p>
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta, soluta voluptas?
+                                    Enim molestias nam fugiat ratione minus incidunt labore tenetur, laboriosam dolorem
+                                    dignissimos! Voluptates odio inventore impedit nesciunt recusandae mollitia,
+                                    voluptatibus
+                                    similique, ab quia ratione omnis laborum quidem minus eos esse hic repudiandae et
+                                    praesentium?......
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="first">8</td>
+                        <td>
+                            <div class="container border border-1 border-primary-dark">
+                                <div class="d-flex justify-content-between mt-4">
+                                    <p class="ticket-user-info"><span class="fw-bold">User Name: </span> Md. Hasanul Haq
+                                    </p>
+                                    <button class="btn status text-success">Solved</button>
+                                </div>
+                                <a href="{% host_url 'main_admin_tickets_detail' %}"
+                                    class="ticket-user-info text-underline"><span class="fw-bold text-primary">Ticket
+                                        Number: </span>12345</a>
+                                <p class="ticket-user-info"><span class="fw-bold text-success">Submission Date:
+                                    </span>02.05.2020</p>
+                                <p class="fw-bolder"><span class="fw-bold text-primary">Service Name: </span>Social
+                                    media hacking recovery (PCS)</p>
+                                <p class="fw-bolder"><span class="fw-bold">Title: </span>Lorem ipsum dolor sit amet
+                                    consectetur adipisicing elit. Fugiat.</p>
+                                <p>
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta, soluta voluptas?
+                                    Enim molestias nam fugiat ratione minus incidunt labore tenetur, laboriosam dolorem
+                                    dignissimos! Voluptates odio inventore impedit nesciunt recusandae mollitia,
+                                    voluptatibus
+                                    similique, ab quia ratione omnis laborum quidem minus eos esse hic repudiandae et
+                                    praesentium?......
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table notification-table" id="academy-tickets-table">
+                <thead class="text-center">
+                    <tr>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="first">9</td>
+                        <td>
+                            <div class="container border border-1 border-primary-dark">
+                                <div class="d-flex justify-content-between mt-4">
+                                    <p class="ticket-user-info"><span class="fw-bold">User Name: </span> Md. Hasanul Haq
+                                    </p>
+                                    <button class="btn status text-primary">Pending</button>
+                                </div>
+                                <a href="{% host_url 'main_admin_tickets_detail' %}"
+                                    class="ticket-user-info text-underline"><span class="fw-bold text-primary">Ticket
+                                        Number: </span>12345</a>
+                                <p class="ticket-user-info"><span class="fw-bold text-success">Submission Date:
+                                    </span>02.05.2020</p>
+                                <p class="fw-bolder"><span class="fw-bold text-primary">Service Name: </span>Social
+                                    media hacking recovery (Academy)</p>
+                                <p class="fw-bolder"><span class="fw-bold">Title: </span>Lorem ipsum dolor sit amet
+                                    consectetur adipisicing elit. Fugiat.</p>
+                                <p>
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta, soluta voluptas?
+                                    Enim molestias nam fugiat ratione minus incidunt labore tenetur, laboriosam dolorem
+                                    dignissimos! Voluptates odio inventore impedit nesciunt recusandae mollitia,
+                                    voluptatibus
+                                    similique, ab quia ratione omnis laborum quidem minus eos esse hic repudiandae et
+                                    praesentium?......
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="first">10</td>
+                        <td>
+                            <div class="container border border-1 border-primary-dark">
+                                <div class="d-flex justify-content-between mt-4">
+                                    <p class="ticket-user-info"><span class="fw-bold">User Name: </span> Md. Hasanul Haq
+                                    </p>
+                                    <button class="btn status text-success">Solved</button>
+                                </div>
+                                <a href="{% host_url 'main_admin_tickets_detail' %}"
+                                    class="ticket-user-info text-underline"><span class="fw-bold text-primary">Ticket
+                                        Number: </span>12345</a>
+                                <p class="ticket-user-info"><span class="fw-bold text-success">Submission Date:
+                                    </span>02.05.2020</p>
+                                <p class="fw-bolder"><span class="fw-bold text-primary">Service Name: </span>Social
+                                    media hacking recovery (PCS)</p>
+                                <p class="fw-bolder"><span class="fw-bold">Title: </span>Lorem ipsum dolor sit amet
+                                    consectetur adipisicing elit. Fugiat.</p>
+                                <p>
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta, soluta voluptas?
+                                    Enim molestias nam fugiat ratione minus incidunt labore tenetur, laboriosam dolorem
+                                    dignissimos! Voluptates odio inventore impedit nesciunt recusandae mollitia,
+                                    voluptatibus
+                                    similique, ab quia ratione omnis laborum quidem minus eos esse hic repudiandae et
+                                    praesentium?......
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="first">11</td>
+                        <td>
+                            <div class="container border border-1 border-primary-dark">
+                                <div class="d-flex justify-content-between mt-4">
+                                    <p class="ticket-user-info"><span class="fw-bold">User Name: </span> Md. Hasanul Haq
+                                    </p>
+                                    <button class="btn status text-primary">Pending</button>
+                                </div>
+                                <a href="{% host_url 'main_admin_tickets_detail' %}"
+                                    class="ticket-user-info text-underline"><span class="fw-bold text-primary">Ticket
+                                        Number: </span>12345</a>
+                                <p class="ticket-user-info"><span class="fw-bold text-success">Submission Date:
+                                    </span>02.05.2020</p>
+                                <p class="fw-bolder"><span class="fw-bold text-primary">Service Name: </span>Social
+                                    media hacking recovery (PCS)</p>
+                                <p class="fw-bolder"><span class="fw-bold">Title: </span>Lorem ipsum dolor sit amet
+                                    consectetur adipisicing elit. Fugiat.</p>
+                                <p>
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta, soluta voluptas?
+                                    Enim molestias nam fugiat ratione minus incidunt labore tenetur, laboriosam dolorem
+                                    dignissimos! Voluptates odio inventore impedit nesciunt recusandae mollitia,
+                                    voluptatibus
+                                    similique, ab quia ratione omnis laborum quidem minus eos esse hic repudiandae et
+                                    praesentium?......
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="first">12</td>
+                        <td>
+                            <div class="container border border-1 border-primary-dark">
+                                <div class="d-flex justify-content-between mt-4">
+                                    <p class="ticket-user-info"><span class="fw-bold">User Name: </span> Md. Hasanul Haq
+                                    </p>
+                                    <button class="btn status text-success">Solved</button>
+                                </div>
+                                <a href="{% host_url 'main_admin_tickets_detail' %}"
+                                    class="ticket-user-info text-underline"><span class="fw-bold text-primary">Ticket
+                                        Number: </span>12345</a>
+                                <p class="ticket-user-info"><span class="fw-bold text-success">Submission Date:
+                                    </span>02.05.2020</p>
+                                <p class="fw-bolder"><span class="fw-bold text-primary">Service Name: </span>Social
+                                    media hacking recovery (PCS)</p>
+                                <p class="fw-bolder"><span class="fw-bold">Title: </span>Lorem ipsum dolor sit amet
+                                    consectetur adipisicing elit. Fugiat.</p>
+                                <p>
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta, soluta voluptas?
+                                    Enim molestias nam fugiat ratione minus incidunt labore tenetur, laboriosam dolorem
+                                    dignissimos! Voluptates odio inventore impedit nesciunt recusandae mollitia,
+                                    voluptatibus
+                                    similique, ab quia ratione omnis laborum quidem minus eos esse hic repudiandae et
+                                    praesentium?......
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</main>
+
+{% endblock content %} {% block customjs %}
+<script src="{% static '' %}tfjs/admin_panel/mainTF/eventWebinar.js"></script>
+{% endblock customjs %}

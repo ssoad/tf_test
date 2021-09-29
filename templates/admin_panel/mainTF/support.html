@@ -1,0 +1,224 @@
+{% extends 'base/main_admin_base.html' %} {% load static %} {% load hosts %} {% block title %} My Profile
+{% endblock title %} {% block headercss %}
+<link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/mainTF/support.css" /> {% endblock headercss %}
+{% block content %}
+
+<main>
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-md-3">
+                <div class="panel-box blue1">
+                    <h2>SUPPORT STAFF</h2>
+                    <div class="panel-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="34.5" height="34.5" viewBox="0 0 34.5 34.5">
+                            <g id="user_icon" data-name="user icon" transform="translate(-853 -223)">
+                                <path id="Path_8" data-name="Path 8"
+                                    d="M33.75,33.75H31.5V28.125A5.632,5.632,0,0,0,25.875,22.5V20.25a7.884,7.884,0,0,1,7.875,7.875Z"
+                                    transform="translate(853.75 223.75)" fill="#fff" />
+                                <path id="Path_9" data-name="Path 9"
+                                    d="M24.75,33.75H22.5V28.125A5.632,5.632,0,0,0,16.875,22.5h-6.75A5.632,5.632,0,0,0,4.5,28.125V33.75H2.25V28.125a7.884,7.884,0,0,1,7.875-7.875h6.75a7.884,7.884,0,0,1,7.875,7.875Z"
+                                    transform="translate(850.75 223.75)" fill="#fff" />
+                                <path id="Path_10" data-name="Path 10"
+                                    d="M22.5,2.25V4.5a5.625,5.625,0,0,1,0,11.25V18a7.875,7.875,0,1,0,0-15.75Z"
+                                    transform="translate(853.75 220.75)" fill="#fff" />
+                                <path id="Path_11" data-name="Path 11"
+                                    d="M13.5,4.5a5.625,5.625,0,1,1-5.625,5.625A5.625,5.625,0,0,1,13.5,4.5m0-2.25a7.875,7.875,0,1,0,7.875,7.875A7.875,7.875,0,0,0,13.5,2.25Z"
+                                    transform="translate(850.75 220.75)" fill="#fff" />
+                            </g>
+                        </svg>
+                        <p>8</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel-box blue2">
+                    <h2>Ticket Assigned</h2>
+                    <div class="panel-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24.643" height="34.5" viewBox="0 0 24.643 34.5">
+                            <g id="ticket" transform="translate(333.393 105.821) rotate(90)">
+                                <path id="Path_48" data-name="Path 48"
+                                    d="M35.518,16.607a1.232,1.232,0,0,0,1.232-1.232V9.214A2.464,2.464,0,0,0,34.286,6.75H4.714A2.464,2.464,0,0,0,2.25,9.214v6.161a1.232,1.232,0,0,0,1.232,1.232,2.464,2.464,0,0,1,0,4.929A1.232,1.232,0,0,0,2.25,22.768v6.161a2.464,2.464,0,0,0,2.464,2.464H34.286a2.464,2.464,0,0,0,2.464-2.464V22.768a1.232,1.232,0,0,0-1.232-1.232,2.464,2.464,0,1,1,0-4.929ZM34.286,23.84v5.088H25.661v-3.7H23.2v3.7H4.714V23.84a4.929,4.929,0,0,0,0-9.536V9.214H23.2v3.7h2.464v-3.7h8.625V14.3a4.929,4.929,0,0,0,0,9.536Z"
+                                    transform="translate(-108.071 302)" fill="#fff" />
+                            </g>
+                        </svg>
+
+                        <p>15</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel-box blue3">
+                    <h2>TICKET RESOLVED</h2>
+                    <div class="panel-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24.643" height="34.5" viewBox="0 0 24.643 34.5">
+                            <g id="ticket" transform="translate(333.393 105.821) rotate(90)">
+                                <path id="Path_48" data-name="Path 48"
+                                    d="M35.518,16.607a1.232,1.232,0,0,0,1.232-1.232V9.214A2.464,2.464,0,0,0,34.286,6.75H4.714A2.464,2.464,0,0,0,2.25,9.214v6.161a1.232,1.232,0,0,0,1.232,1.232,2.464,2.464,0,0,1,0,4.929A1.232,1.232,0,0,0,2.25,22.768v6.161a2.464,2.464,0,0,0,2.464,2.464H34.286a2.464,2.464,0,0,0,2.464-2.464V22.768a1.232,1.232,0,0,0-1.232-1.232,2.464,2.464,0,1,1,0-4.929ZM34.286,23.84v5.088H25.661v-3.7H23.2v3.7H4.714V23.84a4.929,4.929,0,0,0,0-9.536V9.214H23.2v3.7h2.464v-3.7h8.625V14.3a4.929,4.929,0,0,0,0,9.536Z"
+                                    transform="translate(-108.071 302)" fill="#fff" />
+                            </g>
+                        </svg>
+
+                        <p>8</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel-box blue4">
+                    <h2>TICKET Resolved</h2>
+                    <div class="panel-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24.643" height="34.5" viewBox="0 0 24.643 34.5">
+                            <g id="ticket" transform="translate(333.393 105.821) rotate(90)">
+                                <path id="Path_48" data-name="Path 48"
+                                    d="M35.518,16.607a1.232,1.232,0,0,0,1.232-1.232V9.214A2.464,2.464,0,0,0,34.286,6.75H4.714A2.464,2.464,0,0,0,2.25,9.214v6.161a1.232,1.232,0,0,0,1.232,1.232,2.464,2.464,0,0,1,0,4.929A1.232,1.232,0,0,0,2.25,22.768v6.161a2.464,2.464,0,0,0,2.464,2.464H34.286a2.464,2.464,0,0,0,2.464-2.464V22.768a1.232,1.232,0,0,0-1.232-1.232,2.464,2.464,0,1,1,0-4.929ZM34.286,23.84v5.088H25.661v-3.7H23.2v3.7H4.714V23.84a4.929,4.929,0,0,0,0-9.536V9.214H23.2v3.7h2.464v-3.7h8.625V14.3a4.929,4.929,0,0,0,0,9.536Z"
+                                    transform="translate(-108.071 302)" fill="#fff" />
+                            </g>
+                        </svg>
+
+                        <p>4</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="heading d-flex justify-content-between">
+            <h2>SUPPORT TEAM MEMBERS</h2>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Support
+                Stuff</button>
+        </div>
+        <div class="table-container">
+            <table class="shadow-table">
+                <thead>
+                    <tr class="head-row">
+                        <th>Name</th>
+                        <th>Ticket Assign</th>
+                        <th>Last Assign</th>
+                        <th>Ticket Resolved</th>
+                        <th>Last Resolved</th>
+                        <th>Status</th>
+                        <th>Service Name</th>
+                        <th>Sub Service</th>
+                        <th>Working On</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="data-row">
+                        <td>
+                            <a href="support_staff.html" class="staff-link">Azharul</a>
+                        </td>
+                        <td>3</td>
+                        <td>30 minutes ago</td>
+                        <td>2</td>
+                        <td>20 minutes ago</td>
+                        <td>
+                            Active
+                            <i class="bi bi-circle-fill" style="color: #5bbc2e; font-size: 10px"></i>
+                        </td>
+                        <td>bcs</td>
+                        <td>hack recovery</td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                <g id="ticket" transform="translate(0 0)">
+                                    <path id="Path_50" data-name="Path 50"
+                                        d="M15.918,5.383,15.9,5.371,13.946,3.413a.979.979,0,0,1-1.357-1.358L10.618.083a.283.283,0,0,0-.4,0L.083,10.218h0a.282.282,0,0,0,0,.4h0l1.972,1.97a.979.979,0,0,1,1.358,1.357L5.36,15.89a.235.235,0,0,0,.023.028.282.282,0,0,0,.4,0h0L15.918,5.781a.282.282,0,0,0,0-.4Zm-2.234.4-7.9,7.9a.282.282,0,0,1-.4,0L2.318,10.618a.282.282,0,0,1,0-.4l7.9-7.9a.282.282,0,0,1,.4,0l3.066,3.066a.282.282,0,0,1,0,.4Z" />
+                                    <path id="Path_51" data-name="Path 51"
+                                        d="M22.292,18.548l-2.456-1.173.3-2.568a.185.185,0,0,0-.314-.152L17.986,16.49l-2.4-1.144a.184.184,0,0,0-.246.245l1.144,2.4-1.835,1.835a.184.184,0,0,0,.151.313l2.568-.3,1.174,2.456a.185.185,0,0,0,.345-.035l.673-2.691,2.692-.674a.187.187,0,0,0,.139-.161.185.185,0,0,0-.1-.184Z"
+                                        transform="translate(-10.353 -10.353)" />
+                                </g>
+                            </svg> 56458
+                        </td>
+                    </tr>
+                    <tr class="data-row">
+                        <td>
+                            <a href="support_staff.html" class="staff-link">Shomit</a>
+                        </td>
+                        <td>5</td>
+                        <td>15 minutes ago</td>
+                        <td>1</td>
+                        <td>10 minutes ago</td>
+                        <td>
+                            Active
+                            <i class="bi bi-circle-fill" style="color: #5bbc2e; font-size: 10px"></i>
+                        </td>
+                        <td>bcs</td>
+                        <td>hack recovery</td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                <g id="ticket" transform="translate(0 0)">
+                                    <path id="Path_50" data-name="Path 50"
+                                        d="M15.918,5.383,15.9,5.371,13.946,3.413a.979.979,0,0,1-1.357-1.358L10.618.083a.283.283,0,0,0-.4,0L.083,10.218h0a.282.282,0,0,0,0,.4h0l1.972,1.97a.979.979,0,0,1,1.358,1.357L5.36,15.89a.235.235,0,0,0,.023.028.282.282,0,0,0,.4,0h0L15.918,5.781a.282.282,0,0,0,0-.4Zm-2.234.4-7.9,7.9a.282.282,0,0,1-.4,0L2.318,10.618a.282.282,0,0,1,0-.4l7.9-7.9a.282.282,0,0,1,.4,0l3.066,3.066a.282.282,0,0,1,0,.4Z" />
+                                    <path id="Path_51" data-name="Path 51"
+                                        d="M22.292,18.548l-2.456-1.173.3-2.568a.185.185,0,0,0-.314-.152L17.986,16.49l-2.4-1.144a.184.184,0,0,0-.246.245l1.144,2.4-1.835,1.835a.184.184,0,0,0,.151.313l2.568-.3,1.174,2.456a.185.185,0,0,0,.345-.035l.673-2.691,2.692-.674a.187.187,0,0,0,.139-.161.185.185,0,0,0-.1-.184Z"
+                                        transform="translate(-10.353 -10.353)" />
+                                </g>
+                            </svg> 56149
+                        </td>
+                    </tr>
+                    <tr class="data-row">
+                        <td>
+                            <a href="support_staff.html" class="staff-link">Tanzil</a>
+                        </td>
+                        <td>1</td>
+                        <td>40 minutes ago</td>
+                        <td>4</td>
+                        <td>5 minutes ago</td>
+                        <td>
+                            Offline
+                            <i class="bi bi-circle-fill" style="color: gray; font-size: 10px"></i>
+                        </td>
+                        <td>bcs</td>
+                        <td>hack recovery</td>
+                        <td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                <g id="ticket" transform="translate(0 0)">
+                                    <path id="Path_50" data-name="Path 50"
+                                        d="M15.918,5.383,15.9,5.371,13.946,3.413a.979.979,0,0,1-1.357-1.358L10.618.083a.283.283,0,0,0-.4,0L.083,10.218h0a.282.282,0,0,0,0,.4h0l1.972,1.97a.979.979,0,0,1,1.358,1.357L5.36,15.89a.235.235,0,0,0,.023.028.282.282,0,0,0,.4,0h0L15.918,5.781a.282.282,0,0,0,0-.4Zm-2.234.4-7.9,7.9a.282.282,0,0,1-.4,0L2.318,10.618a.282.282,0,0,1,0-.4l7.9-7.9a.282.282,0,0,1,.4,0l3.066,3.066a.282.282,0,0,1,0,.4Z" />
+                                    <path id="Path_51" data-name="Path 51"
+                                        d="M22.292,18.548l-2.456-1.173.3-2.568a.185.185,0,0,0-.314-.152L17.986,16.49l-2.4-1.144a.184.184,0,0,0-.246.245l1.144,2.4-1.835,1.835a.184.184,0,0,0,.151.313l2.568-.3,1.174,2.456a.185.185,0,0,0,.345-.035l.673-2.691,2.692-.674a.187.187,0,0,0,.139-.161.185.185,0,0,0-.1-.184Z"
+                                        transform="translate(-10.353 -10.353)" />
+                                </g>
+                            </svg> 75869
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header ">
+                    <h5 class="modal-title w-100 text-center" id="exampleModalLabel">Add Support Stuff</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="">
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">Service Name</label>
+                            <select class="form-select" aria-label="Default select example">
+                                <option selected>Select Service</option>
+                                <option value="1">Business Cybersecurity Service</option>
+                                <option value="2">Personal Cybersecurity Service</option>
+                                <option value="3">Academy</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control w-100" id="Name"
+                                placeholder="Enter Name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control w-100" id="email"
+                                placeholder="name@mail.com">
+                        </div>
+                        <button type="button" class="btn btn-primary">Add Stuff</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock content %} {% block customjs %}
+<script src="{% static '' %}tfjs/admin_panel/mainTF/eventWebinar.js"></script>
+
+{% endblock customjs %}

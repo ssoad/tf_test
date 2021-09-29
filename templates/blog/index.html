@@ -1,0 +1,221 @@
+{% extends 'base/blog_base.html' %} {% load static %} {% load hosts %} {% block title %} Home {% endblock title %} {% block headercss %}
+<link rel="stylesheet" href="{% static 'tfcss/blog/index.css' %}"> {% endblock headercss %} {% block content %}
+
+<!-- main container  -->
+
+<section class="row mx-0 banner-1">
+    <div class="col-md-7 col-lg-7 col-xl-8 pe-2 banner-bg">
+        <div class="d-flex flex-column justify-content-center h-100">
+            <h4>TECHFORING CYBERHUB</h4>
+            <h5>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</h5>
+        </div>
+    </div>
+    <div class="col-md-5 col-lg-5 col-xl-4">
+        <div class="bg-gray px-3 py-5">
+            <h5 class="border-bottom border-secondary text-center fw-bold pb-2 mb-3">CATEGORIES</h5>
+            <div class="accordion accordion-flush" id="accordionFlush">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingOne">
+                        <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                            ARTICLES
+                        </button>
+                    </h2>
+                    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlush">
+                        <div class="accordion-body">
+                            <a class="fw-bold" href="{% host_url 'category' host 'blog' %}blogs/business_cybersecurity">Personal
+                                CyberSecurity</a>
+                            <a class=" fw-bold " href="{% host_url 'category' host 'blog' %}blogs/personal_cybersecurity">Business
+                                CyberSecurity
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item mt-2">
+                    <h2 class="accordion-header" id="flush-headingTwo">
+                        <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                            CASE STUDIES
+                        </button>
+                    </h2>
+                    <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlush">
+                        <div class="accordion-body">
+                            <a class="fw-bold" href="{% host_url 'category' host 'blog' %}case_studies/concierge_cybersecurity">Concierge
+                                Cybersecurity</a>
+                            <a class="fw-bold" href="{% host_url 'category' host 'blog' %}case_studies/risk_assesment">Risk
+                                Assessment</a>
+                            <a class="fw-bold" href="{% host_url 'category' host 'blog' %}case_studies/hack_recovery">Hack Recovery</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="btn menu-link fw-bold" href="{% host_url 'category' host 'blog' %}podcast">PODCAST</a>
+
+        </div>
+    </div>
+</section>
+
+
+<section class="case-studies-container mt-4">
+
+    <a href="{% host_url 'category' host 'blog' %}case_studies" class="container-heading">RECENT CASE STUDIES</a>
+
+    <div class="row post">
+        <div class="col-md-6 ps-md-0">
+            {% for post in case_studies %} {% if forloop.counter == 1 %}
+            <div>
+                <img src="{% get_media_prefix %}{{post.feature_image}}" class="img-fluid w-100" alt="">
+            </div>
+            <div class="d-flex flex-column py-2">
+                <a href="{% host_url 'case_studies' host 'blog' %}{{post.post_url}}">
+                    <h5 class="title">{{post.title}}
+                    </h5>
+                </a>
+                <div class="position-relative">
+                    <span class=" p-0 me-5 text-green ">
+                        <i class=" bi bi-calendar "></i>
+                        {{post.date|date}}
+                    </span>
+                    <span class="p-0 me-5 text-green" title="Reading Time">
+                        <i class="bi bi-stopwatch"></i>
+                        {{post.reading_time}}
+                    </span>
+                    <button class="reading-list-btn btn" title="Add to reading list"><i class="bi bi-plus-circle"></i>
+                        Save</button>
+                </div>
+                <p class="mt-2">{{post.short_description}}</p>
+            </div>
+            {% endif %} {% endfor %}
+        </div>
+        <div class="col-md-6 pe-md-0">
+            {% for post in case_studies %} {% if forloop.counter != 1 %}
+            <div class="row {% if forloop.counter != 2 %}mt-3{% endif %} mx-0 bg-lightnavy ">
+                <div class="col-12 col-md-5 p-2 d-flex align-items-center ">
+                    <img src="{% get_media_prefix %}{{post.feature_image}}" class="img-fluid " alt="... ">
+                </div>
+                <div class="col-12 col-md-7 py-2 ps-md-0 pe-1 d-flex align-items-center">
+                    <div>
+                        <a href="{% host_url 'case_studies' host 'blog' %}{{post.post_url}}">
+                            <h6 class="fw-bold">{{post.title}}</h6>
+                        </a>
+                        <div class="info-area">
+                            <span class="p-0 me-3 text-green">
+                                <i class="bi bi-calendar"></i>
+                                {{post.date|date}}
+                            </span>
+                            <span class="p-0 me-3 text-green" title="Reading Time">
+                                <i class="bi bi-stopwatch"></i>
+                                {{post.reading_time}}
+                            </span>
+                            <button class="reading-list-btn btn" title="Add to reading list"><i
+                                    class="bi bi-plus-circle"></i> Save</button>
+                        </div>
+                        <p class="mt-1 mb-0 fs-7 lh-sm">{{post.short_description|truncatechars:92}}</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %} {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- blogs container  -->
+<section class="blogs-container mt-4">
+
+    <a href="{% host_url 'category' host 'blog' %}blogs" class="container-heading">RECENT ARTICLES</a>
+
+    <div class="row post">
+        <div class="col-md-6 ps-md-0">
+            {% for post in blogs %} {% if forloop.counter == 1 %}
+            <div>
+                <img src="{% get_media_prefix %}{{post.feature_image}}" class="img-fluid" alt="">
+            </div>
+            <div class="d-flex flex-column py-2">
+                <a href="{% host_url 'blogs' host 'blog' %}{{post.post_url}}">
+                    <h5 class="title">{{post.title}}
+                    </h5>
+                </a>
+                <div class="position-relative">
+                    <span class=" p-0 me-5 text-green ">
+                        <i class=" bi bi-calendar "></i>
+                        {{post.date|date}}
+                    </span>
+                    <span class="p-0 me-5 text-green" title="Reading Time">
+                        <i class="bi bi-stopwatch"></i>
+                        {{post.reading_time}}
+                    </span>
+                    <button class="reading-list-btn btn" title="Add to reading list"><i class="bi bi-plus-circle"></i>
+                        Save</button>
+                </div>
+                <p class="mt-2">{{post.short_description}}</p>
+            </div>
+            {% endif %} {% endfor %}
+        </div>
+        <div class="col-md-6 pe-md-0">
+            {% for post in blogs %} {% if forloop.counter != 1 %}
+            <div class="row {% if forloop.counter != 2 %}mt-3{% endif %} mx-0 bg-lightnavy ">
+                <div class="col-12 col-md-5 p-2 d-flex align-items-center ">
+                    <img src="{% get_media_prefix %}{{post.feature_image}}" class="img-fluid " alt="... ">
+                </div>
+                <div class="col-12 col-md-7 py-2 ps-md-0 pe-1 d-flex align-items-center">
+                    <div>
+                        <a href="{% host_url 'blogs' host 'blog' %}{{post.post_url}}">
+                            <h6 class="fw-bold">{{post.title}}</h6>
+                        </a>
+                        <div class="info-area">
+                            <span class="p-0 me-3 text-green">
+                                <i class="bi bi-calendar"></i>
+                                {{post.date|date}}
+                            </span>
+                            <span class="p-0 me-3 text-green" title="Reading Time">
+                                <i class="bi bi-stopwatch"></i>
+                                {{post.reading_time}}
+                            </span>
+                            <button class="reading-list-btn btn" title="Add to reading list"><i
+                                    class="bi bi-plus-circle"></i> Save</button>
+                        </div>
+                        <p class="mt-1 mb-0 fs-7 lh-sm">{{post.short_description|truncatechars:92}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endif %} {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- get updates form  -->
+<h5 class=" get-update-heading ">
+    <i class=" bi bi-envelope px-2 "></i>
+</h5>
+<section class=" get-updates mb-5 shadow-sm py-3 bg-gray rounded ">
+    <div class=" row mx-0 align-items-center ">
+        <div class=" col-md-5 ">
+            <h4 class=" fw-bold ">Get Updates</h4>
+            <h5 class=" text-secondary ">Sign up to receive the latest news</h5>
+
+        </div>
+        <div class=" col-md-7 ">
+            <div class=" get-updates ">
+                <form class=" row ">
+                    <div class=" col-auto ">
+                        <label for=" name ">Name</label>
+                        <input type=" text " class=" form-control " id=" name " placeholder=" Enter your name ">
+                    </div>
+                    <div class=" col-auto ">
+                        <label for=" email ">Email Address</label>
+                        <input type=" email " class=" form-control " id=" email " placeholder=" Enter your email address ">
+                    </div>
+                    <div class=" col-auto d-flex align-items-end mt-3 mt-lg-0 ">
+                        <button type=" submit " class=" btn btn-navy py-2 ">Subscribe <i
+                                class=" bi bi-arrow-right "></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+</section>
+
+{% endblock content %} {% block customjs %}
+<script src=" https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js "></script>
+
+<script>
+</script>
+{% endblock customjs %}

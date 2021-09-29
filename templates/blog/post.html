@@ -1,0 +1,294 @@
+{% extends 'base/blog_base.html' %} {% load static %} {% load hosts %} {% block title %} {{post.title}} {% endblock title %} {% block headercss %}
+
+
+<meta property="og:url" content="https://main.techforing.com/blog/{{category}}/{{post.post_url}}" />
+<meta property="article:author" content="rabi" />
+<meta property="article:section" content="Case Studies" />
+<meta property="og:image" content="https://main.techforing.com/media/{{post.feature_image}}" />
+<meta property="og:image:secure_url" content="https://main.techforing.com/media/{{post.feature_image}}" />
+<meta property="og:image:width" content="600" />
+<meta property="og:image:height" content="350" />
+<meta property="og:image:alt" content="feature-image" />
+<meta property="og:image:type" content="image/png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://main.techforing.com/media/{{post.feature_image}}" />
+
+<link rel="stylesheet" href="{% static 'tfcss/blog/post.css' %}">
+<style>
+    img {
+        max-width: 100%;
+    }
+    
+    .banner-1 img {
+        min-width: 850px;
+    }
+    
+    @media only screen and (max-width: 850px) {
+        .banner-1 img {
+            min-width: 100%;
+        }
+    }
+</style>
+<!-- for social share icons  -->
+
+
+<link rel="stylesheet" href="{% static 'tfcss/blog/share.css' %}" />
+<link rel="stylesheet" href="{% static 'tfcss/blog/iconset.css' %}" /> {% endblock headercss %} {% block content %}
+
+<div class="position-relative">
+    <section class="banner-1">
+        <img src="../../../media/{{post.feature_image}}" id="feature-img" class="img-fluid d-block mx-auto" alt="feature-image">
+    </section>
+
+    <section class="mt-3">
+        <div class="mt-4 d-flex justify-content-between mx-auto">
+            <div class="tags">
+                <a href="">Risk Assessment</a>
+                <a href="">Business Cybersecurity</a>
+                <a href="">Case Studies</a>
+            </div>
+            <div class="add-to-list">
+                <button class="btn fs-6" title="Add to my reading list">
+                    <i class="bi bi-plus-circle me-2"></i>
+                    Save
+                </button>
+            </div>
+        </div>
+
+    </section>
+    <section class="post-info d-flex position-relative">
+        <div class="w-50 d-flex justify-content-between">
+            <span class="me-3">{{post.date}}</span>
+            <span>{{post.reading_time}} read</span>
+
+            <button type="button" class="share-btn btn" title="Share Post">
+                <i class="bi bi-share-fill"></i>
+            </button>
+            <div class="social-share-container d-none shadow">
+                <h6 class="fw-bold">Share this post to:</h6>
+                <div class="social-share" data-social-share></div>
+            </div>
+        </div>
+        {% if post.comment_option == 'enabled'%}
+        <div class="w-50 d-flex justify-content-end">
+            <button onclick="window.scrollTo(0,document.body.scrollHeight);" class="leave-comment-btn btn p-0 text-green">Leave a Comment</button>
+        </div>
+        {% endif %}
+
+    </section>
+
+    <section class="mt-4 main-post-container">
+        <div class="row mx-0">
+            <div class="sticky-top d-none d-md-block col-md-2 post-content">
+                <h6 class="title">Table of Content:</h6>
+                <div id="list-example" class="mt-3 list-group fs-7">
+
+                </div>
+            </div>
+            <div class="col-md-7 main-content position-relative" data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0" tabindex="0">
+                <h5 class="fw-bold mb-3">{{post.title}}</h5>
+
+                {{post.content|safe}} {% if post.comment_option == 'enabled'%}
+                <button id="open-comment-btn" class="my-5 btn btn-navy">
+                    <i class="bi bi-chat-square-dots"></i>
+                    Post Comments
+                </button>
+
+                <div id="comment-box" class="d-none my-3">
+                    <h6 class="fw-bold">Leave a Comment</h6>
+                    <p> We'd love to hear from you! Your comment(s) will appear instantly on the live site. Your email address will not be published.
+                    </p>
+                    <form action="">
+                        <div class="form-floating">
+                            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                            <label for="floatingTextarea2">Comments</label>
+                        </div>
+                        <button type="button" class="mt-3 btn btn-navy">Post a Comment</button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="col-md-3">
+                <div class="related-post">
+                    <h6 class="fw-bold border-bottom border-secondary text-center pb-2">RELATED POST</h6>
+                    <div class="row row-cols-1 g-3">
+                        {% for post in related_posts %}
+                        <div class="col bg-lightnavy p-3">
+                            <div class="card bg-transparent border-0">
+                                <img src="../../../media/{{post.feature_image}}" class="card-img-top" alt="...">
+                                <div class="card-body pt-2 p-0">
+                                    <a href="{% host_url 'blogs' host 'blog' %}{{post.post_url}}">
+                                        <h6 class="fw-bold fs-7">{{post.title}}</h6>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+
+
+                </div>
+
+                <div class="mt-5 subscribe-form">
+                    <h5 class="title">Subscribe To Our Newsletter</h5>
+                    <form class="mt-3">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name" placeholder="Enter your name" aria-describedby="nameHelp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter your email address" aria-describedby="emailHelp">
+                        </div>
+
+                        <button type="submit" class="btn form-control btn-navy px-5">SUBMIT</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+{% endblock content %} {% block customjs %}
+<script src="{% static 'tfjs/blog/share.js' %}"></script>
+<!-- <script src="{% static 'tfjs/blog/tool-tip.js' %}"></script> -->
+<script>
+    window.onload = function() {
+        let allSections = document.querySelectorAll('.main-content div');
+        let contents = document.querySelector('.post-content #list-example');
+        if (allSections.length != 0) {
+            allSections.forEach((section, index) => {
+                if (section.title) {
+                    console.log(section.title);
+                    section.id = `content-${index}`;
+                    contents.innerHTML += `<a class="list-group-item list-group-item-action" href="#content-${index}">${section.title}</a>`;
+                }
+            });
+            var scrollSpy = new bootstrap.ScrollSpy(document.body, {
+                offset: 300,
+                target: '#list-example'
+            });
+        }
+    }
+
+    let shareBtn = document.querySelector('.share-btn');
+    let socialShareContainer = document.querySelector('.social-share-container');
+
+    shareBtn.addEventListener('click', () => {
+        socialShareContainer.classList.toggle('d-none');
+    });
+    document.addEventListener('click', e => {
+        if (e.target.tagName != 'I')
+            socialShareContainer.classList.add('d-none');
+    });
+
+    window.addEventListener('scroll', (event) => {
+        let position = document.documentElement.scrollTop;
+        if (position > document.querySelector('.main-content').offsetHeight)
+            document.querySelector('.post-content').style.visibility = "hidden";
+        else
+            document.querySelector('.post-content').style.visibility = "visible";
+    });
+
+
+    document.querySelector('.tags').parentNode.style.width =
+        document.getElementById('feature-img').clientWidth + 'px';
+
+
+    // initializing ensemble share
+    const element = document.querySelector('.social-share');
+    new ensemble.SocialShare(element);
+    new ensemble.SocialShare(element, {
+        ns: 'share',
+        fx: true,
+
+        // root element
+        root: 'main',
+
+        // default classname
+        className: 'social-share',
+
+        // link to share
+        // defaults to location.href
+        link: '',
+
+        // page title to share
+        // defaults to window.title
+        title: '',
+
+        // description to share
+        description: '',
+
+        // actions to display
+        displays: null,
+
+        // action intents
+        intents: {
+            'facebook': 0,
+            'twitter': 0,
+            'whatsapp': 1,
+            'linkedin': 0,
+            'copy-link': 3,
+        },
+
+        // URI strings
+        uriform: {
+            'facebook': 'https://facebook.com/sharer.php?u=%url%',
+            'twitter': 'https://twitter.com/share?url=%url%&text=%title%',
+            'whatsapp': 'https://api.whatsapp.com/send?text=%text%',
+            'linkedin': 'https://www.linkedin.com/sharing/share-offsite?mini=true&url=%url%&title=%title%&ro=false&summary=%summary%'
+        },
+
+        // selector to find link
+        selectorLink: {
+            element: 'link[rel="canonical"]',
+            attribute: 'href'
+        },
+
+        // selector to find title
+        selectorTitle: null,
+
+        // selector to find description
+        selectorDescription: {
+            element: 'meta[name="description"]',
+            attribute: 'content'
+        },
+
+        // Custom parameters for label
+        label: {},
+
+    });
+    new ensemble.SocialShare(element, {
+
+        locale: {
+            label: 'Share',
+            share: 'Share on %s',
+            send: 'Send to %s',
+            subject: 'An interesting thing',
+            text: 'Hi! There is something may interesting you: %s',
+            email: 'Send via email',
+            copy: 'Copy link',
+            copied: 'Copied link!',
+            'whatsapp': 'WhatsApp',
+            'linkedin': 'LinkedIn'
+        },
+
+    });
+    new ensemble.SocialShare(element, {
+        onInit: function() {},
+        onIntent: function() {}
+    });
+</script>
+{% if post.comment_option == 'enabled'%}
+<script>
+    let commentBox = document.getElementById('comment-box');
+    let openCommentBtn = document.getElementById('open-comment-btn');
+    openCommentBtn.addEventListener('click', () => {
+        openCommentBtn.style.display = 'none';
+        commentBox.classList.toggle('d-none');
+    });
+</script>
+{% endif %} {% endblock customjs %}

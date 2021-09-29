@@ -1,0 +1,421 @@
+{% extends 'base/main_admin_base.html' %} {% load static %} {% load hosts %} {% block title %} Events {% endblock title %} {% block headercss %}
+<link rel="stylesheet"
+      href="{% static '' %}tfcss/admin_panel/mainTF/eventWebinar.css"/> {% endblock headercss %} {% block content %}
+
+<main>
+    <section class="event-count mb-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="event-info bg-primary-25">
+                        <h3>Active Events</h3>
+                        <p class="display-6 fw-bolder">
+                            <i class="bi bi-calendar2-check"></i> 20
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="event-info bg-primary-50">
+                        <h3>Previous Events</h3>
+                        <p class="display-6 fw-bolder">
+                            <i class="bi bi-calendar2-check"></i> 15
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="event-info bg-saphire">
+                        <h3>Upcoming Events</h3>
+                        <p class="display-6 fw-bolder">
+                            <i class="bi bi-calendar2-check"></i> 50
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="event-control">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-content-center my-3">
+                <div class="align-self-center">
+                    <div class="filter-btn-container">
+                        <button class="btn event-filter-btn active">
+                            All Event
+                        </button>
+                        <button class="btn byStatus event-filter-btn">
+                            Active
+                        </button>
+                        <button class="btn byStatus event-filter-btn">
+                            Completed
+                        </button>
+                        <button class="btn byStatus event-filter-btn">
+                            Canceled
+                        </button>
+                        <button class="btn byMedium event-filter-btn">
+                            Online
+                        </button>
+                        <button class="btn byMedium event-filter-btn">
+                            Offline
+                        </button>
+                    </div>
+                </div>
+                <div class="align-self-center">
+                    <select name="" id="filter" style="padding: .5rem 1rem;">
+                        <option value="" class="disabled" disabled>Filter</option>
+                        <option value="status">By Status</option>
+                        <option value="medium">By Medium</option>
+                    </select>
+                </div>
+                <div class=" align-self-center">
+                    <button class="btn createEventBtn bg-saphire rounded-0 text-white" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">
+                        Add new event <i class="bi bi-plus-circle-fill"></i>
+                    </button>
+                </div>
+                <div class="">
+                    <!-- date picker -->
+                    <input type="text" id="daterange" class="drp-selected" value="Select date" name="date"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <table id="event-list" class="display" style="width: 100%">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Event Name</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Medium</th>
+                            <th>Status</th>
+                            <th>Description</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>
+                                <a href="{% host_url 'main_admin_event_detail' %}">CCSP for HNWI</a
+                                >
+                            </td>
+                            <td>2011/04/25</td>
+                            <td>8:00 AM</td>
+                            <td class="offline">Offline</td>
+                            <td class="active filter">Active <i class="bi bi-circle-fill text-success"></i></td>
+                            <td>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Architecto ab dolore nisi
+                                beatae perspiciatis earum!
+                            </td>
+                            <td>
+                                <button class="btn" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal1">
+                                    <i
+                                            class="
+                                                        icofont-edit
+                                                        text-primary
+                                                        rounded-circle
+                                                        activites-icon
+                                                    "
+                                    ></i>
+                                    Edit
+                                </button>
+                                <button class="btn trash">
+                                    <i
+                                            class="
+                                                        bi bi-trash-fill
+                                                        text-danger
+                                                        rounded-circle
+                                                        activites-icon
+                                                    "
+                                    ></i>
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>
+                                <a href="{% host_url 'main_admin_event_detail' %}"
+                                >CCSP for HNWI</a
+                                >
+                            </td>
+                            <td>2011/04/25</td>
+                            <td>8:00 AM</td>
+                            <td class="online">Online</td>
+                            <td class="deactivate filter">Deactive <i class="bi bi-circle-fill text-danger"></i></td>
+                            <td>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Architecto ab dolore nisi
+                                beatae perspiciatis earum!
+                            </td>
+                            <td>
+                                <button class="btn" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal1">
+                                    <i
+                                            class="
+                                                        icofont-edit
+                                                        text-primary
+                                                        rounded-circle
+                                                        activites-icon
+                                                    "
+                                    ></i>
+                                    Edit
+                                </button>
+                                <button class="btn trash">
+                                    <i
+                                            class="
+                                                        bi bi-trash-fill
+                                                        text-danger
+                                                        rounded-circle
+                                                        activites-icon
+                                                    "
+                                    ></i>
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>
+                                <a href="{% host_url 'main_admin_event_detail' %}"
+                                >CCSP for HNWI</a
+                                >
+                            </td>
+                            <td>2011/04/25</td>
+                            <td>8:00 AM</td>
+                            <td class="online">Online</td>
+                            <td class="completed filter">Completed <i class="bi bi-circle-fill text-dark"></i></td>
+                            <td>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Architecto ab dolore nisi
+                                beatae perspiciatis earum!
+                            </td>
+                            <td>
+                                <button class="btn" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal1">
+                                    <i
+                                            class="
+                                                        icofont-edit
+                                                        text-primary
+                                                        rounded-circle
+                                                        activites-icon
+                                                    "
+                                    ></i>
+                                    Edit
+                                </button>
+                                <button class="btn trash">
+                                    <i
+                                            class="
+                                                        bi bi-trash-fill
+                                                        text-danger
+                                                        rounded-circle
+                                                        activites-icon
+                                                    "
+                                    ></i>
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>
+                                <a href="{% host_url 'main_admin_event_detail' %}"
+                                >CCSP for HNWI</a
+                                >
+                            </td>
+                            <td>2011/04/25</td>
+                            <td>8:00 AM</td>
+                            <td class="online">Online</td>
+                            <td class="canceled filter">Canceled <i class="bi bi-circle-fill text-yellow"></i></td>
+                            <td>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Architecto ab dolore nisi
+                                beatae perspiciatis earum!
+                            </td>
+                            <td>
+                                <button class="btn" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal1">
+                                    <i
+                                            class="
+                                                        icofont-edit
+                                                        text-primary
+                                                        rounded-circle
+                                                        activites-icon
+                                                    "
+                                    ></i>
+                                    Edit
+                                </button>
+                                <button class="btn trash">
+                                    <i
+                                            class="
+                                                        bi bi-trash-fill
+                                                        text-danger
+                                                        rounded-circle
+                                                        activites-icon
+                                                    "
+                                    ></i>
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                    ></button>
+                </div>
+                <div class="modal-body">
+                    <form action="">
+                        <div class="col-auto mb-3">
+                            <label for="eventName">Event Name</label>
+                            <input
+                                    type="eventName"
+                                    class="form-control"
+                                    id="eventName"
+                                    placeholder="Enter Event Name"
+                            />
+                        </div>
+                        <div class="col-auto mb-3">
+                            <label for="medium">Medium</label>
+                            <select
+                                    class="form-select"
+                                    name="medium"
+                                    id="medium"
+                            >
+                                <option value="online">Onine</option>
+                                <option value="offline">Offline</option>
+                            </select>
+                        </div>
+                        <div class="col-auto mb-3">
+                            <label for="date">Date</label>
+                            <input
+                                    type="date"
+                                    class="form-control"
+                                    id="date"
+                            />
+                        </div>
+                        <div class="col-auto mb-3">
+                            <label for="time">Time</label>
+                            <input
+                                    type="time"
+                                    class="form-control"
+                                    id="time"
+                            />
+                        </div>
+                        <div class="col-auto mb-3">
+                            <label for="status">Status</label>
+                            <select
+                                    class="form-select"
+                                    name="status"
+                                    id="status"
+                            >
+                                <option value="active">active</option>
+                                <option value="deactive">deactive</option>
+                                <option value="canceled">canceled</option>
+                                <option value="upcoming">upcoming</option>
+                            </select>
+                        </div>
+                        <div class="col-auto mb-3">
+                            <label for="description">Descrtption</label>
+                            <textarea
+                                    class="form-control"
+                                    id="description"
+                                    placeholder="*******************"
+                            ></textarea>
+                        </div>
+                        <button type="button" class="btn btn-primary">
+                            Add Event
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                    ></button>
+                </div>
+                <div class="modal-body">
+                    <form action="">
+                        <div class="col-auto mb-3">
+                            <label for="eventName">Event Name</label>
+                            <input
+                                    type="eventName"
+                                    class="form-control"
+                                    id="eventName"
+                                    placeholder="Enter Event Name"
+                            />
+                        </div>
+                        <div class="col-auto mb-3">
+                            <label for="medium">Medium</label>
+                            <select
+                                    class="form-select"
+                                    name="medium"
+                                    id="medium"
+                            >
+                                <option value="online">Onine</option>
+                                <option value="offline">Offline</option>
+                            </select>
+                        </div>
+                        <div class="col-auto mb-3">
+                            <label for="date">Date</label>
+                            <input
+                                    type="date"
+                                    class="form-control"
+                                    id="date"
+                            />
+                        </div>
+                        <div class="col-auto mb-3">
+                            <label for="time">Time</label>
+                            <input
+                                    type="time"
+                                    class="form-control"
+                                    id="time"
+                            />
+                        </div>
+                        <div class="col-auto mb-3">
+                            <label for="status">Status</label>
+                            <select
+                                    class="form-select"
+                                    name="status"
+                                    id="status"
+                            >
+                                <option value="active">active</option>
+                                <option value="deactive">deactive</option>
+                                <option value="canceled">canceled</option>
+                                <option value="upcoming">upcoming</option>
+                            </select>
+                        </div>
+                        <div class="col-auto mb-3">
+                            <label for="description">Descrtption</label>
+                            <textarea
+                                    class="form-control"
+                                    id="description"
+                                    placeholder="*******************"
+                            ></textarea>
+                        </div>
+                        <button type="button" class="btn btn-primary">
+                            Update
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock content %} {% block customjs %}
+<script src="{% static '' %}tfjs/admin_panel/mainTF/eventWebinar.js"></script>
+{% endblock customjs %}

@@ -1,0 +1,84 @@
+{% extends 'base/bcs_user_base.html' %} {% load static %} {% load hosts %} {% block title %} Subscriptions {% endblock title %} {% block content %}
+
+<div class="subscription-container position-relative px-0 px-md-2">
+
+    <h4 class="mt-5 fw-bold">All Subscriptions</h4>
+
+
+    <div class="mt-4 mb-5 subscription-list d-flex flex-column align-items-start">
+        <button class="btn border-0 fs-5">SUBSCRIPTION
+            FOR TURNKEY CYBERSECURITY SOLUTION</button>
+        <button class="btn border-0 fs-5">SUBSCRIPTION FOR MANAGED CYBERSECURITY SOLUTION</button>
+        <button class="btn border-0 fs-5" data-bs-toggle="modal" data-bs-target="#turnkeyModal">SUBSCRIPTION
+            FOR BUSINESS EXECUTIVE</button>
+        <button class="btn border-0 fs-5" data-bs-toggle="modal" data-bs-target="#trainingModal">SUBSCRIPTION FOR
+            EMPLOYEE TRAINING</button>
+    </div>
+
+
+    <!-- Modal for business executive -->
+    <div class="modal fade" id="turnkeyModal" tabindex="-1" aria-labelledby="turnkeyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-5 text-center">
+                    <h4 class="fw-bold">First you need to make an one time purchase for your employee data & privacy only then you will eligible for monthly subscription</h4>
+                    <a href="{% host_url 'bcs_user_services' %}" class="btn fs-5 mt-3 text-green">Please go to the service menu</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for employee training -->
+    <div class="modal fade" id="trainingModal" tabindex="-1" aria-labelledby="trainingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-5 text-center">
+                    <h4 class="fw-bold">First you need to make an one time purchase for your employee training program only then you will eligible for monthly subscription</h4>
+                    <a href="{% host_url 'bcs_user_services' %}" class="btn fs-5 mt-3 text-green">Please go to the service menu</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %} {% block customjs %}
+<script>
+    let activeState = 1;
+    let main = document.querySelector('.package-details .row');
+    let packages = document.querySelectorAll('.package-details .row .package');
+
+    document.getElementById('package-change').addEventListener('click', () => {
+
+        packages.forEach(package => {
+            if (!package.classList.contains('d-none')) {
+                package.classList.add('d-none');
+            }
+        });
+
+        let width = document.body.offsetWidth;
+
+        if (692 < width && width < 1170) {
+            packages[activeState].classList.remove('d-none');
+            packages[activeState + 1].classList.remove('d-none');
+            packages[activeState + 2].classList.remove('d-none');
+            main.innerHTML = packages[activeState].outerHTML + packages[activeState + 1].outerHTML + packages[activeState + 2].outerHTML;
+        } else if (560 < width && width < 692) {
+            packages[activeState + 1].classList.remove('d-none');
+            packages[activeState + 2].classList.remove('d-none');
+            main.innerHTML = packages[activeState + 1].outerHTML + packages[activeState + 2].outerHTML;
+        } else if (width < 560) {
+            if (activeState > packages.length - 1)
+                activeState = 0;
+            packages[activeState].classList.remove('d-none');
+            activeState++;
+        }
+    });
+</script>
+{% endblock customjs %}

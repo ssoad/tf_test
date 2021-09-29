@@ -1,0 +1,100 @@
+:root {
+    --var-primary-color: #182f59;
+    --var-upcoming-subscriptions-color: #282867;
+    --var-primary-color-50: #37378f;
+    --var-primary-color-25: #4b55a3;
+    --var-sidebar-color: hsl(228, 24%, 96%);
+    --var-box-shadow-color: hsl(0, 0%, 85%);
+    --var-link-color: hsl(0, 0%, 0%);
+    --var-icon-color: hsl(101, 61%, 46%);
+    --var-detail-background: hsl(0, 0%, 92%);
+    --var-topbar-background-color: hsl(0, 0%, 100%);
+    --var-btn-background-purple: hsl(332, 71%, 50%);
+    --var-text-yellow: hsl(34, 100%, 50%);
+}
+p {
+    margin: 0;
+}
+
+.bg-saphire {
+    background-color: var(--var-upcoming-subscriptions-color);
+}
+.bg-primary-50 {
+    background-color: var(--var-primary-color-50);
+}
+.bg-primary-25 {
+    background-color: var(--var-primary-color-25);
+}
+
+.subscription-info {
+    color: var(--var-topbar-background-color);
+    padding: 1rem;
+}
+
+.subscription-info h3{
+    font-size: 22px;
+}
+
+.subscription-info p{
+    font-size: 18px;
+}
+#subscription-list,
+#subscription-list td, #subscription-details,
+#subscription-details td {
+    border: .5px solid #707070;
+    font-size: 14px;
+}
+
+#subscription-list {
+    text-align: center;
+}
+
+#subscription-list td:nth-child(2) {
+    width: 150px;
+}
+
+#subscription-list td:nth-child(6) {
+    width: 100px;
+}
+
+
+
+#subscription-list thead, #subscription-details thead {
+    background: #182f5910;
+    text-align: center;
+}
+#subscription-list thead th, #subscription-details thead th {
+    border: 1px solid #707070;
+    font-size: 15px;
+}
+
+#subscription-list_filter{
+    margin-bottom: 2rem;
+    float: right;
+    width: 60%;
+}
+#subscription-list_filter label{
+    padding: .5rem 1rem;
+    width: 100%;
+    border: 1px solid #707070;
+}
+#subscription-list_filter input{
+    display: inline !important;
+    border-color: transparent;
+    width: 90%;
+    padding: 0 .75rem;
+}
+
+
+#subscription-details_filter input{
+    display: inline !important;
+    width: auto !important;
+}
+@media (max-width: 1241px){
+    .subscription-info {
+        height: 140px;
+    }
+    #subscription-list_filter {
+        width: 100%;
+    }
+}

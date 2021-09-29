@@ -1,0 +1,146 @@
+{% extends 'base/bcs_admin_base.html' %} {% load static %} {% load hosts %}
+
+{% block title %} BCS Admin Reading List
+{% endblock title %}
+
+{% block headercss %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css" />
+    <!-- custom css -->
+    <link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/bcsTF/nav.css" />
+    <link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/bcsTF/service.css" />
+
+{% endblock headercss %}
+{% block content %}
+    <!-- main section starts -->
+    <main>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12" style="margin-block-start: 1rem; margin-block-end: 15rem; position: relative;">
+                   <div class="table-container">
+                        <h2 class="float-start position-absolute text-uppercase">Reading List</h2>
+                        <table id="reading-list" class="table display service">
+                            <thead>
+                                <tr>
+                                    <th>SL</th>
+                                    <th>User Name</th>
+                                    <th>List Title</th>
+                                    <th>Link</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td> Risk Assessment</td>
+                                    <td> 
+                                       <li class="fw-bold"> Reading List 1</li>
+                                       <li class="fw-bold"> Reading List 2</li>
+                                    </td>
+                                    <td> 
+                                        <li style="list-style: none;"> <a href=""> https://blog.techforing.com/...</a></li>
+                                       <li style="list-style: none;"><a href=""> https://blog.techforing.com/...</a></li>
+                                    </td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing.... </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td> Risk Assessment</td>
+                                    <td> 
+                                        <li class="fw-bold"> Reading List 1</li>
+                                        <li class="fw-bold"> Reading List 2</li>
+                                     </td>
+                                     <td> 
+                                         <li style="list-style: none;"> <a href=""> https://blog.techforing.com/...</a></li>
+                                        <li style="list-style: none;"><a href=""> https://blog.techforing.com/...</a></li>
+                                     </td>
+                                     <td>Lorem Ipsum is simply dummy text of the printing.... </td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>Incident Response</td>
+                                    <td> 
+                                        <li class="fw-bold"> Reading List 1</li>
+                                        <li class="fw-bold"> Reading List 2</li>
+                                     </td>
+                                     <td> 
+                                         <li style="list-style: none;"> <a href=""> https://blog.techforing.com/...</a></li>
+                                        <li style="list-style: none;"><a href=""> https://blog.techforing.com/...</a></li>
+                                     </td>
+                                     <td>Lorem Ipsum is simply dummy text of the printing.... </td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>Incident Response</td>
+                                    <td> 
+                                        <li class="fw-bold"> Reading List 1</li>
+                                        <li class="fw-bold"> Reading List 2</li>
+                                     </td>
+                                     <td> 
+                                         <li style="list-style: none;"> <a href=""> https://blog.techforing.com/...</a></li>
+                                        <li style="list-style: none;"><a href=""> https://blog.techforing.com/...</a></li>
+                                     </td>
+                                     <td>Lorem Ipsum is simply dummy text of the printing.... </td>
+                                </tr>
+                                <tr>
+                                    <td>6</td>
+                                    <td>Security Compliance</td>
+                                    <td> 
+                                        <li class="fw-bold"> Reading List 1</li>
+                                        <li class="fw-bold"> Reading List 2</li>
+                                     </td>
+                                     <td> 
+                                         <li style="list-style: none;"> <a href=""> https://blog.techforing.com/...</a></li>
+                                        <li style="list-style: none;"><a href=""> https://blog.techforing.com/...</a></li>
+                                     </td>
+                                     <td>Lorem Ipsum is simply dummy text of the printing.... </td>
+                                </tr>
+                                <tr>
+                                    <td>6</td>
+                                    <td>Security Compliance</td>
+                                    <td> 
+                                        <li class="fw-bold"> Reading List 1</li>
+                                        <li class="fw-bold"> Reading List 2</li>
+                                     </td>
+                                     <td> 
+                                         <li style="list-style: none;"> <a href=""> https://blog.techforing.com/...</a></li>
+                                        <li style="list-style: none;"><a href=""> https://blog.techforing.com/...</a></li>
+                                     </td>
+                                     <td>Lorem Ipsum is simply dummy text of the printing.... </td>
+                                </tr>
+                                <tr>
+                                    <td>7</td>
+                                    <td>SMB Solution</td>
+                                    <td> 
+                                        <li class="fw-bold"> Reading List 1</li>
+                                        <li class="fw-bold"> Reading List 2</li>
+                                     </td>
+                                     <td> 
+                                         <li style="list-style: none;"> <a href=""> https://blog.techforing.com/...</a></li>
+                                        <li style="list-style: none;"><a href=""> https://blog.techforing.com/...</a></li>
+                                     </td>
+                                     <td>Lorem Ipsum is simply dummy text of the printing.... </td>
+                                </tr>
+                                <tr>
+                                    <td>8</td>
+                                    <td>SMB Solution</td>
+                                    <td> 
+                                        <li class="fw-bold"> Reading List 1</li>
+                                        <li class="fw-bold"> Reading List 2</li>
+                                     </td>
+                                     <td> 
+                                         <li style="list-style: none;"> <a href=""> https://blog.techforing.com/...</a></li>
+                                        <li style="list-style: none;"><a href=""> https://blog.techforing.com/...</a></li>
+                                     </td>
+                                     <td>Lorem Ipsum is simply dummy text of the printing.... </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock content %}
+{% block customjs %}
+    <script src="{% static '' %}tfjs/admin_panel/bcsTF/service.js"></script>
+{% endblock customjs %}

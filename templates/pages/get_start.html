@@ -1,0 +1,773 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}
+    BCS Start Here
+{% endblock title %}
+
+{% block headercss %}
+    <link rel="stylesheet" href="{% static '' %}css/glide.core.css" />
+    <link rel="stylesheet" href="{% static '' %}css/glide.theme.css" />
+    <link rel="stylesheet" href="{% static '' %}css/datepicker.css" />
+    <link
+      rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css"
+    />
+    <link rel="stylesheet" href="{% static '' %}css/telephone.css" />
+    <link rel="stylesheet" href="{% static '' %}css/style.css" />
+{% endblock headercss %}
+
+{% block content %}
+    <section class="gs-banner">
+      <div class="container">
+        <p>Get Started</p>
+        <h2>FUTURE-PROOF YOUR SECURITY WITH RELIABLE SOLUTIONS, TODAY</h2>
+      </div>
+    </section>
+    <section class="gt-point1">
+      <div class="container">
+        <h2 class="point-title">What describes you best?</h2>
+        <b>Please select your desired services and submit the form below</b>
+        <div class="point1-category">
+          <div
+            class="point-category pc2 lazy"
+            data-bg="{% static '' %}img/getstart/what describe you-business.png"
+            title="techforing-get-started-bcs"
+          >
+            <h2>Business</h2>
+            <a href="#pcs-part" id="pcsp-btn"
+              >Select
+              <img
+                data-src="{% static '' %}img/getstart/double-angle-pointing-to-right.png"
+                alt=""
+                class="lazy"
+            /></a>
+          </div>
+          <div class="pc-line"></div>
+          <div
+            class="point-category pc1 lazy"
+            data-bg="{% static '' %}img/getstart/what describe you-individual.png"
+            title="techforing-get-started-pcs"
+          >
+            <h2>Invidual</h2>
+            <a id="pm-open"
+              >Select
+              <img
+                data-src="{% static '' %}img/getstart/double-angle-pointing-to-right.png"
+                alt=""
+                class="lazy"
+            /></a>
+          </div>
+
+          <div class="point-modal" id="point-modal">
+            <h2>
+              Check out our Concierge Cybersecurity Solution to fit your needs
+            </h2>
+            <div class="pmo-btn">
+              <a href="" target="_blank"
+              >Click Here</a>
+            </div>
+            <i class="fas fa-times" id="pm-close"></i>
+          </div>
+        </div>
+      </div>
+    </section>
+  <form method="POST" action = "">
+    {% csrf_token %}
+      <section class="gt-point2" id="pcs-part">
+        <div class="container">
+          <h2 class="point-title">Please select your service</h2>
+          <div class="row pcs-select-row">
+            <div class="col-md-6">
+              <div class="sps-box">
+                <ul>
+                  <li>
+                    <input
+                      type="checkbox"
+                      id="ra-service"
+                      name="risk_assessment"
+                      value="Risk Assessment"
+                    />
+                    <label for="ra-service">Risk Assessment</label><br />
+                  </li>
+                  <li>
+                    <input
+                      type="checkbox"
+                      id="ir-service"
+                      name="incident_response"
+                      value="Incident Response"
+                    />
+                    <label for="ir-service">Incident Response</label
+                    ><br />
+                  </li>
+                  <li>
+                    <input
+                      type="checkbox"
+                      id="sc-service"
+                      name="security_compliance"
+                      value="Security Compliance"
+                    />
+                    <label for="sc-service">Security Compliance</label
+                    ><br />
+                  </li>
+                  <li>
+                    <input
+                      type="checkbox"
+                      id="smb-service"
+                      name="smb_solution"
+                      value="SMB Solution"
+                    />
+                    <label for="smb-service">SMB Solution</label><br />
+                  </li>
+                  <li>
+                    <input
+                      type="checkbox"
+                      id="aca-service"
+                      name="academy"
+                      value="Academy"
+                    />
+                    <label for="aca-service">Academy</label><br />
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="all-service-box">
+                <div id="ra-service-box" class="ra-service-box">
+                  <ul>
+                    <li>
+                      <input
+                        type="checkbox"
+                        id="va-service"
+                        name="risk_assessment"
+                        value="Vulnerability Assessment"
+                      />
+                      <label for="va-service">Vulnerability Assessment</label
+                      ><br />
+                      <ul class="ccisl" id="ccisl">
+                        <li>
+                          We identify system vulnerabilities, evaluate risk
+                          points, provide remedy and deliver a comprehensive
+                          reporting
+                        </li>
+                      </ul>
+                    </li>
+                    <li>
+                      <input
+                        type="checkbox"
+                        id="pt-service"
+                        name="risk_assessment"
+                        value="Penetration Testing"
+                      />
+                      <label for="pt-service">Penetration Testing</label><br />
+                      <ul class="osisl" id="osisl">
+                        <li>
+                          We perform a simulated cyberattack against the digital
+                          assets of your business to check for exploitable
+                          vulnerabilities
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+                <div id="ir-service-box" class="ir-service-box">
+                  <ul class="ir-list">
+                    <li class="ir-list-item">
+                      <input
+                        type="checkbox"
+                        id="hr-service"
+                        name="incident_response"
+                        value="Hack Recovery"
+                      />
+                      <label class="hr-service-label" for="hr-service"
+                        >Hack Recovery</label
+                      ><br />
+                      <ul class="hr-sub-list" id="hr-sub-list">
+                        <li>
+                          <input type="checkbox" id="wr" name="incident_response" value="Website Recovery" />
+                          <label for="wr">Website Recovery</label><br />
+                        </li>
+                        <li>
+                          <input
+                            type="checkbox"
+                            id="wson"
+                            name="incident_response"
+                            value="Work Station & Office Network"
+                          />
+                          <label for="wson">WORK STATION & OFFICE NETWORK</label
+                          ><br />
+                        </li>
+                        <li>
+                          <input
+                            type="checkbox"
+                            id="sdc"
+                            name="incident_response"
+                            value="Server & Data Center"
+                          />
+                          <label for="sdc">SERVER & DATA CENTER</label><br />
+                        </li>
+                        <li>
+                          <input type="checkbox" id="ci" name="incident_response" value="Cloud Infrastructure" />
+                          <label for="ci">CLOUD INFRASTRUCTURE</label><br />
+                        </li>
+                        <li>
+                          <input type="checkbox" id="sa" name="sa" value="sa" />
+                          <label for="sa" id="select-all-text">Select All</label
+                          ><br />
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="ir-list-item">
+                      <input
+                        type="checkbox"
+                        id="mr-service"
+                        name="incident_response"
+                        value="Malware Removal"
+                      />
+                      <label class="mr-service-label" for="mr-service"
+                        >Malware Removal</label
+                      ><br />
+                      <ul class="mr-sub-list" id="mr-sub-list">
+                        <li>
+                          <input type="checkbox" id="wm" name="incident_response" value="Web Malware" />
+                          <label for="wm">WEB MALWARE</label><br />
+                        </li>
+                        <li>
+                          <input
+                            type="checkbox"
+                            id="wsonr"
+                            name="incident_response"
+                            value="Work station & office network ransomware"
+                          />
+                          <label for="wsonr"
+                            >WORK STATION & OFFICE NETWORK RANSOMWARE</label
+                          ><br />
+                        </li>
+                        <li>
+                          <input
+                            type="checkbox"
+                            id="sdcm"
+                            name="incident_response"
+                            value="Server & data center malware"
+                          />
+                          <label for="sdcm">SERVER & DATA CENTER MALWARE</label
+                          ><br />
+                        </li>
+                        <li>
+                          <input
+                            type="checkbox"
+                            id="sam"
+                            name="sam"
+                            value="sam"
+                          />
+                          <label for="sam" id="select-all-textm"
+                            >Select All</label
+                          ><br />
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="ir-list-item">
+                      <input
+                        type="checkbox"
+                        id="dr-service"
+                        name="incident_response"
+                        value="Crime & digital forensic investigation"
+                      />
+                      <label class="dr-service-label" for="dr-service"
+                        >Crime & Digital Forensic Investigation</label
+                      ><br />
+                      <ul class="dr-sub-list" id="dr-sub-list">
+                        <li>
+                          <input
+                            type="checkbox"
+                            id="bfi"
+                            name="incident_response"
+                            value="Business Fraud investigation"
+                          />
+                          <label for="bfi">Business Fraud investigation</label
+                          ><br />
+                        </li>
+                        <li>
+                          <input
+                            type="checkbox"
+                            id="idti"
+                            name="incident_response"
+                            value="Internal Data Theft Investigation"
+                          />
+                          <label for="idti"
+                            >Internal Data Theft Investigation</label
+                          ><br />
+                        </li>
+                        <li>
+                          <input
+                            type="checkbox"
+                            id="ehdt"
+                            name="incident_response"
+                            value="External Hacking & Data Theft Investigation"
+                          />
+                          <label for="ehdt"
+                            >External Hacking & Data Theft Investigation</label
+                          ><br />
+                        </li>
+                        <li>
+                          <input
+                            type="checkbox"
+                            id="sac"
+                            name="sac"
+                            value="sac"
+                          />
+                          <label for="sac" id="select-all-textc"
+                            >Select All</label
+                          ><br />
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+                <div id="sc-service-box" class="sc-service-box">
+                  <ul>
+                    <li>
+                      <input
+                        type="checkbox"
+                        id="mss-service"
+                        name="smb_solution"
+                        value="Managed Security Solution"
+                      />
+                      <label for="mss-service">Managed Security Solution</label
+                      ><br />
+                      <ul class="msssl" id="msssl">
+                        <li>Periodical Risk Assessment</li>
+                        <li>Immediate Threat Mitigation</li>
+                        <li>Continuous Monitoring</li>
+                        <li>Protect Data & Privacy</li>
+                        <li>Incident Response</li>
+                        <li>Continuous Consultation</li>
+                        <li>Monthly Report</li>
+                        <li>Backup and Disaster</li>
+                      </ul>
+                    </li>
+                    <li>
+                      <input
+                        type="checkbox"
+                        id="pps-service"
+                        name="smb_solution"
+                        value="Plug and Play Program"
+                      />
+                      <label for="pps-service">Plug and Play Program</label
+                      ><br />
+                      <ul class="ppssl" id="ppssl">
+                        <li>Cybersecurity & Privacy Program</li>
+                        <li>Risk Assessment</li>
+                        <li>Data Privacy & Protection</li>
+                        <li>Vendor Screening</li>
+                        <li>Awareness & Training</li>
+                        <li>Incident Response Strategy</li>
+                        <li>Continuous consultation</li>
+                        <li>Certification</li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+                <div id="ss-service-box" class="ss-service-box">
+                  <ul>
+                    <li>
+                      <input
+                        type="checkbox"
+                        id="iso-service"
+                        name="security_compliance"
+                        value="ISO 27001"
+                      />
+                      <label for="iso-service">ISO 27001</label><br />
+                    </li>
+                    <li>
+                      <input
+                        type="checkbox"
+                        id="pci-service"
+                        name="security_compliance"
+                        value="PCI DSS"
+                      />
+                      <label for="pci-service">PCI DSS</label><br />
+                    </li>
+                    <li>
+                      <input
+                        type="checkbox"
+                        id="gdp-service"
+                        name="security_compliance"
+                        value="GDPR"
+                      />
+                      <label for="gdp-service">GDPR</label><br />
+                    </li>
+                    <li>
+                      <input
+                        type="checkbox"
+                        id="hipp-service"
+                        name="security_compliance"
+                        value="HIPPA"
+                      />
+                      <label for="hipp-service">HIPPA</label><br />
+                    </li>
+                  </ul>
+                </div>
+                <div id="aca-service-box" class="aca-service-box">
+                  <ul>
+                    <li>
+                      <input
+                        type="checkbox"
+                        id="ei-service"
+                        name="academy"
+                        value="Educational Institutes"
+                      />
+                      <label for="ei-service">Educational Institutes</label
+                      ><br />
+                      <ul class="eisl" id="eisl">
+                        <li>
+                          Cybersecurity course & awareness program for
+                          educational institutes.
+                        </li>
+                      </ul>
+                    </li>
+                    <li>
+                      <input
+                        type="checkbox"
+                        id="ct-service"
+                        name="academy"
+                        value="Corporate"
+                      />
+                      <label for="ct-service">Corporate</label><br />
+                      <ul class="ctsl" id="ctsl">
+                        <li>
+                          Corporate training for your enterprise security.
+                        </li>
+                      </ul>
+                    </li>
+                    <li>
+                      <input
+                        type="checkbox"
+                        id="law-service"
+                        name="academy"
+                        value="Law Enforcement Training"
+                      />
+                      <label for="law-service">Law Enforcement Training</label
+                      ><br />
+                      <ul class="lawsl" id="lawsl">
+                        <li>Law enforcement cybersecurity training</li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="gs-find">
+        <div class="container">
+          <h2 class="point-title">Let's find what's' right for you</h2>
+          <div class="find-section">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="find-buttons">
+                  <a id="request-btn" class="f-btn"> Request Call Back </a>
+                  <a id="inquery-btn" class="f-btn"> Inquiry Further </a>
+                  <a id="virtual-btn" class="f-btn"> Virtual Meeting </a>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div
+                  id="request"
+                  class="find-box pt-3 lazy"
+                  data-bg="{% static '' %}img/getstart/Request-call.png"
+                  title="techforing-get-started-pcs"
+                >
+                  <div>
+                    <h2>Getting in touch is easy</h2>
+                  </div>
+                  <div class="gs-form">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <input
+                          class="call-input"
+                          type="text"
+                          name="firstname"
+                          placeholder="First Name"
+                          required
+                        />
+                      </div>
+                      <div class="col-md-6">
+                        <input
+                        class="call-input"
+                          type="text"
+                          name="lastname"
+                          placeholder="Last Name"
+                          required
+                        />
+                      </div>
+                      <div class="col-md-6">
+                        <input
+                        class="call-input"
+                          type="tell"
+                          id="phone"
+                          name="phone"
+                          value="+1"
+                          onkeypress="checkCountry()"
+                          required
+                        />
+                      </div>
+                      <div class="col-md-6">
+                        
+                        <input type="email" name="email" placeholder="Email" class="call-input"required/>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <input
+                        
+                          data-toggle="datepicker"
+                          class="pickdate call-input"
+                          name="date"
+                          placeholder="Select a day"required
+                        />
+                      </div>
+                      <div class="col-md-6 d-flex">
+                        <input
+                          class="timepicker call-input w-50"
+                          name="time"
+                          placeholder="Select a time"required
+                        />
+                        <select name="timezone" id="timezone-offset" class="call-input w-50" required>
+                          <option value="-12:00">GMT -12:00</option>
+                          <option value="-11:00">GMT -11:00</option>
+                          <option value="-10:00">GMT -10:00</option>
+                          <option value="-09:50">GMT -9:30</option>
+                          <option value="-09:00">GMT -9:00</option>
+                          <option value="-08:00">GMT -8:00</option>
+                          <option value="-07:00">GMT -7:00</option>
+                          <option value="-06:00">GMT -6:00</option>
+                          <option value="-05:00">GMT -5:00</option>
+                          <option value="-04:50">GMT -4:30</option>
+                          <option value="-04:00">GMT -4:00</option>
+                          <option value="-03:50">GMT -3:30</option>
+                          <option value="-03:00">GMT -3:00</option>
+                          <option value="-02:00">GMT -2:00</option>
+                          <option value="-01:00">GMT -1:00</option>
+                          <option value="+00:00" selected="selected">
+                            GMT
+                          </option>
+                          <option value="+01:00">GMT +1:00</option>
+                          <option value="+02:00">GMT +2:00</option>
+                          <option value="+03:00">GMT +3:00</option>
+                          <option value="+03:50">GMT +3:30</option>
+                          <option value="+04:00">GMT +4:00</option>
+                          <option value="+04:50">GMT +4:30</option>
+                          <option value="+05:00">GMT +5:00</option>
+                          <option value="+05:50">GMT +5:30</option>
+                          <option value="+05:75">GMT +5:45</option>
+                          <option value="+06:00">GMT +6:00</option>
+                          <option value="+06:50">GMT +6:30</option>
+                          <option value="+07:00">GMT +7:00</option>
+                          <option value="+08:00">GMT +8:00</option>
+                          <option value="+08:75">GMT +8:45</option>
+                          <option value="+09:00">GMT +9:00</option>
+                          <option value="+09:50">GMT +9:30</option>
+                          <option value="+10:00">GMT +10:00</option>
+                          <option value="+10:50">GMT +10:30</option>
+                          <option value="+11:00">GMT +11:00</option>
+                          <option value="+11:50">GMT +11:30</option>
+                          <option value="+12:00">GMT +12:00</option>
+                          <option value="+12:75">GMT +12:45</option>
+                          <option value="+13:00">GMT +13:00</option>
+                          <option value="+14:00">GMT +14:00</option>
+                        </select>
+                      </div>
+                    </div>
+                    <textarea
+                      name="gs_message"
+                      placeholder="Your message"
+                    ></textarea>
+                    
+                    <button class="req-btn" type="submit" name="submit">
+                      <i class="fas fa-phone-square-alt mr-2"></i>Submit
+                    </button>
+                  </div>
+                  </form>
+                </div>
+                <input type="hidden" id="token" name="token">
+                <div
+                  id="inquery"
+                  class="find-box"
+                  title="techforing-get-started-image"
+                >
+                  <h2>Want to know more ?</h2>
+                <form action="/get_inquiry/" method="POST">
+                  {% csrf_token %} 
+                    <input
+                      class="inq-form"
+                      type="text"
+                      name="inq_fullname"
+                      placeholder="Full Name"
+                    />
+                    <input
+                      class="inq-form"
+                      type="email"
+                      name="inq_email"
+                      placeholder="Your Email"
+                    />
+                    <input
+                          class="inq-form"
+                          type="tell"
+                          id="phone"
+                          value="+1"
+                          name="inq_phone"
+                          placeholder="Phone"
+                          onkeypress="checkCountry()"
+                        />
+                    <textarea
+                      class="inq-textarea"
+                      name="inq_message"
+                      placeholder="Your message"
+                    ></textarea>
+                    <button class="inquery-btn" type="submit" name="submit">
+                      <i class="fas fa-paper-plane mr-2"></i>Send
+                    </button>
+                  </form>
+                </div>
+                <div id="virtual" class="find-box">
+                  <div>
+                    <h2>Meet Face to Face</h2>
+                    <p>We are waiting to meet you</p>
+                  </div>
+                  <a href="" target="_blank" class="reserve">
+                    <i class="far fa-calendar-check mr-2"></i>Schedule Your
+                    Meeting
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>   
+    </form>
+    <section class="gs-cta">
+      <div class="gs-cta-head">
+        <div class="container">
+          <h2>Contact Sales</h2>
+          <p>You can contact us</p>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-3 col-6">
+            <div class="gs-social gs-fb">
+              <a href="https://www.facebook.com/techforing/" target="_blank"
+                ><i class="fab fa-facebook-square mr-1"></i> Facebook</a
+              >
+              <p>Via Facebook</p>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="gs-social gs-wa">
+              <a href="#"
+                ><i class="fab fa-whatsapp-square mr-1"></i>Whatsapp</a
+              >
+              <p>Via Whatsapp</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="gs-social gs-call">
+              <a href="#"
+                ><i class="fas fa-phone-square-alt mr-1"></i> +8801318205754</a
+              >
+              <p>Or you can call us directly</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock content %}
+
+{% block customjs %}
+    
+    <script src="{% static '' %}js/glide.js"></script>
+
+    <script src="{% static '' %}js/home-tab.js"></script>
+    <script src="{% static '' %}js/gs.js"></script>
+    <script src="{% static '' %}js/datepicker.js"></script>
+    <script src="{% static '' %}js/telephone.js"></script>
+    <script>
+      var input = document.querySelector("#phone");
+      intlTelInput(input, {
+        utilsScript: "{% static '' %}js/utils.js",
+      });
+    </script>
+    <script>
+      $('[data-toggle="datepicker"]').datepicker({
+        startDate: new Date(),
+      });
+    </script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+    <script>
+      $(".timepicker").timepicker({
+        timeFormat: "h:mm p",
+        interval: 30,
+        minTime: "12:00am",
+        maxTime: "11:30pm",
+        defaultTime: "11",
+        startTime: "12:00am",
+        dynamic: false,
+        dropdown: true,
+        scrollbar: true,
+      });
+    </script>
+    <script>
+      var phone = $("#phone");
+      var gsCta = $(".gs-cta");
+
+      function checkCountry() {
+        var number = phone.val();
+        fourDigit = number.slice(0, 4);
+        twoDigit = number.slice(0, 3);
+        if (
+          fourDigit == "+880" ||
+          twoDigit == "017" ||
+          twoDigit == "016" ||
+          twoDigit == "019" ||
+          twoDigit == "018" ||
+          twoDigit == "015" ||
+          twoDigit == "013" ||
+          twoDigit == "014"
+        ) {
+          gsCta.css("display", "block");
+        } else {
+          gsCta.css("display", "none");
+        }
+      }
+    </script>
+
+    <script>
+      $(document).ready(function () {
+        $("#my-header").load("header.html");
+      });
+    </script>
+    <script>
+      $(document).ready(function () {
+        $("#my-footer").load("footer.html");
+      });
+    </script>
+    <script src="{% static '' %}js/purecookie.js"></script>
+    <script>
+      let input_phone = document.getElementById('phone');
+      let dialList = document.querySelectorAll('.iti__country');
+      for(let i = 0; i<dialList.length;i++){
+        dialList[i].addEventListener('click', function(){
+          input_phone.value = dialList[i].children[2].innerHTML;
+        });
+      }
+    </script>
+    <script>
+        grecaptcha.ready(function() {
+          grecaptcha.execute('6Ld9pFAaAAAAAIHOTYw4dhAfQT8iC6eIf3Fbh5ty', {action: 'submit'}).then(function(token) {
+              document.getElementById('token').value = token;
+          });
+        });
+    </script>
+{% endblock customjs %}

@@ -1,0 +1,350 @@
+{% extends 'base/main_admin_base.html' %} {% load static %} {% load hosts %} {% block title %} Event Details
+{% endblock title %} {% block headercss %}
+<link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/mainTF/eventWebinar.css" /> {% endblock headercss %}
+{% block content %}
+<main>
+    <section class="event-count mb-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="text-white p-4 bg-primary-25">
+                        <h4>
+                            Free Cybersecurity proffesional training for High net woth individual
+                        </h4>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Recusandae eum, ipsam facilis unde
+                            mollitia deserunt et dolorum autem, alias quidem excepturi quos minus vitae perferendis!
+                        </p>
+                        <p class="mt-2">
+                            <span class="fw-bolder">Speakers: </span>Rabiul Islam
+                        </p>
+                        <div class="w-50 my-2">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="fw-bolder"><i class="bi bi-people-fill"></i> Total Registered: <span
+                                            class="fw-normal">50</span></p>
+                                    <p class="fw-bolder"><i class="bi bi-people-fill"></i> Medium: <span
+                                            class="fw-normal">Online</span></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="fw-bolder"><i class="bi bi-calendar-check"></i> Date: <span
+                                            class="fw-normal">05.05.2021</span></p>
+                                    <p class="fw-bolder"><i class="bi bi-clock"></i> Time: <span class="fw-normal">08.05
+                                    </span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="event-control">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <table id="event-details" class="display" style="width: 100%">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Email</th>
+                                <th>Phone Number</th>
+                                <th>Gender</th>
+                                <th>Registered Date</th>
+                                <th>Organisation</th>
+                                <th>Position</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Sabbir</td>
+                                <td>Islam</td>
+                                <td>sabbir@gmail.com</td>
+                                <td>+880171153558</td>
+                                <td>Male</td>
+                                <td>10.05.2021</td>
+                                <td>Abcd Group</td>
+                                <td>CTO</td>
+                                <td>
+                                    <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
+                                    </button>
+                                    <button class="btn dlt">
+                                        <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Shomit</td>
+                                <td>Islam</td>
+                                <td>sabbir@gmail.com</td>
+                                <td>+880171153558</td>
+                                <td>Male</td>
+                                <td>10.05.2021</td>
+                                <td>Abcd Group</td>
+                                <td>CTO</td>
+                                <td>
+                                    <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
+                                    </button>
+                                    <button class="btn dlt">
+                                        <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Afsana</td>
+                                <td>Islam</td>
+                                <td>sabbir@gmail.com</td>
+                                <td>+880171153558</td>
+                                <td>Male</td>
+                                <td>10.05.2021</td>
+                                <td>Abcd Group</td>
+                                <td>CTO</td>
+                                <td>
+                                    <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
+                                    </button>
+                                    <button class="btn dlt">
+                                        <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Azharul</td>
+                                <td>Islam</td>
+                                <td>sabbir@gmail.com</td>
+                                <td>+880171153558</td>
+                                <td>Male</td>
+                                <td>10.05.2021</td>
+                                <td>Abcd Group</td>
+                                <td>CTO</td>
+                                <td>
+                                    <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
+                                    </button>
+                                    <button class="btn dlt">
+                                        <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Sabbir</td>
+                                <td>Islam</td>
+                                <td>sabbir@gmail.com</td>
+                                <td>+880171153558</td>
+                                <td>Male</td>
+                                <td>10.05.2021</td>
+                                <td>Abcd Group</td>
+                                <td>CTO</td>
+                                <td>
+                                    <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
+                                    </button>
+                                    <button class="btn dlt">
+                                        <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>Shomit</td>
+                                <td>Islam</td>
+                                <td>sabbir@gmail.com</td>
+                                <td>+880171153558</td>
+                                <td>Male</td>
+                                <td>10.05.2021</td>
+                                <td>Abcd Group</td>
+                                <td>CTO</td>
+                                <td>
+                                    <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
+                                    </button>
+                                    <button class="btn dlt">
+                                        <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>Afsana</td>
+                                <td>Islam</td>
+                                <td>sabbir@gmail.com</td>
+                                <td>+880171153558</td>
+                                <td>Male</td>
+                                <td>10.05.2021</td>
+                                <td>Abcd Group</td>
+                                <td>CTO</td>
+                                <td>
+                                    <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
+                                    </button>
+                                    <button class="btn dlt">
+                                        <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>Azharul</td>
+                                <td>Islam</td>
+                                <td>sabbir@gmail.com</td>
+                                <td>+880171153558</td>
+                                <td>Male</td>
+                                <td>10.05.2021</td>
+                                <td>Abcd Group</td>
+                                <td>CTO</td>
+                                <td>
+                                    <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
+                                    </button>
+                                    <button class="btn dlt">
+                                        <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>Sabbir</td>
+                                <td>Islam</td>
+                                <td>sabbir@gmail.com</td>
+                                <td>+880171153558</td>
+                                <td>Male</td>
+                                <td>10.05.2021</td>
+                                <td>Abcd Group</td>
+                                <td>CTO</td>
+                                <td>
+                                    <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
+                                    </button>
+                                    <button class="btn dlt">
+                                        <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>Shomit</td>
+                                <td>Islam</td>
+                                <td>sabbir@gmail.com</td>
+                                <td>+880171153558</td>
+                                <td>Male</td>
+                                <td>10.05.2021</td>
+                                <td>Abcd Group</td>
+                                <td>CTO</td>
+                                <td>
+                                    <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
+                                    </button>
+                                    <button class="btn dlt">
+                                        <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td>Afsana</td>
+                                <td>Islam</td>
+                                <td>sabbir@gmail.com</td>
+                                <td>+880171153558</td>
+                                <td>Male</td>
+                                <td>10.05.2021</td>
+                                <td>Abcd Group</td>
+                                <td>CTO</td>
+                                <td>
+                                    <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
+                                    </button>
+                                    <button class="btn dlt">
+                                        <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>12</td>
+                                <td>Azharul</td>
+                                <td>Islam</td>
+                                <td>sabbir@gmail.com</td>
+                                <td>+880171153558</td>
+                                <td>Male</td>
+                                <td>10.05.2021</td>
+                                <td>Abcd Group</td>
+                                <td>CTO</td>
+                                <td>
+                                    <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
+                                    </button>
+                                    <button class="btn dlt">
+                                        <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="">
+                        <div class="col-auto mb-3">
+                            <label for="eventName">Event Name</label>
+                            <input type="eventName" class="form-control" id="eventName"
+                                placeholder="Enter Event Name" />
+                        </div>
+                        <div class="col-auto mb-3">
+                            <label for="medium">Medium</label>
+                            <select class="form-select" name="medium" id="medium">
+                                <option value="online">Onine</option>
+                                <option value="offline">Offline</option>
+                            </select>
+                        </div>
+                        <div class="col-auto mb-3">
+                            <label for="date">Date</label>
+                            <input type="date" class="form-control" id="date" />
+                        </div>
+                        <div class="col-auto mb-3">
+                            <label for="time">Time</label>
+                            <input type="time" class="form-control" id="time" />
+                        </div>
+                        <div class="col-auto mb-3">
+                            <label for="status">Status</label>
+                            <select class="form-select" name="status" id="status">
+                                <option value="active">active</option>
+                                <option value="deactive">deactive</option>
+                                <option value="canceled">canceled</option>
+                                <option value="upcoming">upcoming</option>
+                            </select>
+                        </div>
+                        <div class="col-auto mb-3">
+                            <label for="description">Descrtption</label>
+                            <textarea class="form-control" id="description"
+                                placeholder="*******************"></textarea>
+                        </div>
+                        <button type="button" class="btn btn-primary">
+                            Update
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock content %} {% block customjs %}
+<script src="{% static '' %}tfjs/admin_panel/mainTF/eventWebinar.js"></script>
+{% endblock customjs %}
