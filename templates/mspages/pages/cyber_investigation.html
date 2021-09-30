@@ -1,4 +1,4 @@
-{% extends 'base/msbase.html' %} {% load static %} {% load hosts %} {% block title %} Cyber crime investifation by CyberSecurity Professionals {% endblock title %} {% block headercss %}
+{% extends 'base/msbase.html' %} {% load static %} {% block title %} Cyber crime investifation by CyberSecurity Professionals {% endblock title %} {% block headercss %}
 <link rel="stylesheet" href="{% static '' %}css/glide.core.css" />
 <link rel="stylesheet" href="{% static '' %}css/glide.theme.css" /> {% endblock headercss %} {% block content %}
 <section class="i-banner" title="digital-investigation-cyber-crime-prevention">
@@ -42,7 +42,7 @@
                         <li>Identity Theft</li>
                     </ul>
                     <div class="case-btn smb-case-btn">
-                        <a href="{% host_url 'cyber_crime_investigation' host 'mysecurity' %}" target="_blank">Explore More</a>
+                        <a href="{% url 'pcs_app:cyber_crime_investigation' %}" target="_blank">Explore More</a>
                     </div>
                 </div>
             </div>
@@ -67,7 +67,7 @@
                         <li>Accurate and actionable findings</li>
                     </ul>
                     <div class="case-btn smb-case-btn">
-                        <a href="{% host_url 'osint_investigations' host 'mysecurity' %}" target="_blank">Explore More</a>
+                        <a href="{% url 'pcs_app:osint_investigations' %}" target="_blank">Explore More</a>
                     </div>
                 </div>
             </div>
@@ -332,7 +332,7 @@
         <h2>
             No Getting away Committing Cybercrimes Anymore We're here to catch the criminal and bring justice
         </h2>
-        <a href="{% host_url 'get_start' %}" target="_blank">
+        <a href="{% url 'bcs_app:get_start' %}" target="_blank">
             <button>Lets Start Now</button></a>
     </div>
 </section>

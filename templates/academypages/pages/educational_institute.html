@@ -1,4 +1,4 @@
-{% extends 'base/academybase.html' %} {% load static %} {% load hosts %} {% block title %} Cyber Awareness Training for Educational Institutes {% endblock title %} {% block headercss %} {% endblock headercss %} {% block content %}
+{% extends 'base/academybase.html' %} {% load static %} {% block title %} Cyber Awareness Training for Educational Institutes {% endblock title %} {% block headercss %} {% endblock headercss %} {% block content %}
 <section class="education-banner">
     <div class="container">
         <div class="aca-bar"></div>
@@ -376,7 +376,7 @@
                 <div class="glide__bullets ccsp-bullets ei-bullets" data-glide-el="controls[nav]"></div>
             </div>
             <div class="story-btn text-center">
-                <a href="{% host_url 'testimonial' host 'main' %}" target="_blank" class="px-5">Read All</a>
+                <a href="{% url 'bcs_app:testimonial' %}" target="_blank" class="px-5">Read All</a>
             </div>
         </div>
     </div>
@@ -388,7 +388,7 @@
                 <div class="ccsp-cta-box">
                     <h2>BECOME A MEMBER OF OUR CYBERSECURITY ACADEMY</h2>
                     <p>Interested to learn more about our programs?</p>
-                    <a href="{% host_url 'findus' host 'main' %}" target="_blank">Contact Now</a>
+                    <a href="{% url 'bcs_app:findus' %}" target="_blank">Contact Now</a>
                 </div>
             </div>
         </div>
@@ -415,7 +415,7 @@
                             In case you are unsure about our training module, course duration, cost, our extra offers, or anything that you wish to know right away without reaching out to us, visit this section. Here, we tried to clarify some of the most questions we receive.
                         </p>
                         <div class="text-right">
-                            <a href="{% url 'academy_faq' %}" target="_blank" class="ccspr-btn">Learn More</a>
+                            <a href="{% url 'academy_app:academy_faq' %}" target="_blank" class="ccspr-btn">Learn More</a>
                         </div>
                     </div>
                 </div>

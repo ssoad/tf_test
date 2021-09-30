@@ -1,4 +1,4 @@
-{% extends 'base/msbase.html' %} {% load static %} {% load hosts %} {% block title %} Your Personal Incident Responder | Cybersecurity Solution for Individuals {% endblock title %} {% block headercss %}
+{% extends 'base/msbase.html' %} {% load static %} {% block title %} Your Personal Incident Responder | Cybersecurity Solution for Individuals {% endblock title %} {% block headercss %}
 <link rel="stylesheet" href="{% static '' %}css/glide.core.css" />
 <link rel="stylesheet" href="{% static '' %}css/glide.theme.css" /> {% endblock headercss %} {% block content %}
 <section class="ir-banner">
@@ -48,7 +48,7 @@
                         to minimize the fallout. Our cybersecurity consultants offer a comprehensive incident response plan to restore the system. We identify, contain, eliminate the danger, and educate you to avoid further occurrence.
                     </p>
                     <div class="ir-btn">
-                        <a href="{% host_url 'hack_recovery_service' host 'mysecurity' %}" target="_blank">Explore More</a>
+                        <a href="{% url 'pcs_app:hack_recovery_service' %}" target="_blank">Explore More</a>
                     </div>
                 </div>
             </div>
@@ -67,7 +67,7 @@
                         restore your system back to a clean state you desire.
                     </p>
                     <div class="ir-btn">
-                        <a href="{% host_url 'remove_malware_from_pc' host 'mysecurity' %}" target="_blank">Explore More</a>
+                        <a href="{% url 'pcs_app:remove_malware_from_pc' %}" target="_blank">Explore More</a>
                     </div>
                 </div>
             </div>
@@ -85,7 +85,7 @@
                         trace. More often than not, it’s difficult for a common man to fathom such security incidents and fix it himself. So, you can hire us to do the hard work. We remove personal data from the internet and ensure it stays dead.
                     </p>
                     <div class="ir-btn">
-                        <a href="{% host_url 'data_removal' host 'mysecurity' %}" target="_blank">Explore More</a>
+                        <a href="{% url 'pcs_app:data_removal' %}" target="_blank">Explore More</a>
                     </div>
                 </div>
             </div>
@@ -264,7 +264,7 @@
 <section class="protect inci-cta lazy" data-bg="{% static '' %}msimg/incident/cta.jpg">
     <div class="container">
         <h2>Want to recover your hacked digital asset?</h2>
-        <a href="{% host_url 'get_start' host 'main' %}" target="_blank"><button>Lets Start Now</button></a>
+        <a href="{% url 'bcs_app:get_start' %}" target="_blank"><button>Lets Start Now</button></a>
     </div>
 </section>
 {% endblock content %} {% block customjs %}

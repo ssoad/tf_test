@@ -1,4 +1,4 @@
-{% extends 'base/msbase.html' %} {% load static %} {% load hosts %} {% block title %} {% endblock title %} {% block headercss %}
+{% extends 'base/msbase.html' %} {% load static %} {% block title %} {% endblock title %} {% block headercss %}
 <link rel="stylesheet" href="{% static '' %}css/glide.core.css" />
 <link rel="stylesheet" href="{% static '' %}css/glide.theme.css" /> {% endblock headercss %} {% block content %}
 <section class="cele-banner">
@@ -303,6 +303,6 @@
 <section class="poli-cta cele-cta lazy" data-bg="{% static '' %}msimg/celebrity/cta.jpg">
     <h2>Is anybody trying to defame you online?</h2>
     <p>Start here to prevent the breach and get protected</p>
-    <a href="{% host_url 'get_start' host 'main' %}" target="_blank">Get It Now</a>
+    <a href="{% url 'bcs_app:get_start' %}" target="_blank">Get It Now</a>
 </section>
 {% endblock content %} {% block customjs %} {% endblock customjs %}

@@ -1,4 +1,4 @@
-{% extends 'base/msbase.html' %} {% load static %} {% load hosts %} {% block title %} Mysecurity FAQ {% endblock title %} {% block headercss %}
+{% extends 'base/msbase.html' %} {% load static %} {% block title %} Mysecurity FAQ {% endblock title %} {% block headercss %}
 <link rel="stylesheet" href="{% static '' %}css/glide.core.css" />
 <link rel="stylesheet" href="{% static '' %}css/glide.theme.css" /> {% endblock headercss %} {% block content %}
 <section class="f-banner">
@@ -227,7 +227,7 @@
                     <div class="fpanel">
                         <p>
                             Yes, you can see our clients & testimonials
-                            <a href="{% host_url 'testimonial' host 'main' %}" target="_blank">here</a>.
+                            <a href="{% url 'bcs_app:testimonial' %}" target="_blank">here</a>.
                         </p>
                     </div>
                 </div>
@@ -355,7 +355,7 @@
 </div>
 <section class="faq-cta lazy" data-bg="{% static '' %}msimg/faq/CTA.png">
     <h2>still need help? Send us a note</h2>
-    <a href="{% host_url 'get_start' host 'main' %}" target="_blank">Let Us Secure</a>
+    <a href="{% url 'bcs_app:get_start' %}" target="_blank">Let Us Secure</a>
 </section>
 {% endblock content %} {% block customjs %}
 <script>

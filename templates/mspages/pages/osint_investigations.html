@@ -1,4 +1,4 @@
-{% extends 'base/msbase.html' %} {% load static %} {% load hosts %} {% block title %} OSINT investigations | POI Open source intelligence service {% endblock title %} {% block headercss %}
+{% extends 'base/msbase.html' %} {% load static %} {% block title %} OSINT investigations | POI Open source intelligence service {% endblock title %} {% block headercss %}
 <link rel="stylesheet" href="{% static '' %}css/glide.core.css" />
 <link rel="stylesheet" href="{% static '' %}css/glide.theme.css" /> {% endblock headercss %} {% block content %}
 <section class="osint-banner">
@@ -204,7 +204,7 @@
                     </div>
                 </div>
                 <div class="text-center">
-                    <a class="cc-btn" href="{% host_url 'testimonial' host 'main' %}" target="_blank">See All Stories</a>
+                    <a class="cc-btn" href="{% url 'bcs_app:testimonial' %}" target="_blank">See All Stories</a>
                 </div>
             </div>
         </div>
@@ -214,7 +214,7 @@
     <div class="container">
         <h2>Looking for Personalized Investigations?</h2>
         <p>Our Team is Ready to Help</p>
-        <a href="{% host_url 'get_start' host 'main' %}" target="_blank">Secure now</a>
+        <a href="{% url 'bcs_app:get_start' %}" target="_blank">Secure now</a>
     </div>
 </section>
 <section class="pt-blog">

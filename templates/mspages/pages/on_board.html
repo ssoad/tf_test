@@ -1,4 +1,4 @@
-{% extends 'base/msbase.html' %} {% load static %} {% load hosts %} {% block title %} On-Boarding with Techforing | Enjoy our White Gloves Service (Suggested On-Boarding | White Gloves Service | Techforing) {% endblock title %} {% block headercss %}
+{% extends 'base/msbase.html' %} {% load static %} {% block title %} On-Boarding with Techforing | Enjoy our White Gloves Service (Suggested On-Boarding | White Gloves Service | Techforing) {% endblock title %} {% block headercss %}
 <link rel="stylesheet" href="{% static '' %}css/glide.core.css" />
 <link rel="stylesheet" href="{% static '' %}css/glide.theme.css" /> {% endblock headercss %} {% block content %}
 <section class="o-banner">
@@ -74,7 +74,7 @@
                 leave even a not so tech-savvy client with top to bottom understanding. If you are still unsure about something, we are just one phone call away, always ready to jump right in and clear your confusion.
             </p>
             <div class="og-link">
-                <a href="{% host_url 'findus' host 'main' %}" target="_blank">Connect with Us</a>
+                <a href="{% url 'bcs_app:findus' %}" target="_blank">Connect with Us</a>
             </div>
         </div>
     </div>
@@ -85,7 +85,7 @@
         <p>
             Come and find out how our information security analysts help you navigate your specific security needs’ scope and complexity.
         </p>
-        <a href="{% host_url 'get_start' host 'main' %}" target="_blank">Get Started</a>
+        <a href="{% url 'bcs_app:get_start' %}" target="_blank">Get Started</a>
     </div>
 </section>
 <section class="o-expert lazy" title="on-boarding-cyber-solution" data-bg="{% static '' %}msimg/onboard/Team-Bg.png">
@@ -125,7 +125,7 @@
         <p>
             Later than never, you have found us. Let’s collaborate and stand against all cyber threats. Make a perfectly safe digital cyberspace.
         </p>
-        <a href="{% host_url 'get_start' host 'main' %}" target="_blank">Let Us Secure</a>
+        <a href="{% url 'bcs_app:get_start' %}" target="_blank">Let Us Secure</a>
     </div>
 </section>
 {% endblock content %} {% block customjs %}

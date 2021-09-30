@@ -1,4 +1,4 @@
-{% extends 'base/academybase.html' %} {% load static %} {% load hosts %} {% block title %} Ethical Hacking Course | Learn from CEH Certified Trainers {% endblock title %} {% block headercss %} {% endblock headercss %} {% block content %}
+{% extends 'base/academybase.html' %} {% load static %} {% block title %} Ethical Hacking Course | Learn from CEH Certified Trainers {% endblock title %} {% block headercss %} {% endblock headercss %} {% block content %}
 <section class="aca-banner">
     <div class="container">
         <div class="acaw-bar"></div>
@@ -63,7 +63,7 @@
                                             designed especially for both IT professionals and those who have no prior knowledge in IT. If you want to become an ethical hacker, this is where you kick start!
                                         </p>
                                         <div class="acas-btn text-right">
-                                            <a href="{% host_url 'ccsp' host 'academy' %}" target="_blank">Explore More</a
+                                            <a href="{% url 'academy_app:ccsp' %}" target="_blank">Explore More</a
                           >
                         </div>
                       </div>
@@ -106,7 +106,7 @@
                         </p>
                         <div class="acas-btn text-right">
                           <a
-                            href="{% host_url 'corporate_training' host 'academy' %}"
+                            href="{% url 'academy_app:corporate_training' %}"
                             target="_blank"
                             >Explore More</a
                           >
@@ -150,7 +150,7 @@
                           confident about solving the most vicious cybercrimes.
                         </p>
                         <div class="acas-btn text-right">
-                          <a href="{% host_url 'law_enforcement' host 'academy' %}" target="_blank"
+                          <a href="{% url 'academy_app:law_enforcement' %}" target="_blank"
                             >Explore More</a
                           >
                         </div>
@@ -194,7 +194,7 @@
                         </p>
                         <div class="acas-btn text-right">
                           <a
-                            href="{% host_url 'educational_institute' host 'academy' %}"
+                            href="{% url 'academy_app:educational_institute' %}"
                             target="_blank"
                             >Explore More</a
                           >
@@ -427,7 +427,7 @@
                         cover network security, incident response, threat intelligence, vulnerability assessment, endpoint protection, and penetration testing. Now it’s up to you to grab this opportunity to learn from the best!
                     </p>
                     <div class="aca-btn">
-                        <a href="{% host_url 'get_start' host 'main' %}" target="_blank">Enroll Now</a
+                        <a href="{% url 'bcs_app:get_start' %}" target="_blank">Enroll Now</a
                 >
               </div>
             </div>
@@ -462,7 +462,7 @@
             <img src="{% static '' %}academyimg/academy/quote.png" alt="" class="aca-quote-img" />
           </div>
           <div class="story-btn">
-            <a href="{% host_url 'testimonial' host 'main' %}"
+            <a href="{% url 'bcs_app:testimonial' %}"
               >See all success stories</a
             >
           </div>
