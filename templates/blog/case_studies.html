@@ -1,4 +1,4 @@
-{% extends 'base/blog_base.html' %} {% load static %} {% load hosts %} {% block title %} Case Studies {% endblock title %} {% block headercss %}
+{% extends 'base/blog_base.html' %} {% load static %} {% block title %} Case Studies {% endblock title %} {% block headercss %}
 <link rel="stylesheet" href="{% static 'tfcss/blog/case_studies.css' %}"> {% endblock headercss %} {% block content %}
 
 <section class="row mx-0 banner-1">
@@ -10,7 +10,7 @@
     </div>
     <div class="col-md-6 col-lg-5 col-xl-4">
         <div class="bg-gray px-3 py-2 h-100 d-flex flex-column justify-content-center">
-            <a class="btn menu-link fw-bold" href="{% host_url 'category' host 'blog' %}case_studies/hack_recovery">Hack
+            <a class="btn menu-link fw-bold" href="{% url 'blog_app:case_studies' host 'blog' %}case_studies/hack_recovery">Hack
                 Recovery</a>
             <a class="btn menu-link fw-bold" href="{% host_url 'category' host 'blog' %}case_studies/risk_assesment">Risk Assesment</a>
             <a class="btn menu-link fw-bold" href="{% host_url 'category' host 'blog' %}case_studies/concierge_cybersecurity">Concierge

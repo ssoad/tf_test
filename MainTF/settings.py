@@ -64,6 +64,9 @@ INSTALLED_APPS = [
 
     # django-countries, pyuca
     'django_countries',
+
+    # django-cleanup
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 # Django-Rest-Framework Settings
@@ -115,17 +118,23 @@ WSGI_APPLICATION = 'MainTF.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'techforing',
+#         'USER': 'root',
+#         'PASSWORD': '',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
+#         'OPTIONS': {
+#             'sql_mode': 'traditional',
+#         }
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'techforing',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '3306',
-        'OPTIONS': {
-            'sql_mode': 'traditional',
-        }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -176,5 +185,5 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = MEDIA_DIR
 
 # Login
-# LOGIN_URL = '/account/login/'
-# AUTH_USER_MODEL = 'user.CustomUser'
+LOGIN_URL = '/account/login/'
+AUTH_USER_MODEL = 'Account.User'

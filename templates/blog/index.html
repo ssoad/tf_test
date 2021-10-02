@@ -1,4 +1,4 @@
-{% extends 'base/blog_base.html' %} {% load static %} {% load hosts %} {% block title %} Home {% endblock title %} {% block headercss %}
+{% extends 'base/blog_base.html' %} {% load static %} {% block title %} Home {% endblock title %} {% block headercss %}
 <link rel="stylesheet" href="{% static 'tfcss/blog/index.css' %}"> {% endblock headercss %} {% block content %}
 
 <!-- main container  -->
@@ -22,9 +22,9 @@
                     </h2>
                     <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlush">
                         <div class="accordion-body">
-                            <a class="fw-bold" href="{% host_url 'category' host 'blog' %}blogs/business_cybersecurity">Personal
+                            <a class="fw-bold" href="{% url 'blog_app:category' name='personal_cybersecurity' %}">Personal
                                 CyberSecurity</a>
-                            <a class=" fw-bold " href="{% host_url 'category' host 'blog' %}blogs/personal_cybersecurity">Business
+                            <a class=" fw-bold " href="{% url 'blog_app:category' name='business_cybersecurity' %}">Business
                                 CyberSecurity
                             </a>
                         </div>
@@ -38,16 +38,16 @@
                     </h2>
                     <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlush">
                         <div class="accordion-body">
-                            <a class="fw-bold" href="{% host_url 'category' host 'blog' %}case_studies/concierge_cybersecurity">Concierge
+                            <a class="fw-bold" href="{% url 'blog_app:category' name='blog' %}">Concierge
                                 Cybersecurity</a>
-                            <a class="fw-bold" href="{% host_url 'category' host 'blog' %}case_studies/risk_assesment">Risk
+                            <a class="fw-bold" href="{% url 'blog_app:category' name='blog' %}">Risk
                                 Assessment</a>
-                            <a class="fw-bold" href="{% host_url 'category' host 'blog' %}case_studies/hack_recovery">Hack Recovery</a>
+                            <a class="fw-bold" href="{% url 'blog_app:category' name='blog' %}">Hack Recovery</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <a class="btn menu-link fw-bold" href="{% host_url 'category' host 'blog' %}podcast">PODCAST</a>
+            <a class="btn menu-link fw-bold" href="{% url 'blog_app:category' name='podcast' %}">PODCAST</a>
 
         </div>
     </div>
@@ -56,7 +56,7 @@
 
 <section class="case-studies-container mt-4">
 
-    <a href="{% host_url 'category' host 'blog' %}case_studies" class="container-heading">RECENT CASE STUDIES</a>
+    <a href="{% url 'blog_app:category' name='case_studies' %}" class="container-heading">RECENT CASE STUDIES</a>
 
     <div class="row post">
         <div class="col-md-6 ps-md-0">
@@ -65,7 +65,7 @@
                 <img src="{% get_media_prefix %}{{post.feature_image}}" class="img-fluid w-100" alt="">
             </div>
             <div class="d-flex flex-column py-2">
-                <a href="{% host_url 'case_studies' host 'blog' %}{{post.post_url}}">
+                <a href="{% url 'blog_app:case_studies' name='demoname' %}">
                     <h5 class="title">{{post.title}}
                     </h5>
                 </a>
@@ -93,7 +93,7 @@
                 </div>
                 <div class="col-12 col-md-7 py-2 ps-md-0 pe-1 d-flex align-items-center">
                     <div>
-                        <a href="{% host_url 'case_studies' host 'blog' %}{{post.post_url}}">
+                        <a href="{% url 'blog_app:case_studies' name='demoname' %}">
                             <h6 class="fw-bold">{{post.title}}</h6>
                         </a>
                         <div class="info-area">
@@ -120,7 +120,7 @@
 <!-- blogs container  -->
 <section class="blogs-container mt-4">
 
-    <a href="{% host_url 'category' host 'blog' %}blogs" class="container-heading">RECENT ARTICLES</a>
+    <a href="{% url 'blog_app:category' name='blogs' %}" class="container-heading">RECENT ARTICLES</a>
 
     <div class="row post">
         <div class="col-md-6 ps-md-0">
@@ -129,7 +129,7 @@
                 <img src="{% get_media_prefix %}{{post.feature_image}}" class="img-fluid" alt="">
             </div>
             <div class="d-flex flex-column py-2">
-                <a href="{% host_url 'blogs' host 'blog' %}{{post.post_url}}">
+                <a href="{% url 'blog_app:blogs' name='slug_url' %}">
                     <h5 class="title">{{post.title}}
                     </h5>
                 </a>
@@ -157,7 +157,7 @@
                 </div>
                 <div class="col-12 col-md-7 py-2 ps-md-0 pe-1 d-flex align-items-center">
                     <div>
-                        <a href="{% host_url 'blogs' host 'blog' %}{{post.post_url}}">
+                        <a href="{% url 'blog_app:blogs' name='blog_url' %}">
                             <h6 class="fw-bold">{{post.title}}</h6>
                         </a>
                         <div class="info-area">

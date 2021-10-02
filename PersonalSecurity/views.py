@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -122,6 +123,7 @@ def siteMapView(request):
     return render(request, 'pages/sitemap.html', context)
 
 
+@login_required
 def userDashboardView(request):
     context = {
 
@@ -129,6 +131,7 @@ def userDashboardView(request):
     return render(request, 'user_panel/pcs/dashboard.html', context)
 
 
+@login_required
 def userServicesView(request):
     context = {
 
@@ -136,6 +139,7 @@ def userServicesView(request):
     return render(request, 'user_panel/pcs/services.html', context)
 
 
+@login_required
 def userOrderHistoryView(request):
     context = {
 
@@ -143,6 +147,7 @@ def userOrderHistoryView(request):
     return render(request, 'user_panel/pcs/order_history.html', context)
 
 
+@login_required
 def userSubscriptionsView(request):
     context = {
 
@@ -150,6 +155,7 @@ def userSubscriptionsView(request):
     return render(request, 'user_panel/pcs/subscriptions.html', context)
 
 
+@login_required
 def userEventsView(request):
     context = {
 
@@ -157,6 +163,7 @@ def userEventsView(request):
     return render(request, 'user_panel/pcs/events.html', context)
 
 
+@login_required
 def userNotificationsView(request):
     context = {
 
@@ -164,6 +171,7 @@ def userNotificationsView(request):
     return render(request, 'user_panel/pcs/notifications.html', context)
 
 
+@login_required
 def userSettingsView(request):
     context = {
 
@@ -171,6 +179,7 @@ def userSettingsView(request):
     return render(request, 'user_panel/pcs/settings.html', context)
 
 
+@login_required
 def pcsAppoinmentView(request):
     context = {
 

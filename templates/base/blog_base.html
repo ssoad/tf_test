@@ -1,4 +1,4 @@
-{% load static %} {% load hosts %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en-US" prefix="og: https://ogp.me/ns#">
 
@@ -33,16 +33,16 @@
                 <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
                         <li class="nav-item pe-3">
-                            <a class="nav-link" href="{% host_url 'home' host 'blog' %}">HOME</a>
+                            <a class="nav-link" href="{% url 'blog_app:index' %}">HOME</a>
                         </li>
                         <li class="nav-item pe-3">
-                            <a class="nav-link" href="{% host_url 'category' host 'blog' %}blogs">ARTICLES</a>
+                            <a class="nav-link" href="{% url 'blog_app:category' name='blogs' %}">ARTICLES</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% host_url 'category' host 'blog' %}case_studies">CASE STUDIES</a>
+                            <a class="nav-link" href="{% url 'blog_app:category' name='case_studies' %}">CASE STUDIES</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% host_url 'category' host 'blog' %}podcast">PODCAST</a>
+                            <a class="nav-link" href="{% url 'blog_app:category' name='podcast' %}">PODCAST</a>
                         </li>
                     </ul>
                 </div>
@@ -82,7 +82,7 @@
         <div class="footer-down">
             <div class="d-flex flex-wrap justify-content-center justify-content-md-around">
                 <div>
-                    <a href="{% host_url 'account_login' %}" target="_blank" class="copyright-btn">Create an account or
+                    <a href="" target="_blank" class="copyright-btn">Create an account or
                     login<i class="bi bi-arrow-right"></i></a>
                 </div>
                 <div>

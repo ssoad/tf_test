@@ -1,7 +1,7 @@
 {% extends 'base/base.html' %}
 
 {% load i18n %}
-{% load account socialaccount %}
+{#{% load account socialaccount %}#}
 {% load crispy_forms_tags %}
 {% block head_title %}{% trans "" %}{% endblock %}
 
@@ -19,31 +19,22 @@
 {% block content %}
     <section class="sign-banner"></section>
     <section class="sign-form">
-        {% for error in form.non_field_errors %}
-            <center class="alert alert-danger">
-                <li>{{ error | lower }}</li>
-            </center>
-        {% endfor %}
+
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-5">
-                    <form action="" method="POST" action="{% url 'account_login' %}">
+                    <form action="" method="POST" action="">
                         {% csrf_token %}
                         <h2>Login</h2>
                         <p class="sign-auth">
                             Continue With
-                            <a href="{% url 'google_login' %}"><i class="fab fa-google sign-google"></i></a>
-                            <a href="{% url 'facebook_login' %}"><i class="fab fa-facebook-f sign-fb"></i></a>
+                            <a href=""><i class="fab fa-google sign-google"></i></a>
+                            <a href=""><i class="fab fa-facebook-f sign-fb"></i></a>
                         </p>
                         <!-- <div class="sign-box">
                           <label for="bemail">Business Email</label>
                           <input type="email" name="bemail" />
                         </div> -->
-                        {% if error_messages %}
-                            <div class="alert alert-danger" role="alert">
-                                {{ error_messages }}
-                            </div>
-                        {% endif %}
                         {{ form|crispy }}
                         {#              <div class="sign-box">#}
                         {#                <label for="login">Business Email</label>#}
@@ -62,10 +53,10 @@
                         {#              {% endif %}#}
                         <button type="submit" class="login-btn">Login</button>
                         <p class="forget-text">
-                            <a href="{% url 'account_reset_password' %}">Forgot your password?</a>
+                            <a href="">Forgot your password?</a>
                         </p>
                         <div class="text-center login-alt-btn">
-                            <a href="{% url 'user_app:signup' %}"><span>Not a Member yet? </span>Sign Up</a>
+                            <a href="{% url 'account_app:signup' %}"><span>Not a Member yet? </span>Sign Up</a>
                         </div>
                     </form>
                 </div>

@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -260,16 +261,15 @@ def findUsView(request):
     return render(request, 'pages/findus.html', context)
 
 
-
-
-
 def appoinmentView(request):
     context = {
 
     }
     return render(request, 'pages/appoinment.html', context)
 
+
 # Business Section
+@login_required
 def userDashboardView(request):
     context = {
 
@@ -277,6 +277,7 @@ def userDashboardView(request):
     return render(request, 'user_panel/bcs/dashboard.html', context)
 
 
+@login_required
 def userServicesView(request):
     context = {
 
@@ -284,6 +285,7 @@ def userServicesView(request):
     return render(request, 'user_panel/bcs/services.html', context)
 
 
+@login_required
 def userOrderHistoryView(request):
     context = {
 
@@ -291,6 +293,7 @@ def userOrderHistoryView(request):
     return render(request, 'user_panel/bcs/order_history.html', context)
 
 
+@login_required
 def bcsUserMyTeamView(request):
     context = {
 
@@ -298,6 +301,7 @@ def bcsUserMyTeamView(request):
     return render(request, 'user_panel/bcs/my_team.html', context)
 
 
+@login_required
 def userSubscriptionsView(request):
     context = {
 
@@ -305,6 +309,7 @@ def userSubscriptionsView(request):
     return render(request, 'user_panel/bcs/subscriptions.html', context)
 
 
+@login_required
 def userEventsView(request):
     context = {
 
@@ -312,6 +317,7 @@ def userEventsView(request):
     return render(request, 'user_panel/bcs/events.html', context)
 
 
+@login_required
 def userNotificationsView(request):
     context = {
 
@@ -319,6 +325,7 @@ def userNotificationsView(request):
     return render(request, 'user_panel/bcs/notifications.html', context)
 
 
+@login_required
 def userSettingsView(request):
     context = {
 
@@ -326,6 +333,7 @@ def userSettingsView(request):
     return render(request, 'user_panel/bcs/settings.html', context)
 
 
+@login_required
 def employeeTrainigProgramView(request):
     context = {
 
@@ -333,6 +341,7 @@ def employeeTrainigProgramView(request):
     return render(request, 'user_panel/bcs/thanks.html', context)
 
 
+@login_required
 def bcsAppoinmentView(request):
     context = {
 
@@ -341,7 +350,7 @@ def bcsAppoinmentView(request):
 
 
 # Team Member Section
-
+@login_required
 def teamUserServicesView(request):
     context = {
 
@@ -349,6 +358,7 @@ def teamUserServicesView(request):
     return render(request, 'user_panel/team/services.html', context)
 
 
+@login_required
 def teamUserMyTeamView(request):
     context = {
 
@@ -356,6 +366,7 @@ def teamUserMyTeamView(request):
     return render(request, 'user_panel/team/my_team.html', context)
 
 
+@login_required
 def teamUserSubscriptionsView(request):
     context = {
 
@@ -363,6 +374,7 @@ def teamUserSubscriptionsView(request):
     return render(request, 'user_panel/team/subscribed.html', context)
 
 
+@login_required
 def teamUserEventsView(request):
     context = {
 
@@ -370,6 +382,7 @@ def teamUserEventsView(request):
     return render(request, 'user_panel/team/events.html', context)
 
 
+@login_required
 def teamUserNotificationsView(request):
     context = {
 
@@ -377,6 +390,7 @@ def teamUserNotificationsView(request):
     return render(request, 'user_panel/team/notifications.html', context)
 
 
+@login_required
 def teamUserSettingsView(request):
     context = {
 
@@ -384,6 +398,7 @@ def teamUserSettingsView(request):
     return render(request, 'user_panel/team/settings.html', context)
 
 
+@login_required
 def emailInvitationView(request):
     context = {
 
@@ -392,7 +407,7 @@ def emailInvitationView(request):
 
 
 # Main Admin Sections
-
+@login_required
 def mainAdminDashboardView(request):
     context = {
 
@@ -462,6 +477,7 @@ def mainAdminTicketsDetailView(request):
     }
     return render(request, 'admin_panel/mainTF/ticketView.html', context)
 
+
 # BCS Admin Secction
 
 def bcsAdminDashboardView(request):
@@ -497,6 +513,7 @@ def bcsAdminRevenueView(request):
 
     }
     return render(request, 'admin_panel/bcsTF/revenue.html', context)
+
 
 def bcsAdminSubscriptionListView(request):
     context = {
