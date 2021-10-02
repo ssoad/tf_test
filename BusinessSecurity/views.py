@@ -1,8 +1,11 @@
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 
 # Create your views here.
+def admin_permission_check(user):
+    return user.is_staff and user.is_superuser and user.is_active
+
 
 def indexView(request):
     context = {
@@ -407,7 +410,7 @@ def emailInvitationView(request):
 
 
 # Main Admin Sections
-@login_required
+@user_passes_test(admin_permission_check, login_url='/account/login/')
 def mainAdminDashboardView(request):
     context = {
 
@@ -415,6 +418,7 @@ def mainAdminDashboardView(request):
     return render(request, 'admin_panel/mainTF/dashboard.html', context)
 
 
+@user_passes_test(admin_permission_check, login_url='/account/login/')
 def mainAdminProfileView(request):
     context = {
 
@@ -422,6 +426,7 @@ def mainAdminProfileView(request):
     return render(request, 'admin_panel/mainTF/myProfile.html', context)
 
 
+@user_passes_test(admin_permission_check, login_url='/account/login/')
 def mainAdminOrdersView(request):
     context = {
 
@@ -429,6 +434,7 @@ def mainAdminOrdersView(request):
     return render(request, 'admin_panel/mainTF/orders.html', context)
 
 
+@user_passes_test(admin_permission_check, login_url='/account/login/')
 def mainAdminNotificationView(request):
     context = {
 
@@ -436,6 +442,7 @@ def mainAdminNotificationView(request):
     return render(request, 'admin_panel/mainTF/notification.html', context)
 
 
+@user_passes_test(admin_permission_check, login_url='/account/login/')
 def mainAdminEventsView(request):
     context = {
 
@@ -443,6 +450,7 @@ def mainAdminEventsView(request):
     return render(request, 'admin_panel/mainTF/eventWebinar.html', context)
 
 
+@user_passes_test(admin_permission_check, login_url='/account/login/')
 def mainAdminEventDetailView(request):
     context = {
 
@@ -450,6 +458,7 @@ def mainAdminEventDetailView(request):
     return render(request, 'admin_panel/mainTF/eventDetail.html', context)
 
 
+@user_passes_test(admin_permission_check, login_url='/account/login/')
 def mainAdminSupportView(request):
     context = {
 
@@ -457,6 +466,7 @@ def mainAdminSupportView(request):
     return render(request, 'admin_panel/mainTF/support.html', context)
 
 
+@user_passes_test(admin_permission_check, login_url='/account/login/')
 def mainAdminSupportStuffView(request):
     context = {
 
@@ -464,6 +474,7 @@ def mainAdminSupportStuffView(request):
     return render(request, 'admin_panel/mainTF/supportStuffView.html', context)
 
 
+@user_passes_test(admin_permission_check, login_url='/account/login/')
 def mainAdminTicketsView(request):
     context = {
 
@@ -471,6 +482,7 @@ def mainAdminTicketsView(request):
     return render(request, 'admin_panel/mainTF/allTickets.html', context)
 
 
+@user_passes_test(admin_permission_check, login_url='/account/login/')
 def mainAdminTicketsDetailView(request):
     context = {
 

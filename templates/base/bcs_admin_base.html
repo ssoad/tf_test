@@ -1,4 +1,4 @@
-<!DOCTYPE html> {% load static %} {% load hosts %}
+<!DOCTYPE html> {% load static %}
 <html lang="en">
 
 <head>
@@ -48,8 +48,8 @@
                         Admin
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{% host_url 'main_admin_profile' %}">My profile</a></li>
-                        <li><a class="dropdown-item" href="{% host_url 'account_logout' %}">Sgn out</a></li>
+                        <li><a class="dropdown-item" href="{% url 'bcs_app:main_admin_profile' %}">My profile</a></li>
+                        <li><a class="dropdown-item" href="{% url 'account_app:logout' %}">Sgn out</a></li>
                     </ul>
                 </span>
             </div>
@@ -61,7 +61,7 @@
                 <!-- Nav links starts here -->
                 <ul class="menubar">
                     <li>
-                        <a href="{% host_url 'bcs_admin_dashboard' %}" class="nav-link active">
+                        <a href="{% url 'bcs_app:bcs_admin_dashboard' %}" class="nav-link active">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="29.273" height="23"
                                 viewBox="0 0 29.273 23">
                                 <path id="list-alt"
@@ -78,9 +78,9 @@
                             services
                         </span>
                         <ul class="dropdown-container" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item nav-link" href="{% host_url 'bcs_admin_services' %}"><i
+                            <li><a class="dropdown-item nav-link" href="{% url 'bcs_app:bcs_admin_services' %}"><i
                                         class="bi bi-collection-fill"></i>Main Service</a></li>
-                            <li><a class="dropdown-item nav-link" href="{% host_url 'bcs_admin_sub_services' %}"><i
+                            <li><a class="dropdown-item nav-link" href="{% url 'bcs_app:bcs_admin_sub_services' %}"><i
                                         class="bi bi-collection-fill"></i>Sub Service</a></li>
                         </ul>
                     </li>
@@ -104,7 +104,7 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="{% host_url 'bcs_admin_reading_list' %}" class="nav-link">
+                        <a href="{% url 'bcs_app:bcs_admin_reading_list' %}" class="nav-link">
                             <i class="bi bi-file-earmark-fill"></i> Reading List
                         </a>
                     </li>
@@ -115,14 +115,14 @@
                             Subscription
                         </span>
                         <ul class="dropdown-container" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item nav-link" href="{% host_url 'bcs_admin_subscriptions' %}"><i
+                            <li><a class="dropdown-item nav-link" href="{% url 'bcs_app:bcs_admin_subscriptions' %}"><i
                                         class="bi bi-tag-fill"></i>Subscription List</a></li>
                             <li><a class="dropdown-item nav-link" href="#"><i
                                         class="bi bi-collection-fill"></i>Subscription package</a></li>
                         </ul>
                     </li>
                     <li>
-                        <a href="{% host_url 'bcs_admin_revenue' %}" class="nav-link">
+                        <a href="{% url 'bcs_app:bcs_admin_revenue' %}" class="nav-link">
                             <i class="bi bi-currency-dollar"></i> revenue
                         </a>
                     </li>
@@ -138,9 +138,9 @@
                             support
                         </span>
                         <ul class="dropdown-container " aria-labelledby="supportDropdown">
-                            <li><a class="dropdown-item nav-link" href="{% host_url 'main_admin_support_view' %}">Admin View</a></li>
-                            <li><a class="dropdown-item nav-link" href="{% host_url 'main_admin_stuff_view' %}">Stuff View</a></li>
-                            <li><a class="dropdown-item nav-link" href="{% host_url 'main_admin_all_tickets' %}">All Tickets</a></li>
+                            <li><a class="dropdown-item nav-link" href="{% url 'bcs_app:main_admin_support_view' %}">Admin View</a></li>
+                            <li><a class="dropdown-item nav-link" href="{% url 'bcs_app:main_admin_stuff_view' %}">Stuff View</a></li>
+                            <li><a class="dropdown-item nav-link" href="{% url 'bcs_app:main_admin_all_tickets' %}">All Tickets</a></li>
                         </ul>
                     </li> -->
                 </ul>

@@ -27,6 +27,7 @@ def signupView(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
+            return HttpResponseRedirect(reverse('account_app:profile'))
     context = {
         'form': form,
     }
@@ -36,17 +37,17 @@ def signupView(request):
 @login_executed('account_app:profile')
 def loginView(request):
     form = forms.LoginForm()
-    next = ''
+    next_url = ''
     if request.method == 'POST':
         form = forms.LoginForm(data=request.POST)
         username, password = request.POST.get('username'), request.POST.get('password')
-        next = request.GET.get('next')
+        next_url = request.GET.get('next')
         user = authenticate(username=username, password=password)
         if user:
             if user.is_active:
                 login(request, user)
-                if next:
-                    return redirect(next)
+                if next_url:
+                    return redirect(next_url)
                 else:
                     return HttpResponseRedirect(reverse('account_app:profile'))
     context = {
@@ -59,7 +60,7 @@ def profileView(request):
     context = {
 
     }
-    return render(request, 'account/settings.html', context)
+    return render(request, 'account/profile.html', context)
 
 
 @login_required

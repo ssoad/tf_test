@@ -1,4 +1,4 @@
-{% extends 'base/bcs_admin_base.html' %} {% load static %} {% load hosts %}
+{% extends 'base/bcs_admin_base.html' %} {% load static %}
 
 {% block title %} BCS Admin Services
 {% endblock title %}
@@ -33,7 +33,7 @@
                             <tr>
                                 <td>1.</td>
                                 <td>
-                                    <a href="{% host_url 'main_admin_event_detail' %}">Risk Assessment</a>
+                                    <a href="{% url 'bcs_app:main_admin_event_detail' %}">Risk Assessment</a>
                                 </td>
                                 <td>Lorem Ipsum is simply dummy text of the printing.... </td>
                                 <td>
@@ -48,7 +48,7 @@
                             <tr>
                                 <td>2.</td>
                                 <td>
-                                    <a href="{% host_url 'main_admin_event_detail' %}">Incident Response</a>
+                                    <a href="{% url 'bcs_app:main_admin_event_detail' %}">Incident Response</a>
                                 </td>
                                 <td>Lorem Ipsum is simply dummy text of the printing.... </td>
                                 <td>
@@ -63,7 +63,7 @@
                             <tr>
                                 <td>3.</td>
                                 <td>
-                                    <a href="{% host_url 'main_admin_event_detail' %}">Security Compliance</a>
+                                    <a href="{% url 'bcs_app:main_admin_event_detail' %}">Security Compliance</a>
                                 </td>
                                 <td>Lorem Ipsum is simply dummy text of the printing.... </td>
                                 <td>
@@ -78,7 +78,7 @@
                             <tr>
                                 <td>4.</td>
                                 <td>
-                                    <a href="{% host_url 'main_admin_event_detail' %}">SMB Solution</a>
+                                    <a href="{% url 'bcs_app:main_admin_event_detail' %}">SMB Solution</a>
                                 </td>
                                 <td>Lorem Ipsum is simply dummy text of the printing.... </td>
                                 <td>

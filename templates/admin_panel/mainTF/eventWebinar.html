@@ -1,4 +1,4 @@
-{% extends 'base/main_admin_base.html' %} {% load static %} {% load hosts %} {% block title %} Events {% endblock title %} {% block headercss %}
+{% extends 'base/main_admin_base.html' %} {% load static %} {% block title %} Events {% endblock title %} {% block headercss %}
 <link rel="stylesheet"
       href="{% static '' %}tfcss/admin_panel/mainTF/eventWebinar.css"/> {% endblock headercss %} {% block content %}
 
@@ -95,8 +95,7 @@
                         <tr>
                             <td>1</td>
                             <td>
-                                <a href="{% host_url 'main_admin_event_detail' %}">CCSP for HNWI</a
-                                >
+                                <a href="{% url 'bcs_app:main_admin_event_detail' %}">CCSP for HNWI</a>
                             </td>
                             <td>2011/04/25</td>
                             <td>8:00 AM</td>
@@ -134,9 +133,7 @@
                         <tr>
                             <td>1</td>
                             <td>
-                                <a href="{% host_url 'main_admin_event_detail' %}"
-                                >CCSP for HNWI</a
-                                >
+                                <a href="{% url 'bcs_app:main_admin_event_detail' %}">CCSP for HNWI</a>
                             </td>
                             <td>2011/04/25</td>
                             <td>8:00 AM</td>
@@ -174,9 +171,7 @@
                         <tr>
                             <td>1</td>
                             <td>
-                                <a href="{% host_url 'main_admin_event_detail' %}"
-                                >CCSP for HNWI</a
-                                >
+                                <a href="{% url 'bcs_app:main_admin_event_detail' %}">CCSP for HNWI</a>
                             </td>
                             <td>2011/04/25</td>
                             <td>8:00 AM</td>
@@ -214,9 +209,7 @@
                         <tr>
                             <td>1</td>
                             <td>
-                                <a href="{% host_url 'main_admin_event_detail' %}"
-                                >CCSP for HNWI</a
-                                >
+                                <a href="{% url 'bcs_app:main_admin_event_detail' %}">CCSP for HNWI</a>
                             </td>
                             <td>2011/04/25</td>
                             <td>8:00 AM</td>
