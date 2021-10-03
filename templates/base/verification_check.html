@@ -1,5 +1,5 @@
 {% load i18n %}
-<div class="container mx-auto p-4">
+<div class="container mx-auto">
     {% for emailaddress in user.emailaddress_set.all %}
         {% if not emailaddress.verified %}
             {% if user.emailaddress_set.all %}
@@ -19,7 +19,7 @@
 
                         <div class="buttonHolder">
                             Email Unverified. Please check your email inbox/spam folder for verification link. Or,
-                            <button class="text-blue-500" type="submit"
+                            <button class="btn btn-dark" type="submit"
                                     name="action_send">{% trans 'Re-send Verification' %}</button>
                         </div>
 
