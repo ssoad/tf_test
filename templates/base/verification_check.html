@@ -1,4 +1,5 @@
 {% load i18n %}
+<<<<<<< HEAD
 {% block headercss %}
 <style>
     .email_list {
@@ -15,6 +16,9 @@
 {% endblock headercss %}
 
 <div class="container">
+=======
+<div class="container mx-auto">
+>>>>>>> 0447b5ea99889861cc2647ad58557952e617ebf6
     {% for emailaddress in user.emailaddress_set.all %}
     {% if not emailaddress.verified %}
     {% if user.emailaddress_set.all %}
@@ -32,11 +36,19 @@
             </label>
             {% endfor %}
 
+<<<<<<< HEAD
             <div class="buttonHolder">
                 Email Unverified. Please check your email inbox/spam folder for verification link. Or,
                 <button class="btn btn-primary" type="submit"
                     name="action_send">{% trans 'Re-send Verification' %}</button>
             </div>
+=======
+                        <div class="buttonHolder">
+                            Email Unverified. Please check your email inbox/spam folder for verification link. Or,
+                            <button class="btn btn-dark" type="submit"
+                                    name="action_send">{% trans 'Re-send Verification' %}</button>
+                        </div>
+>>>>>>> 0447b5ea99889861cc2647ad58557952e617ebf6
 
         </fieldset>
     </form>
