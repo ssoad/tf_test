@@ -1,22 +1,21 @@
 {% load i18n %}
 
 {% block headercss %}
-    <style>
-        .email_list {
-            background: #fff;
-            border-radius: 10px;
-            z-index: 3;
-            padding-bottom: 1rem;
-            text-align: center;
-            display: flex;
-            justify-content: center;
-            align-content: center;
-        }
-    </style>
+<style>
+    .email_list {
+        background: #fff;
+        border-radius: 10px;
+        z-index: 3;
+        padding-bottom: 1rem;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-content: center;
+    }
+</style>
 {% endblock headercss %}
 
 <div class="container">
-
     {% for emailaddress in user.emailaddress_set.all %}
         {% if not emailaddress.verified %}
             {% if user.emailaddress_set.all %}
@@ -46,13 +45,10 @@
                             <button class="btn btn-dark" type="submit"
                                     name="action_send">{% trans 'Re-send Verification' %}</button>
                         </div>
-
-
                     </fieldset>
                 </form>
             {% endif %}
         {% endif %}
     {% endfor %}
-
 
 </div>
