@@ -4,7 +4,7 @@ venv/
 Academy/__pycache__
 Account/__pycache__
 BusinessSecurity/__pycache__
-#Blog/__pycache__
+Blog/__pycache__
 MainTF/__pycache__
 PersonalSecurity/__pycache__
 __pycache__/
@@ -14,7 +14,7 @@ __pycache__/
 *.pyc
 __pycache__
 media
-#**/__pycache__/
+**/__pycache__/
 
 # Backup files #
 *.bak
