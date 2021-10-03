@@ -1,5 +1,5 @@
 .idea/
-requirements.txt
+requirement.txt
 venv/
 Academy/__pycache__
 Account/__pycache__
