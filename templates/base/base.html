@@ -341,7 +341,7 @@
                                 <a target="_blank" href="{% url 'bcs_app:index' %}" class="logo-brand"><img src="{% static 'tfimg/logo.png' %}" alt="LOGO" /></a>
                             </div>
                             <!-- This will come back later -->
-                            <a class="signin-btn-sm" href="{% url 'account_app:login' %}">Sign In</a>
+                            <a class="signin-btn-sm" href="{% url 'account_login' %}">Sign In</a>
                             <div class="close-btn" id="close-btn">
                                 <img src="{% static 'tfimg/cancel.png'%}" alt="cancel" />
                             </div>
@@ -688,7 +688,7 @@
 
                         {% else %}
                         <li class="menus signin-btn-hover">
-                            <a href="{% url 'account_app:login' %}" class="signin-btn-lg">Sign In</a>
+                            <a href="{% url 'account_login' %}" class="signin-btn-lg">Sign In</a>
                         </li>
 
                         {% endif %}
@@ -847,7 +847,7 @@
             <div class="container">
                 <div class="footer-down-box">
                     <!-- This will come back later -->
-                    <a href="{% url 'account_app:login' %}" target="_blank" class="copyright-btn">Create an account or
+                    <a href="{% url 'account_login' %}" target="_blank" class="copyright-btn">Create an account or
                         login<i class="fas fa-arrow-right"></i></a>
                     <p class="footer-text">
                         Copyright <i class="far fa-copyright"></i> 2021 Techforing Ltd.

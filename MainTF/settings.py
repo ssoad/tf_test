@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     # Installed Apps
     'Academy',
@@ -47,7 +49,11 @@ INSTALLED_APPS = [
     'Blog',
 
     # django-allauth
-    # 'allauth',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.facebook',
 
     # ckeditor
     'ckeditor',
@@ -84,6 +90,73 @@ CKEDITOR_UPLOAD_PATH = 'uploads/'
 
 # Crispy_Forms_Settings
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# allauth Settings
+# Provider specific settings
+# SOCIALACCOUNT_PROVIDERS = {
+#     'google': {
+#         # For each OAuth based provider, either add a ``SocialApp``
+#         # (``socialaccount`` app) containing the required client
+#         # credentials, or list them here:
+#         'APP': {
+#             'client_id': '123',
+#             'secret': '456',
+#             'key': ''
+#         }
+#     }
+# }
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
+ACCOUNT_EMAIL_CONFIRMATION_COOLDOWN = 180
+
+ACCOUNT_FORMS = {
+    'login': 'Account.forms.LoginForm2',
+    'signup': 'Account.forms.RegistrationForm',
+    # 'login': 'allauth.account.forms.LoginForm',
+    # 'signup': 'allauth.account.forms.SignupForm',
+    # 'add_email': 'allauth.account.forms.AddEmailForm',
+    # 'change_password': 'allauth.account.forms.ChangePasswordForm',
+    # 'set_password': 'allauth.account.forms.SetPasswordForm',
+    # 'reset_password': 'allauth.account.forms.ResetPasswordForm',
+    # 'reset_password_from_key': 'allauth.account.forms.ResetPasswordKeyForm',
+    # 'disconnect': 'allauth.socialaccount.forms.DisconnectForm',
+}
+
+SITE_ID = 1
+LOGIN_REDIRECT_URL = '/account/profile/'
+# Provider specific settings
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS')
+DEFAULT_FROM_EMAIL = 'Techforing <testtechforing@gmail.com>'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -185,5 +258,5 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = MEDIA_DIR
 
 # Login
-LOGIN_URL = '/account/login/'
+LOGIN_URL = '/accounts/login/'
 AUTH_USER_MODEL = 'Account.User'

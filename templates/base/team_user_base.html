@@ -1,4 +1,4 @@
-<!DOCTYPE html> {% load static %} {% load hosts %}
+<!DOCTYPE html> {% load static %}
 <html lang="en">
 
 <head>
@@ -43,11 +43,11 @@
                             </a>
                             <ul class="dropdown-menu border-0 shadow" aria-labelledby="navbarDropdown">
                                 <li>
-                                    <a class="dropdown-item text-center" href="{% host_url 'bcs_user_settings' %}">
+                                    <a class="dropdown-item text-center" href="{% url 'bcs_app:bcs_user_settings' %}">
                                         <i class="icofont-ui-user me-2"></i> My Profile</a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item text-center" href="{% host_url 'bcs_user_settings' %}">
+                                    <a class="dropdown-item text-center" href="{% url 'bcs_app:bcs_user_settings' %}">
                                         <i class="icofont-edit me-2"></i> Edit Profile
                                     </a>
                                 </li>
@@ -71,72 +71,72 @@
         <div class="offcanvas-body pt-0">
             <ul class="menubar">
                 <li>
-                    <a href="{% host_url 'team_user_services' %}">
+                    <a href="{% url 'bcs_app:team_user_services' %}">
                         <i class="icofont-cubes"></i> Services
                     </a>
                 </li>
                 <li>
-                    <a href="{% host_url 'team_user_my_team' %}">
+                    <a href="{% url 'bcs_app:team_user_my_team' %}">
                         <i class="icofont-people"></i> My Team
                     </a>
                 </li>
                 <li>
-                    <a href="{% host_url 'team_user_subscriptions' %}">
+                    <a href="{% url 'bcs_app:team_user_subscriptions' %}">
                         <i class="icofont-dollar"></i> Subscriptions
                     </a>
                 </li>
                 <li>
-                    <a href="{% host_url 'team_user_events' %}">
+                    <a href="{% url 'bcs_app:team_user_events' %}">
                         <i class="icofont-ui-calendar"></i> Events & Webinars
                     </a>
                 </li>
                 <li>
-                    <a href="{% host_url 'team_user_notifications' %}">
+                    <a href="{% url 'bcs_app:team_user_notifications' %}">
                         <i class="icofont-notification"></i> Notifications
                     </a>
                 </li>
                 <li>
-                    <a href="{% host_url 'team_user_settings' %}">
+                    <a href="{% url 'bcs_app:team_user_settings' %}">
                         <i class="icofont-options"></i> Settings
                     </a>
                 </li>
-                <a href="{% host_url 'account_logout' %}" class="logout-btn ms-3 btn btn-outline-navy px-4">Log Out</a>
+                <a href="{% url 'account_app:logout' %}" class="logout-btn ms-3 btn btn-outline-navy px-4">Log Out</a>
             </ul>
         </div>
     </div>
     <div class="w-20 h-100 position-fixed bg-white shadow-sm px-1 pt-2 d-none d-lg-block">
         <ul class="menubar">
             <li>
-                <a href="{% host_url 'team_user_services' %}">
+                <a href="{% url 'bcs_app:team_user_services' %}">
                     <i class="icofont-cubes"></i> Services
                 </a>
             </li>
             <li>
-                <a href="{% host_url 'team_user_my_team' %}">
+                <a href="{% url 'bcs_app:team_user_my_team' %}">
                     <i class="icofont-people"></i> My Team
                 </a>
             </li>
             <li>
-                <a href="{% host_url 'team_user_subscriptions' %}">
+                <a href="{% url 'bcs_app:team_user_subscriptions' %}">
                     <i class="icofont-dollar"></i> Subscriptions
                 </a>
             </li>
             <li>
-                <a href="{% host_url 'team_user_events' %}">
+                <a href="{% url 'bcs_app:team_user_events' %}">
                     <i class="icofont-ui-calendar"></i> Events & Webinars
                 </a>
             </li>
             <li>
-                <a href="{% host_url 'team_user_notifications' %}">
+                <a href="{% url 'bcs_app:team_user_notifications' %}">
                     <i class="icofont-notification"></i> Notifications
                 </a>
             </li>
             <li>
-                <a href="{% host_url 'team_user_settings' %}">
+                <a href="{% url 'bcs_app:team_user_settings' %}">
                     <i class="icofont-options"></i> My Profile
                 </a>
             </li>
-            <a href="{% host_url 'account_logout' %}" class="logout-btn ms-3 btn btn-outline-navy px-4">Log Out</a>
+            <a href="{% url 'account_app:logout' %}" class="logout-btn ms-3 btn btn-outline-navy px-4">Log Out</a>
         </ul>
     </div>
 

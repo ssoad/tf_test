@@ -14,7 +14,7 @@ class AdminUser(UserAdmin):
         ('Login Info', {'fields': ('email', 'password')}),
         ('User Information',
          {'fields': ('first_name', 'last_name', 'gender', 'birth_date', 'country', 'phone_number',)}),
-        ('Permissions', {'fields': ('is_bcs', 'is_active', 'is_staff', 'is_superuser', 'newsletter')}),
+        ('Permissions', {'fields': ('is_bcs', 'is_active', 'is_staff', 'is_superuser', 'newsletter',)}),
 
     )
     add_fieldsets = (

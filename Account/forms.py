@@ -8,6 +8,8 @@ from phonenumber_field.widgets import PhoneNumberPrefixWidget
 from django_countries.widgets import CountrySelectWidget
 from django_countries.fields import CountryField
 
+from allauth.account.forms import LoginForm as LF
+
 
 class RegistrationForm(UserCreationForm):
     phone_number = PhoneNumberField(widget=PhoneNumberPrefixWidget(attrs={'style': ' border: 1px '
@@ -67,6 +69,21 @@ class LoginForm(AuthenticationForm):
                                                                           'solid #000;border-radius: '
                                                                           '0;outline: 0;padding-left: '
                                                                           '5px;height: 35px;'}))
+
+    class Meta:
+        model = models.User
+        fields = '__all__'
+
+
+class LoginForm2(LF):
+    # username = forms.EmailField(widget=forms.EmailInput(attrs={'style': ' border: 1px '
+    #                                                                     'solid #000;border-radius: '
+    #                                                                     '0;outline: 0;padding-left: '
+    #                                                                     '5px;height: 35px;'}))
+    # password = forms.CharField(widget=forms.PasswordInput(attrs={'style': ' border: 1px '
+    #                                                                       'solid #000;border-radius: '
+    #                                                                       '0;outline: 0;padding-left: '
+    #                                                                       '5px;height: 35px;'}))
 
     class Meta:
         model = models.User

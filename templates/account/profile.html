@@ -1,6 +1,7 @@
 {% extends 'base/profile_base.html' %} {% load static %} {% block title %} Settings {% endblock title %} {% block content %}
 
 <div class="profile-area pe-md-5 mt-3">
+{% include 'base/verification_check.html' %}
     <section class="profile-banner">
         <h6 class="pt-3 text-green text-end">Your profile is 30% complete now</h6>
         <div class="row d-flex justify-content-between mx-0 ps-2 py-1 text-white">

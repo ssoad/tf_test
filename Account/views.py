@@ -19,41 +19,41 @@ def login_executed(redirect_to):
     return _method_wrapper
 
 
-@login_executed('account_app:profile')
-def signupView(request):
-    form = forms.RegistrationForm()
-    if request.method == 'POST':
-        form = forms.RegistrationForm(data=request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return HttpResponseRedirect(reverse('account_app:profile'))
-    context = {
-        'form': form,
-    }
-    return render(request, 'account/signup.html', context)
-
-
-@login_executed('account_app:profile')
-def loginView(request):
-    form = forms.LoginForm()
-    next_url = ''
-    if request.method == 'POST':
-        form = forms.LoginForm(data=request.POST)
-        username, password = request.POST.get('username'), request.POST.get('password')
-        next_url = request.GET.get('next')
-        user = authenticate(username=username, password=password)
-        if user:
-            if user.is_active:
-                login(request, user)
-                if next_url:
-                    return redirect(next_url)
-                else:
-                    return HttpResponseRedirect(reverse('account_app:profile'))
-    context = {
-        'form': form,
-    }
-    return render(request, 'account/login.html', context)
+# @login_executed('account_app:profile')
+# def signupView(request):
+#     form = forms.RegistrationForm()
+#     if request.method == 'POST':
+#         form = forms.RegistrationForm(data=request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+#             return HttpResponseRedirect(reverse('account_app:profile'))
+#     context = {
+#         'form': form,
+#     }
+#     return render(request, 'account/signup.html', context)
+#
+#
+# @login_executed('account_app:profile')
+# def loginView(request):
+#     form = forms.LoginForm()
+#     next_url = ''
+#     if request.method == 'POST':
+#         form = forms.LoginForm(data=request.POST)
+#         username, password = request.POST.get('username'), request.POST.get('password')
+#         next_url = request.GET.get('next')
+#         user = authenticate(username=username, password=password)
+#         if user:
+#             if user.is_active:
+#                 login(request, user)
+#                 if next_url:
+#                     return redirect(next_url)
+#                 else:
+#                     return HttpResponseRedirect(reverse('account_app:profile'))
+#     context = {
+#         'form': form,
+#     }
+#     return render(request, 'account/login.html', context)
 
 
 def profileView(request):
@@ -66,4 +66,4 @@ def profileView(request):
 @login_required
 def logoutView(request):
     logout(request)
-    return HttpResponseRedirect(reverse('account_app:login'))
+    return HttpResponseRedirect('/accounts/login/')
