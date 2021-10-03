@@ -1,5 +1,5 @@
 .idea/
-requirements.txt
+requirement.txt
 venv/
 Academy/__pycache__
 Account/__pycache__
@@ -13,7 +13,6 @@ __pycache__/
 *.pot
 *.pyc
 __pycache__
-db.sqlite3
 media
 
 # Backup files #
@@ -33,5 +32,4 @@ media
 .idea/**/gradle.xml
 .idea/**/libraries
 *.iws /out/
-=======
 db.sqlite3
