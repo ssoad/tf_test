@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'BusinessSecurity',
     'PersonalSecurity',
     'Blog',
+    'Api',
 
     # django-allauth
     'allauth',
@@ -76,14 +77,14 @@ INSTALLED_APPS = [
 ]
 
 # Django-Rest-Framework Settings
-REST_FRAMEWORK = {
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-    ),
-    'DEFAULT_PARSER_CLASSES': [
-        'rest_framework.parsers.JSONParser',
-    ]
-}
+# REST_FRAMEWORK = {
+#     'DEFAULT_RENDERER_CLASSES': (
+#         'rest_framework.renderers.JSONRenderer',
+#     ),
+#     'DEFAULT_PARSER_CLASSES': [
+#         'rest_framework.parsers.JSONParser',
+#     ]
+# }
 
 # ckeditor Settings
 CKEDITOR_CONFIGS = {

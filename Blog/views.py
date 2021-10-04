@@ -48,9 +48,12 @@ def case_studiesView(request, name):
 def podcastView(request, name):
     posts = models.Post.objects.all()
     post = models.Post.objects.get(post_url=name)
+    categories = models.SubCategory.objects.all()
+
     context = {
         'post': post, 'category': 'case_studies',
-        'related_posts': posts.order_by('date')[:3]
+        'related_posts': posts.order_by('date')[:3],
+        'categories': categories,
     }
     return render(request, 'blog/podcast.html', context)
 
@@ -61,30 +64,30 @@ def categoryView(request, name):
         name = name.rpartition('/')[0]
 
     if name == 'blogs':
-        posts = models.Post.objects.filter(
-            Q(category='blogs'))
+        posts = models.Post.objects.filter(category=name)
         template_name = 'blog/blogs.html'
     elif name == 'podcast':
-        posts = models.Post.objects.filter(
-            Q(category='podcast'))
+        posts = models.Post.objects.filter(category=name)
         template_name = 'blog/podcast.html'
     elif name == 'case_studies':
-        posts = models.Post.objects.filter(
-            Q(category='case_studies'))
+        posts = models.Post.objects.filter(category=name)
         template_name = 'blog/case_studies.html'
     else:
-        posts = models.Post.objects.filter(
-            Q(sub_category=name, category='blogs'))
+        name = (str(name)).replace('_', ' ')
+        print(name)
+        posts = models.Post.objects.filter(sub_categories__sub_category__iexact=name)
         template_name = 'blog/index.html'
 
-    case_studies = models.Post.objects.filter(sub_category=name, category='case_studies')
-    print(posts)
+    case_studies = models.Post.objects.filter(sub_categories__sub_category=name, category='Case Studies')
+    categories = models.SubCategory.objects.all()
+
 
     context = {
         'blogs': posts.order_by('-date'),
         'important_posts': posts.order_by('-date'),
         'recent_posts': posts,
         'case_studies': case_studies,
+        'categories': categories,
     }
 
     return render(request, template_name, context)
