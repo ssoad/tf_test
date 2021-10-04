@@ -50,7 +50,7 @@
                 <img src="{% get_media_prefix %}{{post.feature_image}}" class="card-img-top h-100" alt="...">
                 <div class="card-body position-absolute bottom-0 start-0 px-2 w-100">
                     <div>
-                        <a href="{% url 'blog_app:blogs' name='slug_url' %}" class="title">
+                        <a href="{% url 'blog_app:blogs' name=post.post_url %}" class="title">
                             <h6 class="fs-6 text-white">{{post.title}}
                             </h6>
                         </a>
@@ -81,7 +81,7 @@
                         </div>
                         <div class="col-12 col-md-7 ps-md-0 pe-1 py-2 d-flex align-items-center">
                             <div class="w-100">
-                                <a href="{% url 'blog_app:blogs' name='slug_url' %}">
+                                <a href="{% url 'blog_app:blogs' name=post.post_url %}">
                                     <h6 class="fw-bold">{{post.title}}</h6>
                                 </a>
                                 <div class="info-area">
@@ -126,7 +126,7 @@
                 </button>
                 <img src="{% get_media_prefix %}{{post.feature_image}}" class="card-img-top" alt="...">
                 <div class="card-body pt-2 p-0">
-                    <a href="{% url 'blog_app:blogs' name='slug_url' %}" class="title">
+                    <a href="{% url 'blog_app:blogs' name=post.post_url %}" class="title">
                         <h6 class="fw-bold fs-7">{{post.title}}
                         </h6>
                     </a>
@@ -245,7 +245,7 @@
                 </button>
                 <img src="{% get_media_prefix %}${post.fields.feature_image}" class="card-img-top" alt="...">
                 <div class="card-body pt-2 p-0">
-                    <a href="{% url 'blog_app:blogs' name='slug_url' %}" class="title">
+                    <a href="{% url 'blog_app:blogs' name='slug_url' %}${post.fields.post_url}" class="title">
                         <h6 class="fw-bold fs-7">${post.fields.title}</h6>
                     </a>
                     <div class="info-area">

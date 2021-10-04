@@ -1,6 +1,7 @@
 from django.db import models
 from Account.models import User
 from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 import datetime
 
 # Create your models here.
@@ -32,7 +33,7 @@ class Post(models.Model):
     sub_category = models.CharField(choices=SUB_CATEGORY_CHOICES, max_length=100)
     feature_image = models.ImageField(upload_to='blog/', verbose_name='Add Feature Image')
     shot_description = models.TextField(verbose_name='Short Description', max_length=264)
-    content = RichTextField(verbose_name='Post Content')
+    content = RichTextUploadingField(verbose_name='Post Content')
     reading_time = models.DurationField(default=datetime.timedelta(minutes=3))
     comment_option = models.CharField(choices=COMMENT_OPTIONS, default='disabled', max_length=100)
     tag = models.CharField(max_length=264)

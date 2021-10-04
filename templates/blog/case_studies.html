@@ -10,12 +10,12 @@
     </div>
     <div class="col-md-6 col-lg-5 col-xl-4">
         <div class="bg-gray px-3 py-2 h-100 d-flex flex-column justify-content-center">
-            <a class="btn menu-link fw-bold" href="{% url 'blog_app:case_studies' host 'blog' %}case_studies/hack_recovery">Hack
+            <a class="btn menu-link fw-bold" href="{% url 'blog_app:category' name='hack_recovery' %}">Hack
                 Recovery</a>
-            <a class="btn menu-link fw-bold" href="{% host_url 'category' host 'blog' %}case_studies/risk_assesment">Risk Assesment</a>
-            <a class="btn menu-link fw-bold" href="{% host_url 'category' host 'blog' %}case_studies/concierge_cybersecurity">Concierge
+            <a class="btn menu-link fw-bold" href="{% url 'blog_app:category' name='risk_assesment' %}">Risk Assesment</a>
+            <a class="btn menu-link fw-bold" href="{% url 'blog_app:category' name='concierge_cybersecurity' %}">Concierge
                 CyberSecurity</a>
-            <a class="btn menu-link fw-bold" href="{% host_url 'category' host 'blog' %}case_studies/cybercrime_investigation">Cybercrime
+            <a class="btn menu-link fw-bold" href="{% url 'blog_app:category' name='cybercrime_investigation' %}">Cybercrime
                 Investigation</a>
         </div>
     </div>
@@ -47,13 +47,13 @@
 
 
 <section class="important-case-studies mt-4">
-    <a href="{% host_url 'category' host 'blog' %}case_studies" class="container-heading">MOST IMPORTANT CASE
-        STUDIES</a>
+{#    <a href="{% url 'blog_app:category' name='case_studies' %}" class="container-heading">MOST IMPORTANT CASE#}
+{#        STUDIES</a>#}
     <div class="site-section bg-light">
         <div class="row align-items-stretch retro-layout-2">
             <div class="col-md-4">
                 {% for post in important_posts %} {% if forloop.counter == 2 or forloop.counter == 3 %}
-                <a href="{% host_url 'case_studies' host 'blog' %}{{post.post_url}}" class="h-entry {%if forloop.counter == 2%}mb-30{% endif %} v-height gradient" style="background-image:url('{% get_media_prefix %}{{post.feature_image}}')">
+{#                <a href="{% url 'blog_app:case_studies' name=post.post_url %}" class="h-entry {%if forloop.counter == 2%}mb-30{% endif %} v-height gradient" style="background-image:url('{% get_media_prefix %}{{post.feature_image}}')">#}
                     <div class="text">
                         <h2>{{post.title}}</h2>
                         <span class="date">
@@ -70,7 +70,7 @@
             </div>
             <div class="col-md-4">
                 {% for post in important_posts %} {% if forloop.first %}
-                <a href="{% host_url 'case_studies' host 'blog' %}{{post.post_url}}" class="h-entry img-5 h-100 gradient" style="background-image:url('{% get_media_prefix %}{{post.feature_image}}')">
+{#                <a href="{% url 'blog_app:case_studies' name=post.post_url %}" class="h-entry img-5 h-100 gradient" style="background-image:url('{% get_media_prefix %}{{post.feature_image}}')">#}
                     <div class="text">
                         <!-- <div class="post-categories mb-3">
                                 <span class="post-category bg-danger">Travel</span>
@@ -91,7 +91,7 @@
             </div>
             <div class="col-md-4">
                 {% for post in important_posts %} {% if forloop.counter == 4 or forloop.counter == 5 %}
-                <a href="{% host_url 'case_studies' host 'blog' %}{{post.post_url}}" class="h-entry {%if forloop.counter == 4%}mb-30{% endif %} v-height gradient" style="background-image:url('{% get_media_prefix %}{{post.feature_image}}')">
+{#                <a href="{% url 'blog_app:case_studies' name=post.post_url %}" class="h-entry {%if forloop.counter == 4%}mb-30{% endif %} v-height gradient" style="background-image:url('{% get_media_prefix %}{{post.feature_image}}')">#}
                     <div class="text">
                         <h2>{{post.title}}</h2>
                         <span class="date">
@@ -112,7 +112,7 @@
 
 <!-- recent case-studies  -->
 <section class="recent-case-studies mt-4">
-    <a href="{% host_url 'category' host 'blog' %}case_studies" class="container-heading mb-3">RECENT CASE STUDIES</a>
+    <a href="{% url 'blog_app:category' name='case_studies' %}" class="container-heading mb-3">RECENT CASE STUDIES</a>
     <div class="case-studies row row-cols-1 row-cols-md-3 g-5">
         {% for post in recent_posts %}
         <div class="post col">
@@ -122,7 +122,7 @@
                 </button>
                 <img src="{% get_media_prefix %}{{post.feature_image}}" class="card-img-top" alt="...">
                 <div class="card-body pt-2 p-0">
-                    <a href="{% host_url 'blogs' host 'blog' %}{{post.post_url}}" class="title">
+                    <a href="{% url 'blog_app:blogs' name=post.post_url %}" class="title">
                         <h6 class="fw-bold fs-7">{{post.title}}
                         </h6>
                     </a>
@@ -243,9 +243,9 @@
                 </button>
                 <img src="{% get_media_prefix %}${post.fields.feature_image}" class="card-img-top" alt="...">
                 <div class="card-body pt-2 p-0">
-                    <a href="{% host_url 'case_studies' host 'blog' %}{{post.post_url}}" class="title">
-                        <h6 class="fw-bold fs-7">${post.fields.title}</h6>
-                    </a>
+                    {#<a href="{% url 'blog_app:case_studies' name=post.post_url %}" class="title">#}
+                    {#    <h6 class="fw-bold fs-7">${post.fields.title}</h6>#}
+                    {#</a>#}
                     <div class="info-area">
                         <span class="p-0 me-3 text-green">
                             <i class="bi bi-calendar"></i>

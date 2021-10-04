@@ -92,6 +92,7 @@ CKEDITOR_CONFIGS = {
     },
 }
 CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_IMAGE_BACKEND = 'pillow'
 
 # Crispy_Forms_Settings
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -251,6 +252,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/static/'
 STATICFILES_DIRS = [STATIC_DIR, ]
 
 # Default primary key field type

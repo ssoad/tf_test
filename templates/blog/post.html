@@ -1,4 +1,4 @@
-{% extends 'base/blog_base.html' %} {% load static %} {% load hosts %} {% block title %} {{post.title}} {% endblock title %} {% block headercss %}
+{% extends 'base/blog_base.html' %} {% load static %} {% block title %} {{post.title}} {% endblock title %} {% block headercss %}
 
 
 <meta property="og:url" content="https://main.techforing.com/blog/{{category}}/{{post.post_url}}" />
@@ -116,9 +116,9 @@
                         {% for post in related_posts %}
                         <div class="col bg-lightnavy p-3">
                             <div class="card bg-transparent border-0">
-                                <img src="../../../media/{{post.feature_image}}" class="card-img-top" alt="...">
+                                <img src="{{post.feature_image.url}}" class="card-img-top" alt="...">
                                 <div class="card-body pt-2 p-0">
-                                    <a href="{% host_url 'blogs' host 'blog' %}{{post.post_url}}">
+                                    <a href="{% url 'blog_app:blogs' name=post.post_url %}">
                                         <h6 class="fw-bold fs-7">{{post.title}}</h6>
                                     </a>
                                 </div>
