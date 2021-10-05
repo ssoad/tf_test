@@ -16,6 +16,7 @@
     <h3 class="fw-bold text-center my-5 border-bottom border-secondary">Add a new post</h3>
     <div id="content-main">
         <form enctype="multipart/form-data" method="POST" id="post_form">
+            {{ form.media }}
             {{ form|crispy }}
             {% csrf_token %}
             <button type="submit" class="btn btn-success">Post</button>

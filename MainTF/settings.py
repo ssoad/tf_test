@@ -90,7 +90,7 @@ INSTALLED_APPS = [
 TINYMCE_DEFAULT_CONFIG = {
     "theme": "silver",
     "height": 500,
-    "menubar": False,
+    "menubar": 'file edit view insert format tools table help',
     "plugins": 'print, preview, powerpaste, casechange, importcss, tinydrive, searchreplace, autolink, autosave, '
                'save, directionality, advcode, visualblocks, visualchars, fullscreen, image, link, media, mediaembed, '
                'template, codesample, table, charmap, hr, pagebreak, nonbreaking, anchor, toc, insertdatetime, '
@@ -106,6 +106,31 @@ TINYMCE_DEFAULT_CONFIG = {
     "bold italic backcolor | alignleft aligncenter "
     "alignright alignjustify | bullist numlist outdent indent | "
     "removeformat | help",
+    'style_formats': [
+        {'title': 'Headers', 'items': [
+            {'title': 'h1', 'block': 'h1'},
+            {'title': 'h2', 'block': 'h2'},
+            {'title': 'h3', 'block': 'h3'},
+            {'title': 'h4', 'block': 'h4'},
+            {'title': 'h5', 'block': 'h5'},
+            {'title': 'h6', 'block': 'h6'}
+        ]},
+
+        {'title': 'Blocks', 'items': [
+            {'title': 'p', 'block': 'p'},
+            {'title': 'div', 'block': 'div'},
+            {'title': 'pre', 'block': 'pre'}
+        ]},
+
+        {'title': 'Containers', 'items': [
+            {'title': 'section', 'block': 'section', 'wrapper': True, 'merge_siblings': False},
+            {'title': 'article', 'block': 'article', 'wrapper': True, 'merge_siblings': False},
+            {'title': 'blockquote', 'block': 'blockquote', 'wrapper': False},
+            {'title': 'hgroup', 'block': 'hgroup', 'wrapper': True},
+            {'title': 'aside', 'block': 'aside', 'wrapper': True},
+            {'title': 'figure', 'block': 'figure', 'wrapper': True}
+        ]}
+    ],
 }
 TINYMCE_SPELLCHECKER = True
 
