@@ -13,8 +13,8 @@ def permission_check(user):
 
 
 def indexView(request):
-    blogs = models.Post.objects.filter(category='blogs')
-    case_studies = models.Post.objects.filter(category='case_studies')
+    blogs = models.Post.objects.filter(category=1) # Need to Update Later
+    case_studies = models.Post.objects.filter(category=1) # Need to Update Later
     context = {
         'blogs': blogs.order_by('date')[:4],
         'case_studies': case_studies.order_by('date')[:4],
@@ -26,6 +26,7 @@ def indexView(request):
 def adminView(request):
     form = forms.PostForm()
     if request.method == 'POST':
+        print(request.POST)
         form = forms.PostForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)

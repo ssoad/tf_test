@@ -99,13 +99,16 @@ TINYMCE_DEFAULT_CONFIG = {
     "toolbar1": "undo redo toc | fontselect fontsizeselect formatselect lineheight | bold italic underline "
                 "strikethrough superscript subscript | forecolor backcolor casechange permanentpen formatpainter "
                 "removeformat | alignleft "
-               "aligncenter alignright alignjustify |  numlist bullist checklist | outdent indent |  searchreplace hr "
-                "charmap emoticons table pagebreak |  insertdatetime insertfile media pageembed template link anchor "
+                "aligncenter alignright alignjustify |  numlist bullist checklist | outdent indent |  searchreplace hr "
+                "charmap emoticons table pagebreak |  insertdatetime image insertfile media pageembed template link anchor "
                 "codesample | "
-               "a11ycheck ltr rtl | showcomments addcomment|fullscreen preview print | help",
+                "a11ycheck ltr rtl | showcomments addcomment|fullscreen preview print | help",
+    # 'file_browser_callback': 'filebrowser'
 
 }
 TINYMCE_SPELLCHECKER = True
+TINYMCE_FILEBROWSER = True
+
 
 
 # Crispy_Forms_Settings
@@ -132,7 +135,6 @@ AUTHENTICATION_BACKENDS = [
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
-
 
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
