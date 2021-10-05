@@ -26,6 +26,7 @@ def indexView(request):
 def adminView(request):
     form = forms.PostForm()
     if request.method == 'POST':
+        print(request.POST)
         form = forms.PostForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)

@@ -23,7 +23,7 @@ class BlogCategory(models.Model):
 
 
 class BlogSubCategory(models.Model):
-    category = models.ForeignKey(BlogCategory, on_delete=models.CASCADE, related_name='subcategory_category')
+    category = models.ManyToManyField(BlogCategory, related_name='subcategory_category', blank=True, null=True)
     sub_category = models.CharField(max_length=80)
 
     def __str__(self):

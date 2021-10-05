@@ -8,7 +8,13 @@ class PostSerializer(ModelSerializer):
         fields = '__all__'
 
 
+class CategorySerializer(ModelSerializer):
+    class Meta:
+        model = models.BlogCategory
+        fields = '__all__'
+
+
 class SubCategorySerializer(ModelSerializer):
     class Meta:
         model = models.BlogSubCategory
-        fields = '__all__'
+        fields = ['id', 'sub_category']
