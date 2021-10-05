@@ -11,6 +11,7 @@ COMMENT_OPTIONS = (
 )
 
 
+
 class BlogCategory(models.Model):
     category = models.CharField(max_length=80)
 
