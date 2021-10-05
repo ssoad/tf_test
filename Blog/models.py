@@ -1,7 +1,6 @@
 from django.db import models
 from Account.models import User
-from ckeditor.fields import RichTextField
-from ckeditor_uploader.fields import RichTextUploadingField
+
 from tinymce.models import HTMLField
 import datetime
 
@@ -10,38 +9,35 @@ COMMENT_OPTIONS = (
     ('disabled', 'Disable Comments'),
     ('enabled', 'Enable Comments'),
 )
-CATEGORY_CHOICES = (
-    ('blogs', 'Blog'),
-    ('case_studies', 'Case Study'),
-    ('podcast', 'Podcast'),
-)
-SUB_CATEGORY_CHOICES = (
-    ('none', 'None'),
-    ('business_cybersecurity', 'Business CyberSecurity'),
-    ('personal_cybersecurity', 'Personal CyberSecurity'),
-    ('hack_recovery', 'Hack Recovery'),
-    ('risk_assesment', 'Risk Assesment'),
-    ('concierge_cybersecurity', 'Concierge CyberSecurity'),
-    ('cybercrime_investigation', 'CyberCrime Investigation'),
-)
 
 
-class SubCategory(models.Model):
+class BlogCategory(models.Model):
+    category = models.CharField(max_length=80)
+
+    def __str__(self):
+        return self.category
+
+    class Meta:
+        verbose_name_plural = 'Blog Categories'
+
+
+class BlogSubCategory(models.Model):
+    category = models.ForeignKey(BlogCategory, on_delete=models.CASCADE, related_name='subcategory_category')
     sub_category = models.CharField(max_length=80)
 
     def __str__(self):
         return self.sub_category
 
     class Meta:
-        verbose_name_plural = 'Sub Categories'
+        verbose_name_plural = 'Blog Sub Categories'
 
 
 class Post(models.Model):
     author = models.ForeignKey(User, verbose_name='Author', on_delete=models.CASCADE)
     post_url = models.CharField(max_length=264, verbose_name='URL', unique=True)
     title = models.CharField(max_length=264, verbose_name='Add Title')
-    category = models.CharField(choices=CATEGORY_CHOICES, default='blogs', max_length=100)
-    sub_categories = models.ForeignKey(SubCategory, on_delete=models.CASCADE, related_name='post_sub_category')
+    category = models.ForeignKey(BlogCategory, on_delete=models.CASCADE, related_name='post_category')
+    sub_categories = models.ForeignKey(BlogSubCategory, on_delete=models.CASCADE, related_name='post_sub_category')
     feature_image = models.ImageField(upload_to='blog/', verbose_name='Add Feature Image')
     short_description = models.TextField(verbose_name='Short Description', max_length=264)
     content = HTMLField(verbose_name='Post Content')

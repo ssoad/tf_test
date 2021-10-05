@@ -56,9 +56,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
 
-    # ckeditor
-    'ckeditor',
-    'ckeditor_uploader',
+    # tinymce
     'tinymce',
 
     # djangorestframework
@@ -87,36 +85,28 @@ INSTALLED_APPS = [
 #     ]
 # }
 
+# tinymce Settings
 TINYMCE_DEFAULT_CONFIG = {
     "theme": "silver",
     "height": 500,
-    "menubar": False,
+    "menubar": 'file edit view insert format tools table help',
     "plugins": 'print, preview, powerpaste, casechange, importcss, tinydrive, searchreplace, autolink, autosave, '
                'save, directionality, advcode, visualblocks, visualchars, fullscreen, image, link, media, mediaembed, '
                'template, codesample, table, charmap, hr, pagebreak, nonbreaking, anchor, toc, insertdatetime, '
                'advlist, lists, checklist, wordcount, tinymcespellchecker, a11ychecker, textpattern, noneditable, '
-               'help, formatpainter, pageembed, charmap, mentions, quickbars, linkchecker, emoticons, advtable' 
-    "searchreplace,visualblocks,code,fullscreen,insertdatetime,media,table,paste,"
-    "code,help,wordcount",
-    "toolbar1": "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft "
-               "aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor "
-               "backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | "
-               "fullscreen  preview save print | insertfile media pageembed template link anchor codesample | "
-               "a11ycheck ltr rtl | showcomments addcomment| "
-    "bold italic backcolor | alignleft aligncenter "
-    "alignright alignjustify | bullist numlist outdent indent | "
-    "removeformat | help",
+               'help, formatpainter, pageembed, charmap, mentions, quickbars, linkchecker, emoticons, advtable, '
+               'searchreplace,visualblocks,code,fullscreen,media,table,paste, code,help,wordcount',
+    "toolbar1": "undo redo toc | fontselect fontsizeselect formatselect lineheight | bold italic underline "
+                "strikethrough superscript subscript | forecolor backcolor casechange permanentpen formatpainter "
+                "removeformat | alignleft "
+               "aligncenter alignright alignjustify |  numlist bullist checklist | outdent indent |  searchreplace hr "
+                "charmap emoticons table pagebreak |  insertdatetime insertfile media pageembed template link anchor "
+                "codesample | "
+               "a11ycheck ltr rtl | showcomments addcomment|fullscreen preview print | help",
+
 }
 TINYMCE_SPELLCHECKER = True
 
-# ckeditor Settings
-CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar': 'full',
-    },
-}
-CKEDITOR_UPLOAD_PATH = 'uploads/'
-CKEDITOR_IMAGE_BACKEND = 'pillow'
 
 # Crispy_Forms_Settings
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
