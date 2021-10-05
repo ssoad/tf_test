@@ -56,9 +56,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
 
-    # ckeditor
-    'ckeditor',
-    'ckeditor_uploader',
+    # tinymce
     'tinymce',
 
     # djangorestframework
@@ -87,6 +85,7 @@ INSTALLED_APPS = [
 #     ]
 # }
 
+# tinymce Settings
 TINYMCE_DEFAULT_CONFIG = {
     "theme": "silver",
     "height": 500,
@@ -95,53 +94,19 @@ TINYMCE_DEFAULT_CONFIG = {
                'save, directionality, advcode, visualblocks, visualchars, fullscreen, image, link, media, mediaembed, '
                'template, codesample, table, charmap, hr, pagebreak, nonbreaking, anchor, toc, insertdatetime, '
                'advlist, lists, checklist, wordcount, tinymcespellchecker, a11ychecker, textpattern, noneditable, '
-               'help, formatpainter, pageembed, charmap, mentions, quickbars, linkchecker, emoticons, advtable' 
-    "searchreplace,visualblocks,code,fullscreen,insertdatetime,media,table,paste,"
-    "code,help,wordcount",
-    "toolbar1": "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft "
-               "aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor "
-               "backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | "
-               "fullscreen  preview save print | insertfile media pageembed template link anchor codesample | "
-               "a11ycheck ltr rtl | showcomments addcomment| "
-    "bold italic backcolor | alignleft aligncenter "
-    "alignright alignjustify | bullist numlist outdent indent | "
-    "removeformat | help",
-    'style_formats': [
-        {'title': 'Headers', 'items': [
-            {'title': 'h1', 'block': 'h1'},
-            {'title': 'h2', 'block': 'h2'},
-            {'title': 'h3', 'block': 'h3'},
-            {'title': 'h4', 'block': 'h4'},
-            {'title': 'h5', 'block': 'h5'},
-            {'title': 'h6', 'block': 'h6'}
-        ]},
+               'help, formatpainter, pageembed, charmap, mentions, quickbars, linkchecker, emoticons, advtable, '
+               'searchreplace,visualblocks,code,fullscreen,media,table,paste, code,help,wordcount',
+    "toolbar1": "undo redo toc | fontselect fontsizeselect formatselect lineheight | bold italic underline "
+                "strikethrough superscript subscript | forecolor backcolor casechange permanentpen formatpainter "
+                "removeformat | alignleft "
+               "aligncenter alignright alignjustify |  numlist bullist checklist | outdent indent |  searchreplace hr "
+                "charmap emoticons table pagebreak |  insertdatetime insertfile media pageembed template link anchor "
+                "codesample | "
+               "a11ycheck ltr rtl | showcomments addcomment|fullscreen preview print | help",
 
-        {'title': 'Blocks', 'items': [
-            {'title': 'p', 'block': 'p'},
-            {'title': 'div', 'block': 'div'},
-            {'title': 'pre', 'block': 'pre'}
-        ]},
-
-        {'title': 'Containers', 'items': [
-            {'title': 'section', 'block': 'section', 'wrapper': True, 'merge_siblings': False},
-            {'title': 'article', 'block': 'article', 'wrapper': True, 'merge_siblings': False},
-            {'title': 'blockquote', 'block': 'blockquote', 'wrapper': False},
-            {'title': 'hgroup', 'block': 'hgroup', 'wrapper': True},
-            {'title': 'aside', 'block': 'aside', 'wrapper': True},
-            {'title': 'figure', 'block': 'figure', 'wrapper': True}
-        ]}
-    ],
 }
 TINYMCE_SPELLCHECKER = True
 
-# ckeditor Settings
-CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar': 'full',
-    },
-}
-CKEDITOR_UPLOAD_PATH = 'uploads/'
-CKEDITOR_IMAGE_BACKEND = 'pillow'
 
 # Crispy_Forms_Settings
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
