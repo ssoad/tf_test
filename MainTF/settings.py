@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     # ckeditor
     'ckeditor',
     'ckeditor_uploader',
+    'tinymce',
 
     # djangorestframework
     'rest_framework',
@@ -85,6 +86,28 @@ INSTALLED_APPS = [
 #         'rest_framework.parsers.JSONParser',
 #     ]
 # }
+
+TINYMCE_DEFAULT_CONFIG = {
+    "theme": "silver",
+    "height": 500,
+    "menubar": False,
+    "plugins": 'print, preview, powerpaste, casechange, importcss, tinydrive, searchreplace, autolink, autosave, '
+               'save, directionality, advcode, visualblocks, visualchars, fullscreen, image, link, media, mediaembed, '
+               'template, codesample, table, charmap, hr, pagebreak, nonbreaking, anchor, toc, insertdatetime, '
+               'advlist, lists, checklist, wordcount, tinymcespellchecker, a11ychecker, textpattern, noneditable, '
+               'help, formatpainter, pageembed, charmap, mentions, quickbars, linkchecker, emoticons, advtable' 
+    "searchreplace,visualblocks,code,fullscreen,insertdatetime,media,table,paste,"
+    "code,help,wordcount",
+    "toolbar1": "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft "
+               "aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor "
+               "backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | "
+               "fullscreen  preview save print | insertfile media pageembed template link anchor codesample | "
+               "a11ycheck ltr rtl | showcomments addcomment| "
+    "bold italic backcolor | alignleft aligncenter "
+    "alignright alignjustify | bullist numlist outdent indent | "
+    "removeformat | help",
+}
+TINYMCE_SPELLCHECKER = True
 
 # ckeditor Settings
 CKEDITOR_CONFIGS = {

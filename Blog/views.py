@@ -3,10 +3,14 @@ from django.http import JsonResponse
 from django.core import serializers
 from django.db.models import Q
 from datetime import date
-from Blog import models
+from Blog import models, forms
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 
 # Create your views here.
+def permission_check(user):
+    return user.is_staff or user.is_superuser and user.is_active
+
 
 def indexView(request):
     blogs = models.Post.objects.filter(category='blogs')
@@ -18,8 +22,21 @@ def indexView(request):
     return render(request, 'blog/index.html', context)
 
 
+@user_passes_test(permission_check, login_url='/accounts/login/')
 def adminView(request):
-    return render(request, 'blog/admin.html')
+    form = forms.PostForm()
+    if request.method == 'POST':
+        form = forms.PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            return HttpResponseRedirect(reverse('blog_app:index'))
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'blog/admin.html', context)
 
 
 # these 3 functions for single post
@@ -80,7 +97,6 @@ def categoryView(request, name):
 
     case_studies = models.Post.objects.filter(sub_categories__sub_category=name, category='Case Studies')
     categories = models.SubCategory.objects.all()
-
 
     context = {
         'blogs': posts.order_by('-date'),

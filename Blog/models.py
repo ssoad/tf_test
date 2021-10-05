@@ -2,6 +2,7 @@ from django.db import models
 from Account.models import User
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
+from tinymce.models import HTMLField
 import datetime
 
 # Create your models here.
@@ -42,9 +43,9 @@ class Post(models.Model):
     category = models.CharField(choices=CATEGORY_CHOICES, default='blogs', max_length=100)
     sub_categories = models.ForeignKey(SubCategory, on_delete=models.CASCADE, related_name='post_sub_category')
     feature_image = models.ImageField(upload_to='blog/', verbose_name='Add Feature Image')
-    shot_description = models.TextField(verbose_name='Short Description', max_length=264)
-    content = RichTextUploadingField(verbose_name='Post Content')
-    reading_time = models.DurationField(default=datetime.timedelta(minutes=3))
+    short_description = models.TextField(verbose_name='Short Description', max_length=264)
+    content = HTMLField(verbose_name='Post Content')
+    # reading_time = models.DurationField(default=datetime.timedelta(minutes=3))
     comment_option = models.CharField(choices=COMMENT_OPTIONS, default='disabled', max_length=100)
     tag = models.CharField(max_length=264)
     date = models.DateTimeField(auto_now_add=True)
