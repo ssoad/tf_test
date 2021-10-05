@@ -1,4 +1,4 @@
-{% extends 'base/blog_base.html' %} {% load static %} {% load hosts %} {% block title %} Podcast {% endblock title %} {% block headercss %}
+{% extends 'base/blog_base.html' %} {% load static %} {% block title %} Podcast {% endblock title %} {% block headercss %}
 <link rel="stylesheet" href="{% static 'tfcss/blog/podcast.css' %}"> {% endblock headercss %} {% block content %}
 
 <section class="row mx-0 banner-1">
@@ -10,8 +10,12 @@
     </div>
     <div class="col-md-5 col-lg-4 col-xl-3">
         <div class="bg-gray px-3 py-5 h-100 d-flex flex-column justify-content-center">
-            <a class="btn menu-link fw-bold" href="{% host_url 'category' host 'blog' %}podcast">Category 1</a>
-            <a class="btn menu-link fw-bold" href="{% host_url 'category' host 'blog' %}podcast">Category 2</a>
+            {% for category in categories %}
+            <a class="btn menu-link fw-bold" href="{% url 'blog_app:category' name='blogs' %}">{{ category }}</a>
+            {% endfor %}
+
+{#            <a class="btn menu-link fw-bold" href="{% url 'blog_app:category' name='blogs' %}podcast">Category 1</a>#}
+{#            <a class="btn menu-link fw-bold" href="{% url 'blog_app:category' name='blogs' %}podcast">Category 2</a>#}
         </div>
     </div>
 </section>
@@ -43,7 +47,7 @@
 
 <!-- recent podcasts  -->
 <section class="recent-podcast mt-4">
-    <a href="{% host_url 'category' host 'blog' %}podcast" class="container-heading">RECENT PODCASTS</a>
+    <a href="{% url 'blog_app:category' name='podcast' %}" class="container-heading">RECENT PODCASTS</a>
     <div class="podcast row row-cols-1 row-cols-md-3 g-5">
         {% for post in recent_posts %}
         <div class="post col">
@@ -53,7 +57,7 @@
                 </button>
                 <img src="{% get_media_prefix %}{{post.feature_image}}" class="card-img-top" alt="...">
                 <div class="card-body pt-2 p-0">
-                    <a href="{% host_url 'blogs' host 'blog' %}{{post.post_url}}" class="title">
+                    <a href="{% url 'blog_app:blogs' name=post.post_url %}" class="title">
                         <h6 class="fw-bold fs-7">{{post.title}}
                         </h6>
                     </a>
@@ -115,6 +119,7 @@
                 </form>
             </div>
         </div>
+    </div>
 </section>
 
 
@@ -171,7 +176,7 @@
                 </button>
                 <img src="{% get_media_prefix %}${post.fields.feature_image}" class="card-img-top" alt="...">
                 <div class="card-body pt-2 p-0">
-                    <a href="{% host_url 'podcast' host 'blog' %}{{post.post_url}}" class="title">
+                    <a href="{% url 'blog_app:podcast' name='demo_url' %}" class="title">
                         <h6 class="fw-bold fs-7">${post.fields.title}</h6>
                     </a>
                     <div class="info-area">

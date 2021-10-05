@@ -2,6 +2,7 @@
 {% load static %}
 {% load i18n %}
 {% load crispy_forms_tags %}
+{% load socialaccount %}
 
 {% block title %}
     SignUp
@@ -30,8 +31,8 @@
                     </p>
                     <p class="sign-auth">
                         Continue With
-                        <a href=""><i class="fab fa-google sign-google"></i></a>
-                        <a href=""><i class="fab fa-facebook-f sign-fb"></i></a>
+                        <a href="{% provider_login_url "google" %}"><i class="fab fa-google sign-google"></i></a>
+                        <a href="{% provider_login_url "facebook" %}"><i class="fab fa-facebook-f sign-fb"></i></a>
                     </p>
                     <div style="display: grid; grid-template-columns: repeat(2, minmax(100px, 1fr)); gap: 20px;">
                         {{ form|crispy }}

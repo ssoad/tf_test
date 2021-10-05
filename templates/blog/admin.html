@@ -1,15 +1,47 @@
-{% extends "admin/base_site.html" %} {% block extrahead %}
-<script>
-    window.CKEDITOR_BASEPATH = 'ckeditor.js';
+{% extends 'base/blog_base.html' %} {% load static %} {% load crispy_forms_tags %} {% block title %} Blogs {% endblock title %} {% block headercss %}
+
+
+
+<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+<style>
+    footer {
+        display: none;
+    }
+</style>
+
+{% endblock headercss %} {% block content %}
+
+<section>
+    <h3 class="fw-bold text-center my-5 border-bottom border-secondary">Add a new post</h3>
+    <div id="content-main">
+        <form enctype="multipart/form-data" method="POST" id="post_form">
+            {{ form|crispy }}
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">Post</button>
+        </form>
+    </div>
+
+</section>
+
+{% endblock content %} {% block customjs %}
+<script id="django-admin-prepopulated-fields-constants" src="{% static '' %}admin/js/prepopulate_init.js" data-prepopulated-fields="[]" type="fd1fedd8f505b20d2a49a9ee-text/javascript">
 </script>
-<form>
-    {{ myform.media }} {{ myform.as_p }}
-    <input type="submit" />
-</form>
-{{ block.super }} {% endblock %} {% load static %}
-<form>
-    {{ myform.media }} {{ myform.as_p }}
-    <input type="submit" />
-</form>
-<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
-<script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+<script>
+    CKEDITOR.replace('content');
+
+    // Enable local "abbr" plugin from /myplugins/abbr/ folder.
+    CKEDITOR.plugins.addExternal('abbr', '/myplugins/abbr/', 'plugin.js');
+
+    // extraPlugins needs to be set too.
+    CKEDITOR.replace('content', {
+        extraPlugins: 'abbr'
+    });
+    CKEDITOR.replace('content', {
+        skin: 'moonocolor,/myskins/moonocolor/'
+    });
+    CKEDITOR.replace('content', {
+        customConfig: '/ckeditor_settings/config.js'
+    });
+</script>
+{% endblock customjs %}
