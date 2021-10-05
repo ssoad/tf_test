@@ -4,6 +4,10 @@
 ```commandline
 git clone https://github.com/nhridoy/TechForing-Ltd.git
 ```
+### Create Branch
+```commandline
+git checkout -b [name_of_your_new_branch]
+```
 ### Create Virtual Environment
 ```commandline
 py venv -m venv
@@ -11,6 +15,10 @@ py venv -m venv
 ### Activate Virtual Environment (for cmd)
 ```commandline
 cd venv/Scripts/activate
+```
+### Install requirements
+```commandline
+pip install -r requirements.txt
 ```
 ### MakeMigrations and Migrate
 ```commandline
