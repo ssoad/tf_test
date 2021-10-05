@@ -12,5 +12,5 @@ class PostApi(generics.ListAPIView):
 
 
 class SubCategoryApi(generics.ListAPIView):
-    queryset = models.SubCategory.objects.all()
+    queryset = models.BlogSubCategory.objects.all()
     serializer_class = serializer.SubCategorySerializer
