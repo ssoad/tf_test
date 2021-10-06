@@ -34,6 +34,7 @@ def adminView(request):
     filterOption = ''
     subcat = ''
     subfil = ''
+    print(request.POST)
     if request.method == 'POST':
 
         inputItems = request.POST
@@ -51,7 +52,7 @@ def adminView(request):
             if subCategory:
                 subcat = models.BlogSubCategory.objects.get(pk=subCategory)
             if filterOption:
-                subfil = models.BlogSubCategory.objects.get(pk=filterOption)
+                subfil = models.FilterOption.objects.get(pk=filterOption)
             post = form.save(commit=False)
             post.author = request.user
             post.category = cat
@@ -59,7 +60,7 @@ def adminView(request):
                 post.sub_categories = subcat
             if subfil:
                 post.filter_option = subfil
-            post.save()
+            # post.save()
             return HttpResponseRedirect(reverse('blog_app:index'))
 
     context = {
