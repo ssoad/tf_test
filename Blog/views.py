@@ -32,18 +32,19 @@ def adminView(request):
     form = forms.PostForm()
     if request.method == 'POST':
         # print(request.POST)
+        x = request.POST
         category = request.POST.get('category')
-        subCategory = request.POST.get('subCategory')
-
+        # subCategory = request.POST.get('subCategory')
+        print(x)
         form = forms.PostForm(request.POST, request.FILES)
         if form.is_valid():
             cat = models.BlogCategory.objects.get(pk=category)
-            subcat = models.BlogSubCategory.objects.get(pk=subCategory)
+            # subcat = models.BlogSubCategory.objects.get(pk=subCategory)
             post = form.save(commit=False)
             post.author = request.user
             post.category = cat
-            post.sub_categories = subcat
-            post.save()
+            # post.sub_categories = subcat
+            # post.save()
             return HttpResponseRedirect(reverse('blog_app:index'))
 
     context = {
