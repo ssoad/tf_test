@@ -11,12 +11,18 @@ COMMENT_OPTIONS = (
 )
 
 
-
 class BlogCategory(models.Model):
     category = models.CharField(max_length=80)
 
     def __str__(self):
         return self.category
+
+    @property
+    def has_subcategories(self):
+        if self.subcategory_category.all().count() > 0:
+            return True
+        else:
+            return False
 
     class Meta:
         verbose_name_plural = 'Blog Categories'
@@ -29,8 +35,26 @@ class BlogSubCategory(models.Model):
     def __str__(self):
         return self.sub_category
 
+    @property
+    def has_filter(self):
+        if self.filter_subcategory.all().count() > 0:
+            return True
+        else:
+            return False
+
     class Meta:
         verbose_name_plural = 'Blog Sub Categories'
+
+
+class FilterOption(models.Model):
+    sub_category = models.ManyToManyField(BlogSubCategory, related_name='filter_subcategory', blank=True, null=True)
+    filter_name = models.CharField(max_length=80)
+
+    def __str__(self):
+        return self.filter_name
+
+    class Meta:
+        verbose_name_plural = 'Blog Filter Option'
 
 
 class Post(models.Model):
@@ -38,7 +62,10 @@ class Post(models.Model):
     post_url = models.CharField(max_length=264, verbose_name='URL', unique=True)
     title = models.CharField(max_length=264, verbose_name='Add Title')
     category = models.ForeignKey(BlogCategory, on_delete=models.CASCADE, related_name='post_category')
-    sub_categories = models.ForeignKey(BlogSubCategory, on_delete=models.CASCADE, related_name='post_sub_category')
+    sub_categories = models.ForeignKey(BlogSubCategory, on_delete=models.CASCADE, related_name='post_sub_category',
+                                       blank=True, null=True)
+    filter_option = models.ForeignKey(FilterOption, on_delete=models.CASCADE, related_name='post_filter',
+                                      blank=True, null=True)
     feature_image = models.ImageField(upload_to='blog/', verbose_name='Add Feature Image')
     short_description = models.TextField(verbose_name='Short Description', max_length=264)
     content = HTMLField(verbose_name='Post Content')

@@ -25,3 +25,13 @@ class SubCategoryApi(generics.ListAPIView):
     def get_queryset(self):
         category = self.kwargs['id']
         return models.BlogSubCategory.objects.filter(category=category)
+
+
+class FilterApi(generics.ListAPIView):
+    # queryset = models.FilterOption.objects.all()
+    serializer_class = serializer.FilterSerializer
+
+    def get_queryset(self):
+        category = self.kwargs['id']
+        subcategory = self.kwargs['sub_id']
+        return models.FilterOption.objects.filter(sub_category=subcategory, sub_category__category=category)
