@@ -86,7 +86,12 @@
                 </div>
             </div>
             <div class="col-md-7 main-content position-relative" data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0" tabindex="0">
-                <h5 class="fw-bold mb-3">{{post.title}}</h5>
+                <div class="d-flex justify-content-between">
+                    <h5 class="fw-bold mb-3">{{post.title}}</h5>
+                    {% if user.is_staff or user.is_superuser  %}
+                        <a href="#" class="btn btn-primary px-3"><i class="bi bi-pencil-square"></i> Edit</a>
+                    {% endif %} 
+                </div>
 
                 {{post.content|safe}} {% if post.comment_option == 'enabled'%}
                 <button id="open-comment-btn" class="my-5 btn btn-navy">
@@ -108,7 +113,7 @@
                 </div>
                 {% endif %}
             </div>
-
+            
             <div class="col-md-3">
                 <div class="related-post">
                     <h6 class="fw-bold border-bottom border-secondary text-center pb-2">RELATED POST</h6>
