@@ -1,7 +1,20 @@
-{% extends 'base/blog_base.html' %} {% load static %} {% block title %} Home {% endblock title %} {% block headercss %}
+{% extends 'base/blog_base.html' %} {% load static %} {% load my_filter %} {% block title %} Home {% endblock title %}
+{% block headercss %}
     <link rel="stylesheet" href="{% static 'tfcss/blog/index.css' %}"> {% endblock headercss %} {% block content %}
 
     <!-- main container  -->
+    {#    {% for category in categories %}#}
+    {#        {% if category.subcategory_category.count %}#}
+    {#            <h1>{{ category }} arrow</h1>#}
+    {#        {% else %}#}
+    {#            <h1>{{ category }}</h1>#}
+    {#        {% endif %}#}
+    {##}
+    {#        {% for category_subcategory in category.subcategory_category.all %}#}
+    {##}
+    {#            <h3>{{ category_subcategory }}</h3>#}
+    {#        {% endfor %}#}
+    {#    {% endfor %}#}
 
     <section class="row mx-0 banner-1">
         <div class="col-md-7 col-lg-7 col-xl-8 pe-2 banner-bg">
@@ -13,47 +26,40 @@
         <div class="col-md-5 col-lg-5 col-xl-4">
             <div class="bg-gray px-3 py-5">
                 <h5 class="border-bottom border-secondary text-center fw-bold pb-2 mb-3">CATEGORIES</h5>
-                <div class="accordion accordion-flush" id="accordionFlush">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="flush-headingOne">
-                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#flush-collapseOne" aria-expanded="false"
-                                    aria-controls="flush-collapseOne">
-                                ARTICLES
-                            </button>
-                        </h2>
-                        <div id="flush-collapseOne" class="accordion-collapse collapse"
-                             aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlush">
-                            <div class="accordion-body">
-                                <a class="fw-bold" href="{% url 'blog_app:category' name='personal_cybersecurity' %}">Personal
-                                    CyberSecurity</a>
-                                <a class=" fw-bold " href="{% url 'blog_app:category' name='business_cybersecurity' %}">Business
-                                    CyberSecurity
-                                </a>
+
+
+                {% for category in categories %}
+                    {% if category.subcategory_category.count %}
+                        <div class="accordion accordion-flush" id="accordionFlush">
+                            <div class="accordion-item mt-2">
+                                <h2 class="accordion-header" id="flush-headingTwo">
+                                    <button class="accordion-button collapsed fw-bold" type="button"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#{{ category|replacespace }}" aria-expanded="false"
+                                            aria-controls="{{ category|replacespace }}">
+                                        {{ category }}
+                                    </button>
+                                </h2>
+                                {% for category_subcategory in category.subcategory_category.all %}
+
+                                    <div id="{{ category|replacespace }}" class="accordion-collapse collapse"
+                                         aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlush">
+                                        <div class="accordion-body overflow-auto">
+                                            <a class="fw-bold"
+                                               href="{% url 'blog_app:category' name='blog' %}">{{ category_subcategory }}</a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
                             </div>
                         </div>
-                    </div>
-                    <div class="accordion-item mt-2">
-                        <h2 class="accordion-header" id="flush-headingTwo">
-                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#flush-collapseTwo" aria-expanded="false"
-                                    aria-controls="flush-collapseTwo">
-                                CASE STUDIES
-                            </button>
-                        </h2>
-                        <div id="flush-collapseTwo" class="accordion-collapse collapse"
-                             aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlush">
-                            <div class="accordion-body">
-                                <a class="fw-bold" href="{% url 'blog_app:category' name='blog' %}">Concierge
-                                    Cybersecurity</a>
-                                <a class="fw-bold" href="{% url 'blog_app:category' name='blog' %}">Risk
-                                    Assessment</a>
-                                <a class="fw-bold" href="{% url 'blog_app:category' name='blog' %}">Hack Recovery</a>
-                            </div>
+                    {% else %}
+                        <div class="accordion-item mt-2">
+                            <a class="btn menu-link fw-bold"
+                               href="{% url 'blog_app:category' name='podcast' %}">{{ category }}</a>
                         </div>
-                    </div>
-                </div>
-                <a class="btn menu-link fw-bold" href="{% url 'blog_app:category' name='podcast' %}">PODCAST</a>
+                    {% endif %}
+
+                {% endfor %}
 
             </div>
         </div>
@@ -101,7 +107,7 @@
                         </div>
                         <div class="col-12 col-md-7 py-2 ps-md-0 pe-1 d-flex align-items-center">
                             <div>
-                                <a href="{% url 'blog_app:case_studies' name='demoname' %}">
+                                <a href="{% url 'blog_app:case_studies' name=post.post_url %}">
                                     <h6 class="fw-bold">{{ post.title }}</h6>
                                 </a>
                                 <div class="info-area">

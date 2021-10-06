@@ -15,9 +15,14 @@ def permission_check(user):
 def indexView(request):
     blogs = models.Post.objects.filter(category=1) # Need to Update Later
     case_studies = models.Post.objects.filter(category=1) # Need to Update Later
+    categories = models.BlogCategory.objects.all()
+    subcategories = models.BlogSubCategory.objects.all()
+
     context = {
         'blogs': blogs.order_by('date')[:4],
         'case_studies': case_studies.order_by('date')[:4],
+        'categories': categories,
+        'subcategories': subcategories,
     }
     return render(request, 'blog/index.html', context)
 
@@ -26,11 +31,18 @@ def indexView(request):
 def adminView(request):
     form = forms.PostForm()
     if request.method == 'POST':
-        print(request.POST)
+        # print(request.POST)
+        category = request.POST.get('category')
+        subCategory = request.POST.get('subCategory')
+
         form = forms.PostForm(request.POST, request.FILES)
         if form.is_valid():
+            cat = models.BlogCategory.objects.get(pk=category)
+            subcat = models.BlogSubCategory.objects.get(pk=subCategory)
             post = form.save(commit=False)
             post.author = request.user
+            post.category = cat
+            post.sub_categories = subcat
             post.save()
             return HttpResponseRedirect(reverse('blog_app:index'))
 
