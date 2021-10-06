@@ -1,4 +1,5 @@
-{% extends 'base/blog_base.html' %} {% load static %} {% load crispy_forms_tags %} {% block title %} Blogs {% endblock title %} {% block headercss %}
+{% extends 'base/blog_base.html' %} {% load static %} {% load crispy_forms_tags %} {% block title %} Blogs
+{% endblock title %} {% block headercss %}
 
 
 
@@ -8,18 +9,20 @@
     footer {
         display: none;
     }
-    label{
+
+    label {
         margin-block-start: 1.5rem;
         font-size: 1rem;
         font-weight: 700;
         text-transform: uppercase;
     }
-    #id_short_description{
+
+    #id_short_description {
         height: 75px;
         resize: none;
     }
 
-    .blogPost{
+    .blogPost {
         margin-block: 1rem;
         padding-inline: 1.5rem;
     }
@@ -46,6 +49,13 @@
             {{ form.media }}
             {{ form|crispy }}
             {% csrf_token %}
+            <label for="tagName" class="">Tag<span class="asteriskField">*</span></label>
+            <select name="tagName" class="form-control js-example-tokenizer" id="tagName" multiple="multiple">
+                <option value="" disabled>Select Tag</option>
+                <option>orange</option>
+                <option>white</option>
+                <option>purple</option>
+            </select>
             <button type="submit" class="btn btn-success blogPost">Post</button>
         </form>
     </div>
@@ -53,7 +63,8 @@
 </section>
 
 {% endblock content %} {% block customjs %}
-<script id="django-admin-prepopulated-fields-constants" src="{% static '' %}admin/js/prepopulate_init.js" data-prepopulated-fields="[]" type="fd1fedd8f505b20d2a49a9ee-text/javascript">
+<script id="django-admin-prepopulated-fields-constants" src="{% static '' %}admin/js/prepopulate_init.js"
+    data-prepopulated-fields="[]" type="fd1fedd8f505b20d2a49a9ee-text/javascript">
 </script>
 <script>
     // CKEDITOR.replace('content');
@@ -71,73 +82,80 @@
     // CKEDITOR.replace('content', {
     //     customConfig: '/ckeditor_settings/config.js'
     // });
+    $(document).ready(function () {
+        // $('.js-example-basic-single').select2();
+        $(".js-example-tokenizer").select2({
+            tags: true,
+            tokenSeparators: [',', ' ']
+        })
+    });
     const baseUrl = "http://127.0.0.1:8000/"
     const blogCategory = document.getElementById("category")
     const blogSubCategory = document.getElementById("subCategory")
     const filterOption = document.getElementById("filterOption")
-    window.addEventListener("load", ()=>{
+    window.addEventListener("load", () => {
         fetch(`${baseUrl}api/blogs/category/`)
-        .then(response => response.json())
-        .then(result =>{
-            result.map((item)=>{
-                const newOption = document.createElement("option");
-                newOption.setAttribute("value", item.id)
-                newOption.setAttribute("has_subcategory", item.has_subcategory)
-                newOption.text = item.category 
-                // console.log(newOption);
-                blogCategory.appendChild(newOption)
+            .then(response => response.json())
+            .then(result => {
+                result.map((item) => {
+                    const newOption = document.createElement("option");
+                    newOption.setAttribute("value", item.id)
+                    newOption.setAttribute("has_subcategory", item.has_subcategory)
+                    newOption.text = item.category
+                    // console.log(newOption);
+                    blogCategory.appendChild(newOption)
+                })
             })
-        })
     })
-    blogCategory.addEventListener("change", ()=>{
+    blogCategory.addEventListener("change", () => {
         const has_subcategory = blogCategory.options[blogCategory.selectedIndex].getAttribute("has_subcategory")
         blogSubCategory.innerHTML = `<option value="" disabled selected>Select a Sub category</option>`
         filterOption.previousElementSibling.classList.add("d-none")
         filterOption.classList.add("d-none")
-        if(has_subcategory === "true"){
+        if (has_subcategory === "true") {
             blogSubCategory.previousElementSibling.classList.remove("d-none")
             blogSubCategory.classList.remove("d-none")
-        }else if(has_subcategory === "false"){
+        } else if (has_subcategory === "false") {
             blogSubCategory.previousElementSibling.classList.add("d-none")
             blogSubCategory.classList.add("d-none")
         }
         fetch(`${baseUrl}api/blogs/category/${blogCategory.value}`)
-        .then(response => response.json())
-        .then(result =>{
-            result.map((item)=>{
-                const newOption = document.createElement("option");
-                newOption.setAttribute("value", item.id)
-                newOption.setAttribute("has_filter", item.has_filter)
-                newOption.text = item.sub_category 
-                blogSubCategory.appendChild(newOption)
+            .then(response => response.json())
+            .then(result => {
+                result.map((item) => {
+                    const newOption = document.createElement("option");
+                    newOption.setAttribute("value", item.id)
+                    newOption.setAttribute("has_filter", item.has_filter)
+                    newOption.text = item.sub_category
+                    blogSubCategory.appendChild(newOption)
+                })
             })
-        })
     })
-    blogSubCategory.addEventListener("change", ()=>{
+    blogSubCategory.addEventListener("change", () => {
         const has_filter = blogSubCategory.options[blogSubCategory.selectedIndex].getAttribute("has_filter")
         filterOption.innerHTML = `<option value="" disabled selected>Select a Sub category</option>`
         console.log(`${baseUrl}api/blogs/category/${blogCategory.value}/${blogSubCategory.value}`);
-        if(has_filter === "true"){
+        if (has_filter === "true") {
             filterOption.previousElementSibling.classList.remove("d-none")
             filterOption.classList.remove("d-none")
             filterOption.setAttribute("required", true)
-        }else if(has_filter === "false"){
+        } else if (has_filter === "false") {
             filterOption.previousElementSibling.classList.add("d-none")
             filterOption.classList.add("d-none")
             filterOption.removeAttribute("required")
         }
         fetch(`${baseUrl}api/blogs/category/${blogCategory.value}/${blogSubCategory.value}`)
-        .then(response => response.json())
-        .then(result =>{
-            // console.log(result);
-            result.map((item)=>{
-                // console.log(item.has_subcategory);
-                const newOption = document.createElement("option");
-                newOption.setAttribute("value", item.id)
-                newOption.text = item.filter_name 
-                filterOption.appendChild(newOption)
+            .then(response => response.json())
+            .then(result => {
+                // console.log(result);
+                result.map((item) => {
+                    // console.log(item.has_subcategory);
+                    const newOption = document.createElement("option");
+                    newOption.setAttribute("value", item.id)
+                    newOption.text = item.filter_name
+                    filterOption.appendChild(newOption)
+                })
             })
-        })
     })
 </script>
 {% endblock customjs %}
