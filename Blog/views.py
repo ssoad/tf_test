@@ -30,21 +30,36 @@ def indexView(request):
 @user_passes_test(permission_check, login_url='/accounts/login/')
 def adminView(request):
     form = forms.PostForm()
+    subCategory = ''
+    filterOption = ''
+    subcat = ''
+    subfil = ''
     if request.method == 'POST':
-        # print(request.POST)
-        x = request.POST
+
+        inputItems = request.POST
         category = request.POST.get('category')
-        # subCategory = request.POST.get('subCategory')
-        print(x)
+
+        for i in inputItems:
+            if i == "subCategory":
+                subCategory = request.POST.get('subCategory')
+            if i == "filterOption":
+                filterOption = request.POST.get('filterOption')
+
         form = forms.PostForm(request.POST, request.FILES)
         if form.is_valid():
             cat = models.BlogCategory.objects.get(pk=category)
-            # subcat = models.BlogSubCategory.objects.get(pk=subCategory)
+            if subCategory:
+                subcat = models.BlogSubCategory.objects.get(pk=subCategory)
+            if filterOption:
+                subfil = models.BlogSubCategory.objects.get(pk=filterOption)
             post = form.save(commit=False)
             post.author = request.user
             post.category = cat
-            # post.sub_categories = subcat
-            # post.save()
+            if subcat:
+                post.sub_categories = subcat
+            if subfil:
+                post.filter_option = subfil
+            post.save()
             return HttpResponseRedirect(reverse('blog_app:index'))
 
     context = {
