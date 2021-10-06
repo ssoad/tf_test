@@ -6,5 +6,6 @@ from Blog import models
 admin.site.register(models.BlogCategory)
 admin.site.register(models.BlogSubCategory)
 admin.site.register(models.FilterOption)
+admin.site.register(models.Tags)
 admin.site.register(models.Post)
 admin.site.register(models.Comment)

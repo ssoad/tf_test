@@ -30,16 +30,32 @@ def indexView(request):
 @user_passes_test(permission_check, login_url='/accounts/login/')
 def adminView(request):
     form = forms.PostForm()
+    tag_list = models.Tags.objects.all()
     subCategory = ''
     filterOption = ''
     subcat = ''
     subfil = ''
-    print(request.POST)
+    # print(request.POST)
     if request.method == 'POST':
-
         inputItems = request.POST
         category = request.POST.get('category')
-
+        tags = request.POST.getlist('tagName')
+        tag_lists = []
+        for t in tag_list:
+            tag_lists.append(str(t))
+        # check = all(item in tag_lists for item in tags)
+        for item in tags:
+            for existing_item in tag_lists:
+                if item != existing_item:
+                    # new_tag = models.Tags.objects.create(tag=item)
+                    print(item)
+                else:
+                    tag_lists.remove(existing_item)
+                    tags.remove(item)
+                    break
+        # print(tag_lists)
+        # print(tags)
+        # print(check)
         for i in inputItems:
             if i == "subCategory":
                 subCategory = request.POST.get('subCategory')
@@ -65,6 +81,7 @@ def adminView(request):
 
     context = {
         'form': form,
+        'tag_list': tag_list,
     }
     return render(request, 'blog/admin.html', context)
 
