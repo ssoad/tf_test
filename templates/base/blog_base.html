@@ -137,6 +137,12 @@
             document.body.scrollTop = 0;
             document.documentElement.scrollTop = 0;
         }
+        const deleteBtn = document.querySelectorAll(".trash, .dlt")
+        deleteBtn.forEach(btn=>{
+            btn.addEventListener("click",()=>{
+                btn.parentElement.parentElement.parentElement.style.display = "none"
+            })
+        })
     </script>
     {% block customjs %} {% endblock customjs %}
 </body>
