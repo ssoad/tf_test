@@ -28,7 +28,6 @@ $(document).ready(function () {
   // console.log('data-table');
   $(window).scroll(function () {
     if ($(window).scrollTop() + $(window).height() > $(document).height() - 5) {
-      console.log("came to right place");
       $(".aside-container").css("bottom", $(".footer").outerHeight()+2)
       $(".aside-container").addClass("small-aside")
       $(".footer").removeClass("footer-shrink")
