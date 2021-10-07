@@ -135,11 +135,11 @@
     <!-- blogs container  -->
     <section class="blogs-container mt-4">
 
-        <a href="{% url 'blog_app:category' name='blogs' %}" class="container-heading">RECENT ARTICLES</a>
+        <a href="{% url 'blog_app:category' name='articles' %}" class="container-heading">RECENT ARTICLES</a>
 
         <div class="row post">
             <div class="col-md-6 ps-md-0">
-                {% for post in blogs %} {% if forloop.counter == 1 %}
+                {% for post in articles %} {% if forloop.counter == 1 %}
                     <div>
                         <img src="{% get_media_prefix %}{{ post.feature_image }}" class="img-fluid" alt="">
                     </div>
@@ -167,7 +167,7 @@
                 {% endif %} {% endfor %}
             </div>
             <div class="col-md-6 pe-md-0">
-                {% for post in blogs %} {% if forloop.counter != 1 %}
+                {% for post in articles %} {% if forloop.counter != 1 %}
                     <div class="row {% if forloop.counter != 2 %}mt-3{% endif %} mx-0 bg-lightnavy ">
                         <div class="col-12 col-md-5 p-2 d-flex align-items-center ">
                             <img src="{% get_media_prefix %}{{ post.feature_image }}" class="img-fluid " alt="... ">
