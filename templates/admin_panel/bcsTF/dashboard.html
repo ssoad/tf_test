@@ -4,295 +4,282 @@
 {% endblock title %}
 
 {% block headercss %}
-    <link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/bcsTF/dashboard.css" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/bcsTF/dashboard.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 
 
 {% endblock headercss %}
 {% block content %}
-    <!-- main section starts -->
-    <main>
-        <section class="user-stat">
-            <div class="container">
-                <div class="row">
-                    <!-- select by users -->
-                    <div class="col-md-4">
-                        <div class="multiselect">
-                            <div class="selectBox" onclick="showCheckboxes(checkboxes)">
-                                <select>
-                                    <option>Select an option</option>
-                                </select>
-                                <div class="overSelect"></div>
-                            </div>
-                            <div id="checkboxes" class="w-100">
-                                <label for="one">
-                                    <input type="checkbox" id="one" />Plug & Play Program</label>
-                                <label for="one">
-                                    <input type="checkbox" id="one" />Managed Security Solution</label>
-                                <label for="two">
-                                    <input type="checkbox" id="two" />Vulnerability Assessment</label>
-                                <label for="three">
-                                    <input type="checkbox" id="three" />Penetration Testing</label>
-                                <label for="three">
-                                    <input type="checkbox" id="three" />Penetration Testing</label>
-                                <label for="three">
-                                    <input type="checkbox" id="three" />Malware Removal</label>
-                            </div>
+<!-- main section starts -->
+<main>
+    <section class="user-stat">
+        <div class="container">
+            <div class="row">
+                <!-- select by users -->
+                <div class="col-md-4">
+                    <div class="multiselect">
+                        <div class="selectBox" onclick="showCheckboxes(checkboxes)">
+                            <select>
+                                <option>Select an option</option>
+                            </select>
+                            <div class="overSelect"></div>
+                        </div>
+                        <div id="checkboxes" class="w-100">
+                            <label for="one">
+                                <input type="checkbox" id="one" />Plug & Play Program</label>
+                            <label for="one">
+                                <input type="checkbox" id="one" />Managed Security Solution</label>
+                            <label for="two">
+                                <input type="checkbox" id="two" />Vulnerability Assessment</label>
+                            <label for="three">
+                                <input type="checkbox" id="three" />Penetration Testing</label>
+                            <label for="three">
+                                <input type="checkbox" id="three" />Penetration Testing</label>
+                            <label for="three">
+                                <input type="checkbox" id="three" />Malware Removal</label>
                         </div>
                     </div>
-                    <!-- date picker -->
-                    <div class="col-md-4">
-                        <input type="text" id="dashboardDaterange" value="Select By Time range" name="daterange" />
-                    </div>
-                    <!-- User Stat Chart -->
-                    <div class="col-lg-4">
-                        <canvas id="user-chart" style="
+                </div>
+                <!-- date picker -->
+                <div class="col-md-4">
+                    <input type="text" id="dashboardDaterange" value="Select By Time range" name="daterange" />
+                </div>
+                <!-- User Stat Chart -->
+                <div class="col-lg-4">
+                    <canvas id="user-chart" style="
                                     display: block;
                                     width: 821px;
                                     margin-top: 2rem;
                                 " width="821" class="chartjs-render-monitor"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="info">
+        <div class="container">
+            <div class="row">
+                <!-- info chart -->
+                <div class="col-md-12">
+                    <canvas id="info-chart" height="50" class="chartjs-render-monitor"></canvas>
+                    <!-- filter buttons -->
+                    <div class="filter-options d-flex w-85 float-end justify-content-between mb-3">
+                        <button class="btn btn-secondary mx-2 rounded-pill">1d</button>
+                        <button class="btn btn-secondary mx-2 rounded-pill active">1w</button>
+                        <button class="btn btn-secondary mx-2 rounded-pill">1mo</button>
+                        <button class="btn btn-secondary mx-2 rounded-pill">3mo</button>
+                        <button class="btn btn-secondary mx-2 rounded-pill">6mo</button>
+                        <button class="btn btn-secondary mx-2 rounded-pill">1y</button>
+                        <button class="btn btn-secondary mx-2 rounded-pill">all</button>
                     </div>
                 </div>
             </div>
-        </section>
-        <section class="info">
-            <div class="container">
+        </div>
+    </section>
+    <section class="overview my-5">
+        <div class="activities">
+            <div class="container-fluid">
                 <div class="row">
-                    <!-- info chart -->
-                    <div class="col-md-12">
-                        <canvas id="info-chart" height="50" class="chartjs-render-monitor"></canvas>
-                        <!-- filter buttons -->
-                        <div class="filter-options d-flex w-85 float-end justify-content-between mb-3">
-                            <button class="btn btn-secondary mx-2 rounded-pill">1d</button>
-                            <button class="btn btn-secondary mx-2 rounded-pill active">1w</button>
-                            <button class="btn btn-secondary mx-2 rounded-pill">1mo</button>
-                            <button class="btn btn-secondary mx-2 rounded-pill">3mo</button>
-                            <button class="btn btn-secondary mx-2 rounded-pill">6mo</button>
-                            <button class="btn btn-secondary mx-2 rounded-pill">1y</button>
-                            <button class="btn btn-secondary mx-2 rounded-pill">all</button>
-                        </div>
+                    <div class="col-lg-6">
+                        <h3 class="mb-3 ">Recent Activities</h3>
+                        <!-- recent activities table -->
+                        <table class="table activites-table" id="activites-table">
+                            <thead>
+                                <tr>
+                                    <th>activity</th>
+                                    <th>time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th><i class="bi bi-person-plus-fill btn-success rounded-circle activites-icon"></i>
+                                        5 users hav signed up</th>
+                                    <td><i class="bi bi-clock-fill"></i> 3 minutes ago</td>
+                                </tr>
+                                <tr>
+                                    <th><i
+                                            class="bi bi-person-check-fill btn-primary rounded-circle activites-icon"></i>
+                                        2 users have subscribed</th>
+                                    <td><i class="bi bi-clock-fill"></i> 10 minutes ago</td>
+                                </tr>
+                                <tr>
+                                    <th><i class="bi bi-person-fill btn-purple rounded-circle activites-icon"></i> 3
+                                        users have renewed their account</th>
+                                    <td><i class="bi bi-clock-fill"></i> 30 minutes ago</td>
+                                </tr>
+                                <tr>
+                                    <th><i class="bi bi-person-x-fill btn-danger rounded-circle activites-icon"></i>
+                                        1
+                                        user have registered CCSP webinar </th>
+                                    <td><i class="bi bi-clock-fill"></i> 1 hour ago</td>
+                                </tr>
+                                <tr>
+                                    <th><i class="bi bi-person-x-fill btn-danger rounded-circle activites-icon"></i>
+                                        1
+                                        user have updated their interest list</th>
+                                    <td><i class="bi bi-clock-fill"></i> 1 hour ago</td>
+                                </tr>
+                                <tr>
+                                    <th><i class="bi bi-person-x-fill btn-danger rounded-circle activites-icon"></i>
+                                        1
+                                        user updated their interest list</th>
+                                    <td><i class="bi bi-clock-fill"></i> 1 hour ago</td>
+                                </tr>
+                                <tr>
+                                    <th><i class="bi bi-person-x-fill btn-danger rounded-circle activites-icon"></i>
+                                        1
+                                        PCS user recently subscribed to BCS service</th>
+                                    <td><i class="bi bi-clock-fill"></i> 1 hour ago</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                </div>
-            </div>
-        </section>
-        <section class="overview my-5">
-            <div class="activities">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <h3 class="mb-3 ">Recent Activities</h3>
-                            <!-- recent activities table -->
-                            <table class="table activites-table" id="activites-table">
-                                <thead>
-                                    <tr>
-                                        <th>activity</th>
-                                        <th>time</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th><i
-                                                class="bi bi-person-plus-fill btn-success rounded-circle activites-icon"></i>
-                                            5 users hav signed up</th>
-                                        <td><i class="bi bi-clock-fill"></i> 3 minutes ago</td>
-                                    </tr>
-                                    <tr>
-                                        <th><i
-                                                class="bi bi-person-check-fill btn-primary rounded-circle activites-icon"></i>
-                                            2 users have subscribed</th>
-                                        <td><i class="bi bi-clock-fill"></i> 10 minutes ago</td>
-                                    </tr>
-                                    <tr>
-                                        <th><i class="bi bi-person-fill btn-purple rounded-circle activites-icon"></i> 3
-                                            users have renewed their account</th>
-                                        <td><i class="bi bi-clock-fill"></i> 30 minutes ago</td>
-                                    </tr>
-                                    <tr>
-                                        <th><i class="bi bi-person-x-fill btn-danger rounded-circle activites-icon"></i>
-                                            1
-                                            user have registered CCSP webinar </th>
-                                        <td><i class="bi bi-clock-fill"></i> 1 hour ago</td>
-                                    </tr>
-                                    <tr>
-                                        <th><i class="bi bi-person-x-fill btn-danger rounded-circle activites-icon"></i>
-                                            1
-                                            user have updated their interest list</th>
-                                        <td><i class="bi bi-clock-fill"></i> 1 hour ago</td>
-                                    </tr>
-                                    <tr>
-                                        <th><i class="bi bi-person-x-fill btn-danger rounded-circle activites-icon"></i>
-                                            1
-                                            user updated their interest list</th>
-                                        <td><i class="bi bi-clock-fill"></i> 1 hour ago</td>
-                                    </tr>
-                                    <tr>
-                                        <th><i class="bi bi-person-x-fill btn-danger rounded-circle activites-icon"></i>
-                                            1
-                                            PCS user recently subscribed to BCS service</th>
-                                        <td><i class="bi bi-clock-fill"></i> 1 hour ago</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-lg-6">
-                            <h3 class="mb-3">My BCS Users</h3>
-                            <!-- user table -->
-                            <table class="table users-table" id="users-table" style="max-height: 10px;">
-                                <thead>
-                                    <th>title</th>
-                                    <th>title</th>
-                                    <th>title</th>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><i
-                                                class="bi bi-person-circle btn-primary rounded-circle activites-icon"></i>
-                                            Azharul
-                                        </td>
-                                        <td><i class="bi bi-person-fill text-yellow rounded-circle activites-icon"></i>
-                                            Moderator
-                                        </td>
-                                        <td>
-                                            <button class="btn">
-                                                <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
-                                            </button>
-                                            <button class="btn">
-                                                <i
-                                                    class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><i
-                                                class="bi bi-person-circle btn-primary rounded-circle activites-icon"></i>
-                                            Shomit
-                                        </td>
-                                        <td><i class="bi bi-person-fill text-yellow rounded-circle activites-icon"></i>
-                                            Editor
-                                        </td>
-                                        <td>
-                                            <button class="btn">
-                                                <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
-                                            </button>
-                                            <button class="btn">
-                                                <i
-                                                    class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><i
-                                                class="bi bi-person-circle btn-primary rounded-circle activites-icon"></i>
-                                            Azharul
-                                        </td>
-                                        <td><i class="bi bi-person-fill text-yellow rounded-circle activites-icon"></i>
-                                            Moderator
-                                        </td>
-                                        <td>
-                                            <button class="btn">
-                                                <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
-                                            </button>
-                                            <button class="btn">
-                                                <i
-                                                    class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><i
-                                                class="bi bi-person-circle btn-primary rounded-circle activites-icon"></i>
-                                            Shomit
-                                        </td>
-                                        <td><i class="bi bi-person-fill text-yellow rounded-circle activites-icon"></i>
-                                            Editor
-                                        </td>
-                                        <td>
-                                            <button class="btn">
-                                                <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
-                                            </button>
-                                            <button class="btn">
-                                                <i
-                                                    class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><i
-                                                class="bi bi-person-circle btn-primary rounded-circle activites-icon"></i>
-                                            Azharul
-                                        </td>
-                                        <td><i class="bi bi-person-fill text-yellow rounded-circle activites-icon"></i>
-                                            Moderator
-                                        </td>
-                                        <td>
-                                            <button class="btn">
-                                                <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
-                                            </button>
-                                            <button class="btn">
-                                                <i
-                                                    class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><i
-                                                class="bi bi-person-circle btn-primary rounded-circle activites-icon"></i>
-                                            Shomit
-                                        </td>
-                                        <td><i class="bi bi-person-fill text-yellow rounded-circle activites-icon"></i>
-                                            Editor
-                                        </td>
-                                        <td>
-                                            <button class="btn">
-                                                <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
-                                            </button>
-                                            <button class="btn">
-                                                <i
-                                                    class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Modal 1 -->
-        <div class="modal fade" id="businessModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-
-                    <div class="modal-body">
-
+                    <div class="col-lg-6">
+                        <h3 class="mb-3">My BCS Users</h3>
+                        <!-- user table -->
+                        <table class="table users-table" id="users-table" style="max-height: 10px;">
+                            <thead>
+                                <th>title</th>
+                                <th>title</th>
+                                <th>title</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><i class="bi bi-person-circle btn-primary rounded-circle activites-icon"></i>
+                                        Azharul
+                                    </td>
+                                    <td><i class="bi bi-person-fill text-yellow rounded-circle activites-icon"></i>
+                                        Moderator
+                                    </td>
+                                    <td>
+                                        <button class="btn">
+                                            <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
+                                        </button>
+                                        <button class="btn">
+                                            <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><i class="bi bi-person-circle btn-primary rounded-circle activites-icon"></i>
+                                        Shomit
+                                    </td>
+                                    <td><i class="bi bi-person-fill text-yellow rounded-circle activites-icon"></i>
+                                        Editor
+                                    </td>
+                                    <td>
+                                        <button class="btn">
+                                            <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
+                                        </button>
+                                        <button class="btn">
+                                            <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><i class="bi bi-person-circle btn-primary rounded-circle activites-icon"></i>
+                                        Azharul
+                                    </td>
+                                    <td><i class="bi bi-person-fill text-yellow rounded-circle activites-icon"></i>
+                                        Moderator
+                                    </td>
+                                    <td>
+                                        <button class="btn">
+                                            <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
+                                        </button>
+                                        <button class="btn">
+                                            <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><i class="bi bi-person-circle btn-primary rounded-circle activites-icon"></i>
+                                        Shomit
+                                    </td>
+                                    <td><i class="bi bi-person-fill text-yellow rounded-circle activites-icon"></i>
+                                        Editor
+                                    </td>
+                                    <td>
+                                        <button class="btn">
+                                            <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
+                                        </button>
+                                        <button class="btn">
+                                            <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><i class="bi bi-person-circle btn-primary rounded-circle activites-icon"></i>
+                                        Azharul
+                                    </td>
+                                    <td><i class="bi bi-person-fill text-yellow rounded-circle activites-icon"></i>
+                                        Moderator
+                                    </td>
+                                    <td>
+                                        <button class="btn">
+                                            <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
+                                        </button>
+                                        <button class="btn">
+                                            <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><i class="bi bi-person-circle btn-primary rounded-circle activites-icon"></i>
+                                        Shomit
+                                    </td>
+                                    <td><i class="bi bi-person-fill text-yellow rounded-circle activites-icon"></i>
+                                        Editor
+                                    </td>
+                                    <td>
+                                        <button class="btn">
+                                            <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
+                                        </button>
+                                        <button class="btn">
+                                            <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
-        </div>
-        <!-- Modal 2 -->
-        <div class="modal fade" id="personalModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
+    </section>
 
-                    </div>
+    <!-- Modal 1 -->
+    <div class="modal fade" id="businessModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-body">
+
                 </div>
             </div>
         </div>
-    </main>
+    </div>
+    </div>
+    <!-- Modal 2 -->
+    <div class="modal fade" id="personalModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
 {% endblock content %}
 {% block customjs %}
-    <!-- custom scripts -->
-    <script src="{% static '' %}tfjs/admin_panel/bcsTF//chart.js"></script>
-    <script src="{% static '' %}tfjs/admin_panel/bcsTF/dashboard.js"></script>
-    <script src="{% static '' %}tfjs/admin_panel/bcsTF/nav.js"></script>
+<!-- custom scripts -->
+<script src="{% static '' %}tfjs/admin_panel/bcsTF//chart.js"></script>
+<script src="{% static '' %}tfjs/admin_panel/bcsTF/dashboard.js"></script>
+<script src="{% static '' %}tfjs/admin_panel/bcsTF/nav.js"></script>
 
 {% endblock customjs %}

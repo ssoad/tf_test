@@ -84,6 +84,7 @@ class Post(models.Model):
     tag = models.ManyToManyField(Tags, related_name='post_tags', verbose_name='Add Tags')
     date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
+    total_view = models.IntegerField(blank=True, default=0)
 
     def __str__(self):
         return self.title
@@ -93,6 +94,7 @@ class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comment_user')
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comment_post')
     comment = models.TextField(verbose_name='Comment', max_length=500)
+    comment_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'{self.post.title}\'s comment'

@@ -1,0 +1,174 @@
+{% extends 'base/blog_base.html' %} {% load my_filter %} {% load static %} {% block title %} Blogs {% endblock title %}
+{% block headercss %}
+    <link rel="stylesheet" href="{% static 'tfcss/blog/blogs.css' %}"> {% endblock headercss %}
+
+{% block content %}
+    {% for subcategory in subcategories %}
+        {{ subcategory }}
+    {% endfor %}
+    <br>
+    {% if filter_options %}
+        {% for filter_option in filter_options %}
+            {{ filter_option }}
+        {% endfor %}
+    {% endif %}
+
+    <br>
+    {% for post in important_posts %}
+        {% if post.category|replacespace|lower == path %}
+            {{ post }}
+        {% endif %}
+    {% endfor %}
+    <br>
+    {% for post in posts %}
+        {% if post.category|replacespace|lower == path %}
+            {{ post }}
+        {% endif %}
+    {% endfor %}
+
+
+
+{% endblock content %}
+
+{% block customjs %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script>
+        let importantBlogs = document.querySelector('.important-blogs');
+        let recentBlogs = document.querySelector('.recent-blogs .blogs');
+        let filteredBlogs = document.querySelector('.recent-blogs .filtered-blogs');
+        let containerHeading = document.querySelector('.recent-blogs .container-heading');
+
+        document.getElementById('keyword-input').addEventListener('keyup', e => {
+            if (e.target.value == '') {
+                e.target.parentNode.parentNode.parentNode.parentNode.style.marginBottom = '0px';
+                containerHeading.textContent = 'RECENT ARTICLES';
+                importantBlogs.classList.remove('d-none');
+                recentBlogs.classList.remove('d-none');
+                filteredBlogs.innerHTML = '';
+            } else {
+                e.target.parentNode.parentNode.parentNode.parentNode.style.marginBottom = '100px';
+                containerHeading.textContent = 'FILTERED ARTICLES';
+                importantBlogs.classList.add('d-none');
+                recentBlogs.classList.add('d-none');
+
+                getPosts(e.target.value, 'keyword');
+            }
+        });
+
+        let filterByDate = (range) => {
+            containerHeading.textContent = 'FILTERED ARTICLES';
+            importantBlogs.classList.add('d-none');
+            recentBlogs.classList.add('d-none');
+
+            getPosts(range, 'date');
+        }
+
+        let getPosts = (value, type) => {
+            filteredBlogs.classList.remove('d-none');
+            filteredBlogs.innerHTML = `<div id="progress" class="text-center py-5">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        </div>`;
+
+            let url = `/filter_post_${type}/blogs/${value}`;
+            fetchPosts(url).then(function (data) {
+                let posts = JSON.parse(data);
+                filteredBlogs.removeChild(document.getElementById('progress'));
+
+                posts.forEach(post => {
+                    let newPost = ` <div class="post col-md-4">
+            <div class="card">
+                <button class="btn add-btn"><i class="bi bi-plus-lg"></i>
+                    <span>Add to my reading list</span>
+                </button>
+                <img src="{% get_media_prefix %}${post.fields.feature_image}" class="card-img-top" alt="...">
+                <div class="card-body pt-2 p-0">
+                    <a href="{% url 'blog_app:blogs' name='slug_url' %}${post.fields.post_url}" class="title">
+                        <h6 class="fw-bold fs-7">${post.fields.title}</h6>
+                    </a>
+                    <div class="info-area">
+                        <span class="p-0 me-3 text-green">
+                            <i class="bi bi-calendar"></i>
+                            ${(post.fields.date).split('T')[0]}
+                        </span>
+                        <span class="p-0 me-3 text-green" title="Reading Time">
+                            <i class="bi bi-stopwatch"></i>
+                            ${post.fields.reading_time}
+                        </span>
+                    </div>
+                    <p class="fs-7 lh-sm">
+                        ${post.fields.short_description.slice(0, 140) + "..."}
+                    </p>
+                </div>
+            </div>
+        </div>`;
+
+                    filteredBlogs.innerHTML += newPost;
+                });
+                updateCardHeight('filtered');
+                updateAddBtn();
+            }).catch(function (err) {
+                console.log(err)
+            })
+        }
+
+        function fetchPosts(url) {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    dataType: 'json',
+                    success: function (data) {
+                        resolve(data) // Resolve promise and go to then()
+                    },
+                    error: function (err) {
+                        reject(err) // Reject the promise and go to catch()
+                    }
+                });
+            });
+        }
+
+        let updateCardHeight = (type) => {
+            let posts = type === 'all' ? document.querySelectorAll('.recent-blogs .blogs .post .card') :
+                document.querySelectorAll('.recent-blogs .filtered-blogs .post .card');
+            let postsHeight = Array.from(posts).map(post => post.clientHeight)
+
+            let maxPostHeight = postsHeight.reduce(function (a, b) {
+                return Math.max(a, b);
+            }, 0);
+
+            posts.forEach(post => {
+                post.style.height = (maxPostHeight + 20) + 'px';
+            })
+        }
+
+
+        let updateAddBtn = () => {
+            document.querySelectorAll('.post .card .add-btn').forEach(btn => {
+                btn.addEventListener('mouseover', e => {
+                    if (e.target.tagName == 'I')
+                        btn.classList.add('show-btn');
+                });
+                btn.addEventListener('mouseout', e => {
+                    if (e.target.tagName == 'BUTTON')
+                        btn.classList.remove('show-btn');
+                });
+            });
+        }
+
+        window.onload = function () {
+            updateCardHeight('all');
+            updateAddBtn();
+        }
+
+        let allPost = document.querySelectorAll('.recent-blogs .post');
+
+        document.getElementById('load-more-btn').addEventListener('click', () => {
+            for (let i = 0; i < 4; i++) {
+                postContainer.appendChild(allPost[i]);
+            }
+        });
+    </script>
+{% endblock customjs %}
