@@ -1,0 +1,208 @@
+<!DOCTYPE html> {% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /> {% block meta %} {% endblock meta %}
+    <!-- CSS -->
+    <link rel="stylesheet" href="{%static ''%}tfcss/icofont/icofont.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <!-- data table css -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" />
+    <!-- date range picker css -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <!-- bootstrap icon -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="{%static ''%}tfcss/admin_panel/bcsTF/nav.css" /> {% block headercss %} {% endblock headercss %}
+
+    <title>
+        {% block title %} {% endblock title %}
+    </title>
+    <link rel="icon" href="{%static ''%}tfimg/user_panel/Techforing-Icon.png" type="image/x-icon" />
+</head>
+
+<body>
+    <!-- Header Start -->
+    <header>
+        <!-- top bar section starts here -->
+        <nav class="navbar fixed-top">
+            <div class="container-fluid">
+                <!-- Brand/logo-->
+                <a class="navbar-brand" href="#">
+                    <img src="{% static '' %}tfimg/admin_panel/TechForingLogo.png" alt="Tech Foring" />
+                </a>
+                <!-- page title -->
+                <span class="navbar-text rounded-0 px-2  fw-bold text-primary">
+                    <a href="" class="">Business Cybersecurity</a>
+                </span>
+                <span class="navbar-text rounded-0 px-2 fw-bold text-primary">
+                    <a href="" class="">Personal Cybersecurity</a>
+                </span>
+                <span class="dropdown">
+                    <a class="nav-link btn-primary dropdown text-white" href="#" id="navbarDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Admin
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{% url 'bcs_app:main_admin_profile' %}">My profile</a></li>
+                        <li><a class="dropdown-item" href="{% url 'account_app:logout' %}">Sgn out</a></li>
+                    </ul>
+                </span>
+            </div>
+        </nav>
+        <!-- top bar section ends here -->
+        <!-- sidebar section starts here -->
+        <aside>
+            <div class="aside-container position-fixed bg-white px-1 pt-2 d-none d-lg-block">
+                <!-- Nav links starts here -->
+                <ul class="menubar">
+                    <li>
+                        <a href="{% url 'bcs_app:bcs_admin_dashboard' %}" class="nav-link active">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="29.273" height="23"
+                                viewBox="0 0 29.273 23">
+                                <path id="list-alt"
+                                    d="M6.273,17.25V18.3a.53.53,0,0,1-.523.523H4.7a.529.529,0,0,1-.522-.523V17.25a.53.53,0,0,1,.523-.523H5.751a.53.53,0,0,1,.523.523Zm0-4.182v1.046a.53.53,0,0,1-.523.523H4.7a.529.529,0,0,1-.522-.523V13.068a.529.529,0,0,1,.523-.522H5.751a.529.529,0,0,1,.522.522Zm0-4.182V9.932a.53.53,0,0,1-.523.523H4.7a.529.529,0,0,1-.522-.523V8.886A.529.529,0,0,1,4.7,8.364H5.751a.529.529,0,0,1,.522.523ZM25.092,17.25V18.3a.53.53,0,0,1-.523.523H8.887a.53.53,0,0,1-.523-.523V17.25a.53.53,0,0,1,.523-.523H24.569a.53.53,0,0,1,.523.523Zm0-4.182v1.046a.53.53,0,0,1-.523.523H8.887a.53.53,0,0,1-.523-.523V13.068a.529.529,0,0,1,.523-.522H24.569a.53.53,0,0,1,.523.523Zm0-4.182V9.932a.53.53,0,0,1-.523.523H8.887a.53.53,0,0,1-.523-.523V8.886a.529.529,0,0,1,.523-.522H24.569a.53.53,0,0,1,.523.523Zm2.091,11.5V6.8a.53.53,0,0,0-.522-.523H2.613a.53.53,0,0,0-.523.523V20.387a.53.53,0,0,0,.523.523H26.659a.53.53,0,0,0,.523-.523ZM29.273,2.613V20.387A2.621,2.621,0,0,1,26.659,23H2.613a2.517,2.517,0,0,1-1.846-.768A2.517,2.517,0,0,1,0,20.387V2.613A2.517,2.517,0,0,1,.768.768,2.517,2.517,0,0,1,2.613,0H26.659a2.517,2.517,0,0,1,1.846.768,2.517,2.517,0,0,1,.768,1.846Z"
+                                    fill="#111125" />
+                            </svg>
+                            blogs
+                        </a>
+                    </li>
+                    <!-- <li>
+                        <a href="{% url 'bcs_app:bcs_admin_reading_list' %}" class="nav-link">
+                            <i class="bi bi-file-earmark-fill"></i> Blogs
+                        </a>
+                    </li> -->
+                    <li>
+                        <a href="{% url 'bcs_app:bcs_admin_reading_list' %}" class="nav-link">
+                            <i class="bi bi-file-earmark-fill"></i> Comments
+                        </a>
+                    </li>
+                    <li>
+                        <span href="" class="nav-link dropdown-btn dropdown-toggle" id="supportDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="icofont-life-buoy"></i>
+                            Categories
+                        </span>
+                        <ul class="dropdown-container " aria-labelledby="supportDropdown">
+                            <li><a class="dropdown-item nav-link" href="{% url 'bcs_app:main_admin_support_view' %}">Category</a></li>
+                            <li><a class="dropdown-item nav-link" href="{% url 'bcs_app:main_admin_stuff_view' %}">Sub Category</a></li>
+                            <li><a class="dropdown-item nav-link" href="{% url 'bcs_app:main_admin_all_tickets' %}">Filter Option</a></li>
+                        </ul>
+                    </li>
+                    <!-- <li>
+                        <span class="nav-link dropdown-btn dropdown-toggle" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-collection-fill"></i>
+                            services
+                        </span>
+                        <ul class="dropdown-container" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item nav-link" href="{% url 'bcs_app:bcs_admin_services' %}"><i
+                                        class="bi bi-collection-fill"></i>Main Service</a></li>
+                            <li><a class="dropdown-item nav-link" href="{% url 'bcs_app:bcs_admin_sub_services' %}"><i
+                                        class="bi bi-collection-fill"></i>Sub Service</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <span class="nav-link dropdown-btn dropdown-toggle" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-people-fill"></i>
+                            users
+                        </span>
+                        <ul class="dropdown-container" aria-labelledby="navbarDropdown">
+                            <li>
+                                <a href="#" class="nav-link">
+                                    <i class="bi bi-people-fill"></i> users
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="nav-link">
+                                    <i class="bi bi-people-fill"></i> admin users
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'bcs_app:bcs_admin_reading_list' %}" class="nav-link">
+                            <i class="bi bi-file-earmark-fill"></i> Reading List
+                        </a>
+                    </li>
+                    <li>
+                        <span class="nav-link dropdown-btn dropdown-toggle" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-tag-fill"></i>
+                            Subscription
+                        </span>
+                        <ul class="dropdown-container" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item nav-link" href="{% url 'bcs_app:bcs_admin_subscriptions' %}"><i
+                                        class="bi bi-tag-fill"></i>Subscription List</a></li>
+                            <li><a class="dropdown-item nav-link" href="#"><i
+                                        class="bi bi-collection-fill"></i>Subscription package</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'bcs_app:bcs_admin_revenue' %}" class="nav-link">
+                            <i class="bi bi-currency-dollar"></i> revenue
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link">
+                            <i class="bi bi-hand-index-fill"></i> user interest
+                        </a>
+                    </li> -->
+                </ul>
+                <!-- nav links ends here -->
+            </div>
+        </aside>
+        <!-- sidebar section ends here -->
+    </header>
+
+    {% block content %} {% endblock content %}
+
+    <footer id="footer-small" class="footer footer-shrink" class="bg-blue p-2 pt-4 p-md-5 pb-md-2">
+        <div class="d-flex justify-content-center mb-4">
+            <a href="" class="me-5">PRIVACY POLICY</a>
+            <a href="">TERMS OF USE</a>
+        </div>
+        <div class="d-flex justify-content-center align-items-center">
+            <a href="https://www.facebook.com/techforing/">
+                <img src="{% static '' %}tfimg/user_panel/facebook.png" class="me-3" alt="">
+            </a>
+            <a href="https://www.linkedin.com/company/techforingltd./">
+                <img src="{% static '' %}tfimg/user_panel/linkedin.png" class="me-3" alt="">
+            </a>
+            <a href="https://twitter.com/techforingltd?lang=en">
+                <img src="{% static '' %}tfimg/user_panel/twitter.png" class="me-3" alt="">
+            </a>
+            <a href="https://www.instagram.com/techforingltd/">
+                <img src="{% static '' %}tfimg/user_panel/Instagram.png" alt="">
+            </a>
+        </div>
+
+        <div class="p-3 p-md-4 pb-2 text-center text-white ">
+            <p class="pt-4 border-top border-light">Copyright &copy; 2021 Techforing Ltd.
+            </p>
+        </div>
+    </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+
+    <!-- data table library -->
+    <script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+
+    <!-- date range picker -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
+    <script src="{%static ''%}tfjs/admin_panel/bcsTF/nav.js"></script>
+    {% block customjs %} {% endblock customjs %}
+</body>
+
+</html>
