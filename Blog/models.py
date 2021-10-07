@@ -57,6 +57,16 @@ class FilterOption(models.Model):
         verbose_name_plural = 'Blog Filter Option'
 
 
+class Tags(models.Model):
+    tag = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.tag
+
+    class Meta:
+        verbose_name_plural = 'Tags'
+
+
 class Post(models.Model):
     author = models.ForeignKey(User, verbose_name='Author', on_delete=models.CASCADE)
     post_url = models.CharField(max_length=264, verbose_name='URL', unique=True)
@@ -71,7 +81,7 @@ class Post(models.Model):
     content = HTMLField(verbose_name='Post Content')
     # reading_time = models.DurationField(default=datetime.timedelta(minutes=3))
     comment_option = models.CharField(choices=COMMENT_OPTIONS, default='disabled', max_length=100)
-    tag = models.CharField(max_length=264)
+    tag = models.ManyToManyField(Tags, related_name='post_tags', verbose_name='Add Tags')
     date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 

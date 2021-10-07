@@ -52,9 +52,9 @@
             <label for="tagName" class="">Tag<span class="asteriskField">*</span></label>
             <select name="tagName" class="form-control js-example-tokenizer" id="tagName" multiple="multiple">
                 <option value="" disabled>Select Tag</option>
-                <option>orange</option>
-                <option>white</option>
-                <option>purple</option>
+                {% for tag in tag_list %}
+                    <option>{{ tag }}</option>
+                {% endfor %}
             </select>
             <button type="submit" class="btn btn-success blogPost">Post</button>
         </form>
