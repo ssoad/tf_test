@@ -3,9 +3,12 @@ from Blog import models
 
 
 class PostSerializer(serializers.ModelSerializer):
+    author_name = serializers.CharField(source='author.first_name')
+    category_name = serializers.CharField(source='category.category')
+
     class Meta:
         model = models.Post
-        fields = '__all__'
+        fields = ['id', 'post_url', 'title', 'feature_image', 'short_description', 'content', 'comment_option', 'date', 'updated_date', 'total_view', 'author', 'author_name', 'category', 'category_name', 'sub_categories', 'filter_option', 'tag']
 
 
 class CategorySerializer(serializers.ModelSerializer):
