@@ -55,18 +55,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        
-                        <tr>
-                            <td><p class="part fw-bold">CLASSIFIED VULNERABILITY ASSESSMENT CASE STUDY- 4 STEPS PROCESS OF MITIGATING RISK </p></td>
-                            <td><p class="part fw-bold">CLASSIFIED VULNERABILITY ASSESSMENT CASE STUDY- 4 STEPS PROCESS OF MITIGATING RISK </p></td>
-                            <td>Admin</td>
-                            <td>21 September, 2021, 11AM</td>
+                        {% for comment in comments %}
+                            <tr>
+                            <td><p class="part fw-bold">{{ comment.comment }}</p></td>
+                            <td><a href="{% url 'blog_app:blogs' name=comment.post.post_url %}" class="part fw-bold">{{ comment.post }}</a></td>
+                            <td>{{ comment.user }}</td>
+                            <td>{{ comment.comment_date }}</td>
                             <td>
-                                <button class="btn">
+                                <a href="{% url 'blog_app:admin_comment_delete' id=comment.id %}" class="btn">
                                     <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                </button>
+                                </a>
                             </td>
                         </tr>
+                        {% endfor %}
+
+
                     </tbody>
                 </table>
             </div>
