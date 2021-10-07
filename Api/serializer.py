@@ -36,3 +36,12 @@ class FilterSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.FilterOption
         fields = ['id', 'filter_name']
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    author = serializers.CharField(source='user.first_name', read_only=True)
+    post_title = serializers.CharField(source='post.title', read_only=True)
+
+    class Meta:
+        model = models.Comment
+        fields = ['id', 'comment', 'comment_date', 'user', 'post', 'author', 'post_title']

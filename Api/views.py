@@ -4,6 +4,7 @@ from django.shortcuts import render
 from Api import serializer
 from rest_framework import generics
 from Blog import models
+from rest_framework import permissions
 
 
 # Create your views here.
@@ -35,3 +36,19 @@ class FilterApi(generics.ListAPIView):
         category = self.kwargs['id']
         subcategory = self.kwargs['sub_id']
         return models.FilterOption.objects.filter(sub_category=subcategory, sub_category__category=category)
+
+
+class AllCommentCreateViewApi(generics.ListCreateAPIView):
+    serializer_class = serializer.CommentSerializer
+    queryset = models.Comment.objects.all()
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+class CommentCreateViewApi(generics.ListCreateAPIView):
+    serializer_class = serializer.CommentSerializer
+    queryset = models.Comment.objects.all()
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        post = self.kwargs['post_id']
+        return models.Comment.objects.filter(post=post)

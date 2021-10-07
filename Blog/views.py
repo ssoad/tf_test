@@ -163,13 +163,15 @@ def adminNewPostView(request):
 
 # Admin Section End Here
 def indexView(request):
-    blogs = models.Post.objects.filter(category=1)  # Need to Update Later
-    case_studies = models.Post.objects.filter(category=1)  # Need to Update Later
+
+    articles = models.Post.objects.filter(category__category__iexact='articles')
+    case_studies = models.Post.objects.filter(category__category__iexact='Case Studies')
     categories = models.BlogCategory.objects.all()
     subcategories = models.BlogSubCategory.objects.all()
-
+    print(articles)
+    print(case_studies)
     context = {
-        'blogs': blogs.order_by('date')[:4],
+        'articles': articles.order_by('date')[:4],
         'case_studies': case_studies.order_by('date')[:4],
         'categories': categories,
         'subcategories': subcategories,
@@ -178,9 +180,13 @@ def indexView(request):
 
 
 # these 3 functions for single post
-def blogsView(request, name):
+def postView(request, name):
     posts = models.Post.objects.all()
     post = models.Post.objects.get(post_url=name)
+    total = post.total_view
+
+    post.total_view = total+1
+    post.save()
 
     context = {
         'post': post, 'category': 'blogs',
@@ -203,65 +209,47 @@ def case_studiesView(request, name):
 def podcastView(request, name):
     posts = models.Post.objects.all()
     post = models.Post.objects.get(post_url=name)
-    categories = models.SubCategory.objects.all()
+    categories = models.BlogSubCategory.objects.all()
 
     context = {
         'post': post, 'category': 'case_studies',
         'related_posts': posts.order_by('date')[:3],
         'categories': categories,
     }
-    return render(request, 'blog/podcast.html', context)
+    return render(request, 'blog/post.html', context)
 
 
 # for specific category
 def categoryView(request, name):
-    if '/' in name:
-        name = name.rpartition('/')[0]
-
-    if name == 'blogs':
-        posts = models.Post.objects.filter(category=name)
-        template_name = 'blog/blogs.html'
-    elif name == 'podcast':
-        posts = models.Post.objects.filter(category=name)
-        template_name = 'blog/podcast.html'
-    elif name == 'case_studies':
-        posts = models.Post.objects.filter(category=name)
-        template_name = 'blog/case_studies.html'
-    else:
-        name = (str(name)).replace('_', ' ')
-        print(name)
-        posts = models.Post.objects.filter(sub_categories__sub_category__iexact=name)
-        template_name = 'blog/index.html'
-
-    case_studies = models.Post.objects.filter(sub_categories__sub_category=name, category='Case Studies')
-    categories = models.SubCategory.objects.all()
-
+    print('calling')
+    posts = models.Post.objects.all()
+    subcategories = models.BlogSubCategory.objects.filter(category__category__iexact=str(name).replace('_', ' '))
     context = {
-        'blogs': posts.order_by('-date'),
-        'important_posts': posts.order_by('-date'),
-        'recent_posts': posts,
-        'case_studies': case_studies,
-        'categories': categories,
+        'posts': posts.order_by('-date'),
+        'path': name,
+        'important_posts': posts.order_by('-total_view')[:4],
+        'subcategories': subcategories,
+
+
     }
 
-    return render(request, template_name, context)
+    return render(request, 'blog/all.html', context)
 
 
 def category_detailView(request, name1, name2):
-    if '/' in name1:
-        name1 = name1.rpartition('/')[0]
-    if name1 == 'blogs':
-        template_name = 'blog/blogs.html'
-    else:
-        template_name = 'blog/case_studies.html'
-
-    posts = models.Post.objects.filter(category=name1, sub_category=name2)
-
+    print('called')
+    posts = models.Post.objects.filter(category__category__iexact=str(name1).replace('_', ' '), sub_categories__sub_category__iexact=str(name2).replace('_', ' '))
+    filter_options = models.FilterOption.objects.filter(sub_category__category__category__iexact=str(name1).replace('_', ' '), sub_category__sub_category__iexact=str(name2).replace('_', ' '))
+    subcategories = models.BlogSubCategory.objects.filter(category__category__iexact=str(name1).replace('_', ' '))
     context = {
-        'important_posts': posts.order_by('date'),
-        'recent_posts': posts
+        'posts': posts.order_by('-date'),
+        'path': name1,
+        'path2': name2,
+        'important_posts': posts.order_by('-total_view')[:4],
+        'subcategories': subcategories,
+        'filter_options': filter_options,
     }
-    return render(request, template_name, context)
+    return render(request, 'blog/all.html', context)
 
 
 def filter_post_keywordView(request, type, keyword):
