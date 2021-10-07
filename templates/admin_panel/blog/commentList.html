@@ -7,7 +7,72 @@
     <!-- <link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/bcsTF/dashboard.css" /> -->
 {% endblock headercss %}
 {% block content %}
-
+<main>
+    <div class="container-fluid">
+        <!-- <div class="row">
+            <div class="col-lg-12">
+                <table class="table table-bordered" id="blogList">
+                    <thead>
+                        <tr>
+                            <th>Post Title</th>
+                            <th>Post Author</th>
+                            <th>Category</th>
+                            <th>Post Date And Time</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CLASSIFIED VULNERABILITY ASSESSMENT CASE STUDY- 4 STEPS PROCESS OF MITIGATING RISK</td>
+                            <td>Admin</td>
+                            <td>Article</td>
+                            <td>21 September, 2021, 11AM</td>
+                            <td><i class="bi bi-pencil-square"></i> <i class="bi bi-trash-fill"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div> -->
+        <!-- <div class="row">
+            <div class="col-lg-12">
+                <button class="btn border-1 border-dark addService float-end mb-4" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal">
+                    Add Blog
+                    <i class="bi bi-plus-circle-fill"></i></button>
+            </div>
+        </div> -->
+        <div class="row">
+            <div class="col-lg-12 position-relative" style="margin-bottom: 15rem;">
+                <h2 class="text-capitalize position-absolute my-4">comment list</h2>
+                <table id="blogList" class="table display" style="width: 100%">
+                    <thead>
+                        <tr>
+                            <th>Comment Title</th>
+                            <th>Post</th>
+                            <th>Commented By</th>
+                            <th>Date And Time</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <tr>
+                            <td> <p class="part fw-bold">CLASSIFIED VULNERABILITY ASSESSMENT CASE STUDY- 4 STEPS PROCESS OF MITIGATING RISK </p></td>
+                            <td> <p class="part fw-bold">CLASSIFIED VULNERABILITY ASSESSMENT CASE STUDY- 4 STEPS PROCESS OF MITIGATING RISK </p></td>
+                            <td>Admin</td>
+                            <td>21 September, 2021, 11AM</td>
+                            <td>
+                                <button class="btn trash">
+                                    <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
 
 {% endblock content %}
 {% block customjs %}
