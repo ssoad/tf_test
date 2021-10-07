@@ -109,27 +109,16 @@ def adminNewPostView(request):
     filterOption = ''
     subcat = ''
     subfil = ''
-    # print(request.POST)
+    print(request.POST)
     if request.method == 'POST':
         inputItems = request.POST
         category = request.POST.get('category')
         tags = request.POST.getlist('tagName')
-        tag_lists = []
-        for t in tag_list:
-            tag_lists.append(str(t))
-        # check = all(item in tag_lists for item in tags)
-        for item in tags:
-            for existing_item in tag_lists:
-                if item != existing_item:
-                    # new_tag = models.Tags.objects.create(tag=item)
-                    print(item)
-                else:
-                    tag_lists.remove(existing_item)
-                    tags.remove(item)
-                    break
-        # print(tag_lists)
-        # print(tags)
-        # print(check)
+
+        for t in tags:
+            if not models.Tags.objects.filter(tag=t).exists():
+                new_tag = models.Tags.objects.create(tag=t)
+
         for i in inputItems:
             if i == "subCategory":
                 subCategory = request.POST.get('subCategory')
@@ -138,19 +127,31 @@ def adminNewPostView(request):
 
         form = forms.PostForm(request.POST, request.FILES)
         if form.is_valid():
+            # Get Form Data
+
+            post_url = form.cleaned_data['post_url']
+            feature_image = form.cleaned_data['feature_image']
+            title = form.cleaned_data['title']
+            short_description = form.cleaned_data['short_description']
+            content = form.cleaned_data['content']
+            comment_option = form.cleaned_data['comment_option']
+
             cat = models.BlogCategory.objects.get(pk=category)
+
+            add_tags = models.Tags.objects.filter(tag__in=tags)
+            instance = models.Post.objects.create(author=request.user, category=cat, feature_image=feature_image,
+                                                  post_url=post_url, title=title, short_description=short_description,
+                                                  content=content, comment_option=comment_option)
+            instance.tag.set(add_tags)
             if subCategory:
                 subcat = models.BlogSubCategory.objects.get(pk=subCategory)
+                instance.sub_categories = subcat
+                instance.save()
             if filterOption:
                 subfil = models.FilterOption.objects.get(pk=filterOption)
-            post = form.save(commit=False)
-            post.author = request.user
-            post.category = cat
-            if subcat:
-                post.sub_categories = subcat
-            if subfil:
-                post.filter_option = subfil
-            # post.save()
+                instance.filter_option = subfil
+                instance.save()
+
             return HttpResponseRedirect(reverse('blog_app:index'))
 
     context = {
