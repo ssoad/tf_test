@@ -1,0 +1,48 @@
+{% extends 'base/blog_admin_base.html' %} {% load static %}
+
+{% block title %} Blog Admin Form
+{% endblock title %}
+
+{% block headercss %}
+    <!-- <link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/bcsTF/dashboard.css" /> -->
+{% endblock headercss %}
+{% block content %}
+
+<section class="w-75 container">
+    <h3 class="fw-bold text-center my-5 border-bottom border-secondary">Add a new post</h3>
+    <div id="content-main">
+        <form enctype="multipart/form-data" method="POST" id="post_form">
+            <label for="category">Category <span class="asteriskField">*</span></label>
+            <select name="category" id="category" class="form-select" required>
+                <option value="" disabled selected>Select a category</option>
+            </select>
+            <label for="subCategory" class="d-none">Sub Category <span class="asteriskField">*</span></label>
+            <select name="subCategory" id="subCategory" class="form-select d-none">
+                <option value="" disabled selected>Select a Sub category</option>
+            </select>
+            <label for="filterOption" class="d-none">Filter Option<span class="asteriskField">*</span></label>
+            <select name="filterOption" id="filterOption" class="form-select d-none">
+                <option value="" disabled selected>Select Filter Option</option>
+            </select>
+            {{ form.media }}
+            {{ form|crispy }}
+            {% csrf_token %}
+            <label for="tagName" class="">Tag<span class="asteriskField">*</span></label>
+            <select name="tagName" class="form-control js-example-tokenizer" id="tagName" multiple="multiple">
+                <option value="" disabled>Select Tag</option>
+                <option>orange</option>
+                <option>white</option>
+                <option>purple</option>
+            </select>
+            <button type="submit" class="btn btn-success blogPost">Post</button>
+        </form>
+    </div>
+
+</section>
+
+{% endblock content %}
+{% block customjs %}
+    <!-- custom scripts -->
+    <!-- <script src="{% static '' %}tfjs/admin_panel/bcsTF//chart.js"></script> -->
+
+{% endblock customjs %}

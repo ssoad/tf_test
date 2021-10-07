@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'BusinessSecurity',
     'PersonalSecurity',
     'Blog',
+    'Api',
 
     # django-allauth
     'allauth',
@@ -55,9 +56,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
 
-    # ckeditor
-    'ckeditor',
-    'ckeditor_uploader',
+    # tinymce
+    'tinymce',
 
     # djangorestframework
     'rest_framework',
@@ -76,23 +76,40 @@ INSTALLED_APPS = [
 ]
 
 # Django-Rest-Framework Settings
-REST_FRAMEWORK = {
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-    ),
-    'DEFAULT_PARSER_CLASSES': [
-        'rest_framework.parsers.JSONParser',
-    ]
-}
+# REST_FRAMEWORK = {
+#     'DEFAULT_RENDERER_CLASSES': (
+#         'rest_framework.renderers.JSONRenderer',
+#     ),
+#     'DEFAULT_PARSER_CLASSES': [
+#         'rest_framework.parsers.JSONParser',
+#     ]
+# }
 
-# ckeditor Settings
-CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar': 'full',
-    },
+# tinymce Settings
+TINYMCE_DEFAULT_CONFIG = {
+    "theme": "silver",
+    "height": 500,
+    "menubar": 'file edit view insert format tools table help',
+    "plugins": 'print, preview, powerpaste, casechange, importcss, tinydrive, searchreplace, autolink, autosave, '
+               'save, directionality, advcode, visualblocks, visualchars, fullscreen, image, link, media, mediaembed, '
+               'template, codesample, table, charmap, hr, pagebreak, nonbreaking, anchor, toc, insertdatetime, '
+               'advlist, lists, checklist, wordcount, tinymcespellchecker, a11ychecker, textpattern, noneditable, '
+               'help, formatpainter, pageembed, charmap, mentions, quickbars, linkchecker, emoticons, advtable, '
+               'searchreplace,visualblocks,code,fullscreen,media,table,paste, code,help,wordcount',
+    "toolbar1": "undo redo toc | fontselect fontsizeselect formatselect lineheight | bold italic underline "
+                "strikethrough superscript subscript | forecolor backcolor casechange permanentpen formatpainter "
+                "removeformat | alignleft "
+                "aligncenter alignright alignjustify |  numlist bullist checklist | outdent indent |  searchreplace hr "
+                "charmap emoticons table pagebreak |  insertdatetime image insertfile media pageembed template link anchor "
+                "codesample | "
+                "a11ycheck ltr rtl | showcomments addcomment|fullscreen preview print | help",
+    # 'file_browser_callback': 'filebrowser'
+
 }
-CKEDITOR_UPLOAD_PATH = 'uploads/'
-CKEDITOR_IMAGE_BACKEND = 'pillow'
+TINYMCE_SPELLCHECKER = True
+TINYMCE_FILEBROWSER = True
+
+
 
 # Crispy_Forms_Settings
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -118,7 +135,6 @@ AUTHENTICATION_BACKENDS = [
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
-
 
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True

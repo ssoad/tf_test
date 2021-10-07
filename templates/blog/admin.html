@@ -1,171 +1,161 @@
-{% extends 'base/blog_base.html' %} {% load hosts %} {% load static %} {% block title %} Blogs {% endblock title %} {% block headercss %}
-<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
-<link rel="stylesheet" type="text/css" href="{% static '' %}admin/css/base.css">
-<link rel="stylesheet" type="text/css" href="{% static '' %}admin/css/forms.css">
-<script src="/admin/jsi18n/" type="fd1fedd8f505b20d2a49a9ee-text/javascript"></script>
-<script src="{% static '' %}admin/js/vendor/jquery/jquery.js" type="fd1fedd8f505b20d2a49a9ee-text/javascript"></script>
-<script src="{% static '' %}ckeditor/ckeditor-init.js" data-ckeditor-basepath="{% static '' %}ckeditor/ckeditor/" id="ckeditor-init-script" type="fd1fedd8f505b20d2a49a9ee-text/javascript"></script>
-<script src="{% static '' %}admin/js/calendar.js" type="fd1fedd8f505b20d2a49a9ee-text/javascript"></script>
-<script src="{% static '' %}admin/js/jquery.init.js" type="fd1fedd8f505b20d2a49a9ee-text/javascript"></script>
-<script src="{% static '' %}ckeditor/ckeditor/ckeditor.js" type="fd1fedd8f505b20d2a49a9ee-text/javascript"></script>
-<script src="{% static '' %}admin/js/admin/DateTimeShortcuts.js" type="fd1fedd8f505b20d2a49a9ee-text/javascript"></script>
-<script src="{% static '' %}admin/js/core.js" type="fd1fedd8f505b20d2a49a9ee-text/javascript"></script>
-<script src="{% static '' %}admin/js/admin/RelatedObjectLookups.js" type="fd1fedd8f505b20d2a49a9ee-text/javascript"></script>
-<script src="{% static '' %}admin/js/actions.js" type="fd1fedd8f505b20d2a49a9ee-text/javascript"></script>
-<script src="{% static '' %}admin/js/urlify.js" type="fd1fedd8f505b20d2a49a9ee-text/javascript"></script>
-<script src="{% static '' %}admin/js/prepopulate.js" type="fd1fedd8f505b20d2a49a9ee-text/javascript"></script>
-<script src="{% static '' %}admin/js/vendor/xregexp/xregexp.js" type="fd1fedd8f505b20d2a49a9ee-text/javascript"></script>
+{% extends 'base/blog_base.html' %} {% load static %} {% load crispy_forms_tags %} {% block title %} Blogs
+{% endblock title %} {% block headercss %}
+
+
+
 <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<link rel="stylesheet" type="text/css" href="{% static '' %}admin/css/responsive.css">
+
 <style>
     footer {
         display: none;
+    }
+
+    label {
+        margin-block-start: 1.5rem;
+        font-size: 1rem;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    #id_short_description {
+        height: 75px;
+        resize: none;
+    }
+
+    .blogPost {
+        margin-block: 1rem;
+        padding-inline: 1.5rem;
     }
 </style>
 
 {% endblock headercss %} {% block content %}
 
-<section>
+<section class="w-75 container">
     <h3 class="fw-bold text-center my-5 border-bottom border-secondary">Add a new post</h3>
     <div id="content-main">
-        <form enctype="multipart/form-data" method="post" id="post_form" novalidate><input type="hidden" name="csrfmiddlewaretoken" value="u42m5rNzo2GjFigBXipniVkRxDFNL0xX6twYKNCwAO4sQlapgeomgNncoLt6M36F">
-            <div>
-                <fieldset class="module aligned ">
-                    <div class="form-row field-post_url">
-                        <div>
-                            <label class="required" for="id_post_url">Post url:</label>
-                            <input type="text" name="post_url" class="vTextField" maxlength="200" required id="id_post_url">
-                        </div>
-                    </div>
-                    <div class="form-row field-author">
-                        <div>
-                            <label class="required" for="id_author">Author:</label>
-                            <input type="text" name="author" value="admin" class="vTextField" maxlength="50" required id="id_author">
-                        </div>
-                    </div>
-                    <div class="form-row field-title">
-                        <div>
-                            <label class="required" for="id_title">Title:</label>
-                            <input type="text" name="title" class="vTextField" maxlength="250" required id="id_title">
-                        </div>
-                    </div>
-                    <div class="form-row field-feature_image">
-                        <div>
-                            <label class="required" for="id_feature_image">Feature image:</label>
-                            <input type="file" name="feature_image" accept="image/*" required id="id_feature_image">
-                        </div>
-                    </div>
-                    <div class="form-row field-short_description">
-                        <div>
-                            <label class="required" for="id_short_description">Short description:</label>
-                            <input type="text" name="short_description" value="......." class="vTextField" maxlength="250" required id="id_short_description">
-                        </div>
-                    </div>
-                    <div class="form-row field-content">
-                        <div>
-                            <label class="required" for="id_content">Content:</label>
-                            <div class="django-ckeditor-widget" data-field-id="id_content" style="display: inline-block;">
-                                <textarea cols="40" id="id_content" name="content"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-row field-reading_time">
-                        <div>
-                            <label class="required" for="id_reading_time">Reading time:</label>
-                            <input type="text" name="reading_time" value="00:03:00" required id="id_reading_time">
-                        </div>
-                    </div>
-
-                    <div class="form-row field-date">
-                        <div>
-                            <label class="required" for="id_date_0">Date:</label>
-                            <p class="datetime">
-                                Date: <input type="text" name="date_0" class="vDateField" size="10" required="" id="id_date_0"><span class="datetimeshortcuts">&nbsp;<a
-                                        href="#">Today</a>&nbsp;|&nbsp;<a href="#" id="calendarlink0"><span
-                                            class="date-icon" title="Choose a Date"></span></a>
-                                </span>
-                                <br> Time: <input type="text" name="date_1" class="vTimeField" size="8" required="" id="id_date_1"><span class="datetimeshortcuts">&nbsp;<a
-                                        href="#">Now</a>&nbsp;|&nbsp;<a href="#" id="clocklink0"><span
-                                            class="clock-icon" title="Choose a Time"></span></a>
-                                </span>
-                                <br><span class="timezonewarning">Note: You are 6 hours ahead of server time.</span>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="form-row field-category">
-                        <div>
-                            <label class="required" for="id_category">Category:</label>
-                            <select name="category" id="id_category">
-                                <option value="blogs" selected>Blog</option>
-                                <option value="case_studies">Case Study</option>
-                                <option value="podcast">Podcast</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row field-sub_category">
-                        <div>
-                            <label class="required" for="id_sub_category">Sub category:</label>
-                            <select name="sub_category" id="id_sub_category">
-                                <option value="none">None</option>
-                                <option value="business_cybersecurity">Business CyberSecurity</option>
-                                <option value="personal_cybersecurity">Personal CyberSecurity</option>
-                                <option value="hack_recovery">Hack Recovery</option>
-                                <option value="risk_assesment">Risk Assesment</option>
-                                <option value="concierge_cybersecurity">Concierge CyberSecurity</option>
-                                <option value="cybercrime_investigation">CyberCrime Investigation</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row field-comment_option">
-                        <div>
-                            <label class="required" for="id_comment_option">Comment option:</label>
-                            <select name="comment_option" id="id_comment_option">
-                                <option value="disabled">Disable Comments</option>
-                                <option value="enabled">Enable Comments</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row field-tag">
-                        <div>
-                            <label class="required" for="id_tag">Tag:</label>
-                            <input type="text" name="tag" class="vTextField" maxlength="100" required id="id_tag">
-                        </div>
-                    </div>
-                </fieldset>
-                <div class="submit-row">
-                    <input type="submit" value="Save" class="default" name="_save">
-                    <input type="submit" value="Save and add another" name="_addanother">
-                    <input type="submit" value="Save and continue editing" name="_continue">
-                </div>
-                <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-                <script id="django-admin-form-add-constants" src="/static/admin/js/change_form.js" data-model-name="post" async type="fd1fedd8f505b20d2a49a9ee-text/javascript">
-                </script>
-                <script id="django-admin-prepopulated-fields-constants" src="/static/admin/js/prepopulate_init.js" data-prepopulated-fields="[]" type="fd1fedd8f505b20d2a49a9ee-text/javascript">
-                </script>
-            </div>
+        <form enctype="multipart/form-data" method="POST" id="post_form">
+            <label for="category">Category <span class="asteriskField">*</span></label>
+            <select name="category" id="category" class="form-select" required>
+                <option value="" disabled selected>Select a category</option>
+            </select>
+            <label for="subCategory" class="d-none">Sub Category <span class="asteriskField">*</span></label>
+            <select name="subCategory" id="subCategory" class="form-select d-none">
+                <option value="" disabled selected>Select a Sub category</option>
+            </select>
+            <label for="filterOption" class="d-none">Filter Option<span class="asteriskField">*</span></label>
+            <select name="filterOption" id="filterOption" class="form-select d-none">
+                <option value="" disabled selected>Select Filter Option</option>
+            </select>
+            {{ form.media }}
+            {{ form|crispy }}
+            {% csrf_token %}
+            <label for="tagName" class="">Tag<span class="asteriskField">*</span></label>
+            <select name="tagName" class="form-control js-example-tokenizer" id="tagName" multiple="multiple">
+                <option value="" disabled>Select Tag</option>
+                {% for tag in tag_list %}
+                    <option>{{ tag }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-success blogPost">Post</button>
         </form>
     </div>
 
 </section>
 
 {% endblock content %} {% block customjs %}
-<script id="django-admin-prepopulated-fields-constants" src="{% static '' %}admin/js/prepopulate_init.js" data-prepopulated-fields="[]" type="fd1fedd8f505b20d2a49a9ee-text/javascript">
+<script id="django-admin-prepopulated-fields-constants" src="{% static '' %}admin/js/prepopulate_init.js"
+    data-prepopulated-fields="[]" type="fd1fedd8f505b20d2a49a9ee-text/javascript">
 </script>
 <script>
-    CKEDITOR.replace('content');
+    // CKEDITOR.replace('content');
 
-    // Enable local "abbr" plugin from /myplugins/abbr/ folder.
-    CKEDITOR.plugins.addExternal('abbr', '/myplugins/abbr/', 'plugin.js');
+    // // Enable local "abbr" plugin from /myplugins/abbr/ folder.
+    // CKEDITOR.plugins.addExternal('abbr', '/myplugins/abbr/', 'plugin.js');
 
-    // extraPlugins needs to be set too.
-    CKEDITOR.replace('content', {
-        extraPlugins: 'abbr'
+    // // extraPlugins needs to be set too.
+    // CKEDITOR.replace('content', {
+    //     extraPlugins: 'abbr'
+    // });
+    // CKEDITOR.replace('content', {
+    //     skin: 'moonocolor,/myskins/moonocolor/'
+    // });
+    // CKEDITOR.replace('content', {
+    //     customConfig: '/ckeditor_settings/config.js'
+    // });
+    $(document).ready(function () {
+        // $('.js-example-basic-single').select2();
+        $(".js-example-tokenizer").select2({
+            tags: true,
+            tokenSeparators: [',', ' ']
+        })
     });
-    CKEDITOR.replace('content', {
-        skin: 'moonocolor,/myskins/moonocolor/'
-    });
-    CKEDITOR.replace('content', {
-        customConfig: '/ckeditor_settings/config.js'
-    });
+    const baseUrl = "http://127.0.0.1:8000/"
+    const blogCategory = document.getElementById("category")
+    const blogSubCategory = document.getElementById("subCategory")
+    const filterOption = document.getElementById("filterOption")
+    window.addEventListener("load", () => {
+        fetch(`${baseUrl}api/blogs/category/`)
+            .then(response => response.json())
+            .then(result => {
+                result.map((item) => {
+                    const newOption = document.createElement("option");
+                    newOption.setAttribute("value", item.id)
+                    newOption.setAttribute("has_subcategory", item.has_subcategory)
+                    newOption.text = item.category
+                    // console.log(newOption);
+                    blogCategory.appendChild(newOption)
+                })
+            })
+    })
+    blogCategory.addEventListener("change", () => {
+        const has_subcategory = blogCategory.options[blogCategory.selectedIndex].getAttribute("has_subcategory")
+        blogSubCategory.innerHTML = `<option value="" disabled selected>Select a Sub category</option>`
+        filterOption.previousElementSibling.classList.add("d-none")
+        filterOption.classList.add("d-none")
+        if (has_subcategory === "true") {
+            blogSubCategory.previousElementSibling.classList.remove("d-none")
+            blogSubCategory.classList.remove("d-none")
+        } else if (has_subcategory === "false") {
+            blogSubCategory.previousElementSibling.classList.add("d-none")
+            blogSubCategory.classList.add("d-none")
+        }
+        fetch(`${baseUrl}api/blogs/category/${blogCategory.value}`)
+            .then(response => response.json())
+            .then(result => {
+                result.map((item) => {
+                    const newOption = document.createElement("option");
+                    newOption.setAttribute("value", item.id)
+                    newOption.setAttribute("has_filter", item.has_filter)
+                    newOption.text = item.sub_category
+                    blogSubCategory.appendChild(newOption)
+                })
+            })
+    })
+    blogSubCategory.addEventListener("change", () => {
+        const has_filter = blogSubCategory.options[blogSubCategory.selectedIndex].getAttribute("has_filter")
+        filterOption.innerHTML = `<option value="" disabled selected>Select a Sub category</option>`
+        console.log(`${baseUrl}api/blogs/category/${blogCategory.value}/${blogSubCategory.value}`);
+        if (has_filter === "true") {
+            filterOption.previousElementSibling.classList.remove("d-none")
+            filterOption.classList.remove("d-none")
+            filterOption.setAttribute("required", true)
+        } else if (has_filter === "false") {
+            filterOption.previousElementSibling.classList.add("d-none")
+            filterOption.classList.add("d-none")
+            filterOption.removeAttribute("required")
+        }
+        fetch(`${baseUrl}api/blogs/category/${blogCategory.value}/${blogSubCategory.value}`)
+            .then(response => response.json())
+            .then(result => {
+                // console.log(result);
+                result.map((item) => {
+                    // console.log(item.has_subcategory);
+                    const newOption = document.createElement("option");
+                    newOption.setAttribute("value", item.id)
+                    newOption.text = item.filter_name
+                    filterOption.appendChild(newOption)
+                })
+            })
+    })
 </script>
 {% endblock customjs %}

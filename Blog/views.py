@@ -3,23 +3,177 @@ from django.http import JsonResponse
 from django.core import serializers
 from django.db.models import Q
 from datetime import date
-from Blog import models
+from Blog import models, forms
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 
 # Create your views here.
+def permission_check(user):
+    return user.is_staff or user.is_superuser and user.is_active
 
+
+# Admin Section Start Here
+@user_passes_test(permission_check, login_url='/accounts/login/')
+def adminDashboardView(request):
+    context = {
+
+    }
+    return render(request, 'admin_panel/blog/dashboard.html')
+
+
+@user_passes_test(permission_check, login_url='/accounts/login/')
+def adminBlogFormView(request):
+    context = {
+
+    }
+    return render(request, 'admin_panel/blog/blogForm.html')
+
+
+@user_passes_test(permission_check, login_url='/accounts/login/')
+def adminBlogView(request):
+    context = {
+
+    }
+    return render(request, 'admin_panel/blog/blogView.html')
+
+
+@user_passes_test(permission_check, login_url='/accounts/login/')
+def adminCategoryListView(request):
+    context = {
+
+    }
+    return render(request, 'admin_panel/blog/categoryList.html')
+
+
+@user_passes_test(permission_check, login_url='/accounts/login/')
+def adminCategoryView(request):
+    context = {
+
+    }
+    return render(request, 'admin_panel/blog/categoryView.html')
+
+
+@user_passes_test(permission_check, login_url='/accounts/login/')
+def adminCommentListView(request):
+    context = {
+
+    }
+    return render(request, 'admin_panel/blog/commentList.html')
+
+
+@user_passes_test(permission_check, login_url='/accounts/login/')
+def adminCommentView(request):
+    context = {
+
+    }
+    return render(request, 'admin_panel/blog/commentView.html')
+
+
+@user_passes_test(permission_check, login_url='/accounts/login/')
+def adminFilterOptionListView(request):
+    context = {
+
+    }
+    return render(request, 'admin_panel/blog/filterOptionList.html')
+
+
+@user_passes_test(permission_check, login_url='/accounts/login/')
+def adminFilterOptionView(request):
+    context = {
+
+    }
+    return render(request, 'admin_panel/blog/filterOptionView.html')
+
+
+@user_passes_test(permission_check, login_url='/accounts/login/')
+def adminSubCategoryListView(request):
+    context = {
+
+    }
+    return render(request, 'admin_panel/blog/subCategoryList.html')
+
+
+@user_passes_test(permission_check, login_url='/accounts/login/')
+def adminSubCategoryView(request):
+    context = {
+
+    }
+    return render(request, 'admin_panel/blog/subCategoryView.html')
+
+
+@user_passes_test(permission_check, login_url='/accounts/login/')
+def adminNewPostView(request):
+    form = forms.PostForm()
+    tag_list = models.Tags.objects.all()
+    subCategory = ''
+    filterOption = ''
+    subcat = ''
+    subfil = ''
+    # print(request.POST)
+    if request.method == 'POST':
+        inputItems = request.POST
+        category = request.POST.get('category')
+        tags = request.POST.getlist('tagName')
+        tag_lists = []
+        for t in tag_list:
+            tag_lists.append(str(t))
+        # check = all(item in tag_lists for item in tags)
+        for item in tags:
+            for existing_item in tag_lists:
+                if item != existing_item:
+                    # new_tag = models.Tags.objects.create(tag=item)
+                    print(item)
+                else:
+                    tag_lists.remove(existing_item)
+                    tags.remove(item)
+                    break
+        # print(tag_lists)
+        # print(tags)
+        # print(check)
+        for i in inputItems:
+            if i == "subCategory":
+                subCategory = request.POST.get('subCategory')
+            if i == "filterOption":
+                filterOption = request.POST.get('filterOption')
+
+        form = forms.PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            cat = models.BlogCategory.objects.get(pk=category)
+            if subCategory:
+                subcat = models.BlogSubCategory.objects.get(pk=subCategory)
+            if filterOption:
+                subfil = models.FilterOption.objects.get(pk=filterOption)
+            post = form.save(commit=False)
+            post.author = request.user
+            post.category = cat
+            if subcat:
+                post.sub_categories = subcat
+            if subfil:
+                post.filter_option = subfil
+            # post.save()
+            return HttpResponseRedirect(reverse('blog_app:index'))
+
+    context = {
+        'form': form,
+        'tag_list': tag_list,
+    }
+    return render(request, 'blog/admin.html', context)
+
+
+# Admin Section End Here
 def indexView(request):
-    blogs = models.Post.objects.filter(category='blogs')
-    case_studies = models.Post.objects.filter(category='case_studies')
+    blogs = models.Post.objects.filter(category=1)  # Need to Update Later
+    case_studies = models.Post.objects.filter(category=1)  # Need to Update Later
+    categories = models.BlogCategory.objects.all()
+    subcategories = models.BlogSubCategory.objects.all()
+
     context = {
         'blogs': blogs.order_by('date')[:4],
         'case_studies': case_studies.order_by('date')[:4],
+        'categories': categories,
+        'subcategories': subcategories,
     }
     return render(request, 'blog/index.html', context)
-
-
-def adminView(request):
-    return render(request, 'blog/admin.html')
 
 
 # these 3 functions for single post
@@ -48,9 +202,12 @@ def case_studiesView(request, name):
 def podcastView(request, name):
     posts = models.Post.objects.all()
     post = models.Post.objects.get(post_url=name)
+    categories = models.SubCategory.objects.all()
+
     context = {
         'post': post, 'category': 'case_studies',
-        'related_posts': posts.order_by('date')[:3]
+        'related_posts': posts.order_by('date')[:3],
+        'categories': categories,
     }
     return render(request, 'blog/podcast.html', context)
 
@@ -61,30 +218,29 @@ def categoryView(request, name):
         name = name.rpartition('/')[0]
 
     if name == 'blogs':
-        posts = models.Post.objects.filter(
-            Q(category='blogs'))
+        posts = models.Post.objects.filter(category=name)
         template_name = 'blog/blogs.html'
     elif name == 'podcast':
-        posts = models.Post.objects.filter(
-            Q(category='podcast'))
+        posts = models.Post.objects.filter(category=name)
         template_name = 'blog/podcast.html'
     elif name == 'case_studies':
-        posts = models.Post.objects.filter(
-            Q(category='case_studies'))
+        posts = models.Post.objects.filter(category=name)
         template_name = 'blog/case_studies.html'
     else:
-        posts = models.Post.objects.filter(
-            Q(sub_category=name, category='blogs'))
+        name = (str(name)).replace('_', ' ')
+        print(name)
+        posts = models.Post.objects.filter(sub_categories__sub_category__iexact=name)
         template_name = 'blog/index.html'
 
-    case_studies = models.Post.objects.filter(sub_category=name, category='case_studies')
-    print(posts)
+    case_studies = models.Post.objects.filter(sub_categories__sub_category=name, category='Case Studies')
+    categories = models.SubCategory.objects.all()
 
     context = {
         'blogs': posts.order_by('-date'),
         'important_posts': posts.order_by('-date'),
         'recent_posts': posts,
         'case_studies': case_studies,
+        'categories': categories,
     }
 
     return render(request, template_name, context)

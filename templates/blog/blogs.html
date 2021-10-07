@@ -10,8 +10,11 @@
     </div>
     <div class="col-md-5 col-lg-5 col-xl-4">
         <div class="bg-gray px-3 py-5 h-100 d-flex flex-column justify-content-center">
-            <a class="btn menu-link fw-bold" href="{% url 'blog_app:category' name='business_cybersecurity' %}">Business CyberSecurity</a>
-            <a class="btn menu-link fw-bold" href="{% url 'blog_app:category' name='personal_cybersecurity' %}">Personal CyberSecurity</a>
+            {% for category in categories %}
+            <a class="btn menu-link fw-bold" href="{% url 'blog_app:category' name=category %}">{{ category }}</a>
+            {% endfor %}
+{#            <a class="btn menu-link fw-bold" href="{% url 'blog_app:category' name='business_cybersecurity' %}">Business CyberSecurity</a>#}
+{#            <a class="btn menu-link fw-bold" href="{% url 'blog_app:category' name='personal_cybersecurity' %}">Personal CyberSecurity</a>#}
         </div>
     </div>
 </section>
