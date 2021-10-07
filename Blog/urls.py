@@ -5,7 +5,6 @@ app_name = 'blog_app'
 
 urlpatterns = [
     path('', views.indexView, name='index'),
-    path('admin/', views.adminView, name='admin'),
     path('category/<name>/', views.categoryView, name='category'),
     path('category/<slug:name1>/<slug:name2>/', views.category_detailView, name='category_detail'),
     path('articles/<slug:name>/', views.blogsView, name='blogs'),
@@ -14,5 +13,16 @@ urlpatterns = [
     path('filter_post_keyword/<str:type>/<str:keyword>/', views.filter_post_keywordView, name='filter_post_keyword'),
     path('filter_post_date/<str:type>/<str:range>/', views.filter_post_dateView, name='filter_post_date'),
 
-
+    path('dashboard/', views.adminDashboardView, name='admin_dashboard'),
+    path('new/', views.adminNewPostView, name='admin_new'),
+    path('blogform/', views.adminBlogFormView, name='admin_blog_form'),
+    path('blogview/', views.adminBlogView, name='admin_blog_view'),
+    path('categorylist/', views.adminCategoryListView, name='admin_category_list'),
+    path('categoryview/', views.adminCategoryView, name='admin_category_view'),
+    path('commentlist/', views.adminCommentListView, name='admin_comment_list'),
+    path('commentview/', views.adminCommentView, name='admin_comment_view'),
+    path('filteroptionlist/', views.adminFilterOptionListView, name='admin_filter_option'),
+    path('filteroptionview/', views.adminFilterOptionView, name='admin_filter_view'),
+    path('subcategorylist/', views.adminSubCategoryListView, name='admin_subcategory_list'),
+    path('subcategoryview/', views.adminSubCategoryView, name='admin_subcategory_view'),
 ]

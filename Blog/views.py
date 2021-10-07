@@ -12,23 +12,97 @@ def permission_check(user):
     return user.is_staff or user.is_superuser and user.is_active
 
 
-def indexView(request):
-    blogs = models.Post.objects.filter(category=1) # Need to Update Later
-    case_studies = models.Post.objects.filter(category=1) # Need to Update Later
-    categories = models.BlogCategory.objects.all()
-    subcategories = models.BlogSubCategory.objects.all()
-
+# Admin Section Start Here
+@user_passes_test(permission_check, login_url='/accounts/login/')
+def adminDashboardView(request):
     context = {
-        'blogs': blogs.order_by('date')[:4],
-        'case_studies': case_studies.order_by('date')[:4],
-        'categories': categories,
-        'subcategories': subcategories,
+
     }
-    return render(request, 'blog/index.html', context)
+    return render(request, 'admin_panel/blog/dashboard.html')
 
 
 @user_passes_test(permission_check, login_url='/accounts/login/')
-def adminView(request):
+def adminBlogFormView(request):
+    context = {
+
+    }
+    return render(request, 'admin_panel/blog/blogForm.html')
+
+
+@user_passes_test(permission_check, login_url='/accounts/login/')
+def adminBlogView(request):
+    context = {
+
+    }
+    return render(request, 'admin_panel/blog/blogView.html')
+
+
+@user_passes_test(permission_check, login_url='/accounts/login/')
+def adminCategoryListView(request):
+    context = {
+
+    }
+    return render(request, 'admin_panel/blog/categoryList.html')
+
+
+@user_passes_test(permission_check, login_url='/accounts/login/')
+def adminCategoryView(request):
+    context = {
+
+    }
+    return render(request, 'admin_panel/blog/categoryView.html')
+
+
+@user_passes_test(permission_check, login_url='/accounts/login/')
+def adminCommentListView(request):
+    context = {
+
+    }
+    return render(request, 'admin_panel/blog/commentList.html')
+
+
+@user_passes_test(permission_check, login_url='/accounts/login/')
+def adminCommentView(request):
+    context = {
+
+    }
+    return render(request, 'admin_panel/blog/commentView.html')
+
+
+@user_passes_test(permission_check, login_url='/accounts/login/')
+def adminFilterOptionListView(request):
+    context = {
+
+    }
+    return render(request, 'admin_panel/blog/filterOptionList.html')
+
+
+@user_passes_test(permission_check, login_url='/accounts/login/')
+def adminFilterOptionView(request):
+    context = {
+
+    }
+    return render(request, 'admin_panel/blog/filterOptionView.html')
+
+
+@user_passes_test(permission_check, login_url='/accounts/login/')
+def adminSubCategoryListView(request):
+    context = {
+
+    }
+    return render(request, 'admin_panel/blog/subCategoryList.html')
+
+
+@user_passes_test(permission_check, login_url='/accounts/login/')
+def adminSubCategoryView(request):
+    context = {
+
+    }
+    return render(request, 'admin_panel/blog/subCategoryView.html')
+
+
+@user_passes_test(permission_check, login_url='/accounts/login/')
+def adminNewPostView(request):
     form = forms.PostForm()
     tag_list = models.Tags.objects.all()
     subCategory = ''
@@ -84,6 +158,22 @@ def adminView(request):
         'tag_list': tag_list,
     }
     return render(request, 'blog/admin.html', context)
+
+
+# Admin Section End Here
+def indexView(request):
+    blogs = models.Post.objects.filter(category=1)  # Need to Update Later
+    case_studies = models.Post.objects.filter(category=1)  # Need to Update Later
+    categories = models.BlogCategory.objects.all()
+    subcategories = models.BlogSubCategory.objects.all()
+
+    context = {
+        'blogs': blogs.order_by('date')[:4],
+        'case_studies': case_studies.order_by('date')[:4],
+        'categories': categories,
+        'subcategories': subcategories,
+    }
+    return render(request, 'blog/index.html', context)
 
 
 # these 3 functions for single post
