@@ -275,12 +275,14 @@ def podcastView(request, name):
 
 # for specific category
 def categoryView(request, name):
-    print('calling')
+
     posts = models.Post.objects.all()
+    cat_path = str(request.path).split('/')[-2]
     subcategories = models.BlogSubCategory.objects.filter(category__category__iexact=str(name).replace('_', ' '))
     context = {
         'posts': posts.order_by('-date'),
         'path': name,
+        'cat_path': cat_path,
         'important_posts': posts.order_by('-total_view')[:4],
         'subcategories': subcategories,
 
@@ -291,7 +293,7 @@ def categoryView(request, name):
 
 
 def category_detailView(request, name1, name2):
-    print('called')
+
     posts = models.Post.objects.filter(category__category__iexact=str(name1).replace('_', ' '), sub_categories__sub_category__iexact=str(name2).replace('_', ' '))
     filter_options = models.FilterOption.objects.filter(sub_category__category__category__iexact=str(name1).replace('_', ' '), sub_category__sub_category__iexact=str(name2).replace('_', ' '))
     subcategories = models.BlogSubCategory.objects.filter(category__category__iexact=str(name1).replace('_', ' '))
