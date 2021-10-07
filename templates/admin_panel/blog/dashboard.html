@@ -4,16 +4,49 @@
 {% endblock title %}
 
 {% block headercss %}
-<link rel="stylesheet" href="{% static 'tfcss/admin_panel/blog/dashboard.css' %}" />
+    <link rel="stylesheet" href="{% static 'tfcss/admin_panel/blog/dashboard.css' %}"/>
 {% endblock headercss %}
 {% block content %}
 
-<main>
-    <div class="container-fluid">
-        <!-- <div class="row">
-            <div class="col-lg-12">
-                <table class="table table-bordered" id="blogList">
-                    <thead>
+    <main>
+        <div class="container-fluid">
+            <!-- <div class="row">
+                <div class="col-lg-12">
+                    <table class="table table-bordered" id="blogList">
+                        <thead>
+                            <tr>
+                                <th>Post Title</th>
+                                <th>Post Author</th>
+                                <th>Category</th>
+                                <th>Post Date And Time</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>CLASSIFIED VULNERABILITY ASSESSMENT CASE STUDY- 4 STEPS PROCESS OF MITIGATING RISK</td>
+                                <td>Admin</td>
+                                <td>Article</td>
+                                <td>21 September, 2021, 11AM</td>
+                                <td><i class="bi bi-pencil-square"></i> <i class="bi bi-trash-fill"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div> -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <a href="{% url 'blog_app:admin_blog_form' %}" class="btn border-1 border-dark addService float-end mb-4">
+                        Add Blog
+                        <i class="bi bi-plus-circle-fill"></i></a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12 position-relative" style="margin-bottom: 15rem;">
+                    <h2 class="text-capitalize position-absolute my-4">post list</h2>
+                    <table id="blogList" class="table display" style="width: 100%">
+                        <thead>
                         <tr>
                             <th>Post Title</th>
                             <th>Post Author</th>
@@ -21,101 +54,75 @@
                             <th>Post Date And Time</th>
                             <th>Action</th>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>CLASSIFIED VULNERABILITY ASSESSMENT CASE STUDY- 4 STEPS PROCESS OF MITIGATING RISK</td>
-                            <td>Admin</td>
-                            <td>Article</td>
-                            <td>21 September, 2021, 11AM</td>
-                            <td><i class="bi bi-pencil-square"></i> <i class="bi bi-trash-fill"></i></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div> -->
-        <div class="row">
-            <div class="col-lg-12">
-                <button class="btn border-1 border-dark addService float-end mb-4" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal">
-                    Add Blog
-                    <i class="bi bi-plus-circle-fill"></i></button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12 position-relative" style="margin-bottom: 15rem;">
-                <h2 class="text-capitalize position-absolute my-4">post list</h2>
-                <table id="blogList" class="table display" style="width: 100%">
-                    <thead>
-                        <tr>
-                            <th>Post Title</th>
-                            <th>Post Author</th>
-                            <th>Category</th>
-                            <th>Post Date And Time</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        
-                        <tr>
-                            <td> <p class="part fw-bold">CLASSIFIED VULNERABILITY ASSESSMENT CASE STUDY- 4 STEPS PROCESS OF MITIGATING RISK </p></td>
-                            <td>Admin</td>
-                            <td>Article</td>
-                            <td>21 September, 2021, 11AM</td>
-                            <td><button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-                                    <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
-                                </button>
-                                <button class="btn trash">
-                                    <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        {% for post in posts %}
+                            <tr>
+                                <td><p class="part fw-bold">{{ post.title }}</p></td>
+                                <td>{{ post.author }}</td>
+                                <td>{{ post.category }}</td>
+                                <td>{{ post.date }}</td>
+                                <td>
+                                    <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+                                        <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
+                                    </button>
+                                    <button class="btn trash">
+                                        <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-</main>
-<!-- modal 1 -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div id="content-main">
-                    <form enctype="multipart/form-data" method="POST" id="post_form">
-                        <label for="category">Category <span class="asteriskField">*</span></label>
-                        <select name="category" id="category" class="form-select" required>
-                            <option value="" disabled selected>Select a category</option>
-                        </select>
-                        <label for="subCategory" class="d-none">Sub Category <span class="asteriskField">*</span></label>
-                        <select name="subCategory" id="subCategory" class="form-select d-none">
-                            <option value="" disabled selected>Select a Sub category</option>
-                        </select>
-                        <label for="filterOption" class="d-none">Filter Option<span class="asteriskField">*</span></label>
-                        <select name="filterOption" id="filterOption" class="form-select d-none">
-                            <option value="" disabled selected>Select Filter Option</option>
-                        </select>
-                        {{ form.media }}
-                        {{ form|crispy }}
-                        {% csrf_token %}
-                        <label for="tagName" class="">Tag<span class="asteriskField">*</span></label>
-                        <select name="tagName" class="form-control js-example-tokenizer" id="tagName" multiple="multiple">
-                            <option value="" disabled>Select Tag</option>
-                        </select>
-                        <button type="submit" class="btn btn-success blogPost">Post</button>
-                    </form>
+    </main>
+    <!-- modal 1 -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="content-main">
+                        <form enctype="multipart/form-data" method="POST" id="post_form">
+                            <label for="category">Category <span class="asteriskField">*</span></label>
+                            <select name="category" id="category" class="form-select" required>
+                                <option value="" disabled selected>Select a category</option>
+                            </select>
+                            <label for="subCategory" class="d-none">Sub Category <span
+                                    class="asteriskField">*</span></label>
+                            <select name="subCategory" id="subCategory" class="form-select d-none">
+                                <option value="" disabled selected>Select a Sub category</option>
+                            </select>
+                            <label for="filterOption" class="d-none">Filter Option<span
+                                    class="asteriskField">*</span></label>
+                            <select name="filterOption" id="filterOption" class="form-select d-none">
+                                <option value="" disabled selected>Select Filter Option</option>
+                            </select>
+                            {{ form.media }}
+                            {{ form|crispy }}
+                            {% csrf_token %}
+                            <label for="tagName" class="">Tag<span class="asteriskField">*</span></label>
+                            <select name="tagName" class="form-control js-example-tokenizer" id="tagName"
+                                    multiple="multiple">
+                                <option value="" disabled>Select Tag</option>
+                            </select>
+                            <button type="submit" class="btn btn-success blogPost">Post</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 {% endblock content %}
 {% block customjs %}
-<!-- custom scripts -->
-<script src="{% static 'tfjs/admin_panel/blog/dashboard.js' %}"></script>
+    <!-- custom scripts -->
+    <script src="{% static 'tfjs/admin_panel/blog/dashboard.js' %}"></script>
 
 {% endblock customjs %}
