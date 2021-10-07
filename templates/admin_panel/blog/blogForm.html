@@ -6,10 +6,28 @@
 
 {% block headercss %}
     <!-- <link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/bcsTF/dashboard.css" /> -->
+    <style>
+    label {
+        margin-block-start: 1.5rem;
+        font-size: 1rem;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    #id_short_description {
+        height: 75px;
+        resize: none;
+    }
+
+    .blogPost {
+        margin-block: 1rem;
+        padding-inline: 3rem;
+    }
+    </style>
 {% endblock headercss %}
 {% block content %}
-
-<main class="w-75 container">
+<main>
+<section class="w-75 mb-5 container">
     <h3 class="fw-bold text-center my-5 border-bottom border-secondary">Add a new post</h3>
     <div id="content-main">
         <form enctype="multipart/form-data" method="POST" id="post_form">
@@ -35,12 +53,12 @@
                     <option>{{ tag }}</option>
                 {% endfor %}
             </select>
-            <button type="submit" class="btn btn-success blogPost">Post</button>
+            <button type="submit" class="btn btn-success d-block mx-auto blogPost">Post</button>
         </form>
     </div>
 
+</section>
 </main>
-
 {% endblock content %}
 {% block customjs %}
     <!-- custom scripts -->
