@@ -545,8 +545,16 @@ def bcsAdminServiceDeleteView(request, id):
 
 
 def bcsAdminSubServiceView(request):
+    form = forms.AddSubServiceForm()
+    sub_services = models.SubService.objects.all()
+    if request.method == 'POST':
+        form = forms.AddSubServiceForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     context = {
-
+        'form': form,
+        'sub_services': sub_services,
     }
     return render(request, 'admin_panel/bcsTF/subService .html', context)
 
