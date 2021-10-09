@@ -6,42 +6,26 @@
 {% block headercss %}
         <!-- data table css -->
         <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css" />
-        <link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/bcsTF/subscription.css" />
+        <link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/subscription.css' %}" />
 {% endblock headercss %}
 {% block content %}
     <!-- main section starts -->
     <main>
         <section class="subscription-count mb-5">
-            <div class="container">
+            <div class="container-fluid">
                 <div class="row"> 
                     <h2 class="float-start text-uppercase mb-4">total client</h2>
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                         <div class="subscription-info bg-primary-dark">
-                            <h3>Risk assessment</h3>
+                            <h3>Plug and Play</h3>
                             <p class="fw-bolder">
                                 <i class="bi bi-person"></i> <span style="font-size: 25px;">750</span> users
                             </p>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                         <div class="subscription-info bg-primary-25">
-                            <h3>Incident response</h3>
-                            <p class="fw-bolder">
-                                <i class="bi bi-person"></i> <span style="font-size: 25px;">750</span> users
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="subscription-info bg-primary-50">
-                            <h3>Security comliance</h3>
-                            <p class="fw-bolder">
-                                <i class="bi bi-person"></i> <span style="font-size: 25px;">750</span> users
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="subscription-info" style="background-color: #3869C1;">
-                            <h3>SMB Solution</h3>
+                            <h3>Managed Security Solution</h3>
                             <p class="fw-bolder">
                                 <i class="bi bi-person"></i> <span style="font-size: 25px;">750</span> users
                             </p>
@@ -54,14 +38,14 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12 position-relative" style="margin-block-end: 15rem;">
-                        <h2 class="float-start position-absolute text-uppercase">Subscription List</h2>
+                        <h2 class="float-start text-uppercase">Subscription List</h2>
                         <table id="subscription-list" class="display" style="width: 100%">
                             <thead>
                                 <tr>
                                     <th>SL</th>
                                     <th>User Name</th>
+                                    <th>Service Category Name</th>
                                     <th>Service Name</th>
-                                    <th>Sub Service Name</th>
                                     <th>Price</th>
                                     <th>Package Name</th>
                                     <th>Start Date</th>

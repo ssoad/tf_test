@@ -7,7 +7,7 @@
     <!-- date range picker css -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
-    <link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/bcsTF/dashboard.css" />
+    <link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/dashboard.css' %}" />
     <!-- charts js-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 
@@ -43,10 +43,9 @@
         </section>
         <section class="info">
             <div class="container">
-
                 <div class="row my-5">
 
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="multiselect">
                             <div class="selectBox"
                                 onclick="showCheckboxes(checkboxes)">
@@ -57,35 +56,36 @@
                             </div>
                             <div id="checkboxes">
                                 <label for="one">
-                                    <input type="checkbox" id="one">Vulnerability Assessment</label>
+                                    <input type="checkbox" id="one" name="one">Vulnerability Asssessment</label>
                                 <label for="two">
-                                    <input type="checkbox" id="two">Penetration Testing</label>
+                                    <input type="checkbox" id="two" name="one">Penetration Testing</label>
                                 <label for="three">
-                                    <input type="checkbox" id="three">Hack Recovery</label>
+                                    <input type="checkbox" id="three" name="one">Hack Recovery</label>
                                 <label for="three">
-                                    <input type="checkbox" id="three">Malware Removal</label>
-                                <label for="four">
-                                    <input type="checkbox" id="four">Crime & Digital...….</label>
+                                    <input type="checkbox" id="three" name="one">Malware Removal</label>
+                                <label for="three">
+                                    <input type="checkbox" id="three" name="one">Crime & Digital Forensic Investigation</label>
+                                <label for="three">
+                                    <input type="checkbox" id="three" name="one">Plug & Play Programm</label>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <input type="text" class="range" id="dashboardDaterange" placeholder="Select By Time range" name="daterange">
+                    <div class="col-md-3">
+                        <input type="text" id="daterange" value="Select By Time range" name="daterange">
                     </div>
-                    <div class="col-md-4">
-                        <input type="text" class="range" id="dashboardDaterange" placeholder="Compare By Time range" name="daterange">
+                    <div class="col-md-3">
+                        <input type="text" id="daterange" value="Compare By Time range" name="daterange">
                     </div>
                 </div>
                 <div class="row">
 
                     <div class="col-md-12">
-                        <h2>OVERVIEW OF BCS REVENUE</h2>
-                        <canvas id="info-chart" ></canvas>
-                        <canvas id="info-chart2" class="d-none" ></canvas>
+                        <h3>OVERVIEW OF BCS REVENUE</h3>
+                        <canvas id="info-chart"></canvas>
 
                         <div class="filter-options d-flex w-85 float-end justify-content-between mb-3">
-                            <button class="btn btn-secondary mx-2 rounded-pill">1d</button>
-                            <button class="btn btn-secondary mx-2 rounded-pill active">1w</button>
+                            <button class="btn btn-secondary mx-2 rounded-pill d-small-none">1d</button>
+                            <button class="btn btn-secondary mx-2 rounded-pill active d-small-none">1w</button>
                             <button class="btn btn-secondary mx-2 rounded-pill">1mo</button>
                             <button class="btn btn-secondary mx-2 rounded-pill">3mo</button>
                             <button class="btn btn-secondary mx-2 rounded-pill">6mo</button>
@@ -99,6 +99,6 @@
     </main>
 {% endblock content %}
 {% block customjs %}
-    <script src="{% static '' %}tfjs/admin_panel/bcsTF/revenue.js"></script>
-    <script src="{% static '' %}tfjs/admin_panel/bcsTF/dashboard.js"></script>
+    <script src="{% static 'tfjs/admin_panel/bcsTF/revenue.js' %}"></script>
+    <script src="{% static 'tfjs/admin_panel/bcsTF/dashboard.js' %}"></script>
 {% endblock customjs %}

@@ -89,7 +89,7 @@ let infoLineChart = new Chart(infoChart, {
                 boxWidth: 20,
                 boxHeight: 20,
             },
-            position: "left",
+            position: "top",
         },
         title: {
             display: false,
@@ -119,3 +119,8 @@ let infoLineChart = new Chart(infoChart, {
         },
     },
 });
+//console.log(window.innerWidth);
+//
+//if(window.innerWidth <=769){
+//   infoLineChart.options.legend.display=false;
+//}

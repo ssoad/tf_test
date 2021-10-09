@@ -33,4 +33,20 @@ urlpatterns = [
     path('pcs_user_notifications/', views.userNotificationsView, name='pcs_user_notifications'),
     path('pcs_user_settings/', views.userSettingsView, name='pcs_user_settings'),
     path('pcs_appoinment/', views.pcsAppoinmentView, name='pcs_appoinment'),
+
+# pcs admin panel
+    path('pcs_admin_dashboard/',views.pcsAdminDashboard, name='pcs_admin_dashboard'),
+    path('pcs_admin_services/',views.pcsAdminService, name='pcs_admin_services'),
+    path('pcs_admin_revenue/',views.pcsAdminRevenue, name='pcs_admin_revenue'),
+    path('pcs_admin_subscriptions/',views.pcsAdminSubscriptionList, name='pcs_admin_subscriptions'),
+    path('pcs_admin_subscription_packages/',views.pcsAdminSubscriptionPack, name='pcs_admin_subscription_packages'),
+    path('pcs_admin_reading_list/',views.pcsAdminReadingList, name='pcs_admin_reading_list'),
+    path('pcs_admin_sub_services/',views.pcsAdminSubService, name='pcs_admin_sub_services'),
+    path('pcs_admin_individual_users/',views.pcsAdminIndividualUser, name='pcs_admin_individual_users'),
+    path('pcs_admin_individual_user_panel/',views.pcsAdminIndividualUserPanel, name='pcs_admin_individual_user_panel'),
+    path('pcs_admin_list/',views.pcsAdminList, name='pcs_admin_list'),
+    path('pcs_admin_profile/',views.pcsAdminProfile, name='pcs_admin_profile'),
+    path('pcs_admin_user_interest/',views.pcsAdminUserInterest, name='pcs_admin_user_interest'),
+    path('pcs_admin_training/',views.pcsAdminTraining, name='pcs_admin_training'),
+    path('pcs_admin_course_detail/',views.pcsAdminCourseDetail, name='pcs_admin_course_detail'),
 ]
