@@ -39,9 +39,9 @@
                                 </td>
                                 <td>{{ category.category_description }} </td>
                                 <td>
-                                    <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+                                    <a href="{% url 'bcs_app:bcs_admin_services_category_edit' id=category.id %}" class="btn">
                                         <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
-                                    </button>
+                                    </a>
                                     <a href="{% url 'bcs_app:bcs_admin_services_category_delete' id=category.id %}" class="btn trash">
                                         <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
                                     </a>

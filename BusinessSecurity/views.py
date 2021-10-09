@@ -525,6 +525,22 @@ def bcsAdminServiceCategoryDeleteView(request, id):
     current_category.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+def bcsAdminServiceCategoryEditView(request, id):
+    current_category = models.ServiceCategory.objects.get(id=id)
+    form = forms.AddServiceCategoryForm(instance=current_category)
+
+    if request.method == 'POST':
+        form = forms.AddServiceCategoryForm(request.POST, instance=current_category)
+        if form.is_valid():
+            form.save()
+            next_page = request.POST.get('next')
+            return HttpResponseRedirect(next_page)
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'admin_panel/bcsTF/editForm.html', context)
+
 
 def bcsAdminServiceView(request):
     form = forms.AddServiceForm()
