@@ -286,7 +286,6 @@ def categoryView(request, name):
         'important_posts': posts.order_by('-total_view')[:4],
         'subcategories': subcategories,
 
-
     }
 
     return render(request, 'blog/all.html', context)
