@@ -36,7 +36,7 @@
                                 <button type="button" class="btn-close form-close"></button>
                             </div>
                             <div class="modal-body px-3">
-                                <form action="" class="needs-validation" method="POST">
+                                <form action="" enctype="multipart/form-data" class="needs-validation" method="POST">
                                     {{ form.media }}
                                     {{ form|crispy }}
                                     {% csrf_token %}
@@ -134,148 +134,31 @@
                                     <th>SL</th>
                                     <th>Service Name</th>
                                     <th>Sub Service Name</th>
-                                    <th>Price</th>
                                     <th>Description</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
+                            {% for service in sub_services %}
                                 <tr>
-                                    <td>1.1</td>
-                                    <td> Risk Assessment</td>
-                                    <td> Vulnerability Assessment</td>
-                                    <td> $100</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing.... </td>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ service.category.category_name }}</td>
+                                    <td>{{ service.service_title }}</td>
+                                    <td>{{ service.short_description }}</td>
                                     <td>
                                         <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
                                             <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
                                             Edit
                                         </button>
-                                        <button class="btn trash">
+                                        <a href="" class="btn trash">
                                             <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
                                             Delete
-                                        </button>
+                                        </a>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>1.2</td>
-                                    <td> Risk Assessment</td>
-                                    <td>Penetration Testing</td>
-                                    <td> $200</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing.... </td>
-                                    <td>
-                                        <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-                                            <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
-                                            Edit
-                                        </button>
-                                        <button class="btn trash">
-                                            <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2.1</td>
-                                    <td>Incident Response</td>
-                                    <td>Hack Recovery</td>
-                                    <td>$300</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing.... </td>
-                                    <td>
-                                        <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-                                            <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
-                                            Edit
-                                        </button>
-                                        <button class="btn trash">
-                                            <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2.2</td>
-                                    <td>Incident Response</td>
-                                    <td>Data Removal</td>
-                                    <td>$100</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing.... </td>
-                                    <td>
-                                        <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-                                            <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
-                                            Edit
-                                        </button>
-                                        <button class="btn trash">
-                                            <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3.1</td>
-                                    <td>Security Compliance</td>
-                                    <td>GDPR</td>
-                                    <td>$1000</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing.... </td>
-                                    <td>
-                                        <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-                                            <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
-                                            Edit
-                                        </button>
-                                        <button class="btn trash">
-                                            <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3.2</td>
-                                    <td>Security Compliance</td>
-                                    <td>PCI DSS</td>
-                                    <td>$100</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing.... </td>
-                                    <td>
-                                        <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-                                            <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
-                                            Edit
-                                        </button>
-                                        <button class="btn trash">
-                                            <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>4.1</td>
-                                    <td>SMB Solution</td>
-                                    <td>SMB Solution</td>
-                                    <td>$100</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing.... </td>
-                                    <td>
-                                        <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-                                            <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
-                                            Edit
-                                        </button>
-                                        <button class="btn trash">
-                                            <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>4.2</td>
-                                    <td>SMB Solution</td>
-                                    <td>Managed Security Solution</td>
-                                    <td>$100</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing.... </td>
-                                    <td>
-                                        <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-                                            <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
-                                            Edit
-                                        </button>
-                                        <button class="btn trash">
-                                            <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
+                            {% endfor %}
+
+
                             </tbody>
                         </table>
                     </div>
