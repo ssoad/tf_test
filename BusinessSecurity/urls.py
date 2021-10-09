@@ -82,6 +82,22 @@ urlpatterns = [
     path('bcs_admin_reading_list/', views.bcsAdminReadingListView, name='bcs_admin_reading_list'),
     path('bcs_admin_sub_services/', views.bcsAdminSubServiceView, name='bcs_admin_sub_services'),
 
+# bcs admin panel
+    path('bcs_admin_dashboard/',views.bcsAdminDashboard, name='bcs_admin_dashboard'),
+    # path('bcs_admin_services/',views.bcsAdminService, name='bcs_admin_services'),
+    path('bcs_admin_revenue/',views.bcsAdminRevenue, name='bcs_admin_revenue'),
+    path('bcs_admin_subscriptions/',views.bcsAdminSubscriptionList, name='bcs_admin_subscriptions'),
+    path('bcs_admin_subscription_packages/',views.bcsAdminSubscriptionPack, name='bcs_admin_subscription_packages'),
+    path('bcs_admin_reading_list/',views.bcsAdminReadingList, name='bcs_admin_reading_list'),
+    # path('bcs_admin_sub_services/',views.bcsAdminSubService, name='bcs_admin_sub_services'),
+    path('bcs_admin_individual_users/',views.bcsAdminIndividualUser, name='bcs_admin_individual_users'),
+    path('bcs_admin_individual_user_panel/',views.bcsAdminIndividualUserPanel, name='bcs_admin_individual_user_panel'),
+    path('bcs_admin_list/',views.bcsAdminList, name='bcs_admin_list'),
+    path('bcs_admin_profile/',views.bcsAdminProfile, name='bcs_admin_profile'),
+    path('bcs_admin_user_interest/',views.bcsAdminUserInterest, name='bcs_admin_user_interest'),
+    path('bcs_admin_training/',views.bcsAdminTraining, name='bcs_admin_training'),
+    path('bcs_admin_course_detail/',views.bcsAdminCourseDetail, name='bcs_admin_course_detail'),
+
 
     # team invidual user panel
     path('team_user_services/', views.teamUserServicesView, name='team_user_services'),

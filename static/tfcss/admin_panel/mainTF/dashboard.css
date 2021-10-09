@@ -20,17 +20,18 @@
     text-align: center;
     width: 13rem;
     height: 13rem;
-    padding: 1rem;
+    display: grid;
     margin-inline: auto;
     cursor: pointer;
     transition: all .5s ease-in-out;
+    justify-content: center;
+    align-content: center;
 }
 .user-stat-bubble h4 {
     text-transform: capitalize;
 }
 .user-stat-bubble i {
     font-size: 2rem;
-    margin-block-end: 1rem;
 }
 .user-stat-bubble p {
     font-weight: 700;
@@ -137,6 +138,17 @@
 .users-table i{
     font-size: .6rem;
 }
+/* filter options */
+
+.filter-options {
+    margin-top: 15px;
+}
+
+.filter-options button {
+    min-width: 45px;
+    padding: .5rem 0;
+}
+
 /* oveview section ends */
 /* modal */
 #businessModal .accordion-button::after{
@@ -144,4 +156,20 @@
 } 
 .accordion-body{
     text-transform: capitalize;
+}
+
+@media (max-width:769px) {
+    .d-small-none{
+        display: none;
+    }
+    .user-stat-bubble{
+        margin-bottom: 2rem;
+    }
+    #activites-table_wrapper {
+        margin-block-end: 2rem;
+    }
+    .filter-options{
+        float: none !important;
+        width: 100% !important;
+    }
 }

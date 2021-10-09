@@ -22,6 +22,7 @@ $(function () {
 $(document).ready(function () {
     $("#event-list").DataTable({
         info: false,
+        scrollX: true,
         sorting: false,
         searching: false,
         columnDefs: [{
@@ -43,6 +44,11 @@ $(document).ready(function () {
     });
     // All tickets page data table call
     $("#personal-tickets-table").DataTable({
+        // responsive: true,
+        // columnDefs: [{
+        //     orderable: false,
+        //     targets: -1
+        // }],
         info: false,
         "pageLength": 2,
         "lengthMenu": [2, 4, 8, 16, 24],
@@ -54,6 +60,11 @@ $(document).ready(function () {
         },
     });
     $("#business-tickets-table").DataTable({
+        // responsive: true,
+        // columnDefs: [{
+        //     orderable: false,
+        //     targets: -1
+        // }],
         info: false,
         "pageLength": 2,
         "lengthMenu": [2, 4, 8, 16, 24],
@@ -65,6 +76,11 @@ $(document).ready(function () {
         },
     });
     $("#academy-tickets-table").DataTable({
+        // responsive: true,
+        // columnDefs: [{
+        //     orderable: false,
+        //     targets: -1
+        // }],
         info: false,
         "pageLength": 2,
         "lengthMenu": [2, 4, 8, 16, 24],

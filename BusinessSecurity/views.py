@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect, reverse
 from django.contrib.auth.decorators import login_required, user_passes_test
+from BusinessSecurity import forms, models
 
 
 # Create your views here.
@@ -410,7 +411,7 @@ def emailInvitationView(request):
 
 
 # Main Admin Sections
-@user_passes_test(admin_permission_check, login_url='/account/login/')
+@user_passes_test(admin_permission_check, login_url='/accounts/login/')
 def mainAdminDashboardView(request):
     context = {
 
@@ -418,7 +419,7 @@ def mainAdminDashboardView(request):
     return render(request, 'admin_panel/mainTF/dashboard.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/account/login/')
+@user_passes_test(admin_permission_check, login_url='/accounts/login/')
 def mainAdminProfileView(request):
     context = {
 
@@ -426,7 +427,7 @@ def mainAdminProfileView(request):
     return render(request, 'admin_panel/mainTF/myProfile.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/account/login/')
+@user_passes_test(admin_permission_check, login_url='/accounts/login/')
 def mainAdminOrdersView(request):
     context = {
 
@@ -434,7 +435,7 @@ def mainAdminOrdersView(request):
     return render(request, 'admin_panel/mainTF/orders.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/account/login/')
+@user_passes_test(admin_permission_check, login_url='/accounts/login/')
 def mainAdminNotificationView(request):
     context = {
 
@@ -442,7 +443,7 @@ def mainAdminNotificationView(request):
     return render(request, 'admin_panel/mainTF/notification.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/account/login/')
+@user_passes_test(admin_permission_check, login_url='/accounts/login/')
 def mainAdminEventsView(request):
     context = {
 
@@ -450,7 +451,7 @@ def mainAdminEventsView(request):
     return render(request, 'admin_panel/mainTF/eventWebinar.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/account/login/')
+@user_passes_test(admin_permission_check, login_url='/accounts/login/')
 def mainAdminEventDetailView(request):
     context = {
 
@@ -458,7 +459,7 @@ def mainAdminEventDetailView(request):
     return render(request, 'admin_panel/mainTF/eventDetail.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/account/login/')
+@user_passes_test(admin_permission_check, login_url='/accounts/login/')
 def mainAdminSupportView(request):
     context = {
 
@@ -466,7 +467,7 @@ def mainAdminSupportView(request):
     return render(request, 'admin_panel/mainTF/support.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/account/login/')
+@user_passes_test(admin_permission_check, login_url='/accounts/login/')
 def mainAdminSupportStuffView(request):
     context = {
 
@@ -474,7 +475,7 @@ def mainAdminSupportStuffView(request):
     return render(request, 'admin_panel/mainTF/supportStuffView.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/account/login/')
+@user_passes_test(admin_permission_check, login_url='/accounts/login/')
 def mainAdminTicketsView(request):
     context = {
 
@@ -482,7 +483,7 @@ def mainAdminTicketsView(request):
     return render(request, 'admin_panel/mainTF/allTickets.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/account/login/')
+@user_passes_test(admin_permission_check, login_url='/accounts/login/')
 def mainAdminTicketsDetailView(request):
     context = {
 
@@ -500,15 +501,28 @@ def bcsAdminDashboardView(request):
 
 
 def bcsAdminServiceView(request):
-    context = {
+    categories = models.ServiceCategory.objects.all()
+    form = forms.AddServiceCategoryForm()
 
+    if request.method == 'POST':
+        form = forms.AddServiceCategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+    context = {
+        'form': form,
+        'categories': categories,
     }
     return render(request, 'admin_panel/bcsTF/service.html', context)
 
 
 def bcsAdminSubServiceView(request):
+    form = forms.AddServiceForm()
+    if request.method == 'POST':
+        print(request.POST)
     context = {
-
+        'form': form,
     }
     return render(request, 'admin_panel/bcsTF/subService.html', context)
 
@@ -532,3 +546,82 @@ def bcsAdminSubscriptionListView(request):
 
     }
     return render(request, 'admin_panel/bcsTF/subscriptionList.html', context)
+
+
+# New
+
+#    main admin views
+
+def mainAdminDashboard(request):
+    return render(request,'admin_panel/mainTF/dashboard.html')
+
+def mainAdminProfile(request):
+    return render(request,'admin_panel/mainTF/myProfile.html')
+
+def mainAdminOrders(request):
+    return render(request,'admin_panel/mainTF/orders.html')
+
+def mainAdminNotification(request):
+    return render(request,'admin_panel/mainTF/notification.html')
+
+def mainAdminEvents(request):
+    return render(request,'admin_panel/mainTF/eventWebinar.html')
+
+def mainAdminEventDetail(request):
+    return render(request,'admin_panel/mainTF/eventDetail.html')
+
+def mainAdminSupport(request):
+    return render(request,'admin_panel/mainTF/support.html')
+
+def mainAdminSupportStuff(request):
+    return render(request,'admin_panel/mainTF/supportStuffView.html')
+
+def mainAdminTickets(request):
+    return render(request,'admin_panel/mainTF/allTickets.html')
+
+def mainAdminTicketsdetail(request):
+    return render(request,'admin_panel/mainTF/ticketView.html')
+
+
+#    bcs admin views
+
+def bcsAdminDashboard(request):
+    return render(request,'admin_panel/bcsTF/dashboard.html')
+
+def bcsAdminService(request):
+    return render(request,'admin_panel/bcsTF/service.html')
+
+def bcsAdminSubService(request):
+    return render(request,'admin_panel/bcsTF/subService.html')
+
+def bcsAdminSubscriptionList(request):
+    return render(request,'admin_panel/bcsTF/subscriptionList.html')
+
+def bcsAdminSubscriptionPack(request):
+    return render(request,'admin_panel/bcsTF/subscriptionPack.html')
+
+def bcsAdminReadingList(request):
+    return render(request,'admin_panel/bcsTF/readingList.html')
+
+def bcsAdminRevenue(request):
+    return render(request,'admin_panel/bcsTF/revenue.html')
+
+def bcsAdminIndividualUser(request):
+    return render(request,'admin_panel/bcsTF/users.html')
+
+def bcsAdminIndividualUserPanel(request):
+    return render(request,'admin_panel/bcsTF/userPanel.html')
+
+def bcsAdminList(request):
+    return render(request,'admin_panel/bcsTF/adminUsers.html')
+
+def bcsAdminProfile(request):
+    return render(request,'admin_panel/bcsTF/myProfile.html')
+
+def bcsAdminUserInterest(request):
+    return render(request,'admin_panel/bcsTF/userInterest.html')
+
+def bcsAdminTraining(request):
+    return render(request,'admin_panel/bcsTF/training.html')
+def bcsAdminCourseDetail(request):
+    return render(request,'admin_panel/bcsTF/courseDetail.html')
