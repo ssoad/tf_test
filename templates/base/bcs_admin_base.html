@@ -82,13 +82,18 @@
                         </span>
                         <ul class="dropdown-container" aria-labelledby="navbarDropdown">
                             <li>
-                                <a class="dropdown-item nav-link" href="{% url 'bcs_app:bcs_admin_services' %}">
+                                <a class="dropdown-item nav-link" href="{% url 'bcs_app:bcs_admin_services_category' %}">
                                     Service Category
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item nav-link" href="{% url 'bcs_app:bcs_admin_sub_services' %}">
+                                <a class="dropdown-item nav-link" href="{% url 'bcs_app:bcs_admin_services' %}">
                                     Services
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item nav-link" href="{% url 'bcs_app:bcs_admin_sub_services' %}">
+                                    Sub Services
                                 </a>
                             </li>
                         </ul>

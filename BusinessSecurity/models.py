@@ -29,12 +29,12 @@ class Service(models.Model):
     service_icon = models.ImageField(upload_to='service_icon/', verbose_name='Service Icon')
     service_title = models.CharField(max_length=264, verbose_name='Service Title')
     short_description = models.TextField(max_length=1000, verbose_name='Short Description')
-    service_header = HTMLField(verbose_name='Service Header')
-    service_body = HTMLField(verbose_name='Service Body')
-    service_footer = HTMLField(verbose_name='Service Footer')
+    service_header = HTMLField(verbose_name='Service Header', blank=True)
+    service_body = HTMLField(verbose_name='Service Body', blank=True)
+    service_footer = HTMLField(verbose_name='Service Footer', blank=True)
     has_sub_service = models.BooleanField(default=False, verbose_name='Has Sub Services')
     is_subscription_based = models.BooleanField(default=False, verbose_name='Is Subscription Based')
-    total_customer = models.IntegerField(verbose_name='Total Customer')
+    total_customer = models.IntegerField(verbose_name='Total Customer', default=0, blank=True)
 
     def __str__(self):
         return self.service_title

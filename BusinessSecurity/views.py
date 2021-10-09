@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponseRedirect, reverse
+from django.shortcuts import render, HttpResponseRedirect, reverse, HttpResponse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from BusinessSecurity import forms, models
 
@@ -500,7 +500,7 @@ def bcsAdminDashboardView(request):
     return render(request, 'admin_panel/bcsTF/dashboard.html', context)
 
 
-def bcsAdminServiceView(request):
+def bcsAdminServiceCategoryView(request):
     categories = models.ServiceCategory.objects.all()
     form = forms.AddServiceCategoryForm()
 
@@ -514,17 +514,47 @@ def bcsAdminServiceView(request):
         'form': form,
         'categories': categories,
     }
+    return render(request, 'admin_panel/bcsTF/serviceCategory.html', context)
+
+
+def bcsAdminServiceCategoryDeleteView(request, id):
+    current_category = models.ServiceCategory.objects.get(id=id)
+    current_category.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+def bcsAdminServiceView(request):
+    form = forms.AddServiceForm()
+    services = models.Service.objects.all()
+    if request.method == 'POST':
+        form = forms.AddServiceForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    context = {
+        'form': form,
+        'services': services,
+    }
     return render(request, 'admin_panel/bcsTF/service.html', context)
 
 
+def bcsAdminServiceDeleteView(request, id):
+    current_service = models.Service.objects.get(id=id)
+    current_service.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
 def bcsAdminSubServiceView(request):
-    form = forms.AddServiceForm()
-    if request.method == 'POST':
-        print(request.POST)
     context = {
-        'form': form,
+
     }
-    return render(request, 'admin_panel/bcsTF/subService.html', context)
+    return render(request, 'admin_panel/bcsTF/subService .html', context)
+
+
+def bcsAdminSubServiceDeleteView(request, id):
+    current_sub_service = models.SubService.objects.get(id=id)
+    current_sub_service.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 def bcsAdminReadingListView(request):
@@ -553,75 +583,98 @@ def bcsAdminSubscriptionListView(request):
 #    main admin views
 
 def mainAdminDashboard(request):
-    return render(request,'admin_panel/mainTF/dashboard.html')
+    return render(request, 'admin_panel/mainTF/dashboard.html')
+
 
 def mainAdminProfile(request):
-    return render(request,'admin_panel/mainTF/myProfile.html')
+    return render(request, 'admin_panel/mainTF/myProfile.html')
+
 
 def mainAdminOrders(request):
-    return render(request,'admin_panel/mainTF/orders.html')
+    return render(request, 'admin_panel/mainTF/orders.html')
+
 
 def mainAdminNotification(request):
-    return render(request,'admin_panel/mainTF/notification.html')
+    return render(request, 'admin_panel/mainTF/notification.html')
+
 
 def mainAdminEvents(request):
-    return render(request,'admin_panel/mainTF/eventWebinar.html')
+    return render(request, 'admin_panel/mainTF/eventWebinar.html')
+
 
 def mainAdminEventDetail(request):
-    return render(request,'admin_panel/mainTF/eventDetail.html')
+    return render(request, 'admin_panel/mainTF/eventDetail.html')
+
 
 def mainAdminSupport(request):
-    return render(request,'admin_panel/mainTF/support.html')
+    return render(request, 'admin_panel/mainTF/support.html')
+
 
 def mainAdminSupportStuff(request):
-    return render(request,'admin_panel/mainTF/supportStuffView.html')
+    return render(request, 'admin_panel/mainTF/supportStuffView.html')
+
 
 def mainAdminTickets(request):
-    return render(request,'admin_panel/mainTF/allTickets.html')
+    return render(request, 'admin_panel/mainTF/allTickets.html')
+
 
 def mainAdminTicketsdetail(request):
-    return render(request,'admin_panel/mainTF/ticketView.html')
+    return render(request, 'admin_panel/mainTF/ticketView.html')
 
 
 #    bcs admin views
 
 def bcsAdminDashboard(request):
-    return render(request,'admin_panel/bcsTF/dashboard.html')
+    return render(request, 'admin_panel/bcsTF/dashboard.html')
+
 
 def bcsAdminService(request):
-    return render(request,'admin_panel/bcsTF/service.html')
+    return render(request, 'admin_panel/bcsTF/service.html')
+
 
 def bcsAdminSubService(request):
-    return render(request,'admin_panel/bcsTF/subService.html')
+    return render(request, 'admin_panel/bcsTF/subService.html')
+
 
 def bcsAdminSubscriptionList(request):
-    return render(request,'admin_panel/bcsTF/subscriptionList.html')
+    return render(request, 'admin_panel/bcsTF/subscriptionList.html')
+
 
 def bcsAdminSubscriptionPack(request):
-    return render(request,'admin_panel/bcsTF/subscriptionPack.html')
+    return render(request, 'admin_panel/bcsTF/subscriptionPack.html')
+
 
 def bcsAdminReadingList(request):
-    return render(request,'admin_panel/bcsTF/readingList.html')
+    return render(request, 'admin_panel/bcsTF/readingList.html')
+
 
 def bcsAdminRevenue(request):
-    return render(request,'admin_panel/bcsTF/revenue.html')
+    return render(request, 'admin_panel/bcsTF/revenue.html')
+
 
 def bcsAdminIndividualUser(request):
-    return render(request,'admin_panel/bcsTF/users.html')
+    return render(request, 'admin_panel/bcsTF/users.html')
+
 
 def bcsAdminIndividualUserPanel(request):
-    return render(request,'admin_panel/bcsTF/userPanel.html')
+    return render(request, 'admin_panel/bcsTF/userPanel.html')
+
 
 def bcsAdminList(request):
-    return render(request,'admin_panel/bcsTF/adminUsers.html')
+    return render(request, 'admin_panel/bcsTF/adminUsers.html')
+
 
 def bcsAdminProfile(request):
-    return render(request,'admin_panel/bcsTF/myProfile.html')
+    return render(request, 'admin_panel/bcsTF/myProfile.html')
+
 
 def bcsAdminUserInterest(request):
-    return render(request,'admin_panel/bcsTF/userInterest.html')
+    return render(request, 'admin_panel/bcsTF/userInterest.html')
+
 
 def bcsAdminTraining(request):
-    return render(request,'admin_panel/bcsTF/training.html')
+    return render(request, 'admin_panel/bcsTF/training.html')
+
+
 def bcsAdminCourseDetail(request):
-    return render(request,'admin_panel/bcsTF/courseDetail.html')
+    return render(request, 'admin_panel/bcsTF/courseDetail.html')
