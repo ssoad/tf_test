@@ -111,7 +111,7 @@ header.sticky-top {
 }
 
 .text-navy {
-    color: var(--navy);
+    color: var(--navy) !important;
 }
 
 .text-green {
