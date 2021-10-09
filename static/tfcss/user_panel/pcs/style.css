@@ -102,7 +102,7 @@ header.sticky-top {
 }
 
 .text-navy {
-    color: #182F59;
+    color: #182F59 !important;
 }
 
 .text-green {
