@@ -40,59 +40,8 @@
                                     {{ form.media }}
                                     {{ form|crispy }}
                                     {% csrf_token %}
-{#                                    <div class="col-auto mb-3">#}
-{#                                        <label for="serviceName">Service Name</label>#}
-{#                                        <select class="form-select" name="serviceName" id="serviceName" required>#}
-{#                                            <option selected disabled value="">Select a Service</option>#}
-{#                                            <option value="active">Risk Assessment</option>#}
-{#                                            <option value="deactive">Incident Response</option>#}
-{#                                            <option value="canceled">Security Compliance</option>#}
-{#                                            <option value="upcoming">SMB Solution</option>#}
-{#                                        </select>#}
-{#                                        <div class="valid-feedback">#}
-{#                                            Looks good!#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                    <div class="col-auto mb-3">#}
-{#                                        <label for="serviceName">Service Icon</label>#}
-{#                                        <input type="file" name="icon" id="serviceIcon" class="form-control" required>#}
-{#                                        <div class="valid-feedback">#}
-{#                                            Looks good!#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                    <div class="col-auto mb-3">#}
-{#                                        <label for="subServiceName">Service Title</label>#}
-{#                                        <input type="text" class="form-control" id="subServiceName"#}
-{#                                            placeholder="Enter Service Title" required />#}
-{#                                        <div class="valid-feedback">#}
-{#                                            Looks good!#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                    <h6>Service Purchase Type</h6>#}
-{#                                    <div class="d-flex mb-3">#}
-{#                                        <div class="form-check me-5">#}
-{#                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" required>#}
-{#                                            <label class="form-check-label" for="flexRadioDefault1">#}
-{#                                              Subscription Based#}
-{#                                            </label>#}
-{#                                        </div>#}
-{#                                        <div class="form-check">#}
-{#                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" required>#}
-{#                                            <label class="form-check-label" for="flexRadioDefault2">#}
-{#                                              One Time purchased#}
-{#                                            </label>#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                    <div class="col-auto mb-3">#}
-{#                                        <label for="description">Short Description</label>#}
-{#                                        <textarea name="description" id="description" class="form-control short-textarea"#}
-{#                                            cols="30" rows="10" required></textarea>#}
-{#                                        <div class="valid-feedback">#}
-{#                                            Looks good!#}
-{#                                        </div>#}
-{#                                    </div>#}
                                     <div class="d-flex justify-content-between">
-                                        <button type="submit" class="btn btn-primary saveSubservice text-capitalize" id="save-short-service">
+                                        <button type="submit" class="btn btn-primary saveSubSubservice text-capitalize" id="save-short-service">
                                             save
                                         </button>
                                     </div>
@@ -167,7 +116,7 @@
         </div>
 
       <!-- Modal -->
-        <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <!-- <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -224,41 +173,18 @@
                                 </div>
                             </div>
                             <div class="d-flex justify-content-between">
-                                <!-- <button type="button" class="btn btn-primary">
+                                <button type="button" class="btn btn-primary">
                                     Save and add another
-                                </button> -->
-                                <button class="btn btn-primary text-capitalize" id="save-short-service">
-                                    save
                                 </button>
-                            </div>
-                        </form>
-                        <form action="" class="d-none" novalidate>
-                            <h4 class="">Enter Sub service Details here:</h4>
-                            <div class="col-auto mb-3">
-                                <h5>Header </h5>
-                                <textarea class="title-container"></textarea>
-                            </div>
-                            <div class="col-auto mb-3">
-                                <h5>Body </h5>
-                                <textarea class="title-container"></textarea>
-                            </div>
-                            <div class="col-auto mb-3">
-                                <h5>Footer </h5>
-                                <textarea class="title-container"></textarea>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <!-- <button type="button" class="btn btn-primary">
-                                    Save and add another
-                                </button> -->
-                                <button class="btn btn-primary text-capitalize" id="save-short-service">
-                                    Update
+                                <button class="btn btn-primary text-capitalize">
+                                    save
                                 </button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </main>
     <!-- main section ends -->
 {% endblock content %}
