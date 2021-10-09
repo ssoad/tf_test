@@ -76,11 +76,15 @@ urlpatterns = [
 
     # bcs admin panel
     path('bcs_admin_dashboard/', views.bcsAdminDashboardView, name='bcs_admin_dashboard'),
-    path('bcs_admin_services/', views.bcsAdminServiceView, name='bcs_admin_services'),
     path('bcs_admin_revenue/', views.bcsAdminRevenueView, name='bcs_admin_revenue'),
     path('bcs_admin_subscriptions/', views.bcsAdminSubscriptionListView, name='bcs_admin_subscriptions'),
     path('bcs_admin_reading_list/', views.bcsAdminReadingListView, name='bcs_admin_reading_list'),
+    path('bcs_admin_services_category/', views.bcsAdminServiceCategoryView, name='bcs_admin_services_category'),
+    path('bcs_admin_services_category_delete/<id>', views.bcsAdminServiceCategoryDeleteView, name='bcs_admin_services_category_delete'),
+    path('bcs_admin_services/', views.bcsAdminServiceView, name='bcs_admin_services'),
+    path('bcs_admin_services_delete/<id>', views.bcsAdminServiceDeleteView, name='bcs_admin_services_delete'),
     path('bcs_admin_sub_services/', views.bcsAdminSubServiceView, name='bcs_admin_sub_services'),
+    path('bcs_admin_sub_services_delete/<id>', views.bcsAdminSubServiceDeleteView, name='bcs_admin_sub_services_delete'),
 
 # bcs admin panel
     path('bcs_admin_dashboard/',views.bcsAdminDashboard, name='bcs_admin_dashboard'),
