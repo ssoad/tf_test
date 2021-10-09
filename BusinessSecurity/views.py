@@ -280,6 +280,13 @@ def userDashboardView(request):
     }
     return render(request, 'user_panel/bcs/dashboard.html', context)
 
+@login_required
+def redirect_page(request):
+    context = {
+
+    }
+    return render(request, 'user_panel/bcs/redirection.html', context)
+
 
 @login_required
 def userServicesView(request):
