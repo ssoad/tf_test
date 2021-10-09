@@ -47,7 +47,7 @@ class SubService(models.Model):
     sub_service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='subservice_service')
     title = models.CharField(max_length=264, verbose_name='Title')
     description = models.TextField(verbose_name='Description')
-    total_customer = models.IntegerField(verbose_name='Total Customer')
+    total_customer = models.IntegerField(verbose_name='Total Customer', default=0, blank=True)
 
     def __str__(self):
         return self.title
