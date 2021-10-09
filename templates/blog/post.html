@@ -241,11 +241,10 @@
         let contents = document.querySelector('.post-content #list-example');
         let allContentsLink = document.querySelectorAll('.mce-toc a');
 
-
         allContentsLink.forEach(content => {
             content.classList.add('list-group-item');
             content.classList.add('list-group-item-action');
-            console.log(content)
+            content.setAttribute('title', content.textContent);
 
             contents.innerHTML += content.outerHTML;
         });
