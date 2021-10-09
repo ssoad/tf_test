@@ -153,11 +153,7 @@ def plugAndPlayCyberCecurityView(request):
     return render(request, 'pages/plug_and_play_cyber_security.html', context)
 
 
-def aboutUsView(request):
-    context = {
 
-    }
-    return render(request, 'pages/aboutus.html', context)
 
 
 def leaderView(request):
@@ -275,17 +271,17 @@ def appoinmentView(request):
 # Business Section
 @login_required
 def userDashboardView(request):
-    context = {
+    if not request.user.is_bcs:
+        context = {
 
-    }
-    return render(request, 'user_panel/bcs/dashboard.html', context)
+        }
+        return render(request, 'user_panel/bcs/redirection.html', context)
+    elif request.user.is_bcs:
+        context = {
 
-@login_required
-def redirect_page(request):
-    context = {
+        }
+        return render(request, 'user_panel/bcs/dashboard.html', context)
 
-    }
-    return render(request, 'user_panel/bcs/redirection.html', context)
 
 
 @login_required

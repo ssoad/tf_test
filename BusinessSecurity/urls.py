@@ -69,7 +69,6 @@ urlpatterns = [
     path('bcs_user_settings/', views.userSettingsView, name='bcs_user_settings'),
     path('bcs_user_my_team/', views.bcsUserMyTeamView, name='bcs_user_my_team'),
     path('employee_training_program/', views.employeeTrainigProgramView, name='employee_training_program'),
-    path('bcs_user_redirect/', views.redirect_page, name='bcs_user_redirect'),
 
 
     path('bcs_appoinment/', views.bcsAppoinmentView, name='bcs_appoinment'),
