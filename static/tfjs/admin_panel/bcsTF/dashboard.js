@@ -1,6 +1,7 @@
 let expanded = false;
 
 const showCheckboxes = (checkboxes) => {
+    console.log(checkboxes);
     if (!expanded) {
         checkboxes.style.display = "block";
         expanded = true;
@@ -28,24 +29,6 @@ $(function () {
             );
         }
     );
-    $('#dashboardDateRange2').daterangepicker({
-        autoUpdateInput: false,
-        locale: {
-            cancelLabel: "Clear",
-        },
-    });
-
-    $('#dashboardDateRange2').on(
-        "apply.daterangepicker",
-        function (ev, picker) {
-            $(this).val(
-                picker.startDate.format("MM/DD/YYYY") +
-                    " - " +
-                    picker.endDate.format("MM/DD/YYYY")
-            );
-        }
-    );
-    
 });
 
 $(document).ready(function () {
@@ -68,39 +51,39 @@ $(document).ready(function () {
     });
 });
 
-const useraStats = document.querySelectorAll(".user-stat-bubble");
-const businessUsersDetail = document.querySelector(".business-users-detail");
-const individualUser = document.querySelector(".individual-users");
-const businessUser = document.querySelector(".business-users");
-const businessUsersDetailClose = document.querySelector(".business-btn-close");
-const individualUsersDetailClose = document.querySelector(".individual-btn-close");
-const individualUsersDetail = document.querySelector(".individual-users-detail");
-useraStats.forEach((useraStat) => {
-    useraStat.addEventListener("click", () => {
-        if (useraStat.classList.contains("business-users") === true) {
-            useraStat.style.opacity = "0";
-            businessUsersDetail.style.transform = "translateX(0)";
-            businessUsersDetail.style.display = "block";
-            individualUser.style.opacity = "1";
-            individualUsersDetail.style.transform = "translateX(-100rem)"
-            individualUsersDetail.style.display = "none";
-        }else{
-            useraStat.style.opacity = "0";
-            businessUsersDetail.style.transform = "translateX(-100rem)";
-            businessUsersDetail.style.display = "none";
-            businessUser.style.opacity = "1";
-            individualUsersDetail.style.transform = "translateX(0)"
-            individualUsersDetail.style.display = "block";
-        }
-        businessUsersDetailClose.addEventListener("click", () => {
-            businessUsersDetail.style.transform = "translateX(-100rem)";
-            businessUsersDetail.style.display = "none";
-            useraStat.style.opacity = "1";
-        });
-        individualUsersDetailClose.addEventListener("click", () => {
-            individualUsersDetail.style.transform = "translateX(-100rem)";
-            useraStat.style.opacity = "1";
-            individualUsersDetail.style.display = "none";
-        });
-    });
-});
+// const useraStats = document.querySelectorAll(".user-stat-bubble");
+// const businessUsersDetail = document.querySelector(".business-users-detail");
+// const individualUser = document.querySelector(".individual-users");
+// const businessUser = document.querySelector(".business-users");
+// const businessUsersDetailClose = document.querySelector(".business-btn-close");
+// const individualUsersDetailClose = document.querySelector(".individual-btn-close");
+// const individualUsersDetail = document.querySelector(".individual-users-detail");
+// useraStats.forEach((useraStat) => {
+//     useraStat.addEventListener("click", () => {
+//         if (useraStat.classList.contains("business-users") === true) {
+//             useraStat.style.opacity = "0";
+//             businessUsersDetail.style.transform = "translateX(0)";
+//             businessUsersDetail.style.display = "block";
+//             individualUser.style.opacity = "1";
+//             individualUsersDetail.style.transform = "translateX(-100rem)"
+//             individualUsersDetail.style.display = "none";
+//         }else{
+//             useraStat.style.opacity = "0";
+//             businessUsersDetail.style.transform = "translateX(-100rem)";
+//             businessUsersDetail.style.display = "none";
+//             businessUser.style.opacity = "1";
+//             individualUsersDetail.style.transform = "translateX(0)"
+//             individualUsersDetail.style.display = "block";
+//         }
+//         businessUsersDetailClose.addEventListener("click", () => {
+//             businessUsersDetail.style.transform = "translateX(-100rem)";
+//             businessUsersDetail.style.display = "none";
+//             useraStat.style.opacity = "1";
+//         });
+//         individualUsersDetailClose.addEventListener("click", () => {
+//             individualUsersDetail.style.transform = "translateX(-100rem)";
+//             useraStat.style.opacity = "1";
+//             individualUsersDetail.style.display = "none";
+//         });
+//     });
+// });

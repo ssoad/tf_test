@@ -1,9 +1,9 @@
-.addService,.addService:hover{
+.servicesBtn,.servicesBtn:hover{
     border-color: #707070;
     background: #182f59;
     color: white;
 }
-.addService i{
+.servicesBtn i{
     color: #fff;
 }
 .service{
@@ -80,18 +80,26 @@
     border: 1px solid #707070;
 }
 
-.dataTables_scrollBody::-webkit-scrollbar
+/* .dataTables_scrollBody::-webkit-scrollbar
 {
     width: 10px;
     background-color: #f2f2f2;
 }
- 
+
 .dataTables_scrollBody::-webkit-scrollbar-thumb
 {
     border-radius: 10px;
     -webkit-box-shadow: inset 0 0 6px #707070;
     background-color: #F2F3F7;
+} */
+.form-group{
+    margin-bottom: 1rem!important;
 }
+.form-group label{
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
 .short-textarea{
     height: 45px;
 }
@@ -112,5 +120,35 @@
     
     .dataTables_scrollHeadInner table thead th{
         font-size: 13px !important;
+    }
+}
+
+#reading-list thead th, #reading-list tbody td{
+    text-align: center;
+}
+#reading-list thead th:nth-child(2){
+    min-width: 135px;
+}
+#reading-list tbody td:nth-child(2){
+    min-width: 135px;
+}
+
+.part{
+    white-space: nowrap;
+    width: 35ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 769px) {
+    #sub-service-list_filter, #reading-list_filter {
+        width: 100%;
+    }
+}
+
+
+@media (max-width: 501px) {
+    .serviceHeading{
+        position: static !important;
     }
 }

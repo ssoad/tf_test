@@ -1,12 +1,14 @@
-const links = document.querySelectorAll('.nav-link')
-links.forEach(link => {
+const navLinks = document.querySelectorAll('.nav-link')
+navLinks.forEach(link => {
   if (link.href == document.URL) {
     link.classList.add("active")
-    if (link.classList.contains("dropdown-item"))
-      link.parentElement.parentElement.style.display = "block"
+    if (link.classList.contains("dropdown-item")){
+      link.parentElement.parentElement.classList.add("show-dropdown-container");
+    }
 
   } else {
     link.classList.remove("active")
+    // link.parentElement.parentElement.classList.remove("show-dropdown-container");
   }
 })
 
@@ -15,10 +17,10 @@ const dropdown = document.querySelectorAll(".dropdown-btn");
 for (let i = 0; i < dropdown.length; i++) {
   dropdown[i].addEventListener("click", function () {
     var dropdownContent = this.nextElementSibling;
-    if (dropdownContent.style.display === "block") {
-      dropdownContent.style.display = "none";
+    if (dropdownContent.classList.contains("show-dropdown-container")) {
+      dropdownContent.classList.remove( "show-dropdown-container");
     } else {
-      dropdownContent.style.display = "block";
+      dropdownContent.classList.add("show-dropdown-container");
     }
   });
 }
@@ -45,4 +47,17 @@ deleteBtn.forEach(btn=>{
     btn.addEventListener("click",()=>{
         btn.parentElement.parentElement.style.display = "none"
     })
+})
+
+
+const hamburger = document.querySelector(".hamburger")
+const sideBarClose = document.querySelector(".sideBarClose")
+const aside = document.querySelector(".aside-container")
+
+hamburger.addEventListener("click", ()=>{
+  aside.classList.toggle("show-aside")
+})
+
+sideBarClose.addEventListener("click", ()=>{
+  aside.classList.remove("show-aside")
 })

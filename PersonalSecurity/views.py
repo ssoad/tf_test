@@ -185,3 +185,48 @@ def pcsAppoinmentView(request):
 
     }
     return render(request, 'user_panel/pcs/appoinment.html', context)
+
+# New
+
+#    pcs admin views
+
+def pcsAdminDashboard(request):
+    return render(request,'admin_panel/pcsTF/dashboard.html')
+
+def pcsAdminService(request):
+    return render(request,'admin_panel/pcsTF/service.html')
+
+def pcsAdminSubService(request):
+    return render(request,'admin_panel/pcsTF/subService.html')
+
+def pcsAdminSubscriptionList(request):
+    return render(request,'admin_panel/pcsTF/subscriptionList.html')
+
+def pcsAdminSubscriptionPack(request):
+    return render(request,'admin_panel/pcsTF/subscriptionPack.html')
+
+def pcsAdminReadingList(request):
+    return render(request,'admin_panel/pcsTF/readingList.html')
+
+def pcsAdminRevenue(request):
+    return render(request,'admin_panel/pcsTF/revenue.html')
+
+def pcsAdminIndividualUser(request):
+    return render(request,'admin_panel/pcsTF/users.html')
+
+def pcsAdminIndividualUserPanel(request):
+    return render(request,'admin_panel/pcsTF/userPanel.html')
+
+def pcsAdminList(request):
+    return render(request,'admin_panel/pcsTF/adminUsers.html')
+
+def pcsAdminProfile(request):
+    return render(request,'admin_panel/pcsTF/myProfile.html')
+
+def pcsAdminUserInterest(request):
+    return render(request,'admin_panel/pcsTF/userInterest.html')
+
+def pcsAdminTraining(request):
+    return render(request,'admin_panel/pcsTF/training.html')
+def pcsAdminCourseDetail(request):
+    return render(request,'admin_panel/pcsTF/courseDetail.html')

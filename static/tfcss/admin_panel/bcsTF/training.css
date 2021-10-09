@@ -1,0 +1,101 @@
+#training-list_filter {
+    margin-bottom: 2rem;
+    float: right;
+    width: 60%;
+}
+#training-list_filter label {
+    padding: .5rem 1rem;
+    width: 100%;
+    border: 1px solid #707070;
+}
+#training-list_filter input {
+    display: inline !important;
+    border-color: transparent;
+    width: 90%;
+    padding: 0 .75rem;
+}
+
+/**
+ * FilePond Custom Styles
+ */
+ .filepond--drop-label {
+	color: #4c4e53;
+}
+
+.filepond--label-action {
+	text-decoration-color: #babdc0;
+}
+
+.filepond--panel-root {
+	border-radius: 2em;
+	background-color: #edf0f4;
+	height: 1em;
+}
+
+.filepond--item-panel {
+	background-color: #595e68;
+}
+
+.filepond--drip-blob {
+	background-color: #7f8a9a;
+}
+.tox-notifications-container, .filepond--credits{
+    display: none;
+}
+.uppy-Dashboard-AddFiles-info{
+    display: none !important;
+}
+
+.accordion table td:first-child, .accordion table th:first-child{
+    text-align: start;
+}
+.accordion table th{
+    font-size: 14px;
+}
+.accordion table th{
+    font-size: 14px;
+}
+.accordion table td{
+    font-size: 12px;
+}
+.accordion-button, .accordion-button:not(.collapsed) {
+    color: black;
+    background-color: #E1E6F1;
+}
+
+.pb-14p {
+    padding-bottom: 14px !important;
+}
+
+li{
+    list-style: none;
+}
+.info-value input {
+    background-color: transparent !important;
+    border: none;
+}
+
+.input-as-text {
+    display: grid;
+    grid-template-columns: 1fr 30px;
+    align-items: center;
+}
+
+.input-as-text input {
+    border-bottom: 1px solid #000;
+}
+
+.input-as-text::after {
+    content:"\eae8";
+    font-family: 'IcoFont';
+    position: absolute;
+    right: 5px;
+}
+.form-control:focus {
+    border-color: #000;
+}
+.text-truncate{
+    display: grid;
+    grid-template-columns: 30px 1fr 30px;
+    align-items: center;
+}

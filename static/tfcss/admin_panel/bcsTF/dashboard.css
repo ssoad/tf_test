@@ -55,8 +55,25 @@
     box-shadow: 1px 1px 3px 1px #7a7a7a;
     font-weight: 800;
 }
+input#dashboardDaterange {
+    width: 25% !important;
+}
+input#daterange {
+    padding: .5rem 1rem;
+    width: 100% !important;
+}
+.subscription-info {
+    color: var(--var-topbar-background-color);
+    padding: 1rem;
+}
 
+.subscription-info h3 {
+    font-size: 22px;
+}
 
+.subscription-info p {
+    font-size: 18px;
+}
 /* individual user bubble style ends */
 /* info select filter starts */
 
@@ -155,6 +172,7 @@
     padding: 1.5rem;
     width: 10rem;
     height: 10rem;
+    margin-block: auto;
 }
 .revenue:last-child{
     width: 100%;
@@ -171,5 +189,45 @@
     .revenue{
         width: 9rem;
         height: 9rem;
+    }
+}
+
+/* filter options */
+
+.filter-options {
+    margin-top: 15px;
+}
+
+.filter-options button {
+    min-width: 45px;
+    padding: .5rem 0;
+}
+
+/* oveview section ends */
+/* modal */
+#businessModal .accordion-button::after{
+    display: none;
+}
+.accordion-body{
+    text-transform: capitalize;
+}
+
+@media (max-width:769px) {
+    .user-stat-bubble{
+        margin-bottom: 2rem;
+    }
+    #activites-table_wrapper {
+        margin-block-end: 2rem;
+    }
+    input#dashboardDaterange {
+        width: 100% !important;
+        margin-bottom: 1rem;
+    }
+    .revenue-stat{
+        grid-template-columns: none;
+    }
+    .filter-options{
+        float: none !important;
+        width: 100% !important;
     }
 }
