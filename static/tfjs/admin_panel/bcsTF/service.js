@@ -35,55 +35,44 @@ $(document).ready(function () {
 })
 
 
-const forms = document.querySelectorAll('.needs-validation')
-forms.forEach((form) => {
-    form.addEventListener("submit", (event) => {
-        event.preventDefault()
-        if (!form.checkValidity()) {
-            event.stopPropagation()
-            console.log(form);
-        }
-
-        form.classList.add('was-validated')
-        form.classList.add('d-none')
-        form.nextElementSibling.classList.remove("d-none")
-
-    })
-}, false)
-
-
-
-tinymce.init({
-    selector: '.title-container',
-    plugins: 'image code lists',
-    menubar: false,
-    statusbar: false,
-    toolbar: 'undo redo | image code | bold italic alignleft aligncenter alignright alignjustify| bullist numlist outdent indent',
-
-    /* without images_upload_url set, Upload tab won't show up*/
-    images_upload_url: 'postAcceptor.php',
-
-    /* we override default upload handler to simulate successful upload*/
-    images_upload_handler: function (blobInfo, success, failure) {
-        setTimeout(function () {
-            /* no matter what you upload, we will turn it into TinyMCE logo :)*/
-            success('http://moxiecode.cachefly.net/tinymce/v9/images/logo.png');
-        }, 2000);
-    },
-    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-});
-
 const addServiceBtn = document.querySelector(".addService")
 const addServiceFormCloses = document.querySelectorAll(".form-close")
 const backToList = document.querySelector(".form-close-back")
 const addServiceForm = document.querySelector(".add-form")
 const tableContainer = document.querySelector(".table-container")
+const formFirstPart = document.querySelectorAll("#div_id_category,#div_id_service_icon,#div_id_service_title,#div_id_short_description, #div_id_has_sub_service, #div_id_is_subscription_based")
+const formSecondPart = document.querySelectorAll("#div_id_service_header, #div_id_service_body, #div_id_service_footer, .saveSubservice")
+const serviceHeader = document.querySelector("#div_id_service_header")
+
 
 addServiceBtn.addEventListener("click", () => {
     tableContainer.classList.add("d-none")
     addServiceForm.classList.remove("d-none")
     backToList.classList.remove("d-none")
+    formSecondPart.forEach(item=>{
+        item.classList.add("d-none")
+    })
+    const nextBtn = document.createElement("button")
+    nextBtn.classList.add('btn', 'btn-primary', 'nextBtn', 'text-capitalize')
+    nextBtn.textContent = "Next"
+    serviceHeader.insertAdjacentElement("beforebegin", nextBtn)
+    nextBtn.addEventListener("click",(e)=>{
+        e.preventDefault()
+        formSecondPart.forEach(item=>{
+            item.classList.remove("d-none")
+        })
+        formFirstPart.forEach(item=>{
+            item.classList.add("d-none")
+        })
+        nextBtn.classList.add("d-none")
+    })
 })
+
+// console.log(nextForm)
+// nextBtn("click", ()=>{
+
+// })
+
 addServiceFormCloses.forEach(addServiceFormClose => {
     addServiceFormClose.addEventListener("click", () => {
         addServiceForm.classList.add("d-none")
@@ -92,25 +81,4 @@ addServiceFormCloses.forEach(addServiceFormClose => {
     })
 })
 
-const addSubServiceBtn = document.querySelector(".addSubService")
-const subServiceContainer = document.querySelector(".subServiceContainer")
 
-addSubServiceBtn.addEventListener("click", (e)=>{
-    e.preventDefault()
-    const div = document.createElement("div")
-    div.innerHTML = `<div class="col-auto mb-3">
-    <label for="subServiceName">Sub Service Title</label>
-    <span class="btn float-end close-btn close-sub">X</span>
-    <input type="text" class="form-control" id="subServiceName"
-        placeholder="Enter Service Title" required />
-    <label for="subServiceName">Sub Service Description</label>
-    <textarea class="form-control"></textarea>
-</div>`
-    subServiceContainer.appendChild(div) 
-    const closeSub = document.querySelectorAll(".close-sub")
-    closeSub.forEach(closeBtn =>{
-        closeBtn.addEventListener("click", ()=>{
-            closeBtn.parentElement.classList.add("d-none")
-        })
-    })
-})
