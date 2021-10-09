@@ -5,3 +5,9 @@ from BusinessSecurity import models
 
 
 admin.site.register(models.NewsSubscriber)
+admin.site.register(models.ServiceCategory)
+admin.site.register(models.Service)
+admin.site.register(models.SubService)
+admin.site.register(models.SubscriptionBasedPackage)
+admin.site.register(models.SubscriptionFeatures)
+admin.site.register(models.UserAllowed)

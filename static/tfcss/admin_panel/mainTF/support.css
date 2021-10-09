@@ -55,9 +55,12 @@
 
 .shadow-table {
     width: 100%;
-    margin-top: 10px;
+    margin-block: 10px;
     border-collapse: separate;
     border-spacing: 0px 15px;
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
 }
 
 .shadow-table .head-row th {
@@ -111,13 +114,15 @@
 table.dataTable.no-footer {
     border: transparent;
 }
-
+#personal-tickets-table tbody td, #business-tickets-table tbody td, #academy-tickets-table tbody td{
+    text-align: start;
+}
 #personal-tickets-table_length , #business-tickets-table_length , #academy-tickets-table_length {
     margin-inline-start: 3rem;
 }
 
 #personal-tickets-table_length select, #business-tickets-table_length select, #academy-tickets-table_length select {
-    width: 3rem;
+    width: 5rem;
     margin-inline-start: 1rem;
     display: inline-block;
 }

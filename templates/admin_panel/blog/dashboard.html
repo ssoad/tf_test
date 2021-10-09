@@ -58,7 +58,7 @@
                         <tbody>
                         {% for post in posts %}
                             <tr>
-                                <td><p class="part fw-bold">{{ post.title }}</p></td>
+                                <td><a href="{% url 'blog_app:blogs' name=post.post_url %}" class="part fw-bold">{{ post.title }}</a></td>
                                 <td>{{ post.author }}</td>
                                 <td>{{ post.category }}</td>
                                 <td>{{ post.date }}</td>
@@ -66,9 +66,9 @@
                                     <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
                                         <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
                                     </button>
-                                    <button class="btn trash">
+                                    <a href="{% url 'blog_app:admin_blog_delete' id=post.id %}" class="btn">
                                         <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                    </button>
+                                    </a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -80,45 +80,6 @@
             </div>
         </div>
     </main>
-    <!-- modal 1 -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div id="content-main">
-                        <form enctype="multipart/form-data" method="POST" id="post_form">
-                            <label for="category">Category <span class="asteriskField">*</span></label>
-                            <select name="category" id="category" class="form-select" required>
-                                <option value="" disabled selected>Select a category</option>
-                            </select>
-                            <label for="subCategory" class="d-none">Sub Category <span
-                                    class="asteriskField">*</span></label>
-                            <select name="subCategory" id="subCategory" class="form-select d-none">
-                                <option value="" disabled selected>Select a Sub category</option>
-                            </select>
-                            <label for="filterOption" class="d-none">Filter Option<span
-                                    class="asteriskField">*</span></label>
-                            <select name="filterOption" id="filterOption" class="form-select d-none">
-                                <option value="" disabled selected>Select Filter Option</option>
-                            </select>
-                            {{ form.media }}
-                            {{ form|crispy }}
-                            {% csrf_token %}
-                            <label for="tagName" class="">Tag<span class="asteriskField">*</span></label>
-                            <select name="tagName" class="form-control js-example-tokenizer" id="tagName"
-                                    multiple="multiple">
-                                <option value="" disabled>Select Tag</option>
-                            </select>
-                            <button type="submit" class="btn btn-success blogPost">Post</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
 {% endblock content %}
 {% block customjs %}

@@ -1,6 +1,9 @@
 {% extends 'base/main_admin_base.html' %} {% load static %} {% block title %} My Profile
 {% endblock title %} {% block headercss %}
-<link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/mainTF/support.css" /> {% endblock headercss %}
+<link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/mainTF/support.css" /> 
+<!-- <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css"/> 
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css"/> -->
+{% endblock headercss %}
 {% block content %}
 
 <main>
@@ -220,5 +223,6 @@
 </main>
 {% endblock content %} {% block customjs %}
 <script src="{% static '' %}tfjs/admin_panel/mainTF/eventWebinar.js"></script>
-
+<!-- <script src="https://cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script> -->
 {% endblock customjs %}

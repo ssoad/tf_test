@@ -18,6 +18,7 @@ $(document).ready(function () {
         "paging": false,
     });
     $("#reading-list").DataTable({
+        scrollX: true,
         scrollCollapse: true,
         info: false,
         columnDefs: [{
@@ -34,55 +35,44 @@ $(document).ready(function () {
 })
 
 
-const forms = document.querySelectorAll('.needs-validation')
-forms.forEach((form) => {
-    form.addEventListener("submit", (event) => {
-        event.preventDefault()
-        if (!form.checkValidity()) {
-            event.stopPropagation()
-            console.log(form);
-        }
-
-        form.classList.add('was-validated')
-        form.classList.add('d-none')
-        form.nextElementSibling.classList.remove("d-none")
-
-    })
-}, false)
-
-
-
-tinymce.init({
-    selector: '.title-container',
-    plugins: 'image code lists',
-    menubar: false,
-    statusbar: false,
-    toolbar: 'undo redo | image code | bold italic alignleft aligncenter alignright alignjustify| bullist numlist outdent indent',
-
-    /* without images_upload_url set, Upload tab won't show up*/
-    images_upload_url: 'postAcceptor.php',
-
-    /* we override default upload handler to simulate successful upload*/
-    images_upload_handler: function (blobInfo, success, failure) {
-        setTimeout(function () {
-            /* no matter what you upload, we will turn it into TinyMCE logo :)*/
-            success('http://moxiecode.cachefly.net/tinymce/v9/images/logo.png');
-        }, 2000);
-    },
-    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-});
-
 const addServiceBtn = document.querySelector(".addService")
 const addServiceFormCloses = document.querySelectorAll(".form-close")
 const backToList = document.querySelector(".form-close-back")
 const addServiceForm = document.querySelector(".add-form")
 const tableContainer = document.querySelector(".table-container")
+const formFirstPart = document.querySelectorAll("#div_id_category,#div_id_service_icon,#div_id_service_title,#div_id_short_description, #div_id_has_sub_service, #div_id_is_subscription_based")
+const formSecondPart = document.querySelectorAll("#div_id_service_header, #div_id_service_body, #div_id_service_footer, .saveSubservice")
+const serviceHeader = document.querySelector("#div_id_service_header")
+
 
 addServiceBtn.addEventListener("click", () => {
     tableContainer.classList.add("d-none")
     addServiceForm.classList.remove("d-none")
     backToList.classList.remove("d-none")
+    formSecondPart.forEach(item=>{
+        item.classList.add("d-none")
+    })
+    const nextBtn = document.createElement("button")
+    nextBtn.classList.add('btn', 'btn-primary', 'nextBtn', 'text-capitalize')
+    nextBtn.textContent = "Next"
+    serviceHeader.insertAdjacentElement("beforebegin", nextBtn)
+    nextBtn.addEventListener("click",(e)=>{
+        e.preventDefault()
+        formSecondPart.forEach(item=>{
+            item.classList.remove("d-none")
+        })
+        formFirstPart.forEach(item=>{
+            item.classList.add("d-none")
+        })
+        nextBtn.classList.add("d-none")
+    })
 })
+
+// console.log(nextForm)
+// nextBtn("click", ()=>{
+
+// })
+
 addServiceFormCloses.forEach(addServiceFormClose => {
     addServiceFormClose.addEventListener("click", () => {
         addServiceForm.classList.add("d-none")
@@ -90,3 +80,5 @@ addServiceFormCloses.forEach(addServiceFormClose => {
         tableContainer.classList.remove("d-none")
     })
 })
+
+
