@@ -100,7 +100,7 @@ nav {
 }
 .navbar-brand img {
     padding-inline: 2rem;
-    margin-block: 1rem;
+    margin-block: .5rem;
     width: 200px;
 }
 .navbar-text:not(:last-child) {

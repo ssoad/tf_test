@@ -4,14 +4,117 @@
 {% endblock title %}
 
 {% block headercss %}
-    <!-- <link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/bcsTF/dashboard.css" /> -->
+<link rel="stylesheet" href="{% static 'tfcss/admin_panel/blog/dashboard.css' %}"/>
 {% endblock headercss %}
 {% block content %}
+<main>
+    <div class="container-fluid">
+        
+        <div class="row">
+            <div class="col-lg-12 position-relative" style="margin-bottom: 15rem;">
+                <h2 class="text-capitalize position-absolute my-4">Category list</h2>
+                <table id="blogList" class="table display" style="width: 100%">
+                    <thead>
+                        <tr>
+                            <th>Comment Title</th>
+                            <th>Post</th>
+                            <th>Commented By</th>
+                            <th>Date And Time</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for comment in comments %}
+                            <tr>
+                            <td><p class="part fw-bold">{{ comment.comment }}</p></td>
+                            <td><a href="{% url 'blog_app:blogs' name=comment.post.post_url %}" class="part fw-bold">{{ comment.post }}</a></td>
+                            <td>{{ comment.user }}</td>
+                            <td>{{ comment.comment_date }}</td>
+                            <td>
+                                <a href="{% url 'blog_app:admin_comment_delete' id=comment.id %}" class="btn">
+                                    <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
 
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 position-relative" style="margin-bottom: 15rem;">
+                <h2 class="text-capitalize position-absolute my-4">Sub Category list</h2>
+                <table id="subCategoryList" class="table display" style="width: 100%">
+                    <thead>
+                        <tr>
+                            <th>Comment Title</th>
+                            <th>Post</th>
+                            <th>Commented By</th>
+                            <th>Date And Time</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for comment in comments %}
+                            <tr>
+                            <td><p class="part fw-bold">{{ comment.comment }}</p></td>
+                            <td><a href="{% url 'blog_app:blogs' name=comment.post.post_url %}" class="part fw-bold">{{ comment.post }}</a></td>
+                            <td>{{ comment.user }}</td>
+                            <td>{{ comment.comment_date }}</td>
+                            <td>
+                                <a href="{% url 'blog_app:admin_comment_delete' id=comment.id %}" class="btn">
+                                    <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 position-relative" style="margin-bottom: 15rem;">
+                <h2 class="text-capitalize position-absolute my-4">Category list</h2>
+                <table id="filterOptionList" class="table display" style="width: 100%">
+                    <thead>
+                        <tr>
+                            <th>Comment Title</th>
+                            <th>Post</th>
+                            <th>Commented By</th>
+                            <th>Date And Time</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for comment in comments %}
+                            <tr>
+                            <td><p class="part fw-bold">{{ comment.comment }}</p></td>
+                            <td><a href="{% url 'blog_app:blogs' name=comment.post.post_url %}" class="part fw-bold">{{ comment.post }}</a></td>
+                            <td>{{ comment.user }}</td>
+                            <td>{{ comment.comment_date }}</td>
+                            <td>
+                                <a href="{% url 'blog_app:admin_comment_delete' id=comment.id %}" class="btn">
+                                    <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
 
 {% endblock content %}
 {% block customjs %}
     <!-- custom scripts -->
-    <!-- <script src="{% static '' %}tfjs/admin_panel/bcsTF//chart.js"></script> -->
+    <script src="{% static 'tfjs/admin_panel/blog/dashboard.js' %}"></script>
 
 {% endblock customjs %}

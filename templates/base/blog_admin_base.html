@@ -8,15 +8,16 @@
     <link rel="stylesheet" href="{%static ''%}tfcss/icofont/icofont.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-    <!-- data table css -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" />
+  
     <!-- date range picker css -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <!-- bootstrap icon -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+      <!-- data table css -->
+      <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css" />
+      <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css" />
+      <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" />
     <link rel="stylesheet" href="{%static ''%}tfcss/admin_panel/bcsTF/nav.css" /> {% block headercss %} {% endblock headercss %}
 
     <title>
@@ -31,10 +32,8 @@
         <!-- top bar section starts here -->
         <nav class="navbar fixed-top">
             <div class="container-fluid">
-                <!-- Brand/logo-->
-                <a class="navbar-brand" href="#">
-                    <img src="{% static '' %}tfimg/admin_panel/TechForingLogo.png" alt="Tech Foring" />
-                </a>
+                <button class="btn mt-2 hamburger"><i class="icofont-navigation-menu"></i></button>
+                
                 <span class="navbar-text rounded-0 px-2  fw-bold text-primary">
                     <a href="" class="">Sign out</a>
                 </span>
@@ -57,6 +56,10 @@
         <!-- sidebar section starts here -->
         <aside>
             <div class="aside-container position-fixed bg-white px-1 pt-2 d-none d-lg-block">
+                <a class="navbar-brand" href="#">
+                    <button class="btn btn-close sideBarClose"></button>
+                    <img src="{% static 'tfimg/admin_panel/TechForingLogo.png' %}" alt="Tech Foring" />
+                </a>
                 <!-- Nav links starts here -->
                 <ul class="menubar">
                     <li>
@@ -81,15 +84,9 @@
                         </a>
                     </li>
                     <li>
-                        <span href="" class="nav-link dropdown-btn dropdown-toggle" id="supportDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="icofont-life-buoy"></i>
-                            Categories
-                        </span>
-                        <ul class="dropdown-container " aria-labelledby="supportDropdown">
-                            <li><a class="dropdown-item nav-link" href="{% url 'blog_app:admin_category_list' %}">Category</a></li>
-                            <li><a class="dropdown-item nav-link" href="{% url 'blog_app:admin_subcategory_list' %}">Sub Category</a></li>
-                            <li><a class="dropdown-item nav-link" href="{% url 'blog_app:admin_filter_option' %}">Filter Option</a></li>
-                        </ul>
+                        <a class="nav-link" href="{% url 'blog_app:admin_category_list' %}">
+                            <i class="bi bi-gear-wide-connected"></i> Category
+                        </a>
                     </li>
                     <!-- <li>
                         <span class="nav-link dropdown-btn dropdown-toggle" id="navbarDropdown" role="button"
@@ -202,7 +199,6 @@
     <!-- date range picker -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="{%static ''%}tfjs/admin_panel/bcsTF/nav.js"></script>
