@@ -1,4 +1,4 @@
-{% extends 'base/pcs_user_base.html' %} {% load static %} {% block title %} Redirect {% endblock title %} {% block content %}
+{% extends 'base/pcs_user_base.html' %} {% load static %} {% load crispy_forms_tags %} {% block title %} Redirect {% endblock title %} {% block content %}
 
 <section class="mb-5 orders pb-5">
     <h4 class="pt-2 fw-bold border-bottom border-gray pb-14p">Choose where you want to go</h4>
@@ -17,9 +17,10 @@
                     <h5 class="modal-title" id="joinExistingLabel">Enter Your Business KEY</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="">
+                <form action="" method="POST">
                     <div class="modal-body">
                         <input type="text" placeholder="Enter the KEY" class="form-control" required>
+                        {% csrf_token %}
                     </div>
                     <div class="modal-footer">
                         <button type="submit" name="join" class="btn btn-navy">Submit</button>
@@ -37,9 +38,10 @@
                     <h5 class="modal-title" id="createNewLabel">Register a New Business</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="">
+                <form action="" method="POST" enctype="multipart/form-data">
                     <div class="modal-body">
-                        ........................
+                        {{ form|crispy }}
+                        {% csrf_token %}
                     </div>
                     <div class="modal-footer">
                         <button type="submit" name="new" class="btn btn-navy">Submit</button>

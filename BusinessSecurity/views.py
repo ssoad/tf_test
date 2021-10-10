@@ -153,11 +153,7 @@ def plugAndPlayCyberCecurityView(request):
     return render(request, 'pages/plug_and_play_cyber_security.html', context)
 
 
-def aboutUsView(request):
-    context = {
 
-    }
-    return render(request, 'pages/aboutus.html', context)
 
 
 def leaderView(request):
@@ -275,17 +271,17 @@ def appoinmentView(request):
 # Business Section
 @login_required
 def userDashboardView(request):
-    context = {
+    if not request.user.is_bcs:
+        context = {
 
-    }
-    return render(request, 'user_panel/bcs/dashboard.html', context)
+        }
+        return render(request, 'user_panel/bcs/redirection.html', context)
+    elif request.user.is_bcs:
+        context = {
 
-@login_required
-def redirect_page(request):
-    context = {
+        }
+        return render(request, 'user_panel/bcs/dashboard.html', context)
 
-    }
-    return render(request, 'user_panel/bcs/redirection.html', context)
 
 
 @login_required
@@ -528,6 +524,22 @@ def bcsAdminServiceCategoryDeleteView(request, id):
     current_category = models.ServiceCategory.objects.get(id=id)
     current_category.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+def bcsAdminServiceCategoryEditView(request, id):
+    current_category = models.ServiceCategory.objects.get(id=id)
+    form = forms.AddServiceCategoryForm(instance=current_category)
+
+    if request.method == 'POST':
+        form = forms.AddServiceCategoryForm(request.POST, instance=current_category)
+        if form.is_valid():
+            form.save()
+            next_page = request.POST.get('next')
+            return HttpResponseRedirect(next_page)
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'admin_panel/bcsTF/editForm.html', context)
 
 
 def bcsAdminServiceView(request):

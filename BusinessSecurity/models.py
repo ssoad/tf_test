@@ -92,3 +92,50 @@ class UserAllowed(models.Model):
 
     class Meta:
         verbose_name_plural = 'Users Allowed'
+
+
+industry_type = (
+    ('software_companies', 'Software Companies'),
+    ('government_agencies', 'Government Agencies'),
+    ('law_enforcement', 'Law Enforcement'),
+    ('financial_institutes', 'Financial Institutes'),
+    ('telecommunication_companies', 'Telecommunication Companies'),
+    ('wealth_management', 'Wealth Management'),
+    ('educational_institutes', 'Educational Institute'),
+    ('isp_companies', 'ISP Companies'),
+    ('ecommerce_business', 'Ecommerce Business'),
+    ('law_farm', 'Law Farm'),
+    ('small_and_medium_business', 'Small and Medium Business'),
+    ('health_care_institutes', 'Health Care Institutes'),
+)
+
+privilege = (
+    ('admin', 'Admin'),
+    ('member', 'Member'),
+)
+
+
+class Business(models.Model):
+    industry_type = models.CharField(max_length=264, choices=industry_type)
+    company_name = models.CharField(max_length=264)
+    website = models.CharField(max_length=264)
+    business_size = models.IntegerField()
+
+    def __str__(self):
+        return self.company_name
+
+    class Meta:
+        verbose_name_plural = 'Businesses'
+
+
+class UsersBusiness(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='business_user')
+    business = models.ForeignKey(Business, on_delete=models.CASCADE, related_name='business_business')
+    position = models.CharField(max_length=264)
+    privilege = models.CharField(max_length=264, choices=privilege)
+
+    def __str__(self):
+        return f'{self.user} - {self.business} - {self.position}'
+
+    class Meta:
+        verbose_name_plural = 'User Businesses'

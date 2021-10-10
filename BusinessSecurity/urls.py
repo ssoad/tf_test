@@ -69,7 +69,6 @@ urlpatterns = [
     path('bcs_user_settings/', views.userSettingsView, name='bcs_user_settings'),
     path('bcs_user_my_team/', views.bcsUserMyTeamView, name='bcs_user_my_team'),
     path('employee_training_program/', views.employeeTrainigProgramView, name='employee_training_program'),
-    path('bcs_user_redirect/', views.redirect_page, name='bcs_user_redirect'),
 
 
     path('bcs_appoinment/', views.bcsAppoinmentView, name='bcs_appoinment'),
@@ -82,6 +81,7 @@ urlpatterns = [
     path('bcs_admin_reading_list/', views.bcsAdminReadingListView, name='bcs_admin_reading_list'),
     path('bcs_admin_services_category/', views.bcsAdminServiceCategoryView, name='bcs_admin_services_category'),
     path('bcs_admin_services_category_delete/<id>', views.bcsAdminServiceCategoryDeleteView, name='bcs_admin_services_category_delete'),
+    path('bcs_admin_services_category_edit/<id>', views.bcsAdminServiceCategoryEditView, name='bcs_admin_services_category_edit'),
     path('bcs_admin_services/', views.bcsAdminServiceView, name='bcs_admin_services'),
     path('bcs_admin_services_delete/<id>', views.bcsAdminServiceDeleteView, name='bcs_admin_services_delete'),
     path('bcs_admin_sub_services/', views.bcsAdminSubServiceView, name='bcs_admin_sub_services'),
