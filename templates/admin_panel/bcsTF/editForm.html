@@ -15,7 +15,7 @@
             {{ form|crispy }}
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ request.path }}">
-            <button type="submit">Edit</button>
+            <button type="submit" class="btn btn-primary my-3 text-capitalize">Update</button>
         </form>
     </div>
 </main>

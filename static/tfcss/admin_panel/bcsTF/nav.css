@@ -665,7 +665,14 @@ footer a i{
 .hamburger,.sideBarClose{
     display: none;
 }
+.form-group {
+    margin-bottom: 1rem!important;
+}
 
+.form-group label {
+    text-transform: uppercase;
+    font-weight: 700;
+}
 @media (max-width:769px){
     .d-small-none{
         display: none;
