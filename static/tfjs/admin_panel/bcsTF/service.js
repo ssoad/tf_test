@@ -41,37 +41,65 @@ const backToList = document.querySelector(".form-close-back")
 const addServiceForm = document.querySelector(".add-form")
 const tableContainer = document.querySelector(".table-container")
 const formFirstPart = document.querySelectorAll("#div_id_category,#div_id_service_icon,#div_id_service_title,#div_id_short_description, #div_id_has_sub_service, #div_id_is_subscription_based")
-const formSecondPart = document.querySelectorAll("#div_id_service_header, #div_id_service_body, #div_id_service_footer, .saveSubservice")
+const formSecondPart = document.querySelectorAll("#div_id_service_header, #div_id_service_body, #div_id_service_footer, .saveService")
 const serviceHeader = document.querySelector("#div_id_service_header")
-
-
+const previousBtn = document.querySelector(".previousBtn")
+console.log(previousBtn);
+// display service form
 addServiceBtn.addEventListener("click", () => {
+    // hide service List
     tableContainer.classList.add("d-none")
+    // show service List
     addServiceForm.classList.remove("d-none")
+    // show back Button
     backToList.classList.remove("d-none")
-    formSecondPart.forEach(item=>{
+    // show first part of the form
+    formFirstPart.forEach(item => {
+        item.classList.remove("d-none")
+    })
+    // show hide rich text editors
+    formSecondPart.forEach(item => {
         item.classList.add("d-none")
     })
-    const nextBtn = document.createElement("button")
-    nextBtn.classList.add('btn', 'btn-primary', 'nextBtn', 'text-capitalize')
-    nextBtn.textContent = "Next"
-    serviceHeader.insertAdjacentElement("beforebegin", nextBtn)
-    nextBtn.addEventListener("click",(e)=>{
-        e.preventDefault()
-        formSecondPart.forEach(item=>{
-            item.classList.remove("d-none")
-        })
-        formFirstPart.forEach(item=>{
-            item.classList.add("d-none")
-        })
-        nextBtn.classList.add("d-none")
-    })
+    // check if next button exist
+    const nextBtnCheck = document.querySelector(".nextBtn")
+    if (nextBtnCheck === null) {
+        const nextBtn = document.createElement("button")
+        nextBtn.classList.add('btn', 'btn-primary', 'nextBtn', 'text-capitalize')
+        nextBtn.textContent = "Next"
+        serviceHeader.insertAdjacentElement("beforebegin", nextBtn)
+    }
+    // if(nextBtnCheck !== null){
+    // nextBtnCheck.addEventListener("click", (e) => {
+    //     e.preventDefault()
+    //     formSecondPart.forEach(item => {
+    //         item.classList.remove("d-none")
+    //         previousBtn.classList.remove("d-none")
+    //     })
+    //     formFirstPart.forEach(item => {
+    //         item.classList.add("d-none")
+    //     })
+    //     nextBtnCheck.remove()
+    // })
+// }
+    // previousBtn.addEventListener("click",(e)=>{
+    //     e.preventDefault()
+    //     const nextBtn = document.createElement("button")
+    //     nextBtn.classList.add('btn', 'btn-primary', 'nextBtn', 'text-capitalize')
+    //     nextBtn.textContent = "Next"
+    //     serviceHeader.insertAdjacentElement("beforebegin", nextBtn)
+    //     formSecondPart.forEach(item => {
+    //         item.classList.add("d-none")
+    //         previousBtn.classList.add("d-none")
+    //     })
+    //     formFirstPart.forEach(item => {
+    //         item.classList.remove("d-none")
+    //     })
+    // })
+    
 })
 
-// console.log(nextForm)
-// nextBtn("click", ()=>{
-
-// })
+const nextBtnCheck = document.querySelector(".nextBtn")
 
 addServiceFormCloses.forEach(addServiceFormClose => {
     addServiceFormClose.addEventListener("click", () => {
@@ -80,5 +108,3 @@ addServiceFormCloses.forEach(addServiceFormClose => {
         tableContainer.classList.remove("d-none")
     })
 })
-
-

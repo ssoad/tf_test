@@ -69,7 +69,6 @@ urlpatterns = [
     path('bcs_user_settings/', views.userSettingsView, name='bcs_user_settings'),
     path('bcs_user_my_team/', views.bcsUserMyTeamView, name='bcs_user_my_team'),
     path('employee_training_program/', views.employeeTrainigProgramView, name='employee_training_program'),
-    path('bcs_user_redirect/', views.redirect_page, name='bcs_user_redirect'),
 
 
     path('bcs_appoinment/', views.bcsAppoinmentView, name='bcs_appoinment'),
@@ -82,19 +81,16 @@ urlpatterns = [
     path('bcs_admin_reading_list/', views.bcsAdminReadingListView, name='bcs_admin_reading_list'),
     path('bcs_admin_services_category/', views.bcsAdminServiceCategoryView, name='bcs_admin_services_category'),
     path('bcs_admin_services_category_delete/<id>', views.bcsAdminServiceCategoryDeleteView, name='bcs_admin_services_category_delete'),
+    path('bcs_admin_services_category_edit/<id>', views.bcsAdminServiceCategoryEditView, name='bcs_admin_services_category_edit'),
     path('bcs_admin_services/', views.bcsAdminServiceView, name='bcs_admin_services'),
     path('bcs_admin_services_delete/<id>', views.bcsAdminServiceDeleteView, name='bcs_admin_services_delete'),
+    path('bcs_admin_services_edit/<id>', views.bcsAdminServiceEditView, name='bcs_admin_services_edit'),
     path('bcs_admin_sub_services/', views.bcsAdminSubServiceView, name='bcs_admin_sub_services'),
     path('bcs_admin_sub_services_delete/<id>', views.bcsAdminSubServiceDeleteView, name='bcs_admin_sub_services_delete'),
+    path('bcs_admin_sub_services_edit/<id>', views.bcsAdminSubServiceEditView, name='bcs_admin_sub_services_edit'),
 
 # bcs admin panel
-    path('bcs_admin_dashboard/',views.bcsAdminDashboard, name='bcs_admin_dashboard'),
-    # path('bcs_admin_services/',views.bcsAdminService, name='bcs_admin_services'),
-    path('bcs_admin_revenue/',views.bcsAdminRevenue, name='bcs_admin_revenue'),
-    path('bcs_admin_subscriptions/',views.bcsAdminSubscriptionList, name='bcs_admin_subscriptions'),
     path('bcs_admin_subscription_packages/',views.bcsAdminSubscriptionPack, name='bcs_admin_subscription_packages'),
-    path('bcs_admin_reading_list/',views.bcsAdminReadingList, name='bcs_admin_reading_list'),
-    # path('bcs_admin_sub_services/',views.bcsAdminSubService, name='bcs_admin_sub_services'),
     path('bcs_admin_individual_users/',views.bcsAdminIndividualUser, name='bcs_admin_individual_users'),
     path('bcs_admin_individual_user_panel/',views.bcsAdminIndividualUserPanel, name='bcs_admin_individual_user_panel'),
     path('bcs_admin_list/',views.bcsAdminList, name='bcs_admin_list'),
