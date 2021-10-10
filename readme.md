@@ -10,7 +10,7 @@ git checkout -b [name_of_your_new_branch]
 ```
 ### Create Virtual Environment
 ```commandline
-py venv -m venv
+py -m venv venv
 ```
 ### Activate Virtual Environment (for cmd)
 ```commandline

@@ -68,10 +68,10 @@ urlpatterns = [
     path('bcs_user_notifications/', views.userNotificationsView, name='bcs_user_notifications'),
     path('bcs_user_settings/', views.userSettingsView, name='bcs_user_settings'),
     path('bcs_user_my_team/', views.bcsUserMyTeamView, name='bcs_user_my_team'),
-    path('employee_training_program/', views.employeeTrainigProgramView, name='employee_training_program'),
+    path('employee_training_program/', views.employeeTrainingProgramView, name='employee_training_program'),
 
 
-    path('bcs_appoinment/', views.bcsAppoinmentView, name='bcs_appoinment'),
+    path('bcs_appoinment/', views.bcsAppointmentView, name='bcs_appointment'),
 
 
     # bcs admin panel
@@ -92,7 +92,7 @@ urlpatterns = [
 # bcs admin panel
     path('bcs_admin_subscription_packages/',views.bcsAdminSubscriptionPack, name='bcs_admin_subscription_packages'),
     path('bcs_admin_individual_users/',views.bcsAdminIndividualUser, name='bcs_admin_individual_users'),
-    path('bcs_admin_individual_user_panel/',views.bcsAdminIndividualUserPanel, name='bcs_admin_individual_user_panel'),
+    path('bcs_admin_individual_user_panel/<id>',views.bcsAdminIndividualUserPanel, name='bcs_admin_individual_user_panel'),
     path('bcs_admin_list/',views.bcsAdminList, name='bcs_admin_list'),
     path('bcs_admin_profile/',views.bcsAdminProfile, name='bcs_admin_profile'),
     path('bcs_admin_user_interest/',views.bcsAdminUserInterest, name='bcs_admin_user_interest'),

@@ -27,3 +27,12 @@ class AddSubServiceForm(forms.ModelForm):
         model = models.SubService
         fields = '__all__'
         exclude = ['total_customer', ]
+
+
+class CreateBusinessForm(forms.ModelForm):
+    position = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'CEO'}))
+
+    class Meta:
+        model = models.Business
+        fields = '__all__'
+        exclude = ['unique_id', ]
