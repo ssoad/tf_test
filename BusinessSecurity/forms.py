@@ -11,7 +11,7 @@ class AddServiceCategoryForm(forms.ModelForm):
 class AddServiceForm(forms.ModelForm):
     category = forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-select'}),
                                       queryset=models.ServiceCategory.objects.all())
-    service_icon = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control'}))
+    # service_icon = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control'}))
 
     class Meta:
         model = models.Service

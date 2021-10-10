@@ -98,7 +98,7 @@
                                 <td>{{ service.short_description }}</td>
                                 <td>
 
-                                    <a class="btn editBtn" >
+                                    <a href="{% url 'bcs_app:bcs_admin_services_edit' id=service.id %}" class="btn editBtn" >
                                         <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
                                         Edit
                                     </a>

@@ -12,9 +12,9 @@
     <div class="container">
         <h2>Edit ----</h2>
         <form action="" method="POST" enctype="multipart/form-data">
+            {{ form.media }}
             {{ form|crispy }}
             {% csrf_token %}
-            <input type="hidden" name="next" value="{{ request.path }}">
             <button type="submit" class="btn btn-primary my-3 text-capitalize">Update</button>
         </form>
     </div>
