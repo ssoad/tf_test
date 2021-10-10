@@ -571,7 +571,7 @@ def bcsAdminServiceEditView(request, id):
     form = forms.AddServiceForm(instance=current_service)
 
     if request.method == 'POST':
-        form = forms.AddServiceForm(request.POST, instance=current_service)
+        form = forms.AddServiceForm(request.POST, request.FILES, instance=current_service)
         if form.is_valid():
             form.save()
 

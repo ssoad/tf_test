@@ -72,10 +72,10 @@
                                     <td>{{ subService.title }}</td>
                                     <td>{{ subService.short_description }}</td>
                                     <td>
-                                        <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+                                        <a href="{% url 'bcs_app:bcs_admin_sub_services_edit' id=id %}" class="btn">
                                             <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
                                             Edit
-                                        </button>
+                                        </a>
                                         <a href="" class="btn trash">
                                             <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
                                             Delete
