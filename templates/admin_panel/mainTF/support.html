@@ -3,7 +3,12 @@
 {% block title %} My Profile
 {% endblock title %} {% block headercss %}
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/mainTF/support.css" /> 
+<link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/mainTF/support.css" />
+<style>
+    .select2-container{
+        width: 100% !important;
+    }
+</style>
 <!-- <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css"/> 
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css"/> -->
 {% endblock headercss %}
@@ -198,47 +203,11 @@
                 </div>
                 <div class="modal-body">
                     <form action="">
-                        <select class="js-example-basic-single">
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="AL">Alabama</option>
-                          <option value="WY">Wyoming</option>
+                        <select name="user" class="js-example-basic-single form-control form-select">
+                            {% for one_user in all_user %}
+                                <option value="{{ one_user.id }}">{{ one_user.email }}</option>
+                            {% endfor %}
                         </select>
-{#                        <select name="user" cla id="id_user">#}
-{#                            {% for one_user in all_user %}#}
-{#                                <option value="{{ one_user.id }}">{{ one_user.email }}</option>#}
-{#                            {% endfor %}#}
-{#                        </select>#}
                         {{ permission_form|crispy }}
                         <button type="button" class="btn btn-primary">Add Stuff</button>
                     </form>
@@ -252,7 +221,9 @@
     <script>
     // In your Javascript (external .js resource or <script> tag)
 $(document).ready(function() {
-    $('.js-example-basic-single').select2();
+    $('.js-example-basic-single').select2({
+        dropdownParent: $("#exampleModal")
+    })
 });
     </script>
 <script src="{% static '' %}tfjs/admin_panel/mainTF/eventWebinar.js"></script>
