@@ -2,6 +2,7 @@
 {% load crispy_forms_tags %}
 {% block title %} My Profile
 {% endblock title %} {% block headercss %}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/mainTF/support.css" /> 
 <!-- <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css"/> 
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css"/> -->
@@ -198,25 +199,6 @@
                 <div class="modal-body">
                     <form action="">
                         {{ permission_form|crispy }}
-                        <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Service Name</label>
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected>Select Service</option>
-                                <option value="1">Business Cybersecurity Service</option>
-                                <option value="2">Personal Cybersecurity Service</option>
-                                <option value="3">Academy</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Name</label>
-                            <input type="text" class="form-control w-100" id="Name"
-                                placeholder="Enter Name">
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control w-100" id="email"
-                                placeholder="name@mail.com">
-                        </div>
                         <button type="button" class="btn btn-primary">Add Stuff</button>
                     </form>
                 </div>
@@ -225,6 +207,7 @@
     </div>
 </main>
 {% endblock content %} {% block customjs %}
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
     // In your Javascript (external .js resource or <script> tag)
         $(document).ready(function() {
