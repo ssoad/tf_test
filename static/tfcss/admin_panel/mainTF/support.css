@@ -58,7 +58,6 @@
     margin-block: 10px;
     border-collapse: separate;
     border-spacing: 0px 15px;
-    display: block;
     overflow-x: auto;
     white-space: nowrap;
 }
@@ -158,4 +157,10 @@ table.dataTable.no-footer {
 .modal-title {
     text-align: center;
     width: 90%;
+}
+
+@media (max-width: 769px) {
+    .shadow-table {
+        display: block;
+    }
 }
