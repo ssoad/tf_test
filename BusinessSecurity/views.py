@@ -1,6 +1,8 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse, HttpResponse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from BusinessSecurity import forms, models
+from Account.models import User, Permissions
+from Account.forms import SelectPermissionForm
 
 
 # Create your views here.
@@ -603,15 +605,16 @@ def emailInvitationView(request):
 
 
 # Main Admin Sections
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def mainAdminDashboardView(request):
+
     context = {
 
     }
     return render(request, 'admin_panel/mainTF/dashboard.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def mainAdminProfileView(request):
     context = {
 
@@ -619,7 +622,7 @@ def mainAdminProfileView(request):
     return render(request, 'admin_panel/mainTF/myProfile.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def mainAdminOrdersView(request):
     context = {
 
@@ -627,7 +630,7 @@ def mainAdminOrdersView(request):
     return render(request, 'admin_panel/mainTF/orders.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def mainAdminNotificationView(request):
     context = {
 
@@ -635,7 +638,7 @@ def mainAdminNotificationView(request):
     return render(request, 'admin_panel/mainTF/notification.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def mainAdminEventsView(request):
     context = {
 
@@ -643,7 +646,7 @@ def mainAdminEventsView(request):
     return render(request, 'admin_panel/mainTF/eventWebinar.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def mainAdminEventDetailView(request):
     context = {
 
@@ -651,15 +654,16 @@ def mainAdminEventDetailView(request):
     return render(request, 'admin_panel/mainTF/eventDetail.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def mainAdminSupportView(request):
+    permission_form = SelectPermissionForm()
     context = {
-
+        'permission_form': permission_form,
     }
     return render(request, 'admin_panel/mainTF/support.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def mainAdminSupportStuffView(request):
     context = {
 
@@ -667,7 +671,7 @@ def mainAdminSupportStuffView(request):
     return render(request, 'admin_panel/mainTF/supportStuffView.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def mainAdminTicketsView(request):
     context = {
 
@@ -675,7 +679,7 @@ def mainAdminTicketsView(request):
     return render(request, 'admin_panel/mainTF/allTickets.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def mainAdminTicketsDetailView(request):
     context = {
 
@@ -684,7 +688,7 @@ def mainAdminTicketsDetailView(request):
 
 
 # BCS Admin Secction
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def bcsAdminDashboardView(request):
     context = {
 
@@ -692,7 +696,7 @@ def bcsAdminDashboardView(request):
     return render(request, 'admin_panel/bcsTF/dashboard.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def bcsAdminServiceCategoryView(request):
     categories = models.ServiceCategory.objects.all()
     form = forms.AddServiceCategoryForm()
@@ -710,14 +714,14 @@ def bcsAdminServiceCategoryView(request):
     return render(request, 'admin_panel/bcsTF/serviceCategory.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def bcsAdminServiceCategoryDeleteView(request, id):
     current_category = models.ServiceCategory.objects.get(id=id)
     current_category.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def bcsAdminServiceCategoryEditView(request, id):
     current_category = models.ServiceCategory.objects.get(id=id)
     form = forms.AddServiceCategoryForm(instance=current_category)
@@ -735,7 +739,7 @@ def bcsAdminServiceCategoryEditView(request, id):
     return render(request, 'admin_panel/bcsTF/editForm.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def bcsAdminServiceView(request):
     form = forms.AddServiceForm()
     services = models.Service.objects.all()
@@ -751,14 +755,14 @@ def bcsAdminServiceView(request):
     return render(request, 'admin_panel/bcsTF/service.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def bcsAdminServiceDeleteView(request, id):
     current_service = models.Service.objects.get(id=id)
     current_service.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def bcsAdminServiceEditView(request, id):
     current_service = models.Service.objects.get(id=id)
     form = forms.AddServiceForm(instance=current_service)
@@ -776,7 +780,7 @@ def bcsAdminServiceEditView(request, id):
     return render(request, 'admin_panel/bcsTF/editForm.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def bcsAdminSubServiceView(request):
     form = forms.AddSubServiceForm()
     sub_services = models.SubService.objects.all()
@@ -792,14 +796,14 @@ def bcsAdminSubServiceView(request):
     return render(request, 'admin_panel/bcsTF/subService.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def bcsAdminSubServiceDeleteView(request, id):
     current_sub_service = models.SubService.objects.get(id=id)
     current_sub_service.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def bcsAdminSubServiceEditView(request, id):
     current_sub_service = models.SubService.objects.get(id=id)
     form = forms.AddSubServiceForm(instance=current_sub_service)
@@ -817,7 +821,7 @@ def bcsAdminSubServiceEditView(request, id):
     return render(request, 'admin_panel/bcsTF/editForm.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def bcsAdminReadingListView(request):
     context = {
 
@@ -825,7 +829,7 @@ def bcsAdminReadingListView(request):
     return render(request, 'admin_panel/bcsTF/readingList.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def bcsAdminRevenueView(request):
     context = {
 
@@ -833,7 +837,7 @@ def bcsAdminRevenueView(request):
     return render(request, 'admin_panel/bcsTF/revenue.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def bcsAdminSubscriptionListView(request):
     context = {
 
@@ -841,12 +845,12 @@ def bcsAdminSubscriptionListView(request):
     return render(request, 'admin_panel/bcsTF/subscriptionList.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def bcsAdminSubscriptionPack(request):
     return render(request, 'admin_panel/bcsTF/subscriptionPack.html')
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def bcsAdminIndividualUser(request):
     users = models.User.objects.filter(is_bcs=True)
     context = {
@@ -855,7 +859,7 @@ def bcsAdminIndividualUser(request):
     return render(request, 'admin_panel/bcsTF/users.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def bcsAdminIndividualUserPanel(request, id):
     current_user = models.User.objects.get(id=id)
 
@@ -865,27 +869,27 @@ def bcsAdminIndividualUserPanel(request, id):
     return render(request, 'admin_panel/bcsTF/userPanel.html', context)
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def bcsAdminList(request):
     return render(request, 'admin_panel/bcsTF/adminUsers.html')
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def bcsAdminProfile(request):
     return render(request, 'admin_panel/bcsTF/myProfile.html')
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def bcsAdminUserInterest(request):
     return render(request, 'admin_panel/bcsTF/userInterest.html')
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def bcsAdminTraining(request):
     return render(request, 'admin_panel/bcsTF/training.html')
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def bcsAdminCourseDetail(request):
     return render(request, 'admin_panel/bcsTF/courseDetail.html')
 
@@ -893,51 +897,51 @@ def bcsAdminCourseDetail(request):
 # New
 
 #    main admin views
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def mainAdminDashboard(request):
     return render(request, 'admin_panel/mainTF/dashboard.html')
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def mainAdminProfile(request):
     return render(request, 'admin_panel/mainTF/myProfile.html')
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def mainAdminOrders(request):
     return render(request, 'admin_panel/mainTF/orders.html')
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def mainAdminNotification(request):
     return render(request, 'admin_panel/mainTF/notification.html')
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def mainAdminEvents(request):
     return render(request, 'admin_panel/mainTF/eventWebinar.html')
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def mainAdminEventDetail(request):
     return render(request, 'admin_panel/mainTF/eventDetail.html')
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def mainAdminSupport(request):
     return render(request, 'admin_panel/mainTF/support.html')
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def mainAdminSupportStuff(request):
     return render(request, 'admin_panel/mainTF/supportStuffView.html')
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def mainAdminTickets(request):
     return render(request, 'admin_panel/mainTF/allTickets.html')
 
 
-@user_passes_test(admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(admin_permission_check, login_url='/account/profile/')
 def mainAdminTicketsdetail(request):
     return render(request, 'admin_panel/mainTF/ticketView.html')

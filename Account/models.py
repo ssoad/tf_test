@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 from phonenumber_field.modelfields import PhoneNumberField
 from django_countries.fields import CountryField
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 # Create your models here.
@@ -69,3 +71,35 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.first_name
+
+
+admin_choices = (
+    # ('no_permissions', 'No Permissions'),
+    ('bcs_admin', 'BCS Admin'),
+    ('pcs_admin', 'PCS Admin'),
+    ('academy_admin', 'Academy Admin'),
+    ('blog_admin', 'Blog Admin'),
+)
+
+
+class Permissions(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='permission_user')
+    admin_type = models.CharField(choices=admin_choices, max_length=264)
+    is_superadmin = models.BooleanField(default=False, verbose_name='Super Admin')
+    is_admin = models.BooleanField(default=False, verbose_name='Admin')
+    is_moderator = models.BooleanField(default=False, verbose_name='Moderator')
+    is_editor = models.BooleanField(default=False, verbose_name='Editor')
+
+    def __str__(self):
+        return f'{self.user} - {self.admin_type}'
+
+
+@receiver(post_save, sender=User)
+def create_permission(sender, instance, created, **kwargs):
+    if created:
+        Permissions.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_permission(sender, instance, **kwargs):
+    instance.permission_user.save()
