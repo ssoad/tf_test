@@ -1,4 +1,6 @@
-{% extends 'base/main_admin_base.html' %} {% load static %} {% block title %} My Profile
+{% extends 'base/main_admin_base.html' %} {% load static %}
+{% load crispy_forms_tags %}
+{% block title %} My Profile
 {% endblock title %} {% block headercss %}
 <link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/mainTF/support.css" /> 
 <!-- <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css"/> 
@@ -195,6 +197,7 @@
                 </div>
                 <div class="modal-body">
                     <form action="">
+                        {{ permission_form|crispy }}
                         <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label">Service Name</label>
                             <select class="form-select" aria-label="Default select example">
@@ -222,6 +225,12 @@
     </div>
 </main>
 {% endblock content %} {% block customjs %}
+    <script>
+    // In your Javascript (external .js resource or <script> tag)
+        $(document).ready(function() {
+            $('#id_user').select2();
+        });
+    </script>
 <script src="{% static '' %}tfjs/admin_panel/mainTF/eventWebinar.js"></script>
 <!-- <script src="https://cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script> -->
