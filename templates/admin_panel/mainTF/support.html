@@ -198,6 +198,47 @@
                 </div>
                 <div class="modal-body">
                     <form action="">
+                        <select class="js-example-basic-single">
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AL">Alabama</option>
+                          <option value="WY">Wyoming</option>
+                        </select>
+{#                        <select name="user" cla id="id_user">#}
+{#                            {% for one_user in all_user %}#}
+{#                                <option value="{{ one_user.id }}">{{ one_user.email }}</option>#}
+{#                            {% endfor %}#}
+{#                        </select>#}
                         {{ permission_form|crispy }}
                         <button type="button" class="btn btn-primary">Add Stuff</button>
                     </form>
@@ -210,9 +251,9 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
     // In your Javascript (external .js resource or <script> tag)
-        $(document).ready(function() {
-            $('#id_user').select2();
-        });
+$(document).ready(function() {
+    $('.js-example-basic-single').select2();
+});
     </script>
 <script src="{% static '' %}tfjs/admin_panel/mainTF/eventWebinar.js"></script>
 <!-- <script src="https://cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js"></script>

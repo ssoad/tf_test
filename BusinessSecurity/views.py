@@ -657,8 +657,12 @@ def mainAdminEventDetailView(request):
 @user_passes_test(admin_permission_check, login_url='/account/profile/')
 def mainAdminSupportView(request):
     permission_form = SelectPermissionForm()
+
+    all_user = User.objects.all()
+
     context = {
         'permission_form': permission_form,
+        'all_user': all_user
     }
     return render(request, 'admin_panel/mainTF/support.html', context)
 

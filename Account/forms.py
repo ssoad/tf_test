@@ -99,3 +99,4 @@ class SelectPermissionForm(forms.ModelForm):
     class Meta:
         model = models.Permissions
         fields = '__all__'
+        exclude = ['user', ]
