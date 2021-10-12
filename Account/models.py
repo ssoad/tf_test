@@ -74,7 +74,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 admin_choices = (
-    # ('no_permissions', 'No Permissions'),
+    ('main_admin', 'Main Admin'),
     ('bcs_admin', 'BCS Admin'),
     ('pcs_admin', 'PCS Admin'),
     ('academy_admin', 'Academy Admin'),
@@ -94,12 +94,12 @@ class Permissions(models.Model):
         return f'{self.user} - {self.admin_type}'
 
 
-@receiver(post_save, sender=User)
-def create_permission(sender, instance, created, **kwargs):
-    if created:
-        Permissions.objects.create(user=instance)
-
-
-@receiver(post_save, sender=User)
-def save_permission(sender, instance, **kwargs):
-    instance.permission_user.save()
+# @receiver(post_save, sender=User)
+# def create_permission(sender, instance, created, **kwargs):
+#     if created:
+#         Permissions.objects.create(user=instance)
+#
+#
+# @receiver(post_save, sender=User)
+# def save_permission(sender, instance, **kwargs):
+#     instance.permission_user.save()

@@ -99,4 +99,18 @@ class SelectPermissionForm(forms.ModelForm):
     class Meta:
         model = models.Permissions
         fields = '__all__'
-        exclude = ['user', ]
+        # exclude = ['user', ]
+        widgets = {
+            'user': forms.Select(attrs={'class': 'js-example-basic-single form-control form-select'})
+        }
+
+
+class SelectBCSPermissionForm(forms.ModelForm):
+    user = forms.ModelChoiceField(queryset=models.User.objects.filter(is_superuser=False, is_staff=False))
+    class Meta:
+        model = models.Permissions
+        fields = '__all__'
+        exclude = ['admin_type', ]
+        widgets = {
+            'user': forms.Select(attrs={'class': 'js-example-basic-single form-control form-select'})
+        }

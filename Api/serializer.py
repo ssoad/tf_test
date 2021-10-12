@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from Blog import models
+from BusinessSecurity import models as bcsmodels
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -8,7 +9,9 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Post
-        fields = ['id', 'post_url', 'title', 'feature_image', 'short_description', 'content', 'comment_option', 'date', 'updated_date', 'total_view', 'author', 'author_name', 'category', 'category_name', 'sub_categories', 'filter_option', 'tag']
+        fields = ['id', 'post_url', 'title', 'feature_image', 'short_description', 'content', 'comment_option', 'date',
+                  'updated_date', 'total_view', 'author', 'author_name', 'category', 'category_name', 'sub_categories',
+                  'filter_option', 'tag']
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -48,3 +51,11 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Comment
         fields = ['id', 'comment', 'comment_date', 'user', 'post', 'author', 'post_title']
+
+
+class PackageListSerializer(serializers.ModelSerializer):
+    feature_subscription = serializers.StringRelatedField(many=True)
+    service_name = serializers.CharField(source='service_id.service_title')
+    class Meta:
+        model = bcsmodels.SubscriptionBasedPackage
+        fields = ['id', 'service_id', 'service_name', 'package_name', 'servers', 'websites', 'workstations', 'duration', 'feature_subscription', 'price',]

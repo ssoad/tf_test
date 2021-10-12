@@ -48,6 +48,11 @@
                                         <i class="icofont-edit me-2"></i> Edit Profile
                                     </a>
                                 </li>
+                                <li>
+                                    <a class="dropdown-item text-center" href="{% url 'account_app:logout' %}">
+                                        <i class="icofont-logout me-2"></i> Logout
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -145,7 +150,7 @@
                     <i class="icofont-options"></i> My Profile
                 </a>
             </li>
-            <a href="" class="mt-3 logout-btn ms-3 btn btn-outline-navy px-4">Log Out</a>
+            <a href="{% url 'account_app:logout' %}" class="mt-3 logout-btn ms-3 btn btn-outline-navy px-4">Log Out</a>
         </ul>
     </div>
 

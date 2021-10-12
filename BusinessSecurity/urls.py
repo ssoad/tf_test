@@ -55,6 +55,7 @@ urlpatterns = [
     path('main_admin_events/', views.mainAdminEventsView, name='main_admin_events'),
     path('main_admin_event_detail/', views.mainAdminEventDetailView, name='main_admin_event_detail'),
     path('main_admin_support_view/', views.mainAdminSupportView, name='main_admin_support_view'),
+    path('main_admin_support_delete_view/<id>/', views.mainAdminSupportDeleteView, name='main_admin_support_delete_view'),
     path('main_admin_stuff_view/', views.mainAdminSupportStuffView, name='main_admin_stuff_view'),
     path('main_admin_all_tickets/', views.mainAdminTicketsView, name='main_admin_all_tickets'),
     path('main_admin_tickets_detail/', views.mainAdminTicketsDetailView, name='main_admin_tickets_detail'),

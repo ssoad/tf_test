@@ -4,6 +4,7 @@ from django.shortcuts import render
 from Api import serializer
 from rest_framework import generics
 from Blog import models
+from BusinessSecurity import models as bcsmodels
 from rest_framework import permissions
 
 
@@ -52,3 +53,13 @@ class CommentCreateViewApi(generics.ListCreateAPIView):
     def get_queryset(self):
         post = self.kwargs['post_id']
         return models.Comment.objects.filter(post=post)
+
+
+class PackageListViewApi(generics.ListAPIView):
+    serializer_class = serializer.PackageListSerializer
+
+    # queryset = bcsmodels.SubscriptionBasedPackage.objects.all()
+
+    def get_queryset(self):
+        service_id = self.kwargs['id']
+        return bcsmodels.SubscriptionBasedPackage.objects.filter(service_id=service_id)
