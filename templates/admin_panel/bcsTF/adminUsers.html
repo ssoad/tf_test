@@ -1,4 +1,5 @@
 {% extends 'base/bcs_admin_base.html' %} {% load static %}
+{% load crispy_forms_tags %}
 {% block title %} BCS Admin List
 {% endblock title %}
 
@@ -17,33 +18,33 @@
                     <h2 class="float-start text-uppercase mb-4">total client</h2>
                     <div class="col-md-3">
                         <div class="subscription-info bg-primary-dark">
-                            <h3>TOTAL ADMIN</h3>
+                            <h3>TOTAL SUPER ADMIN</h3>
                             <p class="fw-bolder">
-                                <i class="bi bi-person"></i> <span style="font-size: 25px;">8</span> users
+                                <i class="bi bi-person"></i> <span style="font-size: 25px;">{{ super_admin_count }}</span> users
                             </p>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="subscription-info bg-primary-25">
-                            <h3>TOTAL MODERATOR</h3>
+                            <h3>TOTAL ADMIN</h3>
                             <p class="fw-bolder">
-                                <i class="bi bi-person"></i> <span style="font-size: 25px;">3</span> users
+                                <i class="bi bi-person"></i> <span style="font-size: 25px;">{{ admin_count }}</span> users
                             </p>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="subscription-info bg-primary-50">
-                            <h3>TOTAL EDITOR</h3>
+                            <h3>TOTAL MODERATOR</h3>
                             <p class="fw-bolder">
-                                <i class="bi bi-person"></i> <span style="font-size: 25px;">2</span> users
+                                <i class="bi bi-person"></i> <span style="font-size: 25px;">{{ moderator_count }}</span> users
                             </p>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="subscription-info" style="background-color: #3869C1;">
-                            <h3>TOTAL CONTRIBUTOR</h3>
+                            <h3>TOTAL EDITOR</h3>
                             <p class="fw-bolder">
-                                <i class="bi bi-person"></i> <span style="font-size: 25px;">3</span> users
+                                <i class="bi bi-person"></i> <span style="font-size: 25px;">{{ editor_count }}</span> users
                             </p>
                         </div>
                     </div>
@@ -67,107 +68,39 @@
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Phone</th>
-                                    <th>Role</th>
-                                    <th>Designation</th>
+                                    <th>Super Access</th>
+                                    <th>Admin Access</th>
+                                    <th>Moderator Access</th>
+                                    <th>Editor Access</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
+                            {% for admin in admin_list %}
                                 <tr>
                                     <td>
                                         <a href="{% url 'account_app:profile' %}">
-                                            Azharul
+                                            {{ admin.user.first_name }} {{ admin.user.last_name }}
                                         </a>
                                     </td>
-                                    <td>user@techforing.com</td>
-                                    <td>01XXXXXXXXX</td>
-                                    <td>Modaretor</td>
-                                    <td>Developer</td>
+                                    <td>{{ admin.user.email }}</td>
+                                    <td>{{ admin.user.phone_number }}</td>
+                                    <td>{{ admin.is_superadmin }}</td>
+                                    <td>{{ admin.is_admin }}</td>
+                                    <td>{{ admin.is_moderator }}</td>
+                                    <td>{{ admin.is_editor }}</td>
                                     <td>
                                         <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
                                             <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
                                         </button>
-                                        <button class="btn trash">
+                                        <a href="{% url 'bcs_app:main_admin_support_delete_view' id=admin.id %}" class="btn trash">
                                             <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <a href="{% url 'account_app:profile' %}">
-                                            Shomit
                                         </a>
                                     </td>
-                                    <td>user@techforing.com</td>
-                                    <td>01XXXXXXXXX</td>
-                                    <td>Modaretor</td>
-                                    <td>Developer</td>
-                                    <td>
-                                        <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-                                            <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
-                                        </button>
-                                        <button class="btn trash">
-                                            <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                        </button>
-                                    </td>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        <a href="{% url 'account_app:profile' %}">
-                                            Sabbir
-                                        </a>
-                                    </td>
-                                    <td>user@techforing.com</td>
-                                    <td>01XXXXXXXXX</td>
-                                    <td>Modaretor</td>
-                                    <td>Developer</td>
-                                    <td>
-                                        <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-                                            <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
-                                        </button>
-                                        <button class="btn trash">
-                                            <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <a href="{% url 'account_app:profile' %}">
-                                            Mili
-                                        </a>
-                                    </td>
-                                    <td>user@techforing.com</td>
-                                    <td>01XXXXXXXXX</td>
-                                    <td>Modaretor</td>
-                                    <td>Developer</td>
-                                    <td>
-                                        <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-                                            <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
-                                        </button>
-                                        <button class="btn trash">
-                                            <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <a href="{% url 'account_app:profile' %}">
-                                            Azharul
-                                        </a>
-                                    </td>
-                                    <td>user@techforing.com</td>
-                                    <td>01XXXXXXXXX</td>
-                                    <td>Modaretor</td>
-                                    <td>Developer</td>
-                                    <td>
-                                        <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-                                            <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
-                                        </button>
-                                        <button class="btn trash">
-                                            <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                        </button>
-                                    </td>
-                                </tr>
+                            {% endfor %}
+
+
                             </tbody>
                         </table>
                     </div>
@@ -183,26 +116,10 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="">
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Name</label>
-                                <input type="text" class="form-control w-100" id="Name" placeholder="Enter Name">
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control w-100" id="email" placeholder="name@mail.com">
-                            </div>
-                            <div class="mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Role Name</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected="">Select Role</option>
-                                    <option value="1">Super Admin</option>
-                                    <option value="2">Admin</option>
-                                    <option value="3">Moderator</option>
-                                    <option value="3">Editor</option>
-                                </select>
-                            </div>
-                            <button type="button" class="btn btn-primary">Add</button>
+                        <form action="" method="POST">
+                            {{ permission_form|crispy }}
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary">Add</button>
                         </form>
                     </div>
                 </div>

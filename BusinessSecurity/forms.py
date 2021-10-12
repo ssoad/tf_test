@@ -11,6 +11,7 @@ class AddServiceCategoryForm(forms.ModelForm):
 class AddServiceForm(forms.ModelForm):
     category = forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-select'}),
                                       queryset=models.ServiceCategory.objects.all())
+
     # service_icon = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control'}))
 
     class Meta:
@@ -36,3 +37,10 @@ class CreateBusinessForm(forms.ModelForm):
         model = models.Business
         fields = '__all__'
         exclude = ['unique_id', ]
+
+
+class AddPackageForm(forms.ModelForm):
+    service_id = forms.ModelChoiceField(queryset=models.Service.objects.filter(is_subscription_based=True))
+    class Meta:
+        model = models.SubscriptionBasedPackage
+        fields = '__all__'
