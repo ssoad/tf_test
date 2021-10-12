@@ -97,7 +97,7 @@ const showSubscription = (url)=>{
             <p class="mb-0">
             <i class="icofont-tag"></i> Price
             </p>
-            <p class="mb-0 fw-bold">${subscription.price}$ <span class="fw-bolder">/${parseInt(subscription.duration) > 1 && subscription.duration}</span>
+            <p class="mb-0 fw-bold">${subscription.price}$ <span class="fw-bolder">/${parseInt(subscription.duration) > 1 && subscription.duration} ${subscription.duration_type}</span>
             </p>
             </div>
             <button class="mt-3 btn bg-navy px-5 py-1 text-uppercase" data-bs-toggle="modal"
