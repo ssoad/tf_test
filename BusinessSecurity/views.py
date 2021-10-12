@@ -879,13 +879,19 @@ def bcsAdminSubscriptionListView(request):
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminSubscriptionPack(request):
     form = forms.AddPackageForm()
+    form2 = forms.AddPackageFeatureForm()
     services = models.Service.objects.filter(is_subscription_based=True)
     if request.method == 'POST':
-        form = forms.AddPackageForm(request.POST)
-        form.save()
+        if 'package-btn' in request.POST:
+            form = forms.AddPackageForm(request.POST)
+            form.save()
+        elif 'feature-btn' in request.POST:
+            form2 = forms.AddPackageFeatureForm(request.POST)
+            form2.save()
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
         'form': form,
+        'form2': form2,
         'services': services,
     }
     return render(request, 'admin_panel/bcsTF/subscriptionPack.html', context)

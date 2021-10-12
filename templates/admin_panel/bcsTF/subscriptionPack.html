@@ -108,7 +108,7 @@
                         </div>
                         {{ form|crispy }}
                         {% csrf_token %}
-                        <button class="btn btn-primary text-capitalize" id="save-short-service">
+                        <button class="btn btn-primary text-capitalize" name="package-btn" id="save-short-service">
                             save
                         </button>
                     </form>
@@ -116,6 +116,97 @@
             </div>
         </div>
     </div>
+<!-- modal -->
+        <div class="modal fade" id="subscribeModal-2" tabindex="-1" aria-labelledby="subscribeModal-1Label"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" class="needs-validation">
+                            <div class="d-grid input">
+                                <h4>Package Details</h4>
+                                <h4 class="text-center">Previous Data</h4>
+                                <h4 class="text-center">New Data</h4>
+                            </div>
+                            <div class="d-grid input">
+                                <label for="max-users">Package Name</label>
+                                <label for="max-users" class="text-center"></label>
+                                <input type="text" id="max-users">
+                            </div>
+                            <div class="d-grid input">
+                                <label for="max-users">Max Servers</label>
+                                <label for="max-users" class="text-center">5</label>
+                                <input type="text" id="max-users">
+                            </div>
+                            <div class="d-grid input">
+                                <label for="max-users">Max websites</label>
+                                <label for="max-users" class="text-center">5</label>
+                                <input type="text" id="max-users">
+                            </div>
+                            <div class="d-grid input">
+                                <label for="max-users">Max workstations</label>
+                                <label for="max-users" class="text-center">5</label>
+                                <input type="text" id="max-users">
+                            </div>
+                            <div class="d-grid input">
+                                <label for="max-users">Duration</label>
+                                <label for="max-users" class="text-center">30 <small>days</small></label>
+                                <input type="text" id="max-users">
+                            </div>
+                            <div class="d-grid input">
+                                <label for="max-users">Price</label>
+                                <label for="max-users" class="text-center">199$</label>
+                                <input type="text" id="max-users">
+                            </div>
+                            <div class="input featureInputContainer">
+                                <h5 class="mb-5">Subscription Feature</h5>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <input type="text" class="form-control w-85 feature-input"
+                                        placeholder="Add a Feature"> <button
+                                        class="btn btn-primary add-feature">Add</button>
+                                </div>
+                                <div class="d-flex justify-content-between align-content-center">
+                                    <span>Cybersecurity & Privacy Program</span>
+                                    <button class="btn btn-danger btn-sm">delete</button>
+                                </div>
+                                <hr>
+                                <div class="d-flex justify-content-between align-content-center">
+                                    <span>Risk Assessment</span>
+                                    <button class="btn btn-danger btn-sm">Delete</button>
+                                </div>
+                                <hr>
+                                <div class="d-flex justify-content-between align-content-center">
+                                    <span>Data Privacy & Protection</span>
+                                    <button class="btn btn-danger btn-sm">Delete</button>
+                                </div>
+                                <hr>
+                                <div class="d-flex justify-content-between align-content-center">
+                                    <span>Vendor Screening</span>
+                                    <button class="btn btn-danger btn-sm">Delete</button>
+                                </div>
+                                <hr>
+                                <div class="d-flex justify-content-between align-content-center">
+                                    <span>Certification</span>
+                                    <button class="btn btn-danger btn-sm">Delete</button>
+                                </div>
+                                <hr>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <!-- <button type="button" class="btn btn-primary">
+                                    Save and add another
+                                </button> -->
+                                <button class="btn btn-primary text-capitalize" id="save-short-service">
+                                    update
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     <div class="modal fade" id="subscribeFeatureModal-1" tabindex="-1" aria-labelledby="subscribeModal-1Label"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -129,9 +220,9 @@
                             <h4>Package Details</h4>
                             <h4>New Data</h4>
                         </div>
-                        {{ form|crispy }}
+                        {{ form2|crispy }}
                         {% csrf_token %}
-                        <button class="btn btn-primary text-capitalize" id="save-short-service">
+                        <button class="btn btn-primary text-capitalize" name="feature-btn" id="save-short-service">
                             save
                         </button>
                     </form>
