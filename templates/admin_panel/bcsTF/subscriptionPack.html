@@ -5,217 +5,145 @@
 {% endblock title %}
 
 {% block headercss %}
-    <link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/dashboard.css' %}" />
-    <link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/subscription.css' %}" />
-    <!-- charts js-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/dashboard.css' %}" />
+<link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/subscription.css' %}" />
+<!-- charts js-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 {% endblock headercss %}
 {% block content %}
-    <!-- main section starts -->
-    <main>
-        <section>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <div class="package-stat">
-                            <div class="shadow p-4 mt-4" style="vertical-align: middle;">
-                                <canvas id="package-chart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-8" style="align-self: end;">
-                        <div class="row g-4 align-content-center">
-                            <div class="col-md-6">
-                                <div class="subscription-info" style="background-color: #4566A0;">
-                                    <h3>Basic</h3>
-                                    <p class="fw-bolder">
-                                        <i class="bi bi-person"></i> <span style="font-size: 25px;">750</span> users
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="subscription-info" style="background-color: #2C4C8C;">
-                                    <h3>Medium</h3>
-                                    <p class="fw-bolder">
-                                        <i class="bi bi-person"></i> <span style="font-size: 25px;">750</span> users
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="subscription-info" style="background-color: #2C4C8C;">
-                                    <h3>Advanced</h3>
-                                    <p class="fw-bolder">
-                                        <i class="bi bi-person"></i> <span style="font-size: 25px;">750</span> users
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="subscription-info" style="background-color: #182F59;">
-                                    <h3>Custom</h3>
-                                    <p class="fw-bolder">
-                                        <i class="bi bi-person"></i> <span style="font-size: 25px;">750</span> users
-                                    </p>
-                                </div>
-                            </div>
+<!-- main section starts -->
+<main>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="package-stat">
+                        <div class="shadow p-4 mt-4" style="vertical-align: middle;">
+                            <canvas id="package-chart"></canvas>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-        <section class="info">
-            <div class="container">
-                <div class="row my-5">
-                    {% for service in services %}
-                        {{ service }}
-                    {% endfor %}
-
-                    <div class="subscription-container position-relative px-0 px-md-2 text-center">
-                        <div class="plugAndPlay">
-                            <div class="border-bottom border-gray pb-1">
-                                <div class="d-flex heading justify-content-between">
-                                    <button class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#subscribeModal-1">Add package</button>
-                                    <h4 class="fw-bold">SUBSCRIPTION PACKAGES</h4>
-                                </div>
+                <div class="col-lg-8" style="align-self: end;">
+                    <div class="row g-4 align-content-center">
+                        <div class="col-md-6">
+                            <div class="subscription-info" style="background-color: #4566A0;">
+                                <h3>Basic</h3>
+                                <p class="fw-bolder">
+                                    <i class="bi bi-person"></i> <span style="font-size: 25px;">750</span> users
+                                </p>
                             </div>
-                            <section class="package-details mt-4">
-
-                                <div
-                                    class="package bg-lightgreen shadow p-3 rounded">
-                                    <h3 class="fw-bold fs-4">BASIC</h3>
-                                    <table class="mx-auto mb-3">
-                                        <tbody>
-                                            <tr>
-                                                <td>Cybersecurity & Privacy Program
-                                                </td>
-                                                <td>✓</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Risk Assessment
-                                                </td>
-                                                <td>✓</td>
-                                            </tr>
-                                            <tr>
-                                                <td> Data Privacy & Protection
-                                                </td>
-                                                <td>✓</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Vendor Screening
-                                                </td>
-                                                <td>✓</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Incident Response Strategy
-                                                </td>
-                                                <td>✓</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Awareness & Training
-                                                </td>
-                                                <td>✓</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Continuous consultation
-                                                </td>
-                                                <td>●</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Certification
-                                                </td>
-                                                <td>✓</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <div class="info-btn">
-                                        <p class="mb-0">
-                                            <i class="bi bi-person-fill"></i> Max workstations
-                                        </p>
-                                        <p class="mb-0 fw-bold">5</p>
-                                    </div>
-                                    <div class="info-btn">
-                                        <p class="mt-2">
-                                            <i class="bi bi-person-fill"></i> Max servers
-                                        </p>
-                                        <p class="mb-0 fw-bold">5</p>
-                                    </div>
-                                    <div class="info-btn">
-                                        <p class="mt-2">
-                                            <i class="bi bi-person-fill"></i> Max websites
-                                        </p>
-                                        <p class="mb-0 fw-bold">5</p>
-                                    </div>
-                                    <div class="mt-2 info-btn">
-                                        <p class="mb-0">
-                                            <i class="icofont-tag"></i> Price
-                                        </p>
-                                        <p class="mb-0 fw-bold">500$ <span class="fw-bolder">/Month</span>
-                                        </p>
-                                    </div>
-                                    <button class="mt-3 btn bg-navy px-5 py-1 text-uppercase" data-bs-toggle="modal"
-                                        data-bs-target="#subscribeModal-2">Edit</button>
-                                </div>
-                                <div
-                                    class="package bg-lightgreen shadow p-3 rounded">
-                                    <h3 class="fw-bold fs-4 text-uppercase">Custom</h3>
-                                    <article class="custom-info fw-bold">
-                                        <p>
-                                            Lorem Ipsum is simply dummy text
-                                            of the printing and typesetting industry.
-                                            Lorem Ipsum has been the industry's
-                                            standard dummy text ever since the
-                                            1500s, when an unknown printer took a
-                                            galley of type and scrambled it to make
-                                            a type specimen book. It has survived
-                                            not only five centuries, but also the
-                                            leap into electronic typesetting.
-                                        </p>
-                                    </article>
-                                    <li class="mt-4 mb-3 custom-info-listing"><span>Lorem Ipsum is simply dummy text of
-                                            the
-                                            printing.</span> </li>
-                                    <li class="mt-4 mb-3 custom-info-listing"><span>Lorem Ipsum is simply dummy text of
-                                            the
-                                            printing.</span> </li>
-                                    <li class="mt-4 mb-3 custom-info-listing"><span>Lorem Ipsum is simply dummy text of
-                                            the
-                                            printing.</span> </li>
-                                </div>
-                            </section>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- modal -->
-        <div class="modal fade" id="subscribeModal-1" tabindex="-1" aria-labelledby="subscribeModal-1Label"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header border-0">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="" class="needs-validation" method="POST">
-                            <div class="d-flex justify-content-between">
-                                <h4>Package Details</h4>
-                                <h4>New Data</h4>
+                        <div class="col-md-6">
+                            <div class="subscription-info" style="background-color: #2C4C8C;">
+                                <h3>Medium</h3>
+                                <p class="fw-bolder">
+                                    <i class="bi bi-person"></i> <span style="font-size: 25px;">750</span> users
+                                </p>
                             </div>
-                            {{ form|crispy }}
-                            {% csrf_token %}
-                                <button class="btn btn-primary text-capitalize" id="save-short-service">
-                                    save
-                                </button>
-                        </form>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="subscription-info" style="background-color: #2C4C8C;">
+                                <h3>Advanced</h3>
+                                <p class="fw-bolder">
+                                    <i class="bi bi-person"></i> <span style="font-size: 25px;">750</span> users
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="subscription-info" style="background-color: #182F59;">
+                                <h3>Custom</h3>
+                                <p class="fw-bolder">
+                                    <i class="bi bi-person"></i> <span style="font-size: 25px;">750</span> users
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
+    <section class="info">
+        <div class="container">
+            <div class="row my-5">
+                <select name="serviceName" class="w-25 px-3 py-2 mb-3" id="serviceName">
+                    <!-- <option value="" disabled >Select a service</option> -->
+                    {% for service in services %}
+                    <option value="{{ service.id }}">{{ service }}</option>
+                    {% endfor %}
+                </select>
+                <div class="subscription-container position-relative px-0 px-md-2 text-center">
+                    <div class="plugAndPlay">
+                        <div class="border-bottom border-gray pb-1">
+                            <div class="d-flex heading justify-content-between">
+                                <div class="btn-container">
+                                    <button class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#subscribeModal-1">Add package</button>
+                                    <button class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#subscribeFeatureModal-1">Add features</button>
+                                </div>
+                                <h4 class="fw-bold">SUBSCRIPTION PACKAGES</h4>
+                            </div>
+                        </div>
+                        <section class="package-details mt-4">
+                            
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- modal -->
+    <div class="modal fade" id="subscribeModal-1" tabindex="-1" aria-labelledby="subscribeModal-1Label"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" class="needs-validation" method="POST">
+                        <div class="d-flex justify-content-between">
+                            <h4>Package Details</h4>
+                            <h4>New Data</h4>
+                        </div>
+                        {{ form|crispy }}
+                        {% csrf_token %}
+                        <button class="btn btn-primary text-capitalize" id="save-short-service">
+                            save
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="subscribeFeatureModal-1" tabindex="-1" aria-labelledby="subscribeModal-1Label"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" class="needs-validation" method="POST">
+                        <div class="d-flex justify-content-between">
+                            <h4>Package Details</h4>
+                            <h4>New Data</h4>
+                        </div>
+                        {{ form|crispy }}
+                        {% csrf_token %}
+                        <button class="btn btn-primary text-capitalize" id="save-short-service">
+                            save
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    </main>
-    <!-- main section ends -->
+</main>
+<!-- main section ends -->
 {% endblock content %}
 {% block customjs %}
-    <!-- custom scripts -->
-    <script src="{% static 'tfjs/admin_panel/bcsTF/subscription.js' %}"></script>
+<!-- custom scripts -->
+<script src="{% static 'tfjs/admin_panel/bcsTF/subscription.js' %}"></script>
 {% endblock customjs %}
