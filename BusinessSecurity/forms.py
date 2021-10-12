@@ -41,6 +41,15 @@ class CreateBusinessForm(forms.ModelForm):
 
 class AddPackageForm(forms.ModelForm):
     service_id = forms.ModelChoiceField(queryset=models.Service.objects.filter(is_subscription_based=True))
+
     class Meta:
         model = models.SubscriptionBasedPackage
+        fields = '__all__'
+
+
+class AddPackageFeatureForm(forms.ModelForm):
+    # service_id = forms.ModelChoiceField(queryset=models.Service.objects.filter(is_subscription_based=True))
+
+    class Meta:
+        model = models.SubscriptionFeatures
         fields = '__all__'

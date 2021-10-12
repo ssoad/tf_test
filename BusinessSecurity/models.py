@@ -56,6 +56,10 @@ class SubService(models.Model):
     class Meta:
         verbose_name_plural = 'Sub Services'
 
+duration_type = (
+    ('month', 'Month'),
+    ('year', 'Year'),
+)
 
 class SubscriptionBasedPackage(models.Model):
     service_id = models.ForeignKey(Service, on_delete=models.CASCADE)
@@ -64,6 +68,7 @@ class SubscriptionBasedPackage(models.Model):
     websites = models.IntegerField()
     workstations = models.IntegerField()
     duration = models.IntegerField()
+    duration_type = models.CharField(choices=duration_type, max_length=264, default='month')
     price = models.IntegerField()
 
     def __str__(self):
