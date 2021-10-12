@@ -54,18 +54,25 @@ const showSubscription = (url)=>{
     fetch(url)
     .then(response => response.json())
     .then(result => {
+        let divHtml
         result.map(subscription => {
             // console.log(subscription);
             const div = document.createElement("div")
             div.classList.add("package", "bg-lightgreen", "shadow", "p-3", "rounded")
-            div.innerHTML = `
+            divHtml = `
             <h3 class="fw-bold fs-4">${subscription.package_name}</h3>
             <table class="mx-auto mb-3">
-            <tbody>
-            <tr class>
-            <td>Cybersecurity & Privacy Program</td>
-            <td>✓</td>
-            </tr>
+            <tbody>`
+            subscription.feature_subscription?.map((item, index)=>{
+                divHtml += `<tr>
+                <td>${item}</td>
+                <td>✓</td>
+                </tr>`
+
+            })
+            
+            
+            divHtml += `
             </tbody>
             </table>
             <div class="info-btn">
@@ -96,7 +103,7 @@ const showSubscription = (url)=>{
             <button class="mt-3 btn bg-navy px-5 py-1 text-uppercase" data-bs-toggle="modal"
             data-bs-target="#subscribeModal-2">Edit</button>
             `
-            
+            div.innerHTML = divHtml
             packageDetails.appendChild(div)
         })
         
