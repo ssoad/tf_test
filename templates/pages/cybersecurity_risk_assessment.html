@@ -1,4 +1,4 @@
-{% extends 'base/base.html' %} {% load static %} {% block title %} Cyber Security Risk Assessment for Business {% endblock title %} {% block headercss %}
+{% extends 'base/base.html' %} {% load static %} {% load hosts %} {% block title %} Cyber Security Risk Assessment for Business {% endblock title %} {% block headercss %}
 <link rel="stylesheet" href="{% static 'css/glide.core.css' %}" />
 <link rel="stylesheet" href="{% static 'css/glide.theme.css' %}" />
 <link rel="stylesheet" href="{% static 'css/style.css' %}" /> {% endblock headercss %} {% block content %}
@@ -668,7 +668,9 @@
                     </ul>
                   </div>
                   <div class="case-btn rcase-btn">
-                    <a href="{% url 'bcs_app:vulnerability_assessment' %}" target="_blank">Explore More</a>
+                    <a href="{% url 'vulnerability_assessment' %}" target="_blank"
+                      >Explore More</a
+                    >
                   </div>
                 </div>
               </div>
@@ -721,7 +723,9 @@
                     </ul>
                   </div>
                   <div class="case-btn rcase-btn">
-                    <a href="{% url 'bcs_app:red_team_penetration_testing' %}" target="_blank">Explore More</a>
+                    <a href="{% url 'red_team_penetration_testing' %}" target="_blank"
+                      >Explore More</a
+                    >
                   </div>
                 </div>
               </div>
@@ -1010,7 +1014,9 @@
               they find it.
             </p>
             <div class="text-right">
-              <a href="{% url 'bcs_app:get_start' %}" target="_blank" class="igbr-btn rgbr-btn">Get Started</a>
+              <a href="{% host_url 'get_start' host 'main' %}" target="_blank" class="igbr-btn rgbr-btn"
+                >Get Started</a
+              >
             </div>
           </div>
         </div>
@@ -1045,7 +1051,9 @@
                   <h2 class="rcs-name">Oz Goren (Israel)</h2>
                   <i>VP Marketing, Tanku</i>
                   <div class="rcs-btn">
-                    <a href="{% url 'bcs_app:testimonial' %}" target="_blank">See all success stories</a>
+                    <a href="{% url 'testimonial' %}" target="_blank"
+                      >See all success stories</a
+                    >
                   </div>
                 </div>
               </div>

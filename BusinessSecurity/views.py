@@ -299,7 +299,7 @@ def userDashboardView(request):
                 user_business = models.UsersBusiness.objects.create(user=current_user, business=business,
                                                                     position=position, privilege='admin')
                 user_business.save()
-                return HttpResponseRedirect(reverse('bcs_app:bcs_user_dashboard'))
+                return HttpResponseRedirect(reverse('bcs_user_dashboard'))
 
         context = {
             'form': form,

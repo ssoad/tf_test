@@ -1,4 +1,4 @@
-{% extends 'base/academybase.html' %} {% load static %} {% block title %} Cybersecurity Training for Employees | Protect Your Business {% endblock title %} {% block headercss %} {% endblock headercss %} {% block content %}
+{% extends 'base/academybase.html' %} {% load static %} {% load hosts %} {% block title %} Cybersecurity Training for Employees | Protect Your Business {% endblock title %} {% block headercss %} {% endblock headercss %} {% block content %}
 <section class="cor-banner">
     <div class="container">
         <div class="aca-bar"></div>
@@ -141,7 +141,7 @@
             These days, every business needs cybersecurity training for employees to prevent security breach and to stay in sync with the latest cyber threats. We have online and on your business premise class facilities alongside self-paced tutorials to collectively
             aware your IT team or employees about the best cybersecurity practices and policies.
         </p>
-        <a href="{% url 'academy_app:demo_download' %}" target="_blank">Download Curriculum</a>
+        <a href="{% url 'demo_download' %}{{ file_url }}" target="_blank">Download Curriculum</a>
     </div>
 </section>
 <section class="ccsp-ins">
@@ -315,7 +315,7 @@
                         INTERESTED TO GET EFFECTIVE CYBERSECURITY <br /> TRAINING FOR EMPLOYEES?
                     </h2>
                     <p>We know how to make the best use of your employee's time</p>
-                    <a href="{% url 'bcs_app:get_start' %}" target="_blank">BOOK US</a>
+                    <a href="{% host_url 'get_start' host 'main' %}" target="_blank">BOOK US</a>
                 </div>
             </div>
         </div>
@@ -343,7 +343,7 @@
                             Here we put together the most common topics we are enquired about the training modules and course itself like the course fee and duration, the topics we cover, how to reach us directly, etc.
                         </p>
                         <div class="text-right">
-                            <a href="{% url 'academy_app:academy_faq' %}" target="_blank" class="ccspr-btn">Learn More</a>
+                            <a href="{% url 'academy_faq' %}" target="_blank" class="ccspr-btn">Learn More</a>
                         </div>
                     </div>
                 </div>

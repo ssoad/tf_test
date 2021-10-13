@@ -1,4 +1,4 @@
-{% extends 'base/base.html' %} {% load static %} {% block title %} Techforing | Cyber Security companies {% endblock title %} {% block headercss %}
+{% extends 'base/base.html' %} {% load static %} {% load hosts %} {% block title %} Techforing | Cyber Security companies {% endblock title %} {% block headercss %}
 <link rel="stylesheet" href="{% static '' %}" />
 <link rel="stylesheet" href="{% static '' %}tfcss/glide.core.css" />
 <link rel="stylesheet" href="{% static '' %}tfcss/glide.theme.css" />
@@ -210,7 +210,7 @@
         <div class="ap-line"></div>
         <p>Keep your digital assets safe with Techforing Cybersecurity</p>
         <h2>Here's your starting point of protection & breach preventation</h2>
-        <a href="" target="_blank">
+        <a href="{% host_url 'get_start' %}" target="_blank">
             <button>Get Protected <i class="fas fa-arrow-right"></i></button>
         </a>
     </div>

@@ -1,4 +1,4 @@
-{% extends 'base/msbase.html' %} {% load static %} {% block title %} Concierge CyberSecurity | Techforing Ltd. - Shaping Tomorrow's Cyber Security {% endblock title %} {% block headercss %}
+{% extends 'base/msbase.html' %} {% load static %} {% load hosts %} {% block title %} Concierge CyberSecurity | Techforing Ltd. - Shaping Tomorrow's Cyber Security {% endblock title %} {% block headercss %}
 <link rel="stylesheet" href="{% static '' %}css/mscss/glide.core.css" />
 <link rel="stylesheet" href="{% static '' %}css/mscss/glide.theme.css" /> {% endblock headercss %} {% block content %}
 <section class="banner banner-v2 lazy" data-bg="{%static ''%}msimg/PCS--header.png">
@@ -12,7 +12,7 @@
                     </p>
                     <div class="call-chat-btn">
                         <button id="video-open-btn">Watch Service Intro</button><br />
-                        <a href="" target="_blank">
+                        <a href="{% host_url 'get_start' %}" target="_blank">
                             <button>Get in Touch</button>
                         </a>
                     </div>
@@ -34,7 +34,7 @@
     </div>
 </section>
 <section class="video-modal" id="video-modal">
-    <a href=""><i class="fas fa-window-close"></i></a>
+    <a href="{% host_url 'my_security_home' host 'mysecurity' %}"><i class="fas fa-window-close"></i></a>
     <iframe src="https://www.youtube.com/embed/LRwOC1QXH_I" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </section>
 
@@ -53,7 +53,7 @@
                     High-end Personal Cyber Security Service for the most influential people. We identify, secure, and enlighten you on potential threats to your devices, social media, email, and private data.
                 </p>
                 <div class="intro-btn-box">
-                    <a href="{% url 'pcs_app:concierge_cybersecurity' %}" target="_blank" class="intro-btn" aria-describedby="Learn more about concierge cybersecurity">Learn
+                    <a href="{% host_url 'concierge_cybersecurity' host 'mysecurity' %}" target="_blank" class="intro-btn" aria-describedby="Learn more about concierge cybersecurity">Learn
             More <i class="fas fa-arrow-right"></i>
           </a>
                 </div>
@@ -78,7 +78,7 @@
                             Extract invaluable tricky-to-find-on-net information about any individual through Osint investigations.
                         </li>
                     </ul>
-                    <a href="{% url 'pcs_app:cyber_investigation' %}" target="_blank" class="guard-btn-a" aria-describedby="Learn more about cyber investigation"><button
+                    <a href="{% host_url 'cyber_investigation' host 'mysecurity' %}" target="_blank" class="guard-btn-a" aria-describedby="Learn more about cyber investigation"><button
               class="guard-btn">
               Learn More <i class="fas fa-arrow-right"></i></button></a>
                 </div>
@@ -145,7 +145,7 @@
                                     Owing to your reputation and very often - fame, you can be a go-to target to cybercriminals. Our trained team of Cybersecurity Specialists provide the best-in-breed cybersecurity solution in a Concierge package to ensure you can go about your daily business
                                     anxiety-free. Our comprehensive approach reviews all your online financial security and individual data usage which are the most vulnerable.
                                 </p>
-                                <a href="" target="_blank" aria-describedby="Learn more about VIP Cyber defense"><button>
+                                <a href="{% host_url 'vip_cyber_defense' host 'mysecurity' %}" target="_blank" aria-describedby="Learn more about VIP Cyber defense"><button>
                     Learn More <i class="fas fa-arrow-right"></i></button></a>
                             </div>
                         </div>
@@ -165,7 +165,7 @@
                                     Techforing shields C-suite executives from any industry be it financial, chemicals, medical, retail, IT, banking, etc. Our trained team of Cybersecurity Analysts provides the best-in-breed cybersecurity solution in a Concierge package to ensure CEOs,
                                     CFOs, CXOs, CIOs, CMOs, CBOs, CCOs can have a piece of mind.
                                 </p>
-                                <a href="" target="_blank" aria-describedby="Learn more about executive"><button>
+                                <a href="{% host_url 'executive_protection' host 'mysecurity' %}" target="_blank" aria-describedby="Learn more about executive"><button>
                     Learn More <i class="fas fa-arrow-right"></i></button></a>
                             </div>
                         </div>
@@ -185,7 +185,7 @@
                                     People who are involved in politics or having political affiliations can be targeted by opposition parties, who pay huge sums on cybercriminals to get what they need. We provide them and their families essential data security and educate them at every
                                     step necessary.
                                 </p>
-                                <a href="" target="_blank" aria-describedby="Learn more about cybersecurity for governments"><button>
+                                <a href="{% host_url 'cyber_security_for_government' host 'mysecurity' %}" target="_blank" aria-describedby="Learn more about cybersecurity for governments"><button>
                     Learn More <i class="fas fa-arrow-right"></i></button></a>
                             </div>
                         </div>
@@ -207,7 +207,7 @@
                                     Afraid of Journalists and paparazzi? Our team of professional cyber investigators can protect all the devices, cloud accounts and social media platforms of you and your family members. If your privacy is hacked or you need to erase unwanted information
                                     from the internet, we have special packages at your service.
                                 </p>
-                                <a href="{% url 'pcs_app:media_celebrities' %}" target="_blank" aria-describedby="Learn more about media celebrities"><button>
+                                <a href="{% host_url 'media_celebrities' host 'mysecurity' %}" target="_blank" aria-describedby="Learn more about media celebrities"><button>
                     Learn More <i class="fas fa-arrow-right"></i></button></a>
                             </div>
                         </div>
@@ -239,7 +239,7 @@
                             Owing to your reputation and very often - fame, you can be a go-to target to cybercriminals. Our trained team of Cybersecurity Specialists provide the best-in-breed cybersecurity solution in a Concierge package to ensure you can go about your daily business
                             anxiety-free. Our comprehensive approach reviews all your online financial security and individual data usage which are the most vulnerable.
                         </p>
-                        <a href="" target="_blank" aria-describedby="Learn more about VIP Cyber defense"><button>Learn More <i
+                        <a href="{% host_url 'vip_cyber_defense' host 'mysecurity' %}" target="_blank" aria-describedby="Learn more about VIP Cyber defense"><button>Learn More <i
                   class="fas fa-arrow-right"></i></button></a>
                     </div>
                 </div>
@@ -265,7 +265,7 @@
                             Techforing shields C-suite executives from any industry be it financial, chemicals, medical, retail, IT, banking, etc. Our trained team of Cybersecurity Analysts provides the best-in-breed cybersecurity solution in a Concierge package to ensure CEOs,
                             CFOs, CXOs, CIOs, CMOs, CBOs, CCOs can have a piece of mind.
                         </p>
-                        <a href="" target="_blank" aria-describedby="Learn more about executive protection"><button>Learn More <i
+                        <a href="{% host_url 'executive_protection' host 'mysecurity' %}" target="_blank" aria-describedby="Learn more about executive protection"><button>Learn More <i
                   class="fas fa-arrow-right"></i></button></a>
                     </div>
                 </div>
@@ -291,7 +291,7 @@
                             People who are involved in politics or having political affiliations can be targeted by opposition parties, who pay huge sums on cybercriminals to get what they need. We provide them and their families essential data security and educate them at every
                             step necessary.
                         </p>
-                        <a href="" target="_blank" aria-describedby="Learn more about cyber security for government"><button>Learn
+                        <a href="{% host_url 'cyber_security_for_government' host 'mysecurity' %}" target="_blank" aria-describedby="Learn more about cyber security for government"><button>Learn
                 More <i class="fas fa-arrow-right"></i></button></a>
                     </div>
                 </div>
@@ -319,7 +319,7 @@
                             Afraid of Journalists and paparazzi? Our team of professional cyber investigators can protect all the devices, cloud accounts and social media platforms of you and your family members. If your privacy is hacked or you need to erase unwanted information
                             from the internet, we have special packages at your service.
                         </p>
-                        <a href="{% url 'pcs_app:media_celebrities' %}" target="_blank" aria-describedby="Learn more about media celebrities"><button>Learn More <i
+                        <a href="{% host_url 'media_celebrities' host 'mysecurity' %}" target="_blank" aria-describedby="Learn more about media celebrities"><button>Learn More <i
                   class="fas fa-arrow-right"></i></button></a>
                     </div>
                 </div>
@@ -350,7 +350,7 @@
                             <i class="fas fa-circle"></i> Recover and restore control of your hacked accounts and devices
                         </li>
                         <div class="intro-btn-box">
-                            <a href="{% url 'pcs_app:incident_response_service' %}" target="_blank" class="intro-btn discover-btn" aria-describedby="Learn more about incident response service">Learn More <i class="fas fa-arrow-right"></i>
+                            <a href="{% host_url 'incident_response_service' host 'mysecurity' %}" target="_blank" class="intro-btn discover-btn" aria-describedby="Learn more about incident response service">Learn More <i class="fas fa-arrow-right"></i>
               </a>
                         </div>
                     </ul>
@@ -628,7 +628,7 @@
     <div class="container">
         <h2>Ready to protect your cyberspace?</h2>
         <p>Find out how WE can help you</p>
-        <a href="{% url 'pcs_app:on_board' %}" target="_blank">
+        <a href="{% host_url 'get_start' %}" target="_blank">
             <button>Get On Board</button></a>
     </div>
 </section>

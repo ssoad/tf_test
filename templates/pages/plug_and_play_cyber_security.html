@@ -1,4 +1,4 @@
-{% extends 'base/base.html' %} {% load static %} {% block title %} Plug and Play Cyber Security For SMBs | Turnkey Solutions {% endblock title %} {% block headercss %}
+{% extends 'base/base.html' %} {% load static %} {% load hosts %} {% block title %} Plug and Play Cyber Security For SMBs | Turnkey Solutions {% endblock title %} {% block headercss %}
 <link rel="stylesheet" href="{% static '' %}css/glide.core.css" />
 <link rel="stylesheet" href="{% static '' %}css/glide.theme.css" />
 <link rel="stylesheet" href="{% static '' %}css/style.css" /> {% endblock headercss %} {% block content %}
@@ -21,7 +21,8 @@
                                 <p class="rs-text">
                                     A definitive guide to secure your business from external and internal cyberattacks.
                                 </p>
-                                <a href="{% url 'bcs_app:bcs_form' %}" target="_blank" class="rs-btn">Download Now</a>
+                                <a href="{% host_url 'bcs_form' host 'main' %}" target="_blank" class="rs-btn">Download Now</a
+                    >
                   </div>
                 </div>
               </li>
@@ -430,7 +431,9 @@
             this company and they did a fine job. Highly recommended
           </p>
           <div class="story-btn">
-            <a href="{% url 'bcs_app:testimonial' %}" target="_blank">See all success stories</a>
+            <a href="{% url 'testimonial' %}" target="_blank"
+              >See all success stories</a
+            >
           </div>
         </div>
       </div>
@@ -442,7 +445,7 @@
             <div class="mtc-box">
               <h2>Get plug and play business Cybersecurity service</h2>
               <p>Co-create your security postures</p>
-              <a href="{% url 'bcs_app:get_start' %}" target="_blank">Get Now</a>
+              <a href="{% host_url 'get_start' host 'main' %}" target="_blank">Get Now</a>
                             </div>
                         </div>
             </div>
