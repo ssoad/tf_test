@@ -1,5 +1,6 @@
 {% extends 'base/base.html' %}
 {% load static %}
+{% load hosts %}
 {% block title %}
     BCS Start Here
 {% endblock title %}
@@ -63,8 +64,9 @@
               Check out our Concierge Cybersecurity Solution to fit your needs
             </h2>
             <div class="pmo-btn">
-              <a href="" target="_blank"
-              >Click Here</a>
+              <a href="{% host_url 'my_security_home' host 'mysecurity' %}" target="_blank"
+                >Click Here</a
+              >
             </div>
             <i class="fas fa-times" id="pm-close"></i>
           </div>
@@ -636,7 +638,7 @@
                     <h2>Meet Face to Face</h2>
                     <p>We are waiting to meet you</p>
                   </div>
-                  <a href="" target="_blank" class="reserve">
+                  <a href="{% host_url 'appoinment'%}" target="_blank" class="reserve">
                     <i class="far fa-calendar-check mr-2"></i>Schedule Your
                     Meeting
                   </a>

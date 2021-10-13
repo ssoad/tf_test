@@ -1,6 +1,7 @@
 from django.db import models
 from tinymce.models import HTMLField
 from Account.models import User
+import uuid
 
 
 # Create your models here.
@@ -55,6 +56,10 @@ class SubService(models.Model):
     class Meta:
         verbose_name_plural = 'Sub Services'
 
+duration_type = (
+    ('month', 'Month'),
+    ('year', 'Year'),
+)
 
 class SubscriptionBasedPackage(models.Model):
     service_id = models.ForeignKey(Service, on_delete=models.CASCADE)
@@ -63,6 +68,7 @@ class SubscriptionBasedPackage(models.Model):
     websites = models.IntegerField()
     workstations = models.IntegerField()
     duration = models.IntegerField()
+    duration_type = models.CharField(choices=duration_type, max_length=264, default='month')
     price = models.IntegerField()
 
     def __str__(self):
@@ -118,8 +124,11 @@ privilege = (
 class Business(models.Model):
     industry_type = models.CharField(max_length=264, choices=industry_type)
     company_name = models.CharField(max_length=264)
-    website = models.CharField(max_length=264)
-    business_size = models.IntegerField()
+    company_logo = models.ImageField(upload_to='company/')
+    website = models.URLField(max_length=264, default='https://')
+    business_size = models.IntegerField(default=10)
+    created_date = models.DateTimeField(auto_now_add=True)
+    unique_id = models.UUIDField(unique=True, default=uuid.uuid4)
 
     def __str__(self):
         return self.company_name
@@ -129,8 +138,8 @@ class Business(models.Model):
 
 
 class UsersBusiness(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='business_user')
-    business = models.ForeignKey(Business, on_delete=models.CASCADE, related_name='business_business')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='business_user')
+    business = models.OneToOneField(Business, on_delete=models.CASCADE, related_name='business_business')
     position = models.CharField(max_length=264)
     privilege = models.CharField(max_length=264, choices=privilege)
 

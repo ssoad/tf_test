@@ -1,5 +1,5 @@
 from django.contrib import admin
-from Account.models import User
+from Account.models import User, Permissions
 from django.contrib.auth.admin import UserAdmin
 
 
@@ -13,7 +13,7 @@ class AdminUser(UserAdmin):
     fieldsets = (
         ('Login Info', {'fields': ('email', 'password')}),
         ('User Information',
-         {'fields': ('first_name', 'last_name', 'gender', 'birth_date', 'country', 'phone_number',)}),
+         {'fields': ('first_name', 'last_name', 'gender', 'profile_pic', 'birth_date', 'country', 'phone_number',)}),
         ('Permissions', {'fields': ('is_bcs', 'is_active', 'is_staff', 'is_superuser', 'newsletter',)}),
 
     )
@@ -26,3 +26,4 @@ class AdminUser(UserAdmin):
 
 
 admin.site.register(User, AdminUser)
+admin.site.register(Permissions)

@@ -1,4 +1,4 @@
-{% extends 'base/base.html' %} {% load static %} {% block title %} Enterprise Cybersecurity Solutions for Businesses | Techforing {% endblock title %} {% block headercss %}
+{% extends 'base/base.html' %} {% load static %} {% load hosts %} {% block title %} Enterprise Cybersecurity Solutions for Businesses | Techforing {% endblock title %} {% block headercss %}
 <link rel="stylesheet" href="{% static 'css/glide.core.css' %}" />
 <link rel="stylesheet" href="{% static 'css/glide.theme.css' %}" />
 <link rel="stylesheet" href="{% static 'css/style.css' %}" /> {% endblock headercss %} {% block content %}
@@ -7,7 +7,7 @@
         <div class="banner-bar"></div>
         <h2>PROTECT YOUR BUSINESS WITH ENTERPRISE CYBERSECURITY</h2>
         <div class="hbanner-btn">
-            <a href="" target="_blank">Request a call</a>
+            <a href="{% host_url 'get_start' %}" target="_blank">Request a call</a>
         </div>
     </div>
 </section>
@@ -24,7 +24,8 @@
                                 A definitive guide to secure your business from external and internal cyberattacks.
                             </h2>
 
-                            <a href="" class="psr-btn" target="_blank">Download Now</a>
+                            <a href="{% host_url 'bcs_form' host 'main' %}" class="psr-btn" target="_blank">Download Now</a
+                  >
                 </div>
               </div>
             </li>
@@ -110,7 +111,9 @@
                 system.
               </p>
               <div class="hs-btn hs-btn-risk">
-                <a href="" target="_blank">Explore More</a>
+                <a href="{% url 'cybersecurity_risk_assessment' %}" target="_blank"
+                  >Explore More</a
+                >
               </div>
             </div>
             <div class="hs-tab-box">
@@ -135,7 +138,9 @@
                 investigation strategy.
               </p>
               <div class="hs-btn hs-btn-incident">
-                <a href="" target="_blank">Explore More</a>
+                <a href="{% url 'incident_response_service' %}" target="_blank"
+                  >Explore More</a
+                >
               </div>
             </div>
             <div class="hs-tab-box">
@@ -156,7 +161,9 @@
                 cybersecurity solutions at an affordable rate.
               </p>
               <div class="hs-btn hs-btn-smb">
-                <a href="" target="_blank">Explore More</a>
+                <a href="{% url 'small_business_cybersecurity' %}" target="_blank"
+                  >Explore More</a
+                >
               </div>
             </div>
             <div class="hs-tab-box">
@@ -175,7 +182,9 @@
                 frameworks like HIPAA, GDPR, PCI DSS, and ISO 27001.
               </p>
               <div class="hs-btn hs-btn-comp">
-                <a href="" target="_blank">Explore More</a>
+                <a href="{% url 'compliance_consulting' %}" target="_blank"
+                  >Explore More</a
+                >
               </div>
             </div>
           </div>
@@ -215,7 +224,9 @@
                     vulnerabilities in each layer of your IT system.
                   </p>
                   <div class="hs-btn hs-btn-risk">
-                    <a href="" target="_blank">Explore More</a>
+                    <a href="{% url 'cybersecurity_risk_assessment' %}" target="_blank"
+                      >Explore More</a
+                    >
                   </div>
                 </div>
                 <li class="htab htab-sm">incident response</li>
@@ -236,7 +247,9 @@
                     crime investigation strategy.
                   </p>
                   <div class="hs-btn hs-btn-incident">
-                    <a href="" target="_blank">Explore More</a>
+                    <a href="{% url 'incident_response_service' %}" target="_blank"
+                      >Explore More</a
+                    >
                   </div>
                 </div>
                 <li class="htab htab-sm">SMB SOLUTION</li>
@@ -262,7 +275,9 @@
                     cybersecurity solutions at an affordable rate.
                   </p>
                   <div class="hs-btn hs-btn-smb">
-                    <a href="" target="_blank">Explore More</a>
+                    <a href="{% url 'small_business_cybersecurity' %}" target="_blank"
+                      >Explore More</a
+                    >
                   </div>
                 </div>
                 <li class="htab htab-sm">COMPLIANCES</li>
@@ -285,7 +300,9 @@
                     GDPR, PCI DSS, and ISO 27001.
                   </p>
                   <div class="hs-btn hs-btn-comp">
-                    <a href="" target="_blank">Explore More</a>
+                    <a href="{% url 'compliance_consulting' %}" target="_blank"
+                      >Explore More</a
+                    >
                   </div>
                 </div>
               </ul>
@@ -590,7 +607,9 @@
             </div>
           </div>
           <div class="story-btn">
-            <a href="" target="_blank">See all success stories</a>
+            <a href="{% url 'testimonial' %}" target="_blank"
+              >See all success stories</a
+            >
           </div>
         </div>
       </div>
@@ -709,7 +728,7 @@
                   and ensure their availability.
                 </p>
                 <div class="case-btn hdemo-btn">
-                  <a href="" target="_blank">LETS GET STARTED</a>
+                  <a href="{% host_url 'get_start' host 'main' %}" target="_blank">LETS GET STARTED</a>
                         </div>
                     </div>
                     <div class="hd-box-border"></div>

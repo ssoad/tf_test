@@ -1,4 +1,4 @@
-{% extends 'base/base.html' %} {% load static %} {% block title %} Incident response service | Business Cybersecurity {% endblock title %} {% block headercss %}
+{% extends 'base/base.html' %} {% load static %} {% load hosts %} {% block title %} Incident response service | Business Cybersecurity {% endblock title %} {% block headercss %}
 <link rel="stylesheet" href="{% static '' %}css/glide.core.css" />
 <link rel="stylesheet" href="{% static '' %}css/glide.theme.css" />
 <link rel="stylesheet" href="{% static '' %}css/style.css" /> {% endblock headercss %} {% block content %}
@@ -20,7 +20,8 @@
                                 <p class="rs-text">
                                     A definitive guide to secure your business from external and internal cyberattacks.
                                 </p>
-                                <a href="{% url 'bcs_app:bcs_form' %}" class="rs-btn" target="_blank">Download Now</a>
+                                <a href="{% host_url 'bcs_form' host 'main' %}" class="rs-btn" target="_blank">Download Now</a
+                    >
                   </div>
                 </div>
               </li>
@@ -136,7 +137,9 @@
                 keep any future threat out.
               </p>
               <div class="is-btn">
-                <a href="{% url 'bcs_app:hack_recovery_services' %}" target="_blank">Explore More</a>
+                <a href="{% url 'hack_recovery_service' %}" target="_blank"
+                  >Explore More</a
+                >
               </div>
             </div>
           </div>
@@ -162,7 +165,9 @@
                 law enforcement and save you from further hassle.
               </p>
               <div class="is-btn">
-                <a href="{% url 'bcs_app:digital_forensic_investigation' %}" target="_blank">Explore More</a>
+                <a href="{% url 'digital_forensic_investigation' %}" target="_blank"
+                  >Explore More</a
+                >
               </div>
             </div>
           </div>
@@ -188,7 +193,9 @@
                 points to avoid any future threat.
               </p>
               <div class="is-btn">
-                <a href="{% url 'bcs_app:best_malware_removal' %}" target="_blank">Explore More</a>
+                <a href="{% url 'best_malware_removal' %}" target="_blank"
+                  >Explore More</a
+                >
               </div>
             </div>
           </div>
@@ -282,7 +289,9 @@
               your system back in no time!
             </p>
             <div class="text-right">
-              <a href="{% url 'bcs_app:get_start' %}" target="_blank" class="igbr-btn">Get Started</a>
+              <a href="{% host_url 'get_start' host 'main' %}" target="_blank" class="igbr-btn"
+                >Get Started</a
+              >
             </div>
           </div>
         </div>

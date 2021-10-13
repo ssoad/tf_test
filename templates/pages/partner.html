@@ -1,4 +1,4 @@
-{% extends 'base/base.html' %} {% load static %} {% block title %} TechForing Partner Program | Cyber Security Solution Providers {% endblock title %} {% block headercss %}
+{% extends 'base/base.html' %} {% load static %} {% load hosts %} {% block title %} TechForing Partner Program | Cyber Security Solution Providers {% endblock title %} {% block headercss %}
 <link rel="stylesheet" href="{% static '' %}tfcss/glide.core.css" />
 <link rel="stylesheet" href="{% static '' %}tfcss/glide.theme.css" />
 <link rel="stylesheet" href="{% static '' %}tfcss/style.css" /> {% endblock headercss %} {% block content %}
@@ -6,7 +6,7 @@
     <div class="container">
         <h2 class="cb-title">Techforing partner network</h2>
         <h2 class="cb-subtitle">Join The TechForing Partner Program</h2>
-        <a href="{% url 'bcs_app:bpartner' %}" target="_blank" class="tf-btn2 cb-btn">Become Our Partner</a
+        <a href="{% url 'bpartner' %}" target="_blank" class="tf-btn2 cb-btn">Become Our Partner</a
         >
       </div>
     </section>
@@ -278,7 +278,7 @@
             <div class="hrc-box">
               <h2>become a member of techforing network</h2>
               <p>Our IT Security Resellers will help</p>
-              <a href="{% url 'bcs_app:bpartner' %}" target="_blank">Apply Now</a>
+              <a href="{% url 'bpartner' %}" target="_blank">Apply Now</a>
     </div>
     </div>
     </div>
@@ -305,7 +305,7 @@
                             In case you are unsure about our partnership program, how it works, cost, our extra offers, or anything that you wish to know right away without reaching out to us, visit this section. Here, we tried to clarify some of the most questions we receive.
                         </p>
                         <div class="text-right">
-                            <a href="{%url 'bcs_app:partner_faq'%}" class="ccspr-btn">Learn More</a
+                            <a href="{%url 'partner_faq'%}" class="ccspr-btn">Learn More</a
                   >
                 </div>
               </div>

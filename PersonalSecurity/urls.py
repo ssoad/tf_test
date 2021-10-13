@@ -1,7 +1,7 @@
 from django.urls import path
 from PersonalSecurity import views
 
-app_name = 'pcs_app'
+
 
 urlpatterns = [
     path('', views.personalSecurityView, name='my_security_home'),

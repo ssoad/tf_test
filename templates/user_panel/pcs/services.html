@@ -1,4 +1,4 @@
-{% extends 'base/pcs_user_base.html' %} {% load static %} {% block title %} Services {% endblock title %} {% block content %}
+{% extends 'base/pcs_user_base.html' %} {% load static %} {% load hosts %} {% block title %} Services {% endblock title %} {% block content %}
 
 <section class="services position-relative">
     <h4 class="main-heading">All Personal Cybersecurity Services
@@ -155,7 +155,7 @@
             <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
                 <button type="button" class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">Provide information to
                     get a quotation</button>
-                <a href="{% url 'pcs_app:pcs_appoinment' %}" class="btn bg-navy px-2 py-1">Talk to one of our representatives</a>
+                <a href="{% host_url 'pcs_appoinment' host 'mysecurity' %}" class="btn bg-navy px-2 py-1">Talk to one of our representatives</a>
 
             </div>
         </div>
@@ -220,7 +220,7 @@
             <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
                 <button type="button" class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">Provide information to
                     get a quotation</button>
-                <a href="{% url 'pcs_app:pcs_appoinment' %}" class="btn bg-navy px-2 py-1">Talk to one of our representatives</a>
+                <a href="{% host_url 'pcs_appoinment' host 'mysecurity' %}" class="btn bg-navy px-2 py-1">Talk to one of our representatives</a>
 
             </div>
         </div>
@@ -290,7 +290,7 @@
             <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
                 <button type="button" class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">Provide information to
                     get a quotation</button>
-                <a href="{% url 'pcs_app:pcs_appoinment' %}" class="btn bg-navy px-2 py-1">Talk to one of our representatives</a>
+                <a href="{% host_url 'pcs_appoinment' host 'mysecurity' %}" class="btn bg-navy px-2 py-1">Talk to one of our representatives</a>
 
             </div>
         </div>
@@ -357,7 +357,7 @@
             <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
                 <button type="button" class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">Provide information to
                     get a quotation</button>
-                <a href="{% url 'pcs_app:pcs_appoinment' %}" class="btn bg-navy px-2 py-1">Talk to one of our representatives</a>
+                <a href="{% host_url 'pcs_appoinment' host 'mysecurity' %}" class="btn bg-navy px-2 py-1">Talk to one of our representatives</a>
 
             </div>
         </div>
@@ -414,7 +414,7 @@
             <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
                 <button type="button" class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">Provide information to
                     get a quotation</button>
-                <a href="{% url 'pcs_app:pcs_appoinment' %}" class="btn bg-navy px-2 py-1">Talk to one of our representatives</a>
+                <a href="{% host_url 'pcs_appoinment' host 'mysecurity' %}" class="btn bg-navy px-2 py-1">Talk to one of our representatives</a>
 
             </div>
         </div>
@@ -470,7 +470,7 @@
             <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
                 <button type="button" class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">Provide information to
                     get a quotation</button>
-                <a href="{% url 'pcs_app:pcs_appoinment' %}" class="btn bg-navy px-2 py-1">Talk to one of our representatives</a>
+                <a href="{% host_url 'pcs_appoinment' host 'mysecurity' %}" class="btn bg-navy px-2 py-1">Talk to one of our representatives</a>
             </div>
         </div>
     </div>

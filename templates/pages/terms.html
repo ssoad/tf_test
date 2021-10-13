@@ -1,5 +1,6 @@
 {% extends 'base/base.html' %}
 {% load static %}
+{% load hosts %}
 
 {% block title %}
     Terms
@@ -100,7 +101,7 @@
               <h2 class="terms-title">Contact Us</h2>
               <p>
                 If you have any questions about these Terms, please
-                <a href="{% url 'bcs_app:findus' %}">contact us.</a>
+                <a href="{% host_url 'findus'  %}">contact us.</a>
               </p>
             </div>
           </div>

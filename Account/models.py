@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 from phonenumber_field.modelfields import PhoneNumberField
 from django_countries.fields import CountryField
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 # Create your models here.
@@ -39,6 +41,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(verbose_name='Last Name', max_length=100)
     phone_number = PhoneNumberField(verbose_name="Phone Number")
     country = CountryField(verbose_name="Country", max_length=50)
+    profile_pic = models.ImageField(upload_to='users/', default='users/default.jpg')
     birth_date = models.DateField(verbose_name='Birth Date', blank=True, null=True)
     date_joined = models.DateTimeField(verbose_name='Date Joined', auto_now_add=True)
     gender_options = (
@@ -68,3 +71,35 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.first_name
+
+
+admin_choices = (
+    ('main_admin', 'Main Admin'),
+    ('bcs_admin', 'BCS Admin'),
+    ('pcs_admin', 'PCS Admin'),
+    ('academy_admin', 'Academy Admin'),
+    ('blog_admin', 'Blog Admin'),
+)
+
+
+class Permissions(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='permission_user')
+    admin_type = models.CharField(choices=admin_choices, max_length=264)
+    is_superadmin = models.BooleanField(default=False, verbose_name='Super Admin')
+    is_admin = models.BooleanField(default=False, verbose_name='Admin')
+    is_moderator = models.BooleanField(default=False, verbose_name='Moderator')
+    is_editor = models.BooleanField(default=False, verbose_name='Editor')
+
+    def __str__(self):
+        return f'{self.user} - {self.admin_type}'
+
+
+# @receiver(post_save, sender=User)
+# def create_permission(sender, instance, created, **kwargs):
+#     if created:
+#         Permissions.objects.create(user=instance)
+#
+#
+# @receiver(post_save, sender=User)
+# def save_permission(sender, instance, **kwargs):
+#     instance.permission_user.save()

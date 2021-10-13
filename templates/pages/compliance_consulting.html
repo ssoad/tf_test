@@ -1,4 +1,4 @@
-{% extends 'base/base.html' %} {% load static %} {% block title %} Cyber and Compliance Consulting Service - Techforing {% endblock title %} {% block headercss %}
+{% extends 'base/base.html' %} {% load static %} {% load hosts %} {% block title %} Cyber and Compliance Consulting Service - Techforing {% endblock title %} {% block headercss %}
 <link rel="stylesheet" href="{% static '' %}css/glide.core.css" />
 <link rel="stylesheet" href="{% static '' %}css/glide.theme.css" />
 <link rel="stylesheet" href="{% static '' %}css/style.css" /> {% endblock headercss %} {% block content %}
@@ -20,7 +20,8 @@
                                 <p class="rs-text">
                                     A definitive guide to secure your business from external and internal cyberattacks.
                                 </p>
-                                <a href="{% url 'bcs_app:bcs_form' %}" class="rs-btn" target="_blank">Download Now</a>
+                                <a href="{% host_url 'bcs_form' host 'main' %}" class="rs-btn" target="_blank">Download Now</a
+                    >
                   </div>
                 </div>
               </li>
@@ -95,7 +96,9 @@
                 of these rules and work accordingly.
               </p>
               <div class="cs-box-btn">
-                <a href="{% url 'bcs_app:pci_dss_compliance' %}" target="_blank">Explore Now</a>
+                <a href="{% url 'pci_dss_compliance' %}" target="_blank"
+                  >Explore Now</a
+                >
               </div>
             </div>
           </div>
@@ -123,7 +126,7 @@
                 measures.
               </p>
               <div class="cs-box-btn">
-                <a href="{% url 'bcs_app:iso27001' %}" target="_blank">Explore Now</a>
+                <a href="{% url 'iso27001' %}" target="_blank">Explore Now</a>
                             </div>
                         </div>
             </div>
@@ -141,7 +144,7 @@
                         before taking ‘appropriate’ action. You are expected to have a minimal security system in place, where we counsel you to stay aligned with these rules.
                     </p>
                     <div class="cs-box-btn">
-                        <a href="{% url 'bcs_app:gdpr_compliance' %}" target="_blank">Explore Now</a>
+                        <a href="{% url 'gdpr_compliance' %}" target="_blank">Explore Now</a>
                     </div>
                 </div>
             </div>
@@ -159,7 +162,8 @@
                         to collaborate to realize the standards better and carry on their daily operations without any headache.
                     </p>
                     <div class="cs-box-btn">
-                        <a href="{% url 'bcs_app:hippa_compliance_consulting' %}" target="_blank">Explore Now</a>
+                        <a href="{% url 'hippa_compliance_consulting' %}" target="_blank">Explore Now</a
+                >
               </div>
             </div>
           </div>
@@ -414,7 +418,9 @@
               and give you a detailed report on your eligibility and more.
             </p>
             <div class="text-right">
-              <a href="{% url 'bcs_app:get_start' %}" target="_blank" class="cgbr-btn">Get Started</a>
+              <a href="{% host_url 'get_start' host 'main' %}" target="_blank" class="cgbr-btn"
+                >Get Started</a
+              >
             </div>
           </div>
         </div>
@@ -454,7 +460,9 @@
               <h2>Souheil Thabti (Germany)</h2>
               <i>Ethics Manager, KT Bank</i>
               <div class="story-btn">
-                <a href="{% url 'bcs_app:testimonial' %}" target="_blank">See all success stories</a>
+                <a href="{% url 'testimonial' %}" target="_blank"
+                  >See all success stories</a
+                >
               </div>
             </div>
           </div>

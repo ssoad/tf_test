@@ -32,7 +32,8 @@ class RegistrationForm(UserCreationForm):
 
     class Meta:
         model = models.User
-        fields = ['first_name', 'last_name', 'email', 'phone_number', 'country', 'birth_date', 'gender', 'password1',
+        fields = ['first_name', 'last_name', 'email', 'phone_number', 'country', 'birth_date', 'gender', 'profile_pic',
+                  'password1',
                   'password2', 'newsletter']
         widgets = {
             'gender': forms.Select(attrs={'style': ' border: 1px '
@@ -55,6 +56,10 @@ class RegistrationForm(UserCreationForm):
                                                       'solid #000;border-radius: '
                                                       '0;outline: 0;padding-left: '
                                                       '5px;height: 35px;'}),
+            'profile_pic': forms.FileInput(attrs={'style': ' border: 1px '
+                                                           'solid #000;border-radius: '
+                                                           '0;outline: 0;padding-left: '
+                                                           '5px;height: 35px;'}),
             # 'newsletter': forms.CheckboxInput(attrs={'style': ''})
 
         }
@@ -88,3 +93,24 @@ class LoginForm2(LF):
     class Meta:
         model = models.User
         fields = '__all__'
+
+
+class SelectPermissionForm(forms.ModelForm):
+    class Meta:
+        model = models.Permissions
+        fields = '__all__'
+        # exclude = ['user', ]
+        widgets = {
+            'user': forms.Select(attrs={'class': 'js-example-basic-single form-control form-select'})
+        }
+
+
+class SelectBCSPermissionForm(forms.ModelForm):
+    user = forms.ModelChoiceField(queryset=models.User.objects.filter(is_superuser=False, is_staff=False))
+    class Meta:
+        model = models.Permissions
+        fields = '__all__'
+        exclude = ['admin_type', ]
+        widgets = {
+            'user': forms.Select(attrs={'class': 'js-example-basic-single form-control form-select'})
+        }

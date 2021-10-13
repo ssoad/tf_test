@@ -1,4 +1,4 @@
-{% extends 'base/pcs_admin_base.html' %} {% load static %} {% load hosts %}
+{% extends 'base/pcs_admin_base.html' %} {% load static %}
 {% block title %} PCS Admin List
 {% endblock title %}
 
@@ -75,7 +75,7 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        <a href="{%host_url 'pcs_admin_profile' %}">
+                                        <a href="{% url 'pcs_app:pcs_admin_profile' %}">
                                             Azharul
                                         </a>
                                     </td>
@@ -94,7 +94,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <a href="{%host_url 'pcs_admin_profile' %}">
+                                        <a href="{% url 'pcs_app:pcs_admin_profile' %}">
                                             Shomit
                                         </a>
                                     </td>
@@ -113,7 +113,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <a href="{%host_url 'pcs_admin_profile' %}">
+                                        <a href="{% url 'pcs_app:pcs_admin_profile' %}">
                                             Sabbir
                                         </a>
                                     </td>
@@ -132,7 +132,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <a href="{%host_url 'pcs_admin_profile' %}">
+                                        <a href="{% url 'pcs_app:pcs_admin_profile' %}">
                                             Mili
                                         </a>
                                     </td>
@@ -151,7 +151,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <a href="{%host_url 'pcs_admin_profile' %}">
+                                        <a href="{% url 'pcs_app:pcs_admin_profile' %}">
                                             Azharul
                                         </a>
                                     </td>

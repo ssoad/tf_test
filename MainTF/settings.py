@@ -73,6 +73,9 @@ INSTALLED_APPS = [
 
     # django-cleanup
     'django_cleanup.apps.CleanupConfig',
+
+    # django_hosts
+    'django_hosts',
 ]
 
 # Django-Rest-Framework Settings
@@ -181,6 +184,7 @@ EMAIL_USE_TLS = config('EMAIL_USE_TLS')
 DEFAULT_FROM_EMAIL = 'Techforing <testtechforing@gmail.com>'
 
 MIDDLEWARE = [
+    'django_hosts.middleware.HostsRequestMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -188,9 +192,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_hosts.middleware.HostsResponseMiddleware',
 ]
 
 ROOT_URLCONF = 'MainTF.urls'
+ROOT_HOSTCONF = 'MainTF.hosts'
+DEFAULT_HOST = 'main'
+PARENT_HOST = 'localhost:8000'
 
 TEMPLATES = [
     {

@@ -1,4 +1,5 @@
 <!DOCTYPE html> {% load static %}
+{% load hosts %}
 <html lang="en">
 
 <head>
@@ -30,7 +31,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center fw-bolder">
                         <li class="nav-item me-4">
-                            <a class="nav-link text-navy fw-bold py-0" href="{% url 'pcs_app:pcs_user_services' %}">Personal Services</a>
+                            <a class="nav-link text-navy fw-bold py-0" href="{% url 'pcs_user_services' %}">Personal Services</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -40,11 +41,11 @@
                             </a>
                             <ul class="dropdown-menu border-0 shadow" aria-labelledby="navbarDropdown">
                                 <li>
-                                    <a class="dropdown-item text-center" href="{% url 'account_app:profile' %}">
+                                    <a class="dropdown-item text-center" href="{% host_url 'user_profile' %}">
                                         <i class="icofont-ui-user me-2"></i> My Profile</a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item text-center" href="{% url 'account_app:profile' %}">
+                                    <a class="dropdown-item text-center" href="{% host_url 'user_profile' %}">
                                         <i class="icofont-edit me-2"></i> Edit Profile
                                     </a>
                                 </li>
@@ -68,92 +69,92 @@
         <div class="offcanvas-body pt-0">
             <ul class="menubar">
                 <li>
-                    <a href="{% url 'bcs_app:bcs_user_dashboard' %}">
+                    <a href="{% host_url 'bcs_user_dashboard' %}">
                         <i class="icofont-home"></i> Dashboard
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'bcs_app:bcs_user_services' %}">
+                    <a href="{% host_url 'bcs_user_services' %}">
                         <i class="icofont-cubes"></i> Services
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'bcs_app:bcs_user_order_history' %}">
+                    <a href="{% host_url 'bcs_user_order_history' %}">
                         <i class="icofont-cart-alt"></i> Order History
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'bcs_app:bcs_user_my_team' %}">
+                    <a href="{% host_url 'bcs_user_my_team' %}">
                         <i class="icofont-people"></i> My Team
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'bcs_app:bcs_user_subscriptions' %}">
+                    <a href="{% host_url 'bcs_user_subscriptions' %}">
                         <i class="icofont-dollar"></i> Subscriptions
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'bcs_app:bcs_user_events' %}">
+                    <a href="{% host_url 'bcs_user_events' %}">
                         <i class="icofont-ui-calendar"></i> Events & Webinars
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'bcs_app:bcs_user_notifications' %}">
+                    <a href="{% host_url 'bcs_user_notifications' %}">
                         <i class="icofont-notification"></i> Notifications
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'account_app:profile' %}">
+                    <a href="{% host_url 'user_profile' %}">
                         <i class="icofont-options"></i> My Profile
                     </a>
                 </li>
-                <a href="{% url 'account_app:logout' %}" class="mt-2 logout-btn ms-3 btn btn-outline-navy px-4">Log Out</a>
+                <a href="{% host_url 'logout' %}" class="mt-2 logout-btn ms-3 btn btn-outline-navy px-4">Log Out</a>
             </ul>
         </div>
     </div>
     <div class="w-20 h-100 position-fixed bg-white shadow-sm px-1 pt-2 d-none d-lg-block">
         <ul class="menubar">
             <li>
-                <a href="{% url 'bcs_app:bcs_user_dashboard' %}">
+                <a href="{% host_url 'bcs_user_dashboard' %}">
                     <i class="icofont-home"></i> Dashboard
                 </a>
             </li>
             <li>
-                <a href="{% url 'bcs_app:bcs_user_services' %}">
+                <a href="{% host_url 'bcs_user_services' %}">
                     <i class="icofont-cubes"></i> Services
                 </a>
             </li>
             <li>
-                <a href="{% url 'bcs_app:bcs_user_order_history' %}">
+                <a href="{% host_url 'bcs_user_order_history' %}">
                     <i class="icofont-cart-alt"></i> Order History
                 </a>
             </li>
             <li>
-                <a href="{% url 'bcs_app:bcs_user_my_team' %}">
+                <a href="{% host_url 'bcs_user_my_team' %}">
                     <i class="icofont-people"></i> My Team
                 </a>
             </li>
             <li>
-                <a href="{% url 'bcs_app:bcs_user_subscriptions' %}">
+                <a href="{% host_url 'bcs_user_subscriptions' %}">
                     <i class="icofont-dollar"></i> Subscriptions
                 </a>
             </li>
             <li>
-                <a href="{% url 'bcs_app:bcs_user_events' %}">
+                <a href="{% url 'bcs_user_events' %}">
                     <i class="icofont-ui-calendar"></i> Events & Webinars
                 </a>
             </li>
             <li>
-                <a href="{% url 'bcs_app:bcs_user_notifications' %}">
+                <a href="{% host_url 'bcs_user_notifications' %}">
                     <i class="icofont-notification"></i> Notifications
                 </a>
             </li>
             <li>
-                <a href="{% url 'account_app:profile' %}">
+                <a href="{% host_url 'user_profile' %}">
                     <i class="icofont-options"></i> My Profile
                 </a>
             </li>
-            <a href="{% url 'account_app:logout' %}" class="mt-2 logout-btn ms-3 btn btn-outline-navy px-4">Log Out</a>
+            <a href="{% host_url 'logout' %}" class="mt-2 logout-btn ms-3 btn btn-outline-navy px-4">Log Out</a>
         </ul>
 
     </div>

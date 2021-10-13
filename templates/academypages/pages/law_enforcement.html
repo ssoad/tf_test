@@ -1,4 +1,4 @@
-{% extends 'base/academybase.html' %} {% load static %} {% block title %} Law Enforcement Cyber Security Training | Academy TechForing {% endblock title %} {% block headercss %} {% endblock headercss %} {% block content %}
+{% extends 'base/academybase.html' %} {% load static %} {% load hosts %} {% block title %} Law Enforcement Cyber Security Training | Academy TechForing {% endblock title %} {% block headercss %} {% endblock headercss %} {% block content %}
 <section class="law-banner">
     <div class="container">
         <div class="aca-bar"></div>
@@ -159,7 +159,7 @@
             Techforing training courses and certifications will assist sheriffs, patrol officers, local, or state police, commanders, federal agencies, digital forensic investigators, detectives, and prosecutors to not only investigate and develop intelligence but
             to provide useful operational knowledge to those they serve.
         </p>
-        <a href="{% url 'academy_app:demo_download' %}" target="_blank">Download Curriculum</a>
+        <a href="{% url 'demo_download' %}{{ file_url }}" target="_blank">Download Curriculum</a>
     </div>
 </section>
 <section class="ccsp-ins">
@@ -334,7 +334,7 @@
                 <div class="ccsp-cta-box">
                     <h2>Get Mentorship Guidance From Us</h2>
                     <p>We know how to make the best use of your employee's time</p>
-                    <a href="{% url 'bcs_app:get_start' %}" target="_blank" class="ct-cta-btn">Enroll Now</a>
+                    <a href="{% host_url 'get_start' host 'main' %}" target="_blank" class="ct-cta-btn">Enroll Now</a>
             </div>
         </div>
     </div>

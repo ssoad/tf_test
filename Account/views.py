@@ -55,7 +55,7 @@ def login_executed(redirect_to):
 #     }
 #     return render(request, 'account/login.html', context)
 
-
+@login_required
 def profileView(request):
     context = {
 
