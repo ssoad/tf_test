@@ -5,19 +5,35 @@
 <section class="row mx-0 banner-1">
     <div class="col-md-6 col-lg-7 col-xl-8 pe-2 banner-bg">
         <div class="d-flex flex-column justify-content-center h-100">
-            <h4 class="fw-bold">{{cat_path}}</h4>
+            <h4 class="fw-bold">{{cat_path|upper}}</h4>
             <h5>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</h5>
         </div>
     </div>
     <div class="col-md-6 col-lg-5 col-xl-4">
         <div class="bg-gray px-3 py-2 h-100 d-flex flex-column justify-content-center">
-            {% for subcategory in subcategories %}
-            <a class="btn menu-link fw-bold" href="{% url 'blog_app:category' name='{{cat_path}}' %}/{{ subcategory|replacespace|lower }}">{{ subcategory }}</a> {% endfor %}
+            <div class="accordion accordion-flush" id="accordionFlush">
+                {% for subcategory in subcategories %}
+                <div class="accordion-item {%if forloop.counter == 2%}mt-2{% endif %}">
+                    <h2 class="accordion-header" id="{{ subcategory|replacespace|lower }}">
+                        <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#{{ subcategory|replacespace|lower }}-collapse" aria-expanded="false" aria-controls="{{ subcategory|replacespace|lower }}-collapse">
+                            {{ subcategory }}
+                        </button>
+                    </h2>
+                    <div id="{{ subcategory|replacespace|lower }}-collapse" class="accordion-collapse collapse" aria-labelledby="{{ subcategory|replacespace|lower }}" data-bs-parent="#accordionFlush">
+                        <div class="accordion-body">
+                            {% for filter_option in subcategory.filter_subcategory.all %}
+                            <a class="fw-bold" href="{% url 'blog_app:category' name=cat_path %}{{ subcategory|replacespace|lower }}">{{ filter_option }}</a> {% endfor %}
+                        </div>
+                    </div>
+
+                </div>
+                {% endfor %}
+            </div>
+
         </div>
     </div>
 </section>
 
-<br> {% if filter_options %} {% for filter_option in filter_options %} {{ filter_option }} {% endfor %} {% endif %}
 <div class="mt-3 d-flex justify-content-center justify-content-md-start">
     <div class="dropdown">
         <button class="btn border border-secondary text-navy bg-white dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
@@ -40,18 +56,30 @@
             <li><button class="dropdown-item" onclick="filterByDate('year')" type="button">This Year</button></li>
         </ul>
     </div>
+    {% if filter_options %}
+    <div class="dropdown ms-5">
+        <button class="btn border border-secondary text-navy bg-white dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+            Filter By Sub Category
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            {% for filter_option in filter_options %}
+            <li><button class="dropdown-item" onclick="location.reload()" type="button">{{ filter_option }} </button></li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
 </div>
 
-<br> {% for post in important_posts %} {% if post.category|replacespace|lower == path %} {{ post }} {% endif %} {% endfor %}
 
 <section class="important-case-studies mt-4">
-    <a href="{% host_url 'category' host 'blog' %}case_studies" class="container-heading">MOST IMPORTANT CASE
+    <a href="" class="container-heading">MOST IMPORTANT CASE
         STUDIES</a>
     <div class="bg-light">
         <div class="row align-items-stretch post-container">
             <div class="col-md-4">
                 {% for post in important_posts %} {% if forloop.counter == 2 or forloop.counter == 3 %}
-                <a href="{% host_url 'case_studies' host 'blog' %}{{post.post_url}}" class="url-wrapper {%if forloop.counter == 2%}mb-30p{% endif %} size gradient" style="background-image:url('{% get_media_prefix %}{{post.feature_image}}')">
+                <a href="{% url 'blog_app:{{path}}' name=cat_path %}" class="url-wrapper {%if forloop.counter == 2%}mb-30p{% endif %} size gradient">
+                    <img src="{{post.feature_image.url}}" class="position-absolute" alt="">
                     <div class="text">
                         <h2>{{post.title}}</h2>
                         <span class="date">
@@ -66,11 +94,13 @@
                 </a>
                 {% endif %} {% endfor %}
             </div>
+
             <div class="col-md-4">
-                {% for post in important_posts %} {% if forloop.first %}
-                <a href="{% host_url 'case_studies' host 'blog' %}{{post.post_url}}" class="url-wrapper img-5 h-100 gradient" style="background-image:url('{% get_media_prefix %}{{post.feature_image}}')">
+                {% for post in important_posts %}
+                <a href="" class="url-wrapper h-100 gradient">
+                    <img src="{{post.feature_image.url}}" class="position-absolute" alt="">
                     <div class="text">
-                        <h2>{{post.title}}</h2>
+                        <h2>{{post.title}}gfjhgjg</h2>
                         <span class="date">
                             <i class="bi bi-calendar"></i>
                             July 19, 2019
@@ -81,11 +111,12 @@
                         </span>
                     </div>
                 </a>
-                {% endif %} {% endfor %}
+                {% endfor %}
             </div>
             <div class="col-md-4">
                 {% for post in important_posts %} {% if forloop.counter == 4 or forloop.counter == 5 %}
-                <a href="{% host_url 'case_studies' host 'blog' %}{{post.post_url}}" class="url-wrapper {%if forloop.counter == 4%}mb-30p{% endif %} size gradient" style="background-image:url('{% get_media_prefix %}{{post.feature_image}}')">
+                <a href="" class="url-wrapper {%if forloop.counter == 4%}mb-30p{% endif %} size gradient">
+                    <img src="{{post.feature_image.url}}" class="position-absolute" alt="">
                     <div class="text">
                         <h2>{{post.title}}</h2>
                         <span class="date">
@@ -103,8 +134,83 @@
         </div>
     </div>
 </section>
+<!-- recent case-studies  -->
+<section class="recent-case-studies mt-4">
+    <a href="" class="container-heading mb-3">RECENT CASE STUDIES</a>
+    <div class="case-studies row row-cols-1 row-cols-md-3 g-5">
+        {% for post in posts %}
+        <div class="post col">
+            <div class="card h-100">
+                <button class="btn add-btn"><i class="bi bi-plus-lg"></i>
+                    <span>Add to my reading list</span>
+                </button>
+                <img src="{{post.feature_image.url}}" class="card-img-top" alt="...">
+                <div class="card-body p-1 pt-2">
+                    <a href="" class="title">
+                        <h6 class="fw-bold fs-7">{{post.title}}
+                        </h6>
+                    </a>
+                    <div class="info-area">
+                        <span class="p-0 me-3 text-green">
+                            <i class="bi bi-calendar"></i>
+                            {{post.date|date}}
+                        </span>
+                        <span class="p-0 me-3 text-green" title="Reading Time">
+                            <i class="bi bi-stopwatch"></i>
+                            {{post.reading_time}}
+                        </span>
+                    </div>
+                    <p class="fs-7 lh-sm">
+                        {{post.short_description|truncatechars:140}}
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="d-none filtered-case-studies row mx-0 g-5">
 
-<br> {% for post in posts %} {% if post.category|replacespace|lower == path %} {{ post }} {% endif %} {% endfor %} {% endblock content %} {% block customjs %}
+    </div>
+</section>
+
+<!-- load more data  -->
+<!-- <section class="my-5 container d-flex justify-content-center">
+    <button id="load-more-btn" class="btn btn-navy rounded-pill">Load More</button>
+</section> -->
+
+
+<!-- get updates form  -->
+<h5 class="get-update-heading">
+    <i class="bi bi-envelope px-2"></i>
+</h5>
+<section class="get-updates mb-5 shadow-sm py-3 bg-gray rounded">
+    <div class="row mx-0 align-items-center">
+        <div class="col-md-5">
+            <h4 class="fw-bold">Get Updates</h4>
+            <h5 class="text-secondary">Sign up to receive the latest news</h5>
+
+        </div>
+        <div class="col-md-7">
+            <div class="get-updates">
+                <form class="row">
+                    <div class="col-auto">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" placeholder="Enter your name">
+                    </div>
+                    <div class="col-auto">
+                        <label for="email">Email Address</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter your email address">
+                    </div>
+                    <div class="col-auto d-flex align-items-end mt-3 mt-lg-0">
+                        <button type="submit" class="btn btn-navy py-2">Subscribe <i
+                                class="bi bi-arrow-right"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+</section>
+
+{% endblock content %} {% block customjs %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 <script>

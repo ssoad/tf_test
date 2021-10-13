@@ -177,53 +177,61 @@ button.bg-light:hover {
     background-color: #dae0e5 !important
 }
 
-.retro-layout-2 .v-height {
+.post-container .size {
     height: 200px
 }
 
 @media (max-width:991.98px) {
-    .retro-layout-2 .img-1 {
+    .post-container .img-1 {
         height: 200px
     }
 }
 
-.retro-layout-2 .col-md-4 {
+.post-container .col-md-4 {
     overflow: hidden;
     position: relative;
 }
 
-.retro-layout-2 .h-entry {
+.post-container .url-wrapper {
     display: block;
     position: relative;
     border-radius: 4px;
-    background-size: cover;
+    /* background-size: cover;
     background-position: center center;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat; */
     overflow: hidden;
     transition: all 1s;
 }
 
-.retro-layout-2 .h-entry:hover {
-    transform: scale(1.1);
+.post-container img {
+    width: 100%;
+    height: 100%;
+    transition: all 1s;
+    object-fit: cover;
 }
 
-.retro-layout-2 .h-entry .post-category {
+.post-container .url-wrapper:hover img {
+    transform: scale(1.1);
+    /* background-size: 250%; */
+}
+
+.post-container .url-wrapper .post-category {
     color: #fff
 }
 
-.retro-layout-2 .h-entry.mb-30 {
+.post-container .url-wrapper.mb-30p {
     margin-bottom: 30px
 }
 
-.retro-layout-2 .h-entry .date {
+.post-container .url-wrapper .date {
     font-size: 15px
 }
 
-.retro-layout-2 .h-entry.gradient {
+.post-container .url-wrapper.gradient {
     position: relative
 }
 
-.retro-layout-2 .h-entry.gradient:before {
+.post-container .url-wrapper.gradient:before {
     z-index: 1;
     content: '';
     position: absolute;
@@ -239,7 +247,7 @@ button.bg-light:hover {
     filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#cc000000', GradientType=0)
 }
 
-.retro-layout-2 .text {
+.post-container .text {
     position: absolute;
     bottom: 0;
     z-index: 10;
@@ -247,27 +255,27 @@ button.bg-light:hover {
     width: 100%;
 }
 
-.retro-layout-2 .text h2 {
+.post-container .text h2 {
     color: #fff;
     font-size: 17px;
     line-height: 1.5;
     margin-bottom: 0
 }
 
-.retro-layout-2 .text span {
+.post-container .text span {
     color: rgba(255, 255, 255, 0.767)
 }
 
-.retro-layout-2 .text.text-sm h2 {
+.post-container .text.text-sm h2 {
     font-size: 16px;
     line-height: 1.5
 }
 
-.retro-layout-2 .gradient {
+.post-container .gradient {
     position: relative
 }
 
-.retro-layout-2 .gradient:before {
+.post-container .gradient:before {
     z-index: 1;
     content: '';
     position: absolute;
@@ -283,6 +291,6 @@ button.bg-light:hover {
     filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#cc000000', GradientType=0)
 }
 
-.retro-layout-2 .v-height {
+.post-container .size {
     height: 200px
 }
