@@ -12,10 +12,10 @@ host_patterns = patterns('',
 # # testing on localhost
 host(r'', settings.ROOT_URLCONF, name='main'),
 
-host(r'training', settings.ROOT_URLCONF, name='academy'),
+host(r'', settings.ROOT_URLCONF, name='academy'),
 host(r'', settings.ROOT_URLCONF, name='account'),
 
-host(r'pcs', settings.ROOT_URLCONF, name='mysecurity'),
+host(r'', settings.ROOT_URLCONF, name='mysecurity'),
 
-host(r'blog', settings.ROOT_URLCONF, name='blog'),
+host(r'', settings.ROOT_URLCONF, name='blog'),
 )
