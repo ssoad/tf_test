@@ -330,7 +330,7 @@ def adminDeleteCommentView(request, id):
 # Admin Section End Here
 def indexView(request):
     articles = models.Post.objects.filter(category__category__iexact='articles')
-    case_studies = models.Post.objects.filter(category__category__iexact='Case Studies')
+    case_studies = models.Post.objects.filter(category__category__iexact='case_studies')
     categories = models.BlogCategory.objects.all()
     subcategories = models.BlogSubCategory.objects.all()
     print(articles)
@@ -386,19 +386,20 @@ def podcastView(request, name):
 
 # for specific category
 def categoryView(request, name):
-    posts = models.Post.objects.all()
+    posts = models.Post.objects.filter(category__category__iexact=name)
     cat_path = str(request.path).split('/')[-2]
-    subcategories = models.BlogSubCategory.objects.filter(category__category__iexact=str(name).replace('_', ' '))
+    subcategories = models.BlogSubCategory.objects.filter(category__category__iexact=name).order_by('sub_category')
+    
+    print(posts)
     context = {
         'posts': posts.order_by('-date'),
         'path': name,
         'cat_path': cat_path,
-        'important_posts': posts.order_by('-total_view')[:4],
+        'important_posts': posts.order_by('-total_view'),
         'subcategories': subcategories,
-
     }
 
-    return render(request, 'blog/all.html', context)
+    return render(request, 'blog/category.html', context)
 
 
 def category_detailView(request, name1, name2):
@@ -410,13 +411,13 @@ def category_detailView(request, name1, name2):
     subcategories = models.BlogSubCategory.objects.filter(category__category__iexact=str(name1).replace('_', ' '))
     context = {
         'posts': posts.order_by('-date'),
-        'path': name1,
+        'cat_path': name1,
         'path2': name2,
         'important_posts': posts.order_by('-total_view')[:4],
         'subcategories': subcategories,
         'filter_options': filter_options,
     }
-    return render(request, 'blog/all.html', context)
+    return render(request, 'blog/category.html', context)
 
 
 def filter_post_keywordView(request, type, keyword):

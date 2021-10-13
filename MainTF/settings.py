@@ -184,7 +184,7 @@ EMAIL_USE_TLS = config('EMAIL_USE_TLS')
 DEFAULT_FROM_EMAIL = 'Techforing <testtechforing@gmail.com>'
 
 MIDDLEWARE = [
-    'django_hosts.middleware.HostsRequestMiddleware',
+   'django_hosts.middleware.HostsRequestMiddleware', #for django-host
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -192,13 +192,18 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_hosts.middleware.HostsResponseMiddleware',
+    'django_hosts.middleware.HostsResponseMiddleware', #for django-host
 ]
+
+SESSION_COOKIE_DOMAIN = '127.0.0.1'
+SESSION_COOKIE_NAME = 'techforingsessionid'
+SESSION_COOKIE_SECURE = True
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 
 ROOT_URLCONF = 'MainTF.urls'
 ROOT_HOSTCONF = 'MainTF.hosts'
 DEFAULT_HOST = 'main'
-PARENT_HOST = 'localhost:8000'
+PARENT_HOST = '127.0.0.1:8000'
 
 TEMPLATES = [
     {
