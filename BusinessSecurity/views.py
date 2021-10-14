@@ -983,6 +983,19 @@ def bcsAdminList(request):
     }
     return render(request, 'admin_panel/bcsTF/adminUsers.html', context)
 
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminEdit(request, id):
+    current_admin = Permissions.objects.get(id=id)
+    permission_form = SelectBCSPermissionForm(instance=current_admin)
+    if request.method == 'POST':
+        permission_form = SelectBCSPermissionForm(request.POST, instance=current_admin)
+        if permission_form.is_valid():
+            permission_form.save()
+            return HttpResponseRedirect(reverse('bcs_admin_list'))
+    context = {
+        'form': permission_form,
+    }
+    return render(request, 'admin_panel/bcsTF/editForm.html', context)
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminProfile(request):
