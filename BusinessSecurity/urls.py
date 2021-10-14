@@ -92,8 +92,12 @@ urlpatterns = [
 
 # bcs admin panel
     path('bcs_admin_subscription_packages/',views.bcsAdminSubscriptionPack, name='bcs_admin_subscription_packages'),
+    path('bcs_admin_subscription_packages_delete/',views.bcsAdminSubscriptionPackDelete, name='bcs_admin_subscription_packages_delete'),
+    path('bcs_admin_subscription_packages_delete/<id>',views.bcsAdminSubscriptionPackDelete, name='bcs_admin_subscription_packages_delete'),
     path('bcs_admin_subscription_packages_edit/',views.bcsAdminSubscriptionPackEdit, name='bcs_admin_subscription_packages_edit'),
     path('bcs_admin_subscription_packages_edit/<id>',views.bcsAdminSubscriptionPackEdit, name='bcs_admin_subscription_packages_edit'),
+    path('bcs_admin_subscription_packages_feature_delete/',views.bcsAdminSubscriptionPackFeatureDelete, name='bcs_admin_subscription_packages_feature_delete'),
+    path('bcs_admin_subscription_packages_feature_delete/<id>',views.bcsAdminSubscriptionPackFeatureDelete, name='bcs_admin_subscription_packages_feature_delete'),
     path('bcs_admin_individual_users/',views.bcsAdminIndividualUser, name='bcs_admin_individual_users'),
     path('bcs_admin_individual_user_panel/<id>',views.bcsAdminIndividualUserPanel, name='bcs_admin_individual_user_panel'),
     path('bcs_admin_list/',views.bcsAdminList, name='bcs_admin_list'),

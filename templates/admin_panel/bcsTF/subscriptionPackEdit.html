@@ -1,63 +1,82 @@
 {% extends 'base/bcs_admin_base.html' %} {% load static %}
 {% load crispy_forms_tags %}
+{% load hosts %}
 
 {% block title %} BCS Subscription Packages
 {% endblock title %}
 
 {% block headercss %}
-<link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/dashboard.css' %}" />
-<link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/subscription.css' %}" />
-<!-- charts js-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/dashboard.css' %}"/>
+    <link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/subscription.css' %}"/>
+    <!-- charts js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 {% endblock headercss %}
 {% block content %}
-<!-- main section starts -->
-<main>
-    <section>
-        <div class="container">
-            <form action=""method="POST">
-                {{ form|crispy }}
-                {% csrf_token %}
-                
-                
-                    <button type="submit" class="btn btn-md px-4 btn-success">Edit</button>
-            </form>
-            <h3 class="fw-bolder">Feature List</h3>
-             
-            <p class="d-flex justify-content-between align-content-center">
-                <span class="text-capitalize align-self-center fw-bold">feature 1</span>
-                <button type="button" class="btn btn-primary text-capitalize" data-bs-toggle="modal" data-bs-target="#editPackageFeature">
-                    Edit feature
-                </button>
-            </p>
-        </div>
-    </section>
-    <div class="modal fade" id="editPackageFeature" tabindex="-1" aria-labelledby="subscribeModal-1Label"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header border-0">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="" class="needs-validation" method="POST">
-                    <div class="d-flex justify-content-between">
-                        <h4>Package Details</h4>
-                        <h4>New Data</h4>
-                    </div>
-                    <button class="btn btn-primary text-capitalize" name="feature-btn" id="save-short-service">
-                        Update
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+    <!-- main section starts -->
+    <main>
+        <section>
+            <div class="container">
+                <a href="{% host_url 'bcs_admin_subscription_packages' host 'blog' %}" class="">Go Back</a>
+                <form action="" method="POST">
+                    {{ form|crispy }}
+                    {% csrf_token %}
 
-</main>
-<!-- main section ends -->
+
+                    <button type="submit" class="btn btn-md px-4 btn-success" name="package-btn">Edit</button>
+                </form>
+                <h3 class="fw-bolder">Feature List</h3>
+                {% for package_feature in package_features %}
+
+                    <p class="d-flex justify-content-between align-content-center">
+                        <span class="text-capitalize align-self-center fw-bold">{{ package_feature }}</span>
+                        <button type="button" class="btn btn-primary text-capitalize" data-bs-toggle="modal"
+                                data-bs-target="#edit-{{ package_feature.id }}">
+                            Edit feature
+                        </button>
+                        <a href="{% host_url 'bcs_admin_subscription_packages_feature_delete' host 'blog' %}{{ package_feature.id }}" type="button" class="btn btn-primary text-capitalize">
+                            Delete
+                        </a>
+                    </p>
+                    <div class="modal fade" id="edit-{{ package_feature.id }}" tabindex="-1"
+                         aria-labelledby="subscribeModal-1Label"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header border-0">
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="" class="needs-validation" method="POST">
+                                        <div class="d-flex justify-content-between">
+                                            <h4>Package Details</h4>
+                                            <h4>New Data</h4>
+                                        </div>
+                                        <div class="">
+                                            <input type="hidden" name="feature_id" value="{{ package_feature.id }}">
+                                            <input name="feature_name" type="text" class="form-control" value="{{ package_feature.feature_name }}">
+                                        </div>
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-primary text-capitalize" name="feature-btn"
+                                                id="save-short-service">
+                                            Update
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+            </div>
+        </section>
+
+
+    </main>
+    <!-- main section ends -->
 {% endblock content %}
 {% block customjs %}
-<!-- custom scripts -->
-<script src="{% static 'tfjs/admin_panel/bcsTF/subscription.js' %}"></script>
+    <!-- custom scripts -->
+    <script src="{% static 'tfjs/admin_panel/bcsTF/subscription.js' %}"></script>
 {% endblock customjs %}

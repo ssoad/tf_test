@@ -901,13 +901,40 @@ def bcsAdminSubscriptionPack(request):
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
-def bcsAdminSubscriptionPackEdit(request,id):
-    form = forms.AddPackageForm()
+def bcsAdminSubscriptionPackEdit(request, id):
+    current_package = models.SubscriptionBasedPackage.objects.get(id=id)
+    package_features = models.SubscriptionFeatures.objects.filter(package=current_package)
+    form = forms.AddPackageForm(instance=current_package)
+    if request.method == 'POST':
+        if 'package-btn' in request.POST:
+            form = forms.AddPackageForm(request.POST, instance=current_package)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect(reverse('bcs_admin_subscription_packages'))
+        elif 'feature-btn' in request.POST:
+            print(request.POST)
+            current_feature = models.SubscriptionFeatures.objects.get(id=request.POST.get('feature_id'))
+            current_feature.feature_name = request.POST.get('feature_name')
+            current_feature.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
     context = {
         'form': form,
+        'package_features': package_features,
     }
     return render(request, 'admin_panel/bcsTF/subscriptionPackEdit.html', context)
 
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminSubscriptionPackDelete(request, id):
+    current_package = models.SubscriptionBasedPackage.objects.get(id=id)
+    current_package.delete()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminSubscriptionPackFeatureDelete(request, id):
+    current_feature = models.SubscriptionFeatures.objects.get(id=id)
+    current_feature.delete()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminIndividualUser(request):
