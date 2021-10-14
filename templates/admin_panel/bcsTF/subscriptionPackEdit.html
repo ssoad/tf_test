@@ -18,11 +18,41 @@
             <form action=""method="POST">
                 {{ form|crispy }}
                 {% csrf_token %}
-                <button type="submit" class="btn btn-md px-4 btn-success">Edit</button>
+                
+                
+                    <button type="submit" class="btn btn-md px-4 btn-success">Edit</button>
             </form>
+            <h3 class="fw-bolder">Feature List</h3>
+             
+            <p class="d-flex justify-content-between align-content-center">
+                <span class="text-capitalize align-self-center fw-bold">feature 1</span>
+                <button type="button" class="btn btn-primary text-capitalize" data-bs-toggle="modal" data-bs-target="#editPackageFeature">
+                    Edit feature
+                </button>
+            </p>
         </div>
     </section>
-
+    <div class="modal fade" id="editPackageFeature" tabindex="-1" aria-labelledby="subscribeModal-1Label"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" class="needs-validation" method="POST">
+                    <div class="d-flex justify-content-between">
+                        <h4>Package Details</h4>
+                        <h4>New Data</h4>
+                    </div>
+                    <button class="btn btn-primary text-capitalize" name="feature-btn" id="save-short-service">
+                        Update
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 </main>
 <!-- main section ends -->

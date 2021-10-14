@@ -746,6 +746,19 @@ footer a i{
         width: 100% !important;
     }   
 }
+.form-group label{
+    font-weight: 700;
+    margin-top: 1rem;
+}
+
+.form-check label{
+    font-weight: 700;
+    margin-top: 0 !important;
+}
 .show-aside{
     transform: translateX(0);
+}
+
+button{
+    margin-block: 1rem;
 }

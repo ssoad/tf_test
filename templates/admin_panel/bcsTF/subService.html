@@ -1,5 +1,6 @@
 {% extends 'base/bcs_admin_base.html' %} {% load static %}
 {% load crispy_forms_tags %}
+{% load hosts %}
 
 {% block title %} BCS Admin Services
 {% endblock title %}
@@ -44,7 +45,7 @@
                                         <!-- <button type="submit" class="btn d-none btn-primary previousBtn text-capitalize" id="save-short-service">
                                             previous
                                         </button> -->
-                                        <button type="submit" class="btn btn-primary saveSubSubservice text-capitalize" id="save-short-service">
+                                        <button type="submit" class="btn btn-primary text-capitalize" id="save-short-service">
                                             save
                                         </button>
                                     </div>
@@ -72,11 +73,11 @@
                                     <td>{{ subService.title }}</td>
                                     <td>{{ subService.description }}</td>
                                     <td>
-                                        <a href="{% url 'bcs_app:bcs_admin_sub_services_edit' id=subService.id %}" class="btn">
+                                        <a href="{% host_url 'bcs_admin_sub_services_edit' id=subService.id %}" class="btn">
                                             <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
                                             Edit
                                         </a>
-                                        <a href="{% url 'bcs_app:bcs_admin_sub_services_delete' id=subService.id %}" class="btn trash">
+                                        <a href="{% host_url 'bcs_admin_sub_services_delete' id=subService.id %}" class="btn trash">
                                             <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
                                             Delete
                                         </a>
