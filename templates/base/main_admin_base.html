@@ -1,4 +1,5 @@
 <!DOCTYPE html> {% load static %}
+{% load hosts %}
 <html lang="en">
 
 <head>
@@ -29,13 +30,13 @@
         <!-- top bar section starts here -->
         <nav class="navbar fixed-top">
             <div class="container-fluid">
-                <button class="btn mt-2 hamburger"><i class="icofont-navigation-menu"></i></i></button>
+                <button class="btn mt-2 hamburger"><i class="icofont-navigation-menu"></i></button>
                 <!-- page title -->
                 <span class="navbar-text hide rounded-0 px-2  fw-bold text-primary">
-                    <a href="{% url 'bcs_app:bcs_admin_dashboard' %}" class="">Business Cybersecurity</a>
+                    <a href="{% host_url 'bcs_admin_dashboard' %}" class="">Business Cybersecurity</a>
                 </span>
                 <span class="navbar-text hide rounded-0 px-2 fw-bold text-primary">
-                    <a href="{% url 'pcs_app:pcs_admin_dashboard' %}" class="">Personal Cybersecurity</a>
+                    <a href="{% host_url 'pcs_admin_dashboard' %}" class="">Personal Cybersecurity</a>
                 </span>
                 <span class="dropdown hide">
                     <a class="nav-link btn-primary dropdown text-white" href="#" id="navbarDropdown" role="button"
@@ -43,8 +44,8 @@
                         Admin
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{% url 'account_app:profile' %}">My profile</a></li>
-                        <li><a class="dropdown-item" href="{% url 'account_app:logout' %}">Sign out</a></li>
+                        <li><a class="dropdown-item" href="{% host_url 'user_profile' %}">My profile</a></li>
+                        <li><a class="dropdown-item" href="{% host_url 'logout' %}">Sign out</a></li>
                     </ul>
                 </span>
             </div>
@@ -61,7 +62,7 @@
                 <!-- Nav links starts here -->
                 <ul class="menubar">
                     <li>
-                        <a href="{% url 'bcs_app:main_admin_dashboard' %}" class="nav-link active">
+                        <a href="{% host_url 'main_admin_dashboard' %}" class="nav-link active">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="29.273" height="23" viewBox="0 0 29.273 23">
                                 <path id="list-alt" d="M6.273,17.25V18.3a.53.53,0,0,1-.523.523H4.7a.529.529,0,0,1-.522-.523V17.25a.53.53,0,0,1,.523-.523H5.751a.53.53,0,0,1,.523.523Zm0-4.182v1.046a.53.53,0,0,1-.523.523H4.7a.529.529,0,0,1-.522-.523V13.068a.529.529,0,0,1,.523-.522H5.751a.529.529,0,0,1,.522.522Zm0-4.182V9.932a.53.53,0,0,1-.523.523H4.7a.529.529,0,0,1-.522-.523V8.886A.529.529,0,0,1,4.7,8.364H5.751a.529.529,0,0,1,.522.523ZM25.092,17.25V18.3a.53.53,0,0,1-.523.523H8.887a.53.53,0,0,1-.523-.523V17.25a.53.53,0,0,1,.523-.523H24.569a.53.53,0,0,1,.523.523Zm0-4.182v1.046a.53.53,0,0,1-.523.523H8.887a.53.53,0,0,1-.523-.523V13.068a.529.529,0,0,1,.523-.522H24.569a.53.53,0,0,1,.523.523Zm0-4.182V9.932a.53.53,0,0,1-.523.523H8.887a.53.53,0,0,1-.523-.523V8.886a.529.529,0,0,1,.523-.522H24.569a.53.53,0,0,1,.523.523Zm2.091,11.5V6.8a.53.53,0,0,0-.522-.523H2.613a.53.53,0,0,0-.523.523V20.387a.53.53,0,0,0,.523.523H26.659a.53.53,0,0,0,.523-.523ZM29.273,2.613V20.387A2.621,2.621,0,0,1,26.659,23H2.613a2.517,2.517,0,0,1-1.846-.768A2.517,2.517,0,0,1,0,20.387V2.613A2.517,2.517,0,0,1,.768.768,2.517,2.517,0,0,1,2.613,0H26.659a2.517,2.517,0,0,1,1.846.768,2.517,2.517,0,0,1,.768,1.846Z" fill="#111125"/>
                             </svg>
@@ -69,17 +70,17 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'bcs_app:main_admin_orders' %}" class="nav-link">
+                        <a href="{% host_url 'main_admin_orders' %}" class="nav-link">
                             <i class="icofont-cube"></i> <span>order</span> 
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'bcs_app:main_admin_notification' %}" class="nav-link">
+                        <a href="{% host_url 'main_admin_notification' %}" class="nav-link">
                             <i class="icofont-alarm"></i>  <span>notification</span> 
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'bcs_app:main_admin_events' %}" class="nav-link">
+                        <a href="{% host_url 'main_admin_events' %}" class="nav-link">
                             <svg class="icon" id="Layer_1" enable-background="new 0 0 512 512" height="25" viewBox="0 0 512 512" width="25" xmlns="http://www.w3.org/2000/svg">
                                 <g>
                                     <path fill="#182F59"
@@ -96,7 +97,7 @@
                         </span>
                         <ul class="dropdown-container" aria-labelledby="navbarDropdown">
                             <li>
-                                <a class="dropdown-item nav-link" href="{% url 'account_app:profile' %}">
+                                <a class="dropdown-item nav-link" href="{% host_url 'user_profile' %}">
                                     My profile
                                 </a>
                             </li>
@@ -108,9 +109,9 @@
                             <span>support</span> 
                         </span>
                         <ul class="dropdown-container " aria-labelledby="supportDropdown">
-                            <li><a class="dropdown-item nav-link" href="{% url 'bcs_app:main_admin_support_view' %}">My Staff(Admin View)</a></li>
-                            <li><a class="dropdown-item nav-link" href="{% url 'bcs_app:main_admin_stuff_view' %}">My Staff(Stuff View)</a></li>
-                            <li><a class="dropdown-item nav-link" href="{% url 'bcs_app:main_admin_all_tickets' %}">All Tickets</a></li>
+                            <li><a class="dropdown-item nav-link" href="{% host_url 'main_admin_support_view' %}">My Staff(Admin View)</a></li>
+                            <li><a class="dropdown-item nav-link" href="{% host_url 'main_admin_stuff_view' %}">My Staff(Stuff View)</a></li>
+                            <li><a class="dropdown-item nav-link" href="{% host_url 'main_admin_all_tickets' %}">All Tickets</a></li>
                         </ul>
                     </li>
                 </ul>

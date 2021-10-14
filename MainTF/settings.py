@@ -184,7 +184,7 @@ EMAIL_USE_TLS = config('EMAIL_USE_TLS')
 DEFAULT_FROM_EMAIL = 'Techforing <testtechforing@gmail.com>'
 
 MIDDLEWARE = [
-   'django_hosts.middleware.HostsRequestMiddleware', #for django-host
+    'django_hosts.middleware.HostsRequestMiddleware', #for django-host
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
