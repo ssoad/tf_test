@@ -100,8 +100,7 @@ const showSubscription = (url)=>{
             <p class="mb-0 fw-bold">${subscription.price}$ <span class="fw-bolder">/${parseInt(subscription.duration) > 1 && subscription.duration} ${subscription.duration_type}</span>
             </p>
             </div>
-            <button class="mt-3 btn bg-navy px-5 py-1 text-uppercase" data-bs-toggle="modal"
-            data-bs-target="#subscribeModal-2">Edit</button>
+            <a href="" class="mt-3 btn bg-navy px-5 py-1 text-uppercase">Edit</a>
             `
             div.innerHTML = divHtml
             packageDetails.appendChild(div)
