@@ -901,7 +901,7 @@ def bcsAdminSubscriptionPack(request):
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
-def bcsAdminSubscriptionPackEdit(request):
+def bcsAdminSubscriptionPackEdit(request,id):
     form = forms.AddPackageForm()
     context = {
         'form': form,
