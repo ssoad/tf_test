@@ -905,6 +905,7 @@ def bcsAdminSubscriptionPackEdit(request, id):
     current_package = models.SubscriptionBasedPackage.objects.get(id=id)
     package_features = models.SubscriptionFeatures.objects.filter(package=current_package)
     form = forms.AddPackageForm(instance=current_package)
+    form2 = forms.AddIndividualPackageFeatureForm()
     if request.method == 'POST':
         if 'package-btn' in request.POST:
             form = forms.AddPackageForm(request.POST, instance=current_package)
@@ -917,9 +918,17 @@ def bcsAdminSubscriptionPackEdit(request, id):
             current_feature.feature_name = request.POST.get('feature_name')
             current_feature.save()
             return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        elif 'add-feature-btn' in request.POST:
+            form2 = forms.AddIndividualPackageFeatureForm(request.POST)
+            if form2.is_valid():
+                feature = form2.save(commit=False)
+                feature.package = current_package
+                feature.save()
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
     context = {
         'form': form,
+        'form2': form2,
         'package_features': package_features,
     }
     return render(request, 'admin_panel/bcsTF/subscriptionPackEdit.html', context)

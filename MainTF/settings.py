@@ -93,19 +93,19 @@ TINYMCE_DEFAULT_CONFIG = {
     "theme": "silver",
     "height": 500,
     "menubar": 'file edit view insert format tools table help',
-    "plugins": 'print, preview, powerpaste, casechange, importcss, tinydrive, searchreplace, autolink, autosave, '
-               'save, directionality, advcode, visualblocks, visualchars, fullscreen, image, link, media, mediaembed, '
+    "plugins": 'print, preview, importcss, searchreplace, autolink, autosave, '
+               'save, directionality, visualblocks, visualchars, fullscreen, image, link, media, '
                'template, codesample, table, charmap, hr, pagebreak, nonbreaking, anchor, toc, insertdatetime, '
-               'advlist, lists, checklist, wordcount, tinymcespellchecker, a11ychecker, textpattern, noneditable, '
-               'help, formatpainter, pageembed, charmap, mentions, quickbars, linkchecker, emoticons, advtable, '
+               'advlist, lists, wordcount, textpattern, noneditable, '
+               'help, charmap, quickbars, emoticons, '
                'searchreplace,visualblocks,code,fullscreen,media,table,paste, code,help,wordcount',
     "toolbar1": "undo redo toc | fontselect fontsizeselect formatselect lineheight | bold italic underline "
-                "strikethrough superscript subscript | forecolor backcolor casechange permanentpen formatpainter "
+                "strikethrough superscript subscript | forecolor backcolor "
                 "removeformat | alignleft "
-                "aligncenter alignright alignjustify |  numlist bullist checklist | outdent indent |  searchreplace hr "
-                "charmap emoticons table pagebreak |  insertdatetime image insertfile media pageembed template link anchor "
+                "aligncenter alignright alignjustify |  numlist bullist | outdent indent |  searchreplace hr "
+                "charmap emoticons table pagebreak |  insertdatetime image insertfile media template link anchor "
                 "codesample | "
-                "a11ycheck ltr rtl | showcomments addcomment|fullscreen preview print | help",
+                "ltr rtl |fullscreen preview print | help",
     # 'file_browser_callback': 'filebrowser'
 
 }

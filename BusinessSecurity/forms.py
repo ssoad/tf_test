@@ -53,3 +53,9 @@ class AddPackageFeatureForm(forms.ModelForm):
     class Meta:
         model = models.SubscriptionFeatures
         fields = '__all__'
+
+
+class AddIndividualPackageFeatureForm(forms.ModelForm):
+    class Meta:
+        model = models.SubscriptionFeatures
+        fields = ['feature_name', ]
