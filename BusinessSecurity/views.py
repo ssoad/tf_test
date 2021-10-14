@@ -23,8 +23,8 @@ def main_admin_permission_check(user):
 def bcs_admin_permission_check(user):
     try:
         return user.is_superuser or ((
-                                                 user.permission_user.is_superadmin or user.permission_user.is_admin or user.permission_user.is_moderator or user.permission_user.is_editor) and (
-                                                 user.permission_user.admin_type == 'bcs_admin' or user.permission_user.admin_type == 'main_admin'))
+                                             user.permission_user.is_superadmin or user.permission_user.is_admin or user.permission_user.is_moderator or user.permission_user.is_editor) and (
+                                             user.permission_user.admin_type == 'bcs_admin' or user.permission_user.admin_type == 'main_admin'))
     except:
         return user.is_superuser
 
@@ -933,17 +933,20 @@ def bcsAdminSubscriptionPackEdit(request, id):
     }
     return render(request, 'admin_panel/bcsTF/subscriptionPackEdit.html', context)
 
+
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminSubscriptionPackDelete(request, id):
     current_package = models.SubscriptionBasedPackage.objects.get(id=id)
     current_package.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
+
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminSubscriptionPackFeatureDelete(request, id):
     current_feature = models.SubscriptionFeatures.objects.get(id=id)
     current_feature.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminIndividualUser(request):
@@ -992,6 +995,7 @@ def bcsAdminList(request):
     }
     return render(request, 'admin_panel/bcsTF/adminUsers.html', context)
 
+
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminEdit(request, id):
     current_admin = Permissions.objects.get(id=id)
@@ -1005,6 +1009,7 @@ def bcsAdminEdit(request, id):
         'form': permission_form,
     }
     return render(request, 'admin_panel/bcsTF/editForm.html', context)
+
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminProfile(request):
