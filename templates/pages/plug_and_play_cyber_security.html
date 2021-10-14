@@ -1,4 +1,8 @@
-{% extends 'base/base.html' %} {% load static %} {% block title %} Plug and Play Cyber Security For SMBs | Turnkey Solutions {% endblock title %} {% block headercss %}
+{% extends 'base/base.html' %} {% load static %} {% load hosts %} {% block title %} Plug and Play Cyber Security For SMBs | Turnkey Solutions {% endblock title %} {% block meta %}
+<meta property="og:description" content="Techforing provides Plug and play cyber security service, a ready-made easy to implement solution for Small and medium-sized businesses at the most affordable rate in the market." />
+<meta name="description" content="Techforing provides Plug and play cyber security service, a ready-made easy to implement solution for Small and medium-sized businesses at the most affordable rate in the market." />
+<meta name="keywords" content="PLUG-AND-PLAY CYBER SECURITY, SMB, small business cybersecurity, turnkey cybersecurity, small business Risk Assessment, SMB Data Privacy and Protection, data privacy program, Vendor Screening, Incident Response, hack recovery, malware removal, digital forensic investigation, cybersecurity experts, cyber security managed services, managed it security services, cyber security consulting services, cyber security solution providers, cyber security management, cybersecurity infrastructure security agency, cyber security consulting, corporate cyber security"
+/> {% endblock meta %} {% block headercss %}
 <link rel="stylesheet" href="{% static '' %}css/glide.core.css" />
 <link rel="stylesheet" href="{% static '' %}css/glide.theme.css" />
 <link rel="stylesheet" href="{% static '' %}css/style.css" /> {% endblock headercss %} {% block content %}
@@ -21,27 +25,12 @@
                                 <p class="rs-text">
                                     A definitive guide to secure your business from external and internal cyberattacks.
                                 </p>
-                                <a href="{% url 'bcs_app:bcs_form' %}" target="_blank" class="rs-btn">Download Now</a>
-                  </div>
-                </div>
-              </li>
-              <!-- <li class="glide__slide">
-                <div class="rs-outer-box">
-                  <div class="smb-inner-box">
-                    <h2 class="rs-title">Report, Guide & Tool</h2>
-                    <p class="rs-text">
-                      Assess your website for SQLI, XSS, CSRF and other common
-                      OWASP vulnerabilities, free tool.
-                    </p>
-                    <a
-                      href="https://thirdeye.techforing.com"
-                      target="_blank"
-                      class="rs-btn"
-                      >Run Assessment</a
+                                <a href="{% host_url 'bcs_form' host 'main' %}" target="_blank" class="rs-btn">Download Now</a
                     >
                   </div>
                 </div>
-              </li> -->
+              </li>
+              
               <li class="glide__slide">
                 <div class="rs-outer-box">
                   <div class="smb-inner-box">
@@ -430,7 +419,9 @@
             this company and they did a fine job. Highly recommended
           </p>
           <div class="story-btn">
-            <a href="{% url 'bcs_app:testimonial' %}" target="_blank">See all success stories</a>
+            <a href="{% url 'testimonial' %}" target="_blank"
+              >See all success stories</a
+            >
           </div>
         </div>
       </div>
@@ -442,7 +433,7 @@
             <div class="mtc-box">
               <h2>Get plug and play business Cybersecurity service</h2>
               <p>Co-create your security postures</p>
-              <a href="{% url 'bcs_app:get_start' %}" target="_blank">Get Now</a>
+              <a href="{% host_url 'get_start' host 'main' %}" target="_blank">Get Now</a>
                             </div>
                         </div>
             </div>

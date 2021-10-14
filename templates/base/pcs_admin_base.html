@@ -1,4 +1,5 @@
 <!DOCTYPE html> {% load static %}
+{% load hosts %}
 <html lang="en">
 
 <head>
@@ -46,8 +47,8 @@
                         Admin
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{% url 'account_app:profile' %}">My profile</a></li>
-                        <li><a class="dropdown-item" href="{% url 'account_app:logout' %}">Sign out</a></li>
+                        <li><a class="dropdown-item" href="{% host_url 'user_profile' %}">My profile</a></li>
+                        <li><a class="dropdown-item" href="{% host_url 'logout' %}">Sign out</a></li>
                     </ul>
                 </span>
             </div>
@@ -64,7 +65,7 @@
                 <!-- Nav links starts here -->
                 <ul class="menubar">
                     <li>
-                        <a href="{% url 'pcs_app:pcs_admin_dashboard' %}" class="nav-link active">
+                        <a href="{% host_url 'pcs_admin_dashboard' %}" class="nav-link active">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="29.273" height="23"
                                 viewBox="0 0 29.273 23">
                                 <path id="list-alt"
@@ -82,12 +83,12 @@
                         </span>
                         <ul class="dropdown-container" aria-labelledby="navbarDropdown">
                             <li>
-                                <a class="dropdown-item nav-link" href="{% url 'pcs_app:pcs_admin_services' %}">
+                                <a class="dropdown-item nav-link" href="{% host_url 'pcs_admin_services' %}">
                                     Service Category
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item nav-link" href="{% url 'pcs_app:pcs_admin_sub_services' %}">
+                                <a class="dropdown-item nav-link" href="{% host_url 'pcs_admin_sub_services' %}">
                                     Services
                                 </a>
                             </li>
@@ -101,19 +102,19 @@
                         </span>
                         <ul class="dropdown-container" aria-labelledby="navbarDropdown">
                             <li>
-                                <a href="{% url 'pcs_app:pcs_admin_individual_users' %}" class="dropdown-item nav-link">
+                                <a href="{% host_url 'pcs_admin_individual_users' %}" class="dropdown-item nav-link">
                                     users
                                 </a>
                             </li>
                             <li>
-                                <a href="{% url 'pcs_app:pcs_admin_list' %}" class="dropdown-item nav-link">
+                                <a href="{% host_url 'pcs_admin_list' %}" class="dropdown-item nav-link">
                                     admin users
                                 </a>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <a href="{% url 'pcs_app:pcs_admin_reading_list' %}" class="nav-link">
+                        <a href="{% host_url 'pcs_admin_reading_list' %}" class="nav-link">
                             <i class="bi bi-file-earmark-fill"></i> Reading List
                         </a>
                     </li>
@@ -125,29 +126,29 @@
                         </span>
                         <ul class="dropdown-container" aria-labelledby="navbarDropdown">
                             <li>
-                                <a class="dropdown-item nav-link" href="{% url 'pcs_app:pcs_admin_subscriptions' %}">
+                                <a class="dropdown-item nav-link" href="{% host_url 'pcs_admin_subscriptions' %}">
                                     Subscription List
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item nav-link" href="{% url 'pcs_app:pcs_admin_subscription_packages' %}">
+                                <a class="dropdown-item nav-link" href="{% host_url 'pcs_admin_subscription_packages' %}">
                                     Subscription package
                                 </a>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <a href="{% url 'pcs_app:pcs_admin_revenue' %}" class="nav-link">
+                        <a href="{% host_url 'pcs_admin_revenue' %}" class="nav-link">
                             <i class="bi bi-currency-dollar"></i> revenue
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'pcs_app:pcs_admin_user_interest' %}" class="nav-link">
+                        <a href="{% host_url 'pcs_admin_user_interest' %}" class="nav-link">
                             <i class="bi bi-hand-index-fill"></i> user interest
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'pcs_app:pcs_admin_training' %}" class="nav-link">
+                        <a href="{% host_url 'pcs_admin_training' %}" class="nav-link">
                             <i class="bi bi-award-fill"></i> Training
                         </a>
                     </li>

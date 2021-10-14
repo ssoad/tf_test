@@ -1,12 +1,12 @@
 from django.urls import path
 from BusinessSecurity import views
 
-app_name = 'bcs_app'
+# app_name = 'bcs_app'
 
 urlpatterns = [
-    path('', views.indexView, name='index'),
+    path('', views.indexView, name='home'),
 
-    path('about_us', views.aboutUsView, name='about_us'),
+    path('about_us', views.aboutUsView, name='aboutus'),
     path('enterprise_cybersecurity', views.enterpriseCyberSecurityView, name='enterprise_cybersecurity'),
     path('vulnerability_assessment/', views.vulnerabilityAssessmentView, name='vulnerability_assessment'),
     path('red_team_penetration_testing/', views.redTeamPenetrationTestingView, name='red_team_penetration_testing'),
@@ -72,7 +72,7 @@ urlpatterns = [
     path('employee_training_program/', views.employeeTrainingProgramView, name='employee_training_program'),
 
 
-    path('bcs_appoinment/', views.bcsAppointmentView, name='bcs_appointment'),
+    path('bcs_appointment/', views.bcsAppointmentView, name='bcs_appointment'),
 
 
     # bcs admin panel
@@ -92,6 +92,7 @@ urlpatterns = [
 
 # bcs admin panel
     path('bcs_admin_subscription_packages/',views.bcsAdminSubscriptionPack, name='bcs_admin_subscription_packages'),
+    path('bcs_admin_subscription_packages_edit/',views.bcsAdminSubscriptionPackEdit, name='bcs_admin_subscription_packages_edit'),
     path('bcs_admin_individual_users/',views.bcsAdminIndividualUser, name='bcs_admin_individual_users'),
     path('bcs_admin_individual_user_panel/<id>',views.bcsAdminIndividualUserPanel, name='bcs_admin_individual_user_panel'),
     path('bcs_admin_list/',views.bcsAdminList, name='bcs_admin_list'),

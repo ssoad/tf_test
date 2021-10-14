@@ -1,0 +1,33 @@
+{% extends 'base/bcs_admin_base.html' %} {% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %} BCS Subscription Packages
+{% endblock title %}
+
+{% block headercss %}
+<link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/dashboard.css' %}" />
+<link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/subscription.css' %}" />
+<!-- charts js-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+{% endblock headercss %}
+{% block content %}
+<!-- main section starts -->
+<main>
+    <section>
+        <div class="container">
+            <form action=""method="POST">
+                {{ form|crispy }}
+                {% csrf_token %}
+                <button type="submit" class="btn btn-md px-4 btn-success">Edit</button>
+            </form>
+        </div>
+    </section>
+
+
+</main>
+<!-- main section ends -->
+{% endblock content %}
+{% block customjs %}
+<!-- custom scripts -->
+<script src="{% static 'tfjs/admin_panel/bcsTF/subscription.js' %}"></script>
+{% endblock customjs %}

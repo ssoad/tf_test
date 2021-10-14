@@ -1,4 +1,10 @@
-{% extends 'base/base.html' %} {% load static %} {% block title %} Digital Forensic Investigation | Business Cyber Crime Solution {% endblock title %} {% block headercss %}
+{% extends 'base/base.html' %} {% load static %} {% load hosts %} {% block title %} Digital Forensic Investigation | Business Cyber Crime Solution {% endblock title %} {% block meta %} {% endblock meta %}
+<meta property="og:description" content="We perform digital forensic investigations to solve cyber crimes like business frauds, internal data theft, and external hacking cases in businesses and corporations. Find physical evidence, reveal the guilty and crime motive, and secure the security holes."
+/>
+<meta name="description" content="We perform digital forensic investigations to solve cyber crimes like business frauds, internal data theft, and external hacking cases in businesses and corporations. Find physical evidence, reveal the guilty and crime motive, and secure the security holes."
+/>
+<meta name="keywords" content="DIGITAL FORENSIC INVESTIGATION, cyber crime investigation, computer crime investigator, Cyber investigation, Cyber Security Investigation, digital investigation, corporate investigation, investigation of cybercrime, BUSINESS FRAUD INVESTIGATION, INTERNAL DATA THEFT INVESTIGATION, EXTERNAL HACKING solution, BUSINESS AFFECTED BY CYBERCRIME, cybersecurity, techforing, cybercrime solution, cybersecurity service"
+/> {% block headercss %}
 <link rel="stylesheet" href="{% static '' %}css/glide.core.css" />
 <link rel="stylesheet" href="{% static '' %}css/glide.theme.css" />
 <link rel="stylesheet" href="{% static '' %}css/style.css" /> {% endblock headercss %} {% block content %}
@@ -19,7 +25,8 @@
                                 <p class="rs-text">
                                     A definitive guide to secure your business from external and internal cyberattacks.
                                 </p>
-                                <a href="{% url 'bcs_app:bcs_form' %}" class="rs-btn" target="_blank">Download Now</a>
+                                <a href="{% host_url 'bcs_form' host 'main' %}" class="rs-btn" target="_blank">Download Now</a
+                    >
                   </div>
                 </div>
               </li>
@@ -289,7 +296,9 @@
             />
           </div>
           <div class="story-btn invc-btn">
-            <a href="{% url 'bcs_app:testimonial' %}" target="_blank">See all success stories</a>
+            <a href="{% url 'testimonial' %}" target="_blank"
+              >See all success stories</a
+            >
           </div>
         </div>
       </div>
@@ -301,7 +310,7 @@
             <div class="hrc-box">
               <h2>Has your Business Suffered Data breach?</h2>
               <p>We Want to help. Call us!</p>
-              <a href="{% url 'bcs_app:get_start' %}" target="_blank">Secure Now</a>
+              <a href="{% host_url 'get_start' host 'main' %}" target="_blank">Secure Now</a>
             </div>
           </div>
         </div>

@@ -1,4 +1,5 @@
 {% extends 'base/bcs_admin_base.html' %} {% load static %}
+{% load hosts %}
 {% block title %} BCS Admin Users
 {% endblock title %}
 
@@ -93,7 +94,7 @@
                                     <button class="btn trash">
                                         <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
                                     </button>
-                                    <a href="{% url 'bcs_app:bcs_admin_individual_user_panel' id=user.id %}"
+                                    <a href="{% host_url 'bcs_admin_individual_user_panel' id=user.id %}"
                                        class="btn view">
                                         <i class="bi bi-eye-fill text-success rounded-circle activites-icon"></i>
                                     </a>

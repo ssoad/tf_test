@@ -1,4 +1,4 @@
-{% extends 'base/base.html' %} {% load static %} {% block title %} Clients & Testimonial {% endblock title %} {% block headercss %}
+{% extends 'base/base.html' %} {% load static %} {% load hosts %} {% block title %} Clients & Testimonial {% endblock title %} {% block headercss %}
 <link rel="stylesheet" href="{% static '' %}tfcss/glide.core.css" />
 <link rel="stylesheet" href="{% static '' %}tfcss/glide.theme.css" />
 <link rel="stylesheet" href="{% static '' %}tfcss/style.css" /> {% endblock headercss %} {% block content %}
@@ -926,7 +926,7 @@
         <div class="fran-bar mx-auto"></div>
         <p>Our unique customer experience approach</p>
         <h2>From amazing project, through training, through consultation</h2>
-        <a href="{% url 'bcs_app:get_start' %}" target="_blank"><button>Get Our Service <i
+        <a href="{% host_url 'get_start' host 'main' %}" target="_blank"><button>Get Our Service <i
                     class="fas fa-arrow-right"></i></button></a>
     </div>
 </section>

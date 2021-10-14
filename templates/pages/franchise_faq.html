@@ -1,5 +1,6 @@
 {% extends 'base/base.html' %}
 {% load static %}
+{% load hosts %}
 
 {% block title %}
     Franchise FAQ
@@ -200,7 +201,7 @@
           <div class="col-md-8">
             <div class="ftc-box">
               <h2>STILL NEED HELP? SEND US A NOTE</h2>
-              <a href="{% url 'bcs_app:get_start' %}" target="_blank">Let Us Secure</a>
+              <a href="{% host_url 'get_start' host 'main' %}" target="_blank">Let Us Secure</a>
             </div>
           </div>
         </div>

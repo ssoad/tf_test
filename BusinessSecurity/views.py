@@ -17,14 +17,17 @@ def superuser_permission_check(user):
 
 def main_admin_permission_check(user):
     return user.is_superuser or ((
-                                             user.permission_user.is_superadmin or user.permission_user.is_admin or user.permission_user.is_moderator or user.permission_user.is_editor) and user.permission_user.admin_type == 'main_admin')
+                                         user.permission_user.is_superadmin or user.permission_user.is_admin or user.permission_user.is_moderator or user.permission_user.is_editor) and user.permission_user.admin_type == 'main_admin')
 
 
 def bcs_admin_permission_check(user):
     try:
-        return user.is_superuser or ((user.permission_user.is_superadmin or user.permission_user.is_admin or user.permission_user.is_moderator or user.permission_user.is_editor) and (user.permission_user.admin_type == 'bcs_admin' or user.permission_user.admin_type == 'main_admin'))
+        return user.is_superuser or ((
+                                                 user.permission_user.is_superadmin or user.permission_user.is_admin or user.permission_user.is_moderator or user.permission_user.is_editor) and (
+                                                 user.permission_user.admin_type == 'bcs_admin' or user.permission_user.admin_type == 'main_admin'))
     except:
         return user.is_superuser
+
 
 def indexView(request):
     context = {
@@ -299,7 +302,7 @@ def userDashboardView(request):
                 user_business = models.UsersBusiness.objects.create(user=current_user, business=business,
                                                                     position=position, privilege='admin')
                 user_business.save()
-                return HttpResponseRedirect(reverse('bcs_app:bcs_user_dashboard'))
+                return HttpResponseRedirect(reverse('bcs_user_dashboard'))
 
         context = {
             'form': form,
@@ -895,6 +898,15 @@ def bcsAdminSubscriptionPack(request):
         'services': services,
     }
     return render(request, 'admin_panel/bcsTF/subscriptionPack.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminSubscriptionPackEdit(request):
+    form = forms.AddPackageForm()
+    context = {
+        'form': form,
+    }
+    return render(request, 'admin_panel/bcsTF/subscriptionPackEdit.html', context)
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')

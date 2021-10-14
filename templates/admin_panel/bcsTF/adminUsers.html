@@ -1,4 +1,5 @@
 {% extends 'base/bcs_admin_base.html' %} {% load static %}
+{% load hosts %}
 {% load crispy_forms_tags %}
 {% block title %} BCS Admin List
 {% endblock title %}
@@ -79,7 +80,7 @@
                             {% for admin in admin_list %}
                                 <tr>
                                     <td>
-                                        <a href="{% url 'account_app:profile' %}">
+                                        <a href="{% host_url 'bcs_admin_individual_user_panel' id=admin.user.id %}">
                                             {{ admin.user.first_name }} {{ admin.user.last_name }}
                                         </a>
                                     </td>
@@ -93,7 +94,7 @@
                                         <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
                                             <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
                                         </button>
-                                        <a href="{% url 'bcs_app:main_admin_support_delete_view' id=admin.id %}" class="btn trash">
+                                        <a href="{% host_url 'main_admin_support_delete_view' id=admin.id %}" class="btn trash">
                                             <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
                                         </a>
                                     </td>

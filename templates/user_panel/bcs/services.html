@@ -1,4 +1,4 @@
-{% extends 'base/bcs_user_base.html' %} {% load static %} {% block title %} Services {% endblock title %} {% block content %}
+{% extends 'base/bcs_user_base.html' %} {% load static %} {% load hosts %} {% block title %} Services {% endblock title %} {% block content %}
 
 <section class="services position-relative">
     <h4 class="main-heading">All Business Cybersecurity Services
@@ -194,9 +194,9 @@
 
         <h5 class="mt-5 services-type">Program For Your Employees</h5>
         <!-- more services -->
-        <div class="row more-services pe-2">
-            <div class="col-md-6">
-                <div class="mt-4 bg-lightgreen mx-0 px-2 py-3 rounded shadow-md">
+        <div class="row mx-0 g-3 more-services">
+            <div class="col-md-6 ps-md-0">
+                <div class="mt-4 bg-lightgreen px-2 py-3 rounded shadow-md">
                     <h6 class="mb-3 fw-bold text-uppercase">Personal Cybersecurity for Your Employees</h6>
                     <div class="d-flex">
                         <img class="service-icon" src="{% static '' %}tfimg/user_panel/services/user.png" alt="">
@@ -211,8 +211,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="mt-4 bg-lightgreen mx-0 px-2 py-3 rounded shadow-md">
+            <div class="col-md-6 pe-md-0">
+                <div class="mt-4 bg-lightgreen px-2 py-3 rounded shadow-md">
                     <h6 class="mb-3 fw-bold text-uppercase">Training Program for Your Employees</h6>
                     <div class="d-flex">
                         <img class="service-icon" src="{% static '' %}tfimg/user_panel/services/online-course.png" alt="">
@@ -246,7 +246,7 @@
                         {% csrf_token %}
                         <div id="employee-number-btn">
                             <select disabled class="form-select bg-white" aria-label="Default select example">
-                                <option selected>How many employees are there in your
+                                <option selected>No. of Employees in your
                                     organization?</option>
                             </select>
                         </div>
@@ -279,7 +279,7 @@
 
                         <div id="train-employee-btn">
                             <select disabled class="mt-4 form-select bg-white" aria-label="Default select example">
-                                <option selected>How many employees you want to train?</option>
+                                <option selected>No. of Employees you want to train?</option>
                             </select>
                         </div>
                         <input required id="train-employee-input" class="d-none form-control shadow mt-1 border border-navy" placeholder="Enter the number of employess you want to train.." type="text" maxlength="3" name="" autocomplete="off">
@@ -368,7 +368,7 @@
             <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
                 <button type="button" class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">Provide information to
                     get a quotation</button>
-                <a href="{% url 'bcs_app:bcs_appointment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
+                <a href="{% host_url 'bcs_appoinment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
                     representatives</a>
 
             </div>
@@ -450,7 +450,7 @@
             <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
                 <button type="button" class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">Provide information to
                     get a quotation</button>
-                <a href="{% url 'bcs_app:bcs_appointment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
+                <a href="{% host_url 'bcs_appoinment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
                     representatives</a>
             </div>
         </div>
@@ -488,7 +488,7 @@
             <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
                 <button type="button" class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">Provide information to
                     get a quotation</button>
-                <a href="{% url 'bcs_app:bcs_appointment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
+                <a href="{% host_url 'bcs_appoinment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
                     representatives</a>
             </div>
         </div>
@@ -540,7 +540,7 @@
             <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
                 <button type="button" class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">Provide information to
                     get a quotation</button>
-                <a href="{% url 'bcs_app:bcs_appointment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
+                <a href="{% host_url 'bcs_appoinment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
                     representatives</a>
             </div>
         </div>
@@ -589,7 +589,7 @@
             <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
                 <button type="button" class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">Provide information to
                     get a quotation</button>
-                <a href="{% url 'bcs_app:bcs_appointment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
+                <a href="{% host_url 'bcs_appoinment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
                     representatives</a>
             </div>
         </div>
@@ -652,7 +652,7 @@
             <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
                 <button type="button" class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">Provide information to
                     get a quotation</button>
-                <a href="{% url 'bcs_app:bcs_appointment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
+                <a href="{% host_url 'bcs_appoinment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
                     representatives</a>
             </div>
         </div>
@@ -713,7 +713,7 @@
             <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
                 <button type="button" class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">Provide information to
                     get a quotation</button>
-                <a href="{% url 'bcs_app:bcs_appointment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
+                <a href="{% host_url 'bcs_appoinment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
                     representatives</a>
             </div>
         </div>
@@ -775,7 +775,7 @@
             <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
                 <button type="button" class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">Provide information to
                     get a quotation</button>
-                <a href="{% url 'bcs_app:bcs_appointment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
+                <a href="{% host_url 'bcs_appoinment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
                     representatives</a>
             </div>
         </div>
@@ -835,7 +835,7 @@
             <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
                 <button type="button" class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">Provide information to
                     get a quotation</button>
-                <a href="{% url 'bcs_app:bcs_appointment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
+                <a href="{% host_url 'bcs_appoinment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
                     representatives</a>
             </div>
         </div>
@@ -883,7 +883,7 @@
             <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
                 <button type="button" class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">Provide information to
                     get a quotation</button>
-                <a href="{% url 'bcs_app:bcs_appointment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
+                <a href="{% host_url 'bcs_appoinment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
                     representatives</a>
             </div>
         </div>
@@ -937,7 +937,7 @@
             <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
                 <button type="button" class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">Provide information to
                     get a quotation</button>
-                <a href="{% url 'bcs_app:bcs_appointment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
+                <a href="{% host_url 'bcs_appoinment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
                     representatives</a>
             </div>
         </div>
@@ -949,7 +949,7 @@
             <h4 class="px-3 fw-bold text-center">General Subscription packages FOR C-SUIT executive to get a quotation
             </h4>
             <div class="mt-4 row text-dark mx-0 d-flex justify-content-center justify-content-sm-between">
-                <div class="package col-9 col-sm-3 px-2">
+                <div class="package col-12 col-sm-3 px-2">
                     <div class="bg-lightgreen shadow p-2 rounded">
                         <h5 class="fw-bold text-center">MICRO</h5>
                         <table class="mx-auto mb-3">
@@ -998,7 +998,7 @@
                         <button class="mt-3 d-block mx-auto text-center btn bg-navy px-3 py-1">Submit</button>
                     </div>
                 </div>
-                <div class="package mt-4 mt-sm-0 col-9 col-sm-3 px-2">
+                <div class="package mt-4 mt-sm-0 col-12 col-sm-3 px-2">
                     <div class="bg-lightgreen shadow p-2 rounded">
                         <h5 class="fw-bold text-center">SMALL</h5>
                         <table class="mx-auto mb-3">
@@ -1047,7 +1047,7 @@
                         <button class="mt-3 d-block mx-auto text-center btn bg-navy px-3 py-1">Submit</button>
                     </div>
                 </div>
-                <div class="package mt-4 mt-sm-0 col-9 col-sm-3 px-2">
+                <div class="package mt-4 mt-sm-0 col-12 col-sm-3 px-2">
                     <div class="bg-lightgreen shadow p-2 rounded">
                         <h5 class="fw-bold text-center">MEDIUM</h5>
                         <table class="mx-auto mb-3">
@@ -1096,7 +1096,7 @@
                         <button class="mt-3 d-block mx-auto text-center btn bg-navy px-3 py-1">Submit</button>
                     </div>
                 </div>
-                <div class="package mt-4 mt-sm-0 col-9 col-sm-3 px-2">
+                <div class="package mt-4 mt-sm-0 col-12 col-sm-3 px-2">
                     <div class="bg-lightgreen shadow p-2 rounded">
                         <h5 class="fw-bold text-center">CUSTOM</h5>
                         <div class="mx-auto mb-3">
@@ -1169,9 +1169,9 @@
         <div class="invitation-container d-none py-5">
             <h5 class="fw-bold text-center text-navy">THANK YOU FOR CHOOSING C-SUIT <span id="package-name"></span> PACKAGE.
             </h5>
-            <div class="mt-5 d-flex align-items-center justify-content-center">
+            <div class="mt-5 d-flex align-items-center flex-wrap flex-md-nowrap justify-content-center">
                 <h5 class="text-center me-2 me-md-5">To invite members for your team</h5>
-                <a href="{% url 'bcs_app:bcs_user_my_team' %}" class="btn btn-outline-navy">Click Here</a>
+                <a href="{% host_url 'bcs_user_my_team' %}" class="btn btn-outline-navy">Click Here</a>
             </div>
         </div>
         <!-- Concierge Cybersecurity -->
@@ -1227,7 +1227,7 @@
             <div class="my-4 pt-5 px-3">
                 <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
                     <button type="button" id="subscription-package-btn" type="button" class="btn bg-navy px-2 py-1 mb-3 mb-md-0">Get Subscription Packages</button>
-                    <a href="{% url 'bcs_app:bcs_appointment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
+                    <a href="{% host_url 'bcs_appoinment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
                         representatives</a>
                 </div>
             </div>

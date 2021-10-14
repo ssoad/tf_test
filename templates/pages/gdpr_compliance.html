@@ -1,4 +1,10 @@
-{% extends 'base/base.html' %} {% load static %} {% block title %} GDPR COMPLIANCE & Consulting Small Businesses | Cybersecurity {% endblock title %} {% block headercss %}
+{% extends 'base/base.html' %} {% load static %} {% load hosts %} {% block title %} GDPR COMPLIANCE & Consulting Small Businesses | Cybersecurity {% endblock title %} {% block meta %}
+<meta property="og:description" content="GDPR Compliance is a security standard set for EU businesses requiring Global Data Protection Regulation in their security infrastructure. We assess IT systems and guide them to gain GDPR compliance to stay up to date with its evolution"
+/>
+<meta name="description" content="GDPR Compliance is a security standard set for EU businesses requiring Global Data Protection Regulation in their security infrastructure. We assess IT systems and guide them to gain GDPR compliance to stay up to date with its evolution"
+/>
+<meta name="keywords" content="GDPR COMPLIANCE, gdpr compliance requirements, gdpr compliance us, gdpr compliance solution, gdpr compliance services, website gdpr compliance, gdpr compliance process, gdpr compliance certification, gdpr consultants, small business it consulting, consulting small business, Personal Data Protection Steps, gain GDPR compliance, SAQ GDPR, Global Data Protection Regulation"
+/> {% endblock meta %} {% block headercss %}
 <link rel="stylesheet" href="{% static '' %}css/glide.core.css" />
 <link rel="stylesheet" href="{% static '' %}css/glide.theme.css" />
 <link rel="stylesheet" href="{% static '' %}css/style.css" /> {% endblock headercss %} {% block content %}
@@ -19,7 +25,8 @@
                                 <p class="rs-text">
                                     A definitive guide to secure your business from external and internal cyberattacks.
                                 </p>
-                                <a href="{% url 'bcs_app:bcs_form' %}" class="rs-btn" target="_blank">Download Now</a>
+                                <a href="{% host_url 'bcs_form' host 'main' %}" class="rs-btn" target="_blank">Download Now</a
+                    >
                   </div>
                 </div>
               </li>
@@ -457,7 +464,7 @@
             <div class="pcic-box">
               <h2>Need GDPR Compliance service?</h2>
               <p>We are here to Help</p>
-              <a href="{% url 'bcs_app:get_start' %}" target="_blank">Secure Now</a>
+              <a href="{% host_url 'get_start' host 'main' %}" target="_blank">Secure Now</a>
                             </div>
                         </div>
             </div>

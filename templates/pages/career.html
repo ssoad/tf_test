@@ -1,5 +1,6 @@
 {% extends 'base/base.html' %}
 {% load static %}
+{% load hosts %}
 
 {% block title %}
     Career at TechForing | Cybersecurity jobs
@@ -14,7 +15,7 @@
       <div class="container">
         <h2 class="cb-title">Turn Your passion into a career</h2>
         <h2 class="cb-subtitle">Work at TechForing Limited</h2>
-        <a href="{% url 'bcs_app:about_us' %}" target="_blank" class="tf-btn2 cb-btn"
+        <a href="{% host_url 'aboutus' %}" target="_blank" class="tf-btn2 cb-btn"
           >Learn About Us.</a
         >
       </div>

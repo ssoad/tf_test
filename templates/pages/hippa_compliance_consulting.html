@@ -1,4 +1,10 @@
-{% extends 'base/base.html' %} {% load static %} {% block title %} HIPAA Compliance Consulting | TechForing Limited {% endblock title %} {% block headercss %}
+{% extends 'base/base.html' %} {% load static %} {% load hosts %} {% block title %} HIPAA Compliance Consulting | TechForing Limited {% endblock title %} {% block meta %}
+<meta property="og:description" content="HIPAA compliance consulting is required by Health care providers who conduct certain financial and administrative transactions electronically. TechForing provides hipaa consulting services where they provide advice on cybersecurity measures that those companies must follow."
+/>
+<meta name="description" content="HIPAA compliance consulting is required by Health care providers who conduct certain financial and administrative transactions electronically. TechForing provides hipaa consulting services where they provide advice on cybersecurity measures that those companies must follow."
+/>
+<meta name="keywords" content="hipaa compliance consulting, hipaa compliance program,hipaa security consultants,hipaa security rule compliance,maintaining hipaa compliance,hipaa security policies and procedures,hipaa compliance for business associates,hipaa privacy compliance,hipaa consulting services,hipaa compliance risk assessment,hipaa compliance cyber security,hipaa pci compliance,hipaa for healthcare professionals,hipaa compliance companies,hipaa compliance consulting firms,hipaa vulnerability assessment,become hipaa compliant,understanding hipaa compliance,hipaa compliance consulting,hipaa cyber security,hipaa consultants,hipaa compliance services,healthcare compliance consulting,hipaa compliance"
+/> {% endblock meta %} {% block headercss %}
 <link rel="stylesheet" href="{% static '' %}css/glide.core.css" />
 <link rel="stylesheet" href="{% static '' %}css/glide.theme.css" />
 <link rel="stylesheet" href="{% static '' %}css/style.css" /> {% endblock headercss %} {% block content %}
@@ -19,7 +25,8 @@
                                 <p class="rs-text">
                                     A definitive guide to secure your business from external and internal cyberattacks.
                                 </p>
-                                <a href="{% url 'bcs_app:bcs_form' %}" class="rs-btn" target="_blank">Download Now</a>
+                                <a href="{% host_url 'bcs_form' host 'main' %}" class="rs-btn" target="_blank">Download Now</a
+                    >
                   </div>
                 </div>
               </li>
@@ -616,7 +623,7 @@
             <div class="pcic-box">
               <h2>need HIPPA compliance service?</h2>
               <p>we are here to Help</p>
-              <a href="{% url 'bcs_app:get_start' %}" target="_blank">Get Now</a>
+              <a href="{% host_url 'get_start' host 'main' %}" target="_blank">Get Now</a>
                             </div>
                         </div>
             </div>

@@ -1,4 +1,6 @@
-{% extends 'base/main_admin_base.html' %} {% load static %} {% block title %} All Tickets
+{% extends 'base/main_admin_base.html' %} {% load static %}
+{% load hosts %}
+{% block title %} All Tickets
 {% endblock title %} {% block headercss %}
 <link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/mainTF/support.css" /> {% endblock headercss %}
 {% block content %}
@@ -40,7 +42,7 @@
                                     </p>
                                     <button class="btn status text-primary">Pending</button>
                                 </div>
-                                <a href="{% url 'bcs_app:main_admin_tickets_detail' %}"
+                                <a href="{% host_url 'main_admin_tickets_detail' %}"
                                     class="ticket-user-info text-underline"><span class="fw-bold text-primary">Ticket
                                         Number: </span>12345</a>
                                 <p class="ticket-user-info"><span class="fw-bold text-success">Submission Date:
@@ -69,7 +71,7 @@
                                     </p>
                                     <button class="btn status text-success">Solved</button>
                                 </div>
-                                <a href="{% url 'bcs_app:main_admin_tickets_detail' %}"
+                                <a href="{% host_url 'main_admin_tickets_detail' %}"
                                     class="ticket-user-info text-underline"><span class="fw-bold text-primary">Ticket
                                         Number: </span>12345</a>
                                 <p class="ticket-user-info"><span class="fw-bold text-success">Submission Date:
@@ -98,7 +100,7 @@
                                     </p>
                                     <button class="btn status text-primary">Pending</button>
                                 </div>
-                                <a href="{% url 'bcs_app:main_admin_tickets_detail' %}"
+                                <a href="{% host_url 'main_admin_tickets_detail' %}"
                                     class="ticket-user-info text-underline"><span class="fw-bold text-primary">Ticket
                                         Number: </span>12345</a>
                                 <p class="ticket-user-info"><span class="fw-bold text-success">Submission Date:
@@ -127,7 +129,7 @@
                                     </p>
                                     <button class="btn status text-success">Solved</button>
                                 </div>
-                                <a href="{% url 'bcs_app:main_admin_tickets_detail' %}"
+                                <a href="{% url 'main_admin_tickets_detail' %}"
                                     class="ticket-user-info text-underline"><span class="fw-bold text-primary">Ticket
                                         Number: </span>12345</a>
                                 <p class="ticket-user-info"><span class="fw-bold text-success">Submission Date:
@@ -166,7 +168,7 @@
                                     </p>
                                     <button class="btn status text-primary">Pending</button>
                                 </div>
-                                <a href="{% url 'bcs_app:main_admin_tickets_detail' %}"
+                                <a href="{% host_url 'main_admin_tickets_detail' %}"
                                     class="ticket-user-info text-underline"><span class="fw-bold text-primary">Ticket
                                         Number: </span>12345</a>
                                 <p class="ticket-user-info"><span class="fw-bold text-success">Submission Date:
@@ -195,7 +197,7 @@
                                     </p>
                                     <button class="btn status text-success">Solved</button>
                                 </div>
-                                <a href="{% url 'bcs_app:main_admin_tickets_detail' %}"
+                                <a href="{% host_url 'main_admin_tickets_detail' %}"
                                     class="ticket-user-info text-underline"><span class="fw-bold text-primary">Ticket
                                         Number: </span>12345</a>
                                 <p class="ticket-user-info"><span class="fw-bold text-success">Submission Date:
@@ -224,7 +226,7 @@
                                     </p>
                                     <button class="btn status text-primary">Pending</button>
                                 </div>
-                                <a href="{% url 'bcs_app:main_admin_tickets_detail' %}"
+                                <a href="{% host_url 'main_admin_tickets_detail' %}"
                                     class="ticket-user-info text-underline"><span class="fw-bold text-primary">Ticket
                                         Number: </span>12345</a>
                                 <p class="ticket-user-info"><span class="fw-bold text-success">Submission Date:
@@ -253,7 +255,7 @@
                                     </p>
                                     <button class="btn status text-success">Solved</button>
                                 </div>
-                                <a href="{% url 'bcs_app:main_admin_tickets_detail' %}"
+                                <a href="{% host_url 'main_admin_tickets_detail' %}"
                                     class="ticket-user-info text-underline"><span class="fw-bold text-primary">Ticket
                                         Number: </span>12345</a>
                                 <p class="ticket-user-info"><span class="fw-bold text-success">Submission Date:
@@ -292,7 +294,7 @@
                                     </p>
                                     <button class="btn status text-primary">Pending</button>
                                 </div>
-                                <a href="{% url 'bcs_app:main_admin_tickets_detail' %}"
+                                <a href="{% host_url 'main_admin_tickets_detail' %}"
                                     class="ticket-user-info text-underline"><span class="fw-bold text-primary">Ticket
                                         Number: </span>12345</a>
                                 <p class="ticket-user-info"><span class="fw-bold text-success">Submission Date:
@@ -321,7 +323,7 @@
                                     </p>
                                     <button class="btn status text-success">Solved</button>
                                 </div>
-                                <a href="{% url 'bcs_app:main_admin_tickets_detail' %}"
+                                <a href="{% host_url 'main_admin_tickets_detail' %}"
                                     class="ticket-user-info text-underline"><span class="fw-bold text-primary">Ticket
                                         Number: </span>12345</a>
                                 <p class="ticket-user-info"><span class="fw-bold text-success">Submission Date:
@@ -350,7 +352,7 @@
                                     </p>
                                     <button class="btn status text-primary">Pending</button>
                                 </div>
-                                <a href="{% url 'bcs_app:main_admin_tickets_detail' %}"
+                                <a href="{% host_url 'main_admin_tickets_detail' %}"
                                     class="ticket-user-info text-underline"><span class="fw-bold text-primary">Ticket
                                         Number: </span>12345</a>
                                 <p class="ticket-user-info"><span class="fw-bold text-success">Submission Date:
@@ -379,7 +381,7 @@
                                     </p>
                                     <button class="btn status text-success">Solved</button>
                                 </div>
-                                <a href="{% url 'bcs_app:main_admin_tickets_detail' %}"
+                                <a href="{% host_url 'main_admin_tickets_detail' %}"
                                     class="ticket-user-info text-underline"><span class="fw-bold text-primary">Ticket
                                         Number: </span>12345</a>
                                 <p class="ticket-user-info"><span class="fw-bold text-success">Submission Date:

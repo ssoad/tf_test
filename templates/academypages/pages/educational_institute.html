@@ -1,4 +1,10 @@
-{% extends 'base/academybase.html' %} {% load static %} {% block title %} Cyber Awareness Training for Educational Institutes {% endblock title %} {% block headercss %} {% endblock headercss %} {% block content %}
+{% extends 'base/academybase.html' %} {% load static %} {% load hosts %} {% block title %} Cyber Awareness Training for Educational Institutes {% endblock title %} {% block meta %}
+<meta property="og:description" content="TechForing provides cyber awareness training to faculty and students with a comprehensive approach covering the most relevant and latest threat concern to schools, colleges, universities. Also gives an opportunity to become a member of their cybersecurity academy."
+/>
+<meta name="description" content="TechForing provides cyber awareness training to faculty and students with a comprehensive approach covering the most relevant and latest threat concern to schools, colleges, universities. Also gives an opportunity to become a member of their cybersecurity academy."
+/>
+<meta name="keywords" content="cyber awareness training, information assurance training,navy cyber awareness training,online information security training,information awareness training,insider threat awareness training,information assurance awareness training,phishing training,anti phishing training,cyber security training courses,cybersecurity training for employees,security training for employees,security awareness training program,online security awareness training,best cyber security training,cyber security awareness training,cyber training,information security awareness training,it security awareness training,phishing awareness training,security education training and awareness,cyber security courses online,security awareness training"
+/> {% endblock meta %} {% block headercss %} {% endblock headercss %} {% block content %}
 <section class="education-banner">
     <div class="container">
         <div class="aca-bar"></div>
@@ -376,7 +382,7 @@
                 <div class="glide__bullets ccsp-bullets ei-bullets" data-glide-el="controls[nav]"></div>
             </div>
             <div class="story-btn text-center">
-                <a href="{% url 'bcs_app:testimonial' %}" target="_blank" class="px-5">Read All</a>
+                <a href="{% host_url 'testimonial' host 'main' %}" target="_blank" class="px-5">Read All</a>
             </div>
         </div>
     </div>
@@ -388,7 +394,7 @@
                 <div class="ccsp-cta-box">
                     <h2>BECOME A MEMBER OF OUR CYBERSECURITY ACADEMY</h2>
                     <p>Interested to learn more about our programs?</p>
-                    <a href="{% url 'bcs_app:findus' %}" target="_blank">Contact Now</a>
+                    <a href="{% host_url 'findus' host 'main' %}" target="_blank">Contact Now</a>
                 </div>
             </div>
         </div>
@@ -415,7 +421,7 @@
                             In case you are unsure about our training module, course duration, cost, our extra offers, or anything that you wish to know right away without reaching out to us, visit this section. Here, we tried to clarify some of the most questions we receive.
                         </p>
                         <div class="text-right">
-                            <a href="{% url 'academy_app:academy_faq' %}" target="_blank" class="ccspr-btn">Learn More</a>
+                            <a href="{% url 'academy_faq' %}" target="_blank" class="ccspr-btn">Learn More</a>
                         </div>
                     </div>
                 </div>

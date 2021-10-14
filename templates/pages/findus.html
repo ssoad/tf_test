@@ -1,4 +1,4 @@
-{% extends 'base/base.html' %} {% load static %} {% block title %} Find Us {% endblock title %} {% block headercss %}
+{% extends 'base/base.html' %} {% load static %} {% load hosts %} {% block title %} Find Us {% endblock title %} {% block headercss %}
 <link rel="stylesheet" href="{% static '' %}tfcss/telephone.css" />
 <link rel="stylesheet" href="{% static '' %}tfcss/style.css" /> {% endblock headercss %} {% block content %}
 <section class="find-banner">
@@ -44,7 +44,7 @@
                     <div class="find-add">
                         <h2>Contact Details</h2>
                         <p class="d-flex">
-                            <img src="{% static '' %}tfimg/findus/address@1X.png" alt="" /> 703 Old Town Road, Holland, MI, 49424, USA
+                            <img src="{% static '' %}tfimg/findus/address@1X.png" alt="" /> 96 west 15th, Suite 205, Holland, Michigan, 49423, USA
                         </p>
                         <p class="d-flex">
                             <img src="{% static '' %}tfimg/findus/phone-numbers-call@1X.png" alt="" /> +1 616 795 9535
@@ -70,7 +70,7 @@
                             <img src="{% static '' %}tfimg/findus/address@1X.png" alt="" /> Kemp House, 160 City Road, London
                         </p>
                         <p class="d-flex">
-                            <img src="{% static '' %}tfimg/findus/phone-numbers-call@1X.png" alt="" /> +1 616 795 9535
+                            <img src="{% static '' %}tfimg/findus/phone-numbers-call@1X.png" alt="" /> +442035751289
                         </p>
                         <p class="d-flex">
                             <img src="{% static '' %}tfimg/findus/email (1)@1X.png" alt="" /> info@techforing.com
@@ -144,7 +144,7 @@
                                 <div class="find-add">
                                     <h2>Contact Details</h2>
                                     <p class="d-flex">
-                                        <img src="{% static '' %}tfimg/findus/address@1X.png" alt="" /> 703 Old Town Road, Holland, MI, 49424, USA
+                                        <img src="{% static '' %}tfimg/findus/address@1X.png" alt="" /> 96 west 15th, Suite 205, Holland, Michigan, 49423, USA
                                     </p>
                                     <p class="d-flex">
                                         <img src="{% static '' %}tfimg/findus/phone-numbers-call@1X.png" alt="" /> +1 616 795 9535
@@ -173,7 +173,7 @@
                                         <img src="{% static '' %}tfimg/findus/address@1X.png" alt="" /> Kemp House, 160 City Road, London
                                     </p>
                                     <p class="d-flex">
-                                        <img src="{% static '' %}tfimg/findus/phone-numbers-call@1X.png" alt="" /> +1 616 795 9535
+                                        <img src="{% static '' %}tfimg/findus/phone-numbers-call@1X.png" alt="" /> +442035751289
                                     </p>
                                     <p class="d-flex">
                                         <img src="{% static '' %}tfimg/findus/email (1)@1X.png" alt="" /> info@techforing.com
@@ -242,7 +242,7 @@
 <div class="d-none">
     <!-- Get Response Form -->
     <form id="form-res" method="post" action="https://app.getresponse.com/add_subscriber.html" accept-charset="utf-8">
-        <input type="text" name="email" id="email-res" required/>
+        <input type="text" name="email" id="email-res" required />
         <!-- List token -->
         <input type="hidden" name="campaign_token" value="oX2GR" />
         <input type="hidden" name="thankyou_url" value="https://techforing.com/pages/thanks.html" />
@@ -268,19 +268,19 @@
                             <div class="col-md-6">
                                 <div class="fu-input-box">
                                     <label for="firstname">First name</label>
-                                    <input type="text" name="first_name" id="firstname" required/>
+                                    <input type="text" name="first_name" id="firstname" required />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="fu-input-box">
                                     <label for="lastname">Last name</label>
-                                    <input type="text" name="last_name" id="lastname" required/>
+                                    <input type="text" name="last_name" id="lastname" required />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="fu-input-box">
                                     <label for="phone">Phone</label>
-                                    <input type="tell" name="custom_phone" id="phone" value="+1" required/>
+                                    <input type="tell" name="custom_phone" id="phone" value="+1" required />
                                 </div>
                             </div>
                             <div class="col-md-6">

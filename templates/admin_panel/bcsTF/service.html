@@ -1,4 +1,5 @@
 {% extends 'base/bcs_admin_base.html' %} {% load static %}
+{% load hosts %}
 {% load crispy_forms_tags %}
 
 {% block title %} BCS Admin Services
@@ -98,11 +99,11 @@
                                 <td>{{ service.short_description }}</td>
                                 <td>
 
-                                    <a href="{% url 'bcs_app:bcs_admin_services_edit' id=service.id %}" class="btn editBtn" >
+                                    <a href="{% host_url 'bcs_admin_services_edit' id=service.id %}" class="btn editBtn" >
                                         <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
                                         Edit
                                     </a>
-                                    <a href="{% url 'bcs_app:bcs_admin_services_delete' id=service.id %}"
+                                    <a href="{% host_url 'bcs_admin_services_delete' id=service.id %}"
                                         class="btn trash">
                                         <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
                                         Delete

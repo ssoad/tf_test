@@ -1,4 +1,4 @@
-{% load static %}
+{% load static %} {% load hosts %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,12 +27,13 @@
         <div class="container">
             <nav class="menubar">
                 <div class="logo">
-                    <a href="{% url 'bcs_app:index' %}" class="logo-brand"><img src="{% static 'tfimg/logo.png' %}" alt="LOGO" /></a>
+                    <a href="{% host_url 'home' %}" class="logo-brand"><img src="{% static 'tfimg/logo.png' %}" alt="LOGO" /></a>
                 </div>
                 <div class="menu-items">
                     <ul class="menu-list-lg">
                         <li class="menus">
-                            <a href="{% url 'bcs_app:enterprise_cybersecurity' %}" {% comment %} target="_blank" {% endcomment %} class="menu-link">Business Cybersecurity</a>
+                            <a href="{% host_url 'enterprise_cybersecurity' %}" {% comment %} target="_blank" {% endcomment %} class="menu-link">Business Cybersecurity</a
+                >
                 <div class="mega-menu">
                   <div class="mm-close-btn">
                     <img src="{% static 'tfimg/left-arrow.png' %}" alt="Left Arrow" />
@@ -42,20 +43,26 @@
                       <div class="submenu-box">
                         <p class="submenu-title">
                           <a
-                            href="{% url 'bcs_app:cybersecurity_risk_assessment' %}"
-                            {% comment %} target="_blank" {% endcomment %}>
-                            Risk Assessment</a>
+                            href="{% host_url 'cybersecurity_risk_assessment' %}"
+                            {% comment %} target="_blank" {% endcomment %}
+                          >
+                            Risk Assessment</a
+                          >
                         </p>
                         <ul class="submenu-list">
                           <li>
                             <a
-                              href="{% url 'bcs_app:vulnerability_assessment' %}"
-                              {% comment %} target="_blank" {% endcomment %}>Vulnerability Assessment</a>
+                              href="{% host_url 'vulnerability_assessment' %}"
+                              {% comment %} target="_blank" {% endcomment %}
+                              >Vulnerability Assessment</a
+                            >
                           </li>
                           <li>
                             <a
                               {% comment %} target="_blank" {% endcomment %}
-                              href="{% url 'bcs_app:red_team_penetration_testing' %}">Penetration Testing</a>
+                              href="{% host_url 'red_team_penetration_testing'%}"
+                              >Penetration Testing</a
+                            >
                           </li>
                         </ul>
                       </div>
@@ -65,24 +72,32 @@
                         <p class="submenu-title">
                           <a
                             target="_blank"
-                            href="{% url 'bcs_app:incident_response_services' %}">
-                            Incident Response</a>
+                            href="{% host_url 'incident_response_service' %}"
+                          >
+                            Incident Response</a
+                          >
                         </p>
                         <ul class="submenu-list">
                           <li>
                             <a
                               {% comment %} target="_blank" {% endcomment %}
-                              href="{% url 'bcs_app:hack_recovery_services' %}">Hack Recovery</a>
+                              href="{% host_url 'hack_recovery_service'%}"
+                              >Hack Recovery</a
+                            >
                           </li>
                           <li>
                             <a
                               target="_blank"
-                              href="{% url 'bcs_app:best_malware_removal' %}">Malware Removal</a>
+                              href="{% host_url 'best_malware_removal'%}"
+                              >Malware Removal</a
+                            >
                           </li>
                           <li>
                             <a
                               
-                              href="{% url 'bcs_app:digital_forensic_investigation' %}">Crime & Digital Forensic Investigation</a>
+                              href="{% host_url 'digital_forensic_investigation'%}"
+                              >Crime & Digital Forensic Investigation</a
+                            >
                           </li>
                         </ul>
                       </div>
@@ -92,22 +107,32 @@
                         <p class="submenu-title">
                           <a
                             
-                            href="{% url 'bcs_app:compliance_consulting' %}">Security Compliance</a>
+                            href="{% host_url 'compliance_consulting'%}"
+                            >Security Compliance</a
+                          >
                         </p>
                         <ul class="submenu-list">
                           <li>
-                            <a  href="{% url 'bcs_app:iso27001' %}">ISO 27001</a>
+                            <a  href="{% host_url 'iso27001'%}"
+                              >ISO 27001</a
+                            >
                           </li>
                           <li>
                             <a
-                              href="{% url 'bcs_app:pci_dss_compliance' %}">PCI DSS</a>
+                              href="{% host_url 'pci_dss_compliance'%}"
+                              >PCI DSS</a
+                            >
                           </li>
                           <li>
-                            <a href="{% url 'bcs_app:gdpr_compliance' %}">GDPR</a>
+                            <a href="{% host_url 'gdpr_compliance'%}"
+                              >GDPR</a
+                            >
                           </li>
                           <li>
                             <a
-                              href="{% url 'bcs_app:hippa_compliance_consulting' %}">HIPAA</a>
+                              href="{% host_url 'hippa_compliance_consulting'%}"
+                              >HIPAA</a
+                            >
                           </li>
                         </ul>
                       </div>
@@ -116,18 +141,24 @@
                       <div class="submenu-box">
                         <p class="submenu-title">
                           <a
-                            href="{% url 'bcs_app:small_business_cybersecurity' %}">SMB Solution</a>
+                            href="{% host_url 'small_business_cybersecurity' %}"
+                            >SMB Solution</a
+                          >
                         </p>
 
                         <ul class="submenu-list">
                           <li>
                             <a
                               
-                              href="{% url 'bcs_app:managed_cybersecurity_service' %}">Managed Security Solution</a>
+                              href="{% host_url 'managed_cybersecurity_service' %}"
+                              >Managed Security Solution</a
+                            >
                           </li>
                           <li>
                             <a
-                              href="{% url 'bcs_app:plug_and_play_cyber_security' %}">Plug & Play Program</a>
+                              href="{% host_url 'plug_and_play_cyber_security'%}"
+                              >Plug & Play Program</a
+                            >
                           </li>
                         </ul>
                       </div>
@@ -137,9 +168,11 @@
               </li>
               <li class="menus">
                 <a
-                  href="{% url 'pcs_app:my_security_home' %}"
+                  href="{% host_url 'my_security_home' host 'mysecurity' %}"
                   class="menu-link"
-                  target="_blank">Personal Cybersecurity</a>
+                  target="_blank"
+                  >Personal Cybersecurity</a
+                >
                 <div class="mega-menu">
                   <div class="mm-close-btn">
                     <img src="{% static 'tfimg/left-arrow.png' %}" alt="Left Arrow" />
@@ -151,8 +184,10 @@
                         <ul class="submenu-list">
                           <li>
                             <a
-                              href="{% url 'pcs_app:concierge_cybersecurity' %}"
-                              target="_blank">Concierge Cybersecurity</a>
+                              href="{% host_url 'concierge_cybersecurity' host 'mysecurity' %}"
+                              target="_blank"
+                              >Concierge Cybersecurity</a
+                            >
                           </li>
                         </ul>
                       </div>
@@ -161,7 +196,7 @@
                       <div class="submenu-box">
                         <p class="submenu-title">
                           <a
-                            href="{% url 'pcs_app:cyber_investigation' %}"
+                            href="{% host_url 'cyber_investigation' host 'mysecurity' %}"
                             target="_blank"
                             >Cyber Investigation</a
                           >
@@ -169,13 +204,17 @@
                         <ul class="submenu-list">
                           <li>
                             <a
-                              href="{% url 'pcs_app:osint_investigations' %}"
-                              target="_blank">Open Source Intelligence</a>
+                              href="{% host_url 'osint_investigations' host 'mysecurity' %}"
+                              target="_blank"
+                              >Open Source Intelligence</a
+                            >
                           </li>
                           <li>
                             <a
-                              href="{% url 'pcs_app:cyber_crime_investigation' %}"
-                              target="_blank">Crime Investigation</a>
+                              href="{% host_url 'cyber_crime_investigation' host 'mysecurity' %}"
+                              target="_blank"
+                              >Crime Investigation</a
+                            >
                           </li>
                         </ul>
                       </div>
@@ -184,26 +223,30 @@
                       <div class="submenu-box">
                         <p class="submenu-title">
                           <a
-                            href="{% url 'pcs_app:incident_response_service' %}"
-                            target="_blank">
-                            Incident Response</a>
+                            href="{% host_url 'incident_response_service' host 'mysecurity' %}"
+                            target="_blank"
+                          >
+                            Incident Response</a
+                          >
                         </p>
                         <ul class="submenu-list">
                           <li>
                             <a
-                              href="{% url 'pcs_app:hack_recovery_service' %}"
-                              target="_blank">Hack Recovery</a>
+                              href="{% host_url 'hack_recovery_service' host 'mysecurity' %}"
+                              target="_blank"
+                              >Hack Recovery</a
+                            >
                           </li>
                           <li>
                             <a
-                              href="{% url 'pcs_app:remove_malware_from_pc' %}"
+                              href="{% host_url 'remove_malware_from_pc' host 'mysecurity' %}"
                               target="_blank"
                               >Virus Removal</a
                             >
                           </li>
                           <li>
                             <a
-                              href="{% url 'pcs_app:data_removal' %}"
+                              href="{% host_url 'data_removal' host 'mysecurity' %}"
                               target="_blank"
                               >Data Removal</a
                             >
@@ -217,21 +260,21 @@
                         <ul class="submenu-list">
                           <li>
                             <a
-                              href="{% url 'pcs_app:on_board' %}"
+                              href="{% host_url 'on_board' host 'mysecurity' %}"
                               target="_blank"
                               >On Boarding</a
                             >
                           </li>
                           <li>
                             <a
-                              href="{% url 'pcs_app:pricing' %}"
+                              href="{% host_url 'pricing' host 'mysecurity' %}"
                               target="_blank"
                               >Pricing</a
                             >
                           </li>
                           <li>
                             <a
-                              href="{% url 'pcs_app:faq' %}"
+                              href="{% host_url 'faq' host 'mysecurity' %}"
                               target="_blank"
                               >FAQ</a
                             >
@@ -245,7 +288,7 @@
               <li class="menus">
                 <a
                   target="_blank"
-                  href="{% url 'academy_app:academy_home' %}"
+                  href="{% host_url 'academy_home' host 'academy' %}"
                   class="menu-link"
                   >Academy</a
                 >
@@ -259,21 +302,21 @@
                         <p class="wsubmenu-title">
                           <a
                             target="_blank"
-                            href="{% url 'academy_app:ccsp' %}"
+                            href="{% host_url 'ccsp' host 'academy'%}"
                             >Professional</a
                           >
                         </p>
                         <p class="wsubmenu-title">
                           <a
                             target="_blank"
-                            href="{% url 'academy_app:corporate_training' %}"
+                            href="{% host_url 'corporate_training' host 'academy'%}"
                             >Corporate</a
                           >
                         </p>
                         <p class="wsubmenu-title">
                           <a
                             target="_blank"
-                            href="{% url 'academy_app:law_enforcement' %}"
+                            href="{% host_url 'law_enforcement' host 'academy'%}"
                             >Law Enforcement Agency</a
                           >
                         </p>
@@ -281,7 +324,7 @@
                         <p class="wsubmenu-title">
                           <a
                             target="_blank"
-                            href="{% url 'academy_app:educational_institute' %}"
+                            href="{% host_url 'educational_institute' host 'academy'%}"
                             >Educational Institute</a
                           >
                         </p>
@@ -302,36 +345,36 @@
                                             <p class="submenu-title">Company</p>
                                             <ul class="submenu-list">
                                                 <li>
-                                                    <a href="{% url 'bcs_app:about_us' %}">About Us</a
+                                                    <a href="{% host_url 'aboutus'%}">About Us</a
                             >
                           </li>
                           <li>
-                            <a href="{% url 'bcs_app:leader' %}"
+                            <a href="{%host_url 'leader'%}" 
                               >Leadership</a
                             >
                           </li>
                           <li>
-                            <a href="{% url 'bcs_app:testimonial' %}"
+                            <a href="{%host_url 'testimonial'%}"
                               >Clients & Their Stories</a
                             >
                           </li>
                           <li>
-                            <a href="{% url 'bcs_app:partner' %}"
+                            <a href="{% host_url 'partner'%}"
                               >Partnership Program</a
                             >
                           </li>
                           <li>
-                            <a href="{% url 'bcs_app:franchise' %}"
+                            <a href="{%host_url 'franchise'%}" 
                               >Franchise Program</a
                             >
                           </li>
                           <li>
-                            <a href="{% url 'bcs_app:investor' %}"
+                            <a href="{%host_url 'investor'%}"
                               >Investor Relation</a
                             >
                           </li>
                           <li>
-                            <a target="_blank" href="{% url 'bcs_app:career' %}"
+                            <a target="_blank" href="{%host_url 'career'%}"
                               >Career</a
                             >
                           </li>
@@ -378,7 +421,7 @@
                             >
                           </li>
                           <li>
-                            <a target="_blank" href="{% url 'bcs_app:events' %}"
+                            <a target="_blank" href="{% host_url 'events'%}"
                               >Events & Webinars</a
                             >
                           </li>
@@ -390,17 +433,17 @@
                         <p class="submenu-title">Legal</p>
                         <ul class="submenu-list">
                           <li>
-                            <a href="{% url 'bcs_app:policy' %}"
+                            <a href="{%host_url 'policy'%}" 
                               >Privacy Policy</a
                             >
                           </li>
                           <li>
-                            <a href="{% url 'bcs_app:terms' %}"
+                            <a href="{%host_url 'terms'%}"
                               >Terms of Use</a
                             >
                           </li>
                           <li>
-                            <a href="{% url 'bcs_app:trust' %}" target="_blank"
+                            <a href="{% host_url 'trust' %}" target="_blank"
                               >Trust Center</a
                             >
                           </li>
@@ -414,12 +457,12 @@
             <ul class="menu-list">
               <div class="mb-header">
                 <div class="logo">
-                  <a target="_blank" href="{% url 'bcs_app:index' %}" class="logo-brand"
+                  <a target="_blank" href="{% host_url 'home' host 'main' %}" class="logo-brand"
                     ><img src="{% static 'tfimg/logo.png' %}" alt="LOGO"
                   /></a>
                                         </div>
                                         <!-- This will come back later -->
-                                        <a class="signin-btn-sm" href="">Sign In</a
+                                        <a class="signin-btn-sm" href="{%host_url 'account_login'%}">Sign In</a
                 >
                 <div class="close-btn" id="close-btn">
                   <img src="{% static 'tfimg/cancel.png'%}" alt="cancel" />
@@ -437,7 +480,7 @@
                                                         <p class="submenu-text">
                                                             Cybersecurity solution to protect your business assets, response to incidents and prepare your employees for next generation of defence.
                                                             <br />
-                                                            <a target="_blank" href="{% url 'bcs_app:enterprise_cybersecurity' %}">Business Cybersecurity</a
+                                                            <a target="_blank" href="{% host_url 'enterprise_cybersecurity' %}">Business Cybersecurity</a
                           >
                         </p>
                         <p class="submenu-title">
@@ -445,21 +488,21 @@
                                                         </p>
                                                         <ul class="submenu-list">
                                                             <li>
-                                                                <a target="_blank" href="{% url 'bcs_app:cybersecurity_risk_assessment' %}">
+                                                                <a target="_blank" href="{% host_url 'cybersecurity_risk_assessment' %}">
                               Service Overview</a
                             >
                           </li>
                           <li>
                             <a
                               target="_blank"
-                              href="{% url 'bcs_app:vulnerability_assessment' %}"
+                              href="{% host_url 'vulnerability_assessment' %}"
                               >Vulnerability Assessment</a
                             >
                           </li>
                           <li>
                             <a
                               target="_blank"
-                              href="{% url 'bcs_app:red_team_penetration_testing' %}"
+                              href="{% host_url 'red_team_penetration_testing' %}"
                               >Penetration Testing</a
                             >
                           </li>
@@ -473,28 +516,28 @@
                                                                 </p>
                                                                 <ul class="submenu-list">
                                                                     <li>
-                                                                        <a target="_blank" href="{% url 'bcs_app:incident_response_services' %}">
+                                                                        <a target="_blank" href="{% host_url 'incident_response_service' %}">
                               Service Overview</a
                             >
                           </li>
                           <li>
                             <a
                               target="_blank"
-                              href="{% url 'bcs_app:hack_recovery_services' %}"
+                              href="{% host_url 'hack_recovery_service' %}"
                               >Hack Recovery</a
                             >
                           </li>
                           <li>
                             <a
                               target="_blank"
-                              href="{% url 'bcs_app:best_malware_removal' %}"
+                              href="{% host_url 'best_malware_removal' %}"
                               >Malware Removal</a
                             >
                           </li>
                           <li>
                             <a
                               target="_blank"
-                              href="{% url 'bcs_app:digital_forensic_investigation' %}"
+                              href="{% host_url 'digital_forensic_investigation' %}"
                               >Crime & Digital Forensic Investigation</a
                             >
                           </li>
@@ -508,30 +551,30 @@
                                                                         </p>
                                                                         <ul class="submenu-list">
                                                                             <li>
-                                                                                <a target="_blank" href="{% url 'bcs_app:compliance_consulting' %}">Service Overview</a
+                                                                                <a target="_blank" href="{% host_url 'compliance_consulting' %}">Service Overview</a
                             >
                           </li>
                           <li>
-                            <a target="_blank" href="{% url 'bcs_app:iso27001' %}"
+                            <a target="_blank" href="{% host_url 'iso27001' %}"
                               >ISO 27001</a
                             >
                           </li>
                           <li>
                             <a
                               target="_blank"
-                              href="{% url 'bcs_app:pci_dss_compliance' %}"
+                              href="{% host_url 'pci_dss_compliance' %}"
                               >PCI DSS</a
                             >
                           </li>
                           <li>
-                            <a target="_blank" href="{% url 'bcs_app:gdpr_compliance' %}"
+                            <a target="_blank" href="{% host_url 'gdpr_compliance' %}"
                               >GDPR</a
                             >
                           </li>
                           <li>
                             <a
                               target="_blank"
-                              href="{% url 'bcs_app:hippa_compliance_consulting' %}"
+                              href="{% host_url 'hippa_compliance_consulting' %}"
                               >HIPAA</a
                             >
                           </li>
@@ -545,20 +588,20 @@
                                                                                 </p>
                                                                                 <ul class="submenu-list">
                                                                                     <li>
-                                                                                        <a href="{% url 'bcs_app:cybersecurity_risk_assessment' %}" target="_blank">Service Overview</a
+                                                                                        <a href="{% host_url 'cybersecurity_risk_assessment' %}" target="_blank">Service Overview</a
                             >
                           </li>
                           <li>
                             <a
                               target="_blank"
-                              href="{% url 'bcs_app:managed_cybersecurity_service' %}"
+                              href="{% host_url 'managed_cybersecurity_service' %}"
                               >Managed Security Solution</a
                             >
                           </li>
                           <li>
                             <a
                               target="_blank"
-                              href="{% url 'bcs_app:plug_and_play_cyber_security' %}"
+                              href="{% host_url 'plug_and_play_cyber_security' %}"
                               >Plug & Play Program</a
                             >
                           </li>
@@ -576,7 +619,7 @@
                                                                                             </div>
                                                                                             <p class="submenu-maintext">
                                                                                                 White-Glove Cybersecurity & Threat Detection Solutions for High-Net-Worth Individuals, Corporate Executives & Their household. <br />
-                                                                                                <a target="_blank" href="{% url 'pcs_app:my_security_home' %}">Personal Cybersecurity</a
+                                                                                                <a target="_blank" href="{% host_url 'my_security_home' host 'mysecurity' %}">Personal Cybersecurity</a
                     >
                   </p>
                   <div class="row">
@@ -586,7 +629,7 @@
                         <ul class="submenu-list">
                           <li>
                             <a
-                              href="{% url 'pcs_app:concierge_cybersecurity' %}"
+                              href="{% host_url 'concierge_cybersecurity' host 'mysecurity' %}"
                               target="_blank"
                               >Concierge Cybersecurity</a
                             >
@@ -600,7 +643,7 @@
                         <ul class="submenu-list">
                           <li>
                             <a
-                              href="{% url 'pcs_app:cyber_investigation' %}"
+                              href="{% host_url 'cyber_investigation' host 'mysecurity' %}"
                               target="_blank"
                             >
                               Service Overview</a
@@ -608,14 +651,14 @@
                           </li>
                           <li>
                             <a
-                              href="{% url 'pcs_app:osint_investigations' %}"
+                              href="{% host_url 'osint_investigations' host 'mysecurity' %}"
                               target="_blank"
                               >Open Source Intelligence</a
                             >
                           </li>
                           <li>
                             <a
-                              href="{% url 'pcs_app:cyber_crime_investigation' %}"
+                              href="{% host_url 'cyber_crime_investigation' host 'mysecurity' %}"
                               target="_blank"
                               >Crime Investigation</a
                             >
@@ -630,27 +673,27 @@
                                                                                             </p>
                                                                                             <ul class="submenu-list">
                                                                                                 <li>
-                                                                                                    <a href="{% url 'pcs_app:incident_response_service' %}" target="_blank">
+                                                                                                    <a href="{% host_url 'incident_response_service' host 'mysecurity' %}" target="_blank">
                               Service Overview</a
                             >
                           </li>
                           <li>
                             <a
-                              href="{% url 'pcs_app:hack_recovery_service' %}"
+                              href="{% host_url 'hack_recovery_service' host 'mysecurity' %}"
                               target="_blank"
                               >Hack Recovery</a
                             >
                           </li>
                           <li>
                             <a
-                              href="{% url 'pcs_app:remove_malware_from_pc' %}"
+                              href="{% host_url 'remove_malware_from_pc' host 'mysecurity' %}"
                               target="_blank"
                               >Virus Removal</a
                             >
                           </li>
                           <li>
                             <a
-                              href="{% url 'pcs_app:data_removal' %}"
+                              href="{% host_url 'data_removal' host 'mysecurity' %}"
                               target="_blank"
                               >Data Removal</a
                             >
@@ -664,21 +707,21 @@
                         <ul class="submenu-list">
                           <li>
                             <a
-                              href="{% url 'pcs_app:on_board' %}"
+                              href="{% host_url 'on_board' host 'mysecurity' %}"
                               target="_blank"
                               >On Boarding</a
                             >
                           </li>
                           <li>
                             <a
-                              href="{% url 'pcs_app:pricing' %}"
+                              href="{% host_url 'pricing' host 'mysecurity' %}"
                               target="_blank"
                               >Pricing</a
                             >
                           </li>
                           <li>
                             <a
-                              href="{% url 'pcs_app:faq' %}"
+                              href="{% host_url 'faq' host 'mysecurity' %}"
                               target="_blank"
                               >FAQ</a
                             >
@@ -698,7 +741,7 @@
                                                                                                         <p class="submenu-maintext">
                                                                                                             The leading next generation cybersecurity professional building training center.
                                                                                                             <br />
-                                                                                                            <a href="{% url 'academy_app:academy_home' %}" target="_blank">Academy</a
+                                                                                                            <a href="{% host_url 'academy_home' host 'academy' %}" target="_blank">Academy</a
                     >
                   </p>
                   <div class="row">
@@ -707,7 +750,7 @@
                         <p class="wsubmenu-title">
                           <a
                             target="_blank"
-                            href="{% url 'academy_app:ccsp' %}"
+                            href="{% host_url 'ccsp' host 'academy' %}"
                             >Professional</a
                           >
                         </p>
@@ -715,21 +758,21 @@
                         <p class="wsubmenu-title">
                           <a
                             target="_blank"
-                            href="{% url 'academy_app:corporate_training' %}"
+                            href="{% host_url 'corporate_training' host 'academy' %}"
                             >Corporate</a
                           >
                         </p>
                         <p class="wsubmenu-title">
                           <a
                             target="_blank"
-                            href="{% url 'academy_app:law_enforcement' %}"
+                            href="{% host_url 'law_enforcement' host 'academy' %}"
                             >Law Enforcement Agency</a
                           >
                         </p>
                         <p class="wsubmenu-title">
                           <a
                             target="_blank"
-                            href="{% url 'academy_app:educational_institute' %}"
+                            href="{% host_url 'educational_institute' host 'academy' %}"
                             >Educational Institute</a
                           >
                         </p>
@@ -750,37 +793,37 @@
                                                                                                                             <p class="submenu-title">Company</p>
                                                                                                                             <ul class="submenu-list">
                                                                                                                                 <li>
-                                                                                                                                    <a href="{% url 'bcs_app:about_us' %}" target="_blank">About Us</a
+                                                                                                                                    <a href="{% host_url 'aboutus' host 'main' %}" target="_blank">About Us</a
                             >
                           </li>
                           <li>
-                            <a href="{% url 'bcs_app:leader' %}" target="_blank"
+                            <a href="{% host_url 'leader' host 'main' %}" target="_blank"
                               >Leadership</a
                             >
                           </li>
                           <li>
-                            <a href="{% url 'bcs_app:testimonial' %}" target="_blank"
+                            <a href="{% host_url 'testimonial' host 'main' %}" target="_blank"
                               >Clients & Their Stories</a
                             >
                           </li>
                           <li>
-                            <a href="{% url 'bcs_app:partner' %}" target="_blank"
+                            <a href="{% host_url 'partner' host 'main' %}" target="_blank"
                               >Partnership Program</a
                             >
                           </li>
                           <li>
-                            <a href="{% url 'bcs_app:franchise' %}" target="_blank"
+                            <a href="{% host_url 'franchise' host 'main' %}" target="_blank"
                               >Franchise Program</a
                             >
                           </li>
                           <li>
-                            <a href="{% url 'bcs_app:investor' %}" target="_blank"
+                            <a href="{% host_url 'investor' host 'main' %}" target="_blank"
                               >Investor Relation</a
                             >
                           </li>
 
                           <li>
-                            <a target="_blank" href="{% url 'bcs_app:career' %}"
+                            <a target="_blank" href="{% host_url 'career' host 'main' %}"
                               >Career</a
                             >
                           </li>
@@ -827,7 +870,7 @@
                             >
                           </li>
                           <li>
-                            <a href="{% url 'bcs_app:events' %}" target="_blank"
+                            <a href="{% host_url 'events' host 'main' %}" target="_blank"
                               >Events & Webinars</a
                             >
                           </li>
@@ -839,17 +882,17 @@
                         <p class="submenu-title">Legal</p>
                         <ul class="submenu-list">
                           <li>
-                            <a href="{% url 'bcs_app:policy' %}" target="_blank"
+                            <a href="{%host_url 'policy'%}" target="_blank"
                               >Privacy Policy</a
                             >
                           </li>
                           <li>
-                            <a href="{% url 'bcs_app:terms' %}" target="_blank"
+                            <a href="{%host_url 'terms'%}" target="_blank"
                               >Terms of Use</a
                             >
                           </li>
                           <li>
-                            <a href="{% url 'bcs_app:trust' %}" target="_blank"
+                            <a href="{% host_url 'trust' %}" target="_blank"
                               >Trust Center</a
                             >
                           </li>
@@ -863,17 +906,17 @@
                 <div class="menu-black-line"></div>
               </li>
               <li class="menus">
-                <a href="{% url 'bcs_app:findus' %}" target="_blank" class="menu-link"
+                <a href="{% host_url 'findus' %}" target="_blank" class="menu-link"
                   >Find Us</a
                 >
               </li>
               <li class="menus">
-                <a href="{% url 'bcs_app:get_start' %}" target="_blank" class="menu-link"
+                <a href="{% host_url 'get_start' %}" target="_blank" class="menu-link"
                   >Start Here</a
                 >
               </li>
               <li class="menus">
-                <a href="{% url 'academy_app:academy_faq' %}" target="_blank" class="menu-link"
+                <a href="{% host_url 'academy_faq' %}" target="_blank" class="menu-link"
                   >FAQ</a
                 >
               </li>
@@ -898,16 +941,16 @@
               <!-- This section will come back later -->
               {% if user.is_authenticated %}
               <li class="menus signin-btn-hover">
-                <a href="" class="signin-btn-lg">{{user.first_name}}</a>
+                <a href="{%host_url 'user_profile'%}" class="signin-btn-lg">{{user.first_name}}</a>
                                                                                                                                     <div class="signin-drop">
-                                                                                                                                        <a href="">Profile</a>
-                                                                                                                                        <a href="">Log Out</a>
+                                                                                                                                        <a href="{%host_url 'user_profile'%}">Profile</a>
+                                                                                                                                        <a href="{% host_url 'account_logout' %}">Log Out</a>
                                                                                                                                     </div>
                                                                                                                                 </li>
 
                                                                                                                                 {% else %}
                                                                                                                                 <li class="menus signin-btn-hover">
-                                                                                                                                    <a href="" class="signin-btn-lg">Sign In</a>
+                                                                                                                                    <a href="{%host_url 'account_login'%}" class="signin-btn-lg">Sign In</a>
                                                                                                                                 </li>
 
                                                                                                                                 {% endif %}
@@ -939,32 +982,32 @@
                         <div class="white-line line1"></div>
                         <ul>
                             <li>
-                                <a href="{% url 'bcs_app:about_us' %}" target="_blank">About Us</a>
+                                <a href="{% host_url 'aboutus' %}" target="_blank">About Us</a>
                             </li>
                             <li>
-                                <a href="{% url 'bcs_app:leader' %}" target="_blank">Leadership</a>
+                                <a href="{% host_url 'leader' %}" target="_blank">Leadership</a>
                             </li>
                             <li>
-                                <a href="{% url 'bcs_app:testimonial' %}" target="_blank">Clients & Their stories</a
+                                <a href="{% host_url 'testimonial' %}" target="_blank">Clients & Their stories</a
                   >
                 </li>
                 <li>
-                  <a href="{% url 'bcs_app:partner' %}" target="_blank"
+                  <a href="{% host_url 'partner' %}" target="_blank"
                     >Partnership Program</a
                   >
                 </li>
                 <li>
-                  <a href="{% url 'bcs_app:franchise' %}" target="_blank"
+                  <a href="{% host_url 'franchise' %}" target="_blank"
                     >Franchise Program</a
                   >
                 </li>
                 <li>
-                  <a href="{% url 'bcs_app:investor' %}"
+                  <a href="{%host_url 'investor'%}"
                     >Investor Relation</a
                   >
                 </li>
-                <li><a href="{% url 'bcs_app:career' %}" target="_blank">Career</a></li>
-                            <li><a href="{% url 'bcs_app:findus' %}" target="_blank">Find Us</a></li>
+                <li><a href="{% host_url 'career' %}" target="_blank">Career</a></li>
+                            <li><a href="{% host_url 'findus' %}" target="_blank">Find Us</a></li>
                         </ul>
                     </div>
                 </div>
@@ -975,47 +1018,47 @@
                         <div class="white-line line1"></div>
                         <ul>
                             <li>
-                                <a href="{% url 'bcs_app:cybersecurity_risk_assessment' %}" target="_blank">Risk Assessment</a
+                                <a href="{% host_url 'cybersecurity_risk_assessment' %}" target="_blank">Risk Assessment</a
                   >
                 </li>
                 <li>
-                  <a href="{% url 'bcs_app:incident_response_services' %}" target="_blank"
+                  <a href="{% host_url 'incident_response_service' %}" target="_blank"
                     >Business Incident Response</a
                   >
                 </li>
                 <li>
                   <a
-                    href="{% url 'bcs_app:small_business_cybersecurity' %}"
+                    href="{% host_url 'small_business_cybersecurity' %}"
                     target="_blank"
                     >SMB Solution</a
                   >
                 </li>
                 <li>
-                  <a href="{% url 'bcs_app:compliance_consulting' %}" target="_blank"
+                  <a href="{% host_url 'compliance_consulting' %}" target="_blank"
                     >Security Compliance</a
                   >
                 </li>
                 <li>
                   <a
-                    href="{% url 'pcs_app:concierge_cybersecurity' %}"
+                    href="{% host_url 'concierge_cybersecurity' host 'mysecurity' %}"
                     target="_blank"
                     >Concierge Cybersecurity</a
                   >
                 </li>
                 <li>
                   <a
-                    href="{% url 'pcs_app:cyber_investigation' %}"
+                    href="{% host_url 'cyber_investigation' host 'mysecurity' %}"
                     target="_blank"
                     >Cyber Investigation
                   </a>
                             </li>
                             <li>
-                                <a href="{% url 'pcs_app:data_removal' %}" target="_blank">Data Removal</a
+                                <a href="{% host_url 'data_removal' host 'mysecurity' %}" target="_blank">Data Removal</a
                   >
                 </li>
                 <li>
                   <a
-                    href="{% url 'pcs_app:hack_recovery_service' %}"
+                    href="{% host_url 'hack_recovery_service' host 'mysecurity' %}"
                     target="_blank"
                     >Hack Recovery for Individual</a
                   >
@@ -1059,12 +1102,12 @@
                   >
                 </li>
                 <li>
-                  <a href="{% url 'bcs_app:events' %}" target="_blank"
+                  <a href="{% host_url 'events' %}" target="_blank"
                     >Events & Webinars</a
                   >
                 </li>
                 <li>
-                  <a href="{% url 'pcs_app:site_map' %}" target="_blank">Site Map</a>
+                  <a href="pages/sitemap.html" target="_blank">Site Map</a>
                             </li>
                         </ul>
                     </div>
@@ -1076,13 +1119,13 @@
                         <div class="white-line"></div>
                         <ul>
                             <li>
-                                <a href="{% url 'bcs_app:policy' %}" target="_blank">Privacy Policy</a>
+                                <a href="{% host_url 'policy' %}" target="_blank">Privacy Policy</a>
                             </li>
                             <li>
-                                <a href="{% url 'bcs_app:terms' %}" target="_blank">Terms of use</a>
+                                <a href="{% host_url 'terms' %}" target="_blank">Terms of use</a>
                             </li>
                             <li>
-                                <a href="{% url 'bcs_app:trust' %}" target="_blank">Trust Center</a>
+                                <a href="{% host_url 'trust' %}" target="_blank">Trust Center</a>
                             </li>
                         </ul>
                     </div>
@@ -1102,7 +1145,7 @@
             <div class="container">
                 <div class="footer-down-box">
                     <!-- This will come back later -->
-                    <a href="{% url 'account_login' %}" target="_blank" class="copyright-btn">Create an account or login<i class="fas fa-arrow-right"></i
+                    <a href="{% host_url 'account_login' host 'main' %}" target="_blank" class="copyright-btn">Create an account or login<i class="fas fa-arrow-right"></i
             ></a>
                     <p class="footer-text">
                         Copyright <i class="far fa-copyright"></i> 2021 Techforing Ltd.

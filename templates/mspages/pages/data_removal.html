@@ -1,4 +1,9 @@
-{% extends 'base/msbase.html' %} {% load static %} {% block title %} Remove personal data from internet | Protect your privacy online {% endblock title %} {% block headercss %}
+{% extends 'base/msbase.html' %} {% load static %} {% load hosts %} {% block title %} Remove personal data from internet | Protect your privacy online {% endblock title %} {% block meta %}
+<meta property="og:description" content="We are the best company to remove personal information from internet and tell you why is data privacy important, provide data removal service from big data brokers." />
+<meta name="description" content="We are the best company to remove personal information from internet and tell you why is data privacy important, provide data removal service from big data brokers." />
+<meta property="og:locale" content="en_GB" />
+<meta property="og:keywords" content="remove personal data from internet,big broker sites, data removal, sell data online, Why is data privacy important, internet defamation, best company to remove personal information from internet, remove personal information from google, remove personal data from internet, remove yourself from data collection sites, companies that remove personal information from internet"
+/> {% endblock meta %} {% block headercss %}
 <link rel="stylesheet" href="{% static '' %}css/glide.core.css" />
 <link rel="stylesheet" href="{% static '' %}css/glide.theme.css" /> {% endblock headercss %} {% block content %}
 <section class="d-banner" title="Techforing-data removal service-banner">
@@ -190,7 +195,7 @@
     <div class="container">
         <h2>Want to protect your personal data?</h2>
         <p>Our Team is Ready to Help</p>
-        <a href="{% url 'bcs_app:get_start' %}" target="_blank">Protect now</a>
+        <a href="{% host_url 'get_start' host 'main' %}" target="_blank">Protect now</a>
     </div>
 </section>
 <section class="pt-blog">

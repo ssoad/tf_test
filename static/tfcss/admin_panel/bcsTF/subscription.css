@@ -218,7 +218,7 @@ p {
     border: 0;
     color: #000;
 }
-.heading .btn-container{
+.heading button{
     order: 1;
 }
 
@@ -233,7 +233,7 @@ p {
         display: grid !important;
         justify-content: center !important;
     }
-    .heading .btn-container{
+    .heading button{
         order: 0;
         margin-bottom: 1rem;
     }

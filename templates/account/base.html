@@ -1,3 +1,4 @@
+{% load hosts %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -24,7 +25,7 @@
       <ul>
         {% if user.is_authenticated %}
         <li><a href="">Change E-mail</a></li>
-        <li><a href="{% url 'account_app:logout' %}">Sign Out</a></li>
+        <li><a href="{% host_url 'logout' host 'account' %}">Sign Out</a></li>
         {% else %}
         <li><a href="/accounts/login/">Sign In</a></li>
         <li><a href="/accounts/signup/">Sign Up</a></li>

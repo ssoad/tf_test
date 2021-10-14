@@ -1,4 +1,8 @@
-{% extends 'base/base.html' %} {% load static %} {% block title %} Red Team Penetration Testing Service for Business {% endblock title %} {% block headercss %}
+{% extends 'base/base.html' %} {% load static %} {% load hosts %} {% block title %} Red Team Penetration Testing Service for Business {% endblock title %} {% block meta %}
+<meta property="og:description" content="Our Red Team Penetration testing service simulates cyber attack against business IT system to check for exploitable vulnerabilities. Networks or Firewalls, Wireless network testing, Physical security testing, Web applications such as HTTP / HTTPS (SSL), etc are the sectors we focus on."
+/>
+<meta name="description" content="Our Red Team Penetration testing service simulates cyber attack against business IT system to check for exploitable vulnerabilities. Networks or Firewalls, Wireless network testing, Physical security testing, Web applications such as HTTP / HTTPS (SSL), etc are the sectors we focus on."
+/> {% endblock meta %} {% block headercss %}
 <link rel="stylesheet" href="{% static '' %}css/glide.core.css" />
 <link rel="stylesheet" href="{% static '' %}css/glide.theme.css" />
 <link rel="stylesheet" href="{% static '' %}css/style.css" /> {% endblock headercss %} {% block content %}
@@ -21,7 +25,8 @@
                                 <p class="rs-text">
                                     A definitive guide to secure your business from external and internal cyberattacks.
                                 </p>
-                                <a href="{% url 'bcs_app:bcs_form' %}" class="rs-btn" target="_blank">Download Now</a>
+                                <a href="{% host_url 'bcs_form' host 'main' %}" class="rs-btn" target="_blank">Download Now</a
+                    >
                   </div>
                 </div>
               </li>
@@ -429,7 +434,9 @@
                   <h2 class="rcs-name">Eddie Murgic (USA)</h2>
                   <i>President and CEO, Traveloko, LLC.</i>
                   <div class="rcs-btn">
-                    <a href="{% url 'bcs_app:testimonial' %}" target="_blank">See all success stories</a>
+                    <a href="{% url 'testimonial' %}" target="_blank"
+                      >See all success stories</a
+                    >
                   </div>
                 </div>
               </div>
@@ -445,7 +452,7 @@
             <div class="ptc-box">
               <h2>GET REALWORLD LOOK AT HOW YOU CAN BE HACKED</h2>
               <p>Our Team is Ready to Help</p>
-              <a href="{% url 'bcs_app:get_start' %}" target="_blank">Secure Now</a>
+              <a href="{% host_url 'get_start' host 'main' %}" target="_blank">Secure Now</a>
                             </div>
                         </div>
             </div>

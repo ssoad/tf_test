@@ -1,4 +1,4 @@
-{% extends 'base/academybase.html' %} {% load static %} {% block title %} {% endblock title %} {% block headercss %}
+{% extends 'base/academybase.html' %} {% load static %} {% load hosts %} {% block title %} {% endblock title %} {% block headercss %}
 <link rel="stylesheet" href="{% static '' %}" /> {% endblock headercss %} {% block content %}
 <section class="pf-banner">
     <div class="container">
@@ -102,7 +102,7 @@
                     <div class="fpanel">
                         <p>
                             Please
-                            <a href="{% url 'bcs_app:findus' %}" target="_blank">contact us</a> and our sales representative will get in touch.
+                            <a href="{% host_url 'findus' host 'main' %}" target="_blank">contact us</a> and our sales representative will get in touch.
                         </p>
                     </div>
 
@@ -173,7 +173,7 @@
                     <div class="fpanel">
                         <p>
                             The cost structure depends on the program. Please
-                            <a href="{% url 'bcs_app:findus' %}" target="_blank">contact us</a> to find out more in detail.
+                            <a href="{% host_url 'findus' host 'main' %}" target="_blank">contact us</a> to find out more in detail.
                         </p>
                     </div>
                     <button class="accordion">
@@ -263,7 +263,7 @@
             <div class="col-md-8">
                 <div class="ftc-box ftca-box">
                     <h2>STILL NEED HELP? SEND US A NOTE</h2>
-                    <a href="{% url 'bcs_app:findus' %}" target="_blank">Contact Us</a>
+                    <a href="{% host_url 'findus' host 'main' %}" target="_blank">Contact Us</a>
                 </div>
             </div>
         </div>

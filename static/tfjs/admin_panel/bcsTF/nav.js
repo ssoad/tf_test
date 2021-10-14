@@ -61,10 +61,3 @@ hamburger.addEventListener("click", ()=>{
 sideBarClose.addEventListener("click", ()=>{
   aside.classList.remove("show-aside")
 })
-
-const fileFields = document.querySelectorAll(".form-control-file")
-window.addEventListener("load", ()=>{
-  fileFields.forEach(item=>{
-    item.classList.add("form-control")
-  })
-})
