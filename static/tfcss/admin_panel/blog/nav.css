@@ -551,6 +551,10 @@ footer a i{
     display: none;
 }
 
+.form-group label{
+    font-size: 700;
+    margin-top: 1rem;
+}
 
 @media (max-width:1241px) {
     .jumbotron .col-lg-4 {

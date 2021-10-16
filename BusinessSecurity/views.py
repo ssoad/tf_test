@@ -1,8 +1,8 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse, HttpResponse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from BusinessSecurity import forms, models
-from Account.models import User, Permissions
-from Account.forms import SelectPermissionForm, SelectBCSPermissionForm
+from Account.models import User, Permissions, Interest
+from Account.forms import SelectPermissionForm, SelectBCSPermissionForm, InterestForm
 
 
 # Create your views here.
@@ -17,14 +17,17 @@ def superuser_permission_check(user):
 
 def main_admin_permission_check(user):
     return user.is_superuser or ((
-                                             user.permission_user.is_superadmin or user.permission_user.is_admin or user.permission_user.is_moderator or user.permission_user.is_editor) and user.permission_user.admin_type == 'main_admin')
+                                         user.permission_user.is_superadmin or user.permission_user.is_admin or user.permission_user.is_moderator or user.permission_user.is_editor) and user.permission_user.admin_type == 'main_admin')
 
 
 def bcs_admin_permission_check(user):
     try:
-        return user.is_superuser or ((user.permission_user.is_superadmin or user.permission_user.is_admin or user.permission_user.is_moderator or user.permission_user.is_editor) and (user.permission_user.admin_type == 'bcs_admin' or user.permission_user.admin_type == 'main_admin'))
+        return user.is_superuser or ((
+                                             user.permission_user.is_superadmin or user.permission_user.is_admin or user.permission_user.is_moderator or user.permission_user.is_editor) and (
+                                             user.permission_user.admin_type == 'bcs_admin' or user.permission_user.admin_type == 'main_admin'))
     except:
         return user.is_superuser
+
 
 def indexView(request):
     context = {
@@ -898,6 +901,54 @@ def bcsAdminSubscriptionPack(request):
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminSubscriptionPackEdit(request, id):
+    current_package = models.SubscriptionBasedPackage.objects.get(id=id)
+    package_features = models.SubscriptionFeatures.objects.filter(package=current_package)
+    form = forms.AddPackageForm(instance=current_package)
+    form2 = forms.AddIndividualPackageFeatureForm()
+    if request.method == 'POST':
+        if 'package-btn' in request.POST:
+            form = forms.AddPackageForm(request.POST, instance=current_package)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect(reverse('bcs_admin_subscription_packages'))
+        elif 'feature-btn' in request.POST:
+            print(request.POST)
+            current_feature = models.SubscriptionFeatures.objects.get(id=request.POST.get('feature_id'))
+            current_feature.feature_name = request.POST.get('feature_name')
+            current_feature.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        elif 'add-feature-btn' in request.POST:
+            form2 = forms.AddIndividualPackageFeatureForm(request.POST)
+            if form2.is_valid():
+                feature = form2.save(commit=False)
+                feature.package = current_package
+                feature.save()
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+    context = {
+        'form': form,
+        'form2': form2,
+        'package_features': package_features,
+    }
+    return render(request, 'admin_panel/bcsTF/subscriptionPackEdit.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminSubscriptionPackDelete(request, id):
+    current_package = models.SubscriptionBasedPackage.objects.get(id=id)
+    current_package.delete()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminSubscriptionPackFeatureDelete(request, id):
+    current_feature = models.SubscriptionFeatures.objects.get(id=id)
+    current_feature.delete()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminIndividualUser(request):
     users = models.User.objects.filter(is_bcs=True)
     context = {
@@ -946,13 +997,50 @@ def bcsAdminList(request):
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminEdit(request, id):
+    current_admin = Permissions.objects.get(id=id)
+    permission_form = SelectBCSPermissionForm(instance=current_admin)
+    if request.method == 'POST':
+        permission_form = SelectBCSPermissionForm(request.POST, instance=current_admin)
+        if permission_form.is_valid():
+            permission_form.save()
+            return HttpResponseRedirect(reverse('bcs_admin_list'))
+    context = {
+        'form': permission_form,
+    }
+    return render(request, 'admin_panel/bcsTF/editForm.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminProfile(request):
     return render(request, 'admin_panel/bcsTF/myProfile.html')
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminUserInterest(request):
-    return render(request, 'admin_panel/bcsTF/userInterest.html')
+    users_list = User.objects.all()
+    interests = Interest.objects.all()
+    context = {
+        'users_list': users_list,
+        'interests': interests,
+    }
+    return render(request, 'admin_panel/bcsTF/userInterest.html', context)
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminSingleUserInterest(request, id):
+    selected_interest = Interest.objects.get(id=id)
+    form = InterestForm(instance=selected_interest)
+    if request.method == 'POST':
+        form = InterestForm(request.POST, instance=selected_interest)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('bcs_admin_user_interest'))
+
+    context = {
+        'selected_interest': selected_interest,
+        'form': form,
+    }
+    return render(request, 'admin_panel/bcsTF/editForm.html', context)
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')

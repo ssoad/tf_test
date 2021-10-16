@@ -1,4 +1,5 @@
 {% extends 'base/main_admin_base.html' %} {% load static %}
+{% load hosts %}
 {% load crispy_forms_tags %}
 {% block title %} My Profile
 {% endblock title %} {% block headercss %}
@@ -125,7 +126,7 @@
                             <td>{{ admin.is_moderator }}</td>
                             <td>{{ admin.is_editor }}</td>
                             <td><a href="">Edit</a></td>
-                            <td><a href="{% url 'bcs_app:main_admin_support_delete_view' id=admin.id %}">Delete</a></td>
+                            <td><a href="{% host_url 'main_admin_support_delete_view' id=admin.id %}">Delete</a></td>
                         </tr>
                     {% endfor %}
 

@@ -1,4 +1,5 @@
 {% extends 'base/bcs_admin_base.html' %} {% load static %}
+{% load hosts %}
 {% block title %} BCS Training
 {% endblock title %}
 
@@ -44,7 +45,7 @@
                             <tr>
                                 <td>1.</td>
                                 <td>
-                                    <a href="{% url 'bcs_app:bcs_admin_course_detail' %}">Corporate Training</a>
+                                    <a href="{% host_url 'bcs_admin_course_detail' %}">Corporate Training</a>
                                 </td>
                                 <td>2 Month</td>
                                 <td>40 Lectures</td>
@@ -62,7 +63,7 @@
                             <tr>
                                 <td>2.</td>
                                 <td>
-                                    <a href="{% url 'bcs_app:bcs_admin_course_detail' %}">Law Enforcement Training</a>
+                                    <a href="{% host_url 'bcs_admin_course_detail' %}">Law Enforcement Training</a>
                                 </td>
                                 <td>2 Month</td>
                                 <td>50 Lectures</td>
@@ -80,7 +81,7 @@
                             <tr>
                                 <td>3.</td>
                                 <td>
-                                    <a href="{% url 'bcs_app:bcs_admin_course_detail' %}">Educational Institute
+                                    <a href="{% host_url 'bcs_admin_course_detail' %}">Educational Institute
                                         Training</a>
                                 </td>
                                 <td>2 Month</td>

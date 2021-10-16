@@ -1,4 +1,5 @@
 {% extends 'base/bcs_admin_base.html' %} {% load static %}
+{% load hosts %}
 
 {% block title %} BCS User Interest
 {% endblock title %}
@@ -25,32 +26,15 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            {% for interest in interests %}
                                 <tr>
-                                    <td>1</td>
-                                    <td> Jhon </td>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td> {{ interest.user.first_name }} </td>
                                     <td>
-                                        Jhon@gmail.com
-                                    </td>
-                                    <td><li class="fw-bold"> Risk Assessment </li></td>
-                                    <td>
-                                        <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-                                            <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
-                                            Edit
-                                        </button>
-                                        <button class="btn trash">
-                                            <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Helal</td>
-                                    <td>
-                                        helal@mail.com
+                                        {{ interest.user.email }}
                                     </td>
                                     <td>
-                                        <li class="fw-bold"> Virus Removal </li>
+                                        <a href="{% host_url 'bcs_admin_single_user_interest' id=interest.id %}" class="text-primary">View</a>
                                     </td>
                                     <td>
                                         <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
@@ -63,46 +47,9 @@
                                         </button>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Azharul</td>
-                                    <td>
-                                        azharul@gmial.com
-                                    </td>
-                                    <td>
-                                        <li class="fw-bold"> Hack Recovery</li>
-                                    </td>
-                                    <td>
-                                        <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-                                            <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
-                                            Edit
-                                        </button>
-                                        <button class="btn trash">
-                                            <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>Neruz</td>
-                                    <td>
-                                        neruz@gmial.com
-                                    </td>
-                                    <td>
-                                        <li class="fw-bold"> Open Source Intelligence</li>
-                                    </td>
-                                    <td>
-                                        <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-                                            <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
-                                            Edit
-                                        </button>
-                                        <button class="btn trash">
-                                            <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
+                            {% endfor %}
+                            
+
                             </tbody>
                         </table>
                     </div>
