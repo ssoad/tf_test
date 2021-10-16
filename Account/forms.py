@@ -107,6 +107,7 @@ class SelectPermissionForm(forms.ModelForm):
 
 class SelectBCSPermissionForm(forms.ModelForm):
     user = forms.ModelChoiceField(queryset=models.User.objects.filter(is_superuser=False, is_staff=False))
+
     class Meta:
         model = models.Permissions
         fields = '__all__'
@@ -114,3 +115,10 @@ class SelectBCSPermissionForm(forms.ModelForm):
         widgets = {
             'user': forms.Select(attrs={'class': 'js-example-basic-single form-control form-select'})
         }
+
+
+class InterestForm(forms.ModelForm):
+    class Meta:
+        model = models.Interest
+        fields = '__all__'
+        exclude = ['user', ]

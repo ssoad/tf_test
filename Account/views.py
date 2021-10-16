@@ -57,8 +57,17 @@ def login_executed(redirect_to):
 
 @login_required
 def profileView(request):
+    current_user = request.user
+    interests = models.Interest.objects.get(user=current_user)
+    form = forms.InterestForm(instance=interests)
+    if request.method == 'POST':
+        form = forms.InterestForm(request.POST, instance=interests)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
-
+        # 'interests': interests,
+        'form': form,
     }
     return render(request, 'account/profile.html', context)
 

@@ -1,8 +1,8 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse, HttpResponse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from BusinessSecurity import forms, models
-from Account.models import User, Permissions
-from Account.forms import SelectPermissionForm, SelectBCSPermissionForm
+from Account.models import User, Permissions, Interest
+from Account.forms import SelectPermissionForm, SelectBCSPermissionForm, InterestForm
 
 
 # Create your views here.
@@ -1018,7 +1018,29 @@ def bcsAdminProfile(request):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminUserInterest(request):
-    return render(request, 'admin_panel/bcsTF/userInterest.html')
+    users_list = User.objects.all()
+    interests = Interest.objects.all()
+    context = {
+        'users_list': users_list,
+        'interests': interests,
+    }
+    return render(request, 'admin_panel/bcsTF/userInterest.html', context)
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminSingleUserInterest(request, id):
+    selected_interest = Interest.objects.get(id=id)
+    form = InterestForm(instance=selected_interest)
+    if request.method == 'POST':
+        form = InterestForm(request.POST, instance=selected_interest)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('bcs_admin_user_interest'))
+
+    context = {
+        'selected_interest': selected_interest,
+        'form': form,
+    }
+    return render(request, 'admin_panel/bcsTF/editForm.html', context)
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')

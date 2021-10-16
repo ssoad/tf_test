@@ -104,6 +104,7 @@ urlpatterns = [
     path('bcs_admin_edit/<id>',views.bcsAdminEdit, name='bcs_admin_edit'),
     path('bcs_admin_profile/',views.bcsAdminProfile, name='bcs_admin_profile'),
     path('bcs_admin_user_interest/',views.bcsAdminUserInterest, name='bcs_admin_user_interest'),
+    path('bcs_admin_single_user_interest/<id>',views.bcsAdminSingleUserInterest, name='bcs_admin_single_user_interest'),
     path('bcs_admin_training/',views.bcsAdminTraining, name='bcs_admin_training'),
     path('bcs_admin_course_detail/',views.bcsAdminCourseDetail, name='bcs_admin_course_detail'),
 
