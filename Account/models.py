@@ -94,6 +94,31 @@ class Permissions(models.Model):
         return f'{self.user} - {self.admin_type}'
 
 
+class Interest(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='interest_user')
+    risk_assessment = models.BooleanField(default=True)
+    incident_response = models.BooleanField(default=True)
+    cyber_crime_investigation = models.BooleanField(default=True)
+    open_source_intelligence = models.BooleanField(default=True)
+    hack_recovery = models.BooleanField(default=True)
+    virus_removal = models.BooleanField(default=True)
+    digital_forensic = models.BooleanField(default=True)
+    digital_integration = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f'{self.user}s interest'
+
+
+@receiver(post_save, sender=User)
+def create_interest(sender, instance, created, **kwargs):
+    if created:
+        Interest.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_interest(sender, instance, **kwargs):
+    instance.interest_user.save()
+
 # @receiver(post_save, sender=User)
 # def create_permission(sender, instance, created, **kwargs):
 #     if created:

@@ -1,8 +1,10 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse, HttpResponse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from BusinessSecurity import forms, models
-from Account.models import User, Permissions
-from Account.forms import SelectPermissionForm, SelectBCSPermissionForm
+from Account.models import User, Permissions, Interest
+from Account.forms import SelectPermissionForm, SelectBCSPermissionForm, InterestForm
+from Academy.models import Course, Section, Content
+import cv2
 
 
 # Create your views here.
@@ -23,8 +25,8 @@ def main_admin_permission_check(user):
 def bcs_admin_permission_check(user):
     try:
         return user.is_superuser or ((
-                                                 user.permission_user.is_superadmin or user.permission_user.is_admin or user.permission_user.is_moderator or user.permission_user.is_editor) and (
-                                                 user.permission_user.admin_type == 'bcs_admin' or user.permission_user.admin_type == 'main_admin'))
+                                             user.permission_user.is_superadmin or user.permission_user.is_admin or user.permission_user.is_moderator or user.permission_user.is_editor) and (
+                                             user.permission_user.admin_type == 'bcs_admin' or user.permission_user.admin_type == 'main_admin'))
     except:
         return user.is_superuser
 
@@ -905,6 +907,7 @@ def bcsAdminSubscriptionPackEdit(request, id):
     current_package = models.SubscriptionBasedPackage.objects.get(id=id)
     package_features = models.SubscriptionFeatures.objects.filter(package=current_package)
     form = forms.AddPackageForm(instance=current_package)
+    form2 = forms.AddIndividualPackageFeatureForm()
     if request.method == 'POST':
         if 'package-btn' in request.POST:
             form = forms.AddPackageForm(request.POST, instance=current_package)
@@ -917,12 +920,21 @@ def bcsAdminSubscriptionPackEdit(request, id):
             current_feature.feature_name = request.POST.get('feature_name')
             current_feature.save()
             return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        elif 'add-feature-btn' in request.POST:
+            form2 = forms.AddIndividualPackageFeatureForm(request.POST)
+            if form2.is_valid():
+                feature = form2.save(commit=False)
+                feature.package = current_package
+                feature.save()
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
     context = {
         'form': form,
+        'form2': form2,
         'package_features': package_features,
     }
     return render(request, 'admin_panel/bcsTF/subscriptionPackEdit.html', context)
+
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminSubscriptionPackDelete(request, id):
@@ -930,11 +942,13 @@ def bcsAdminSubscriptionPackDelete(request, id):
     current_package.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
+
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminSubscriptionPackFeatureDelete(request, id):
     current_feature = models.SubscriptionFeatures.objects.get(id=id)
     current_feature.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminIndividualUser(request):
@@ -985,20 +999,127 @@ def bcsAdminList(request):
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminEdit(request, id):
+    current_admin = Permissions.objects.get(id=id)
+    permission_form = SelectBCSPermissionForm(instance=current_admin)
+    if request.method == 'POST':
+        permission_form = SelectBCSPermissionForm(request.POST, instance=current_admin)
+        if permission_form.is_valid():
+            permission_form.save()
+            return HttpResponseRedirect(reverse('bcs_admin_list'))
+    context = {
+        'form': permission_form,
+    }
+    return render(request, 'admin_panel/bcsTF/editForm.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminProfile(request):
     return render(request, 'admin_panel/bcsTF/myProfile.html')
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminUserInterest(request):
-    return render(request, 'admin_panel/bcsTF/userInterest.html')
+    users_list = User.objects.all()
+    interests = Interest.objects.all()
+    context = {
+        'users_list': users_list,
+        'interests': interests,
+    }
+    return render(request, 'admin_panel/bcsTF/userInterest.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminSingleUserInterest(request, id):
+    selected_interest = Interest.objects.get(id=id)
+    form = InterestForm(instance=selected_interest)
+    if request.method == 'POST':
+        form = InterestForm(request.POST, instance=selected_interest)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('bcs_admin_user_interest'))
+
+    context = {
+        'selected_interest': selected_interest,
+        'form': form,
+    }
+    return render(request, 'admin_panel/bcsTF/editForm.html', context)
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminTraining(request):
-    return render(request, 'admin_panel/bcsTF/training.html')
+    form = forms.CourseCreateForm()
+    courses = Course.objects.all()
+    if request.method == 'POST':
+        form = forms.CourseCreateForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    context = {
+        'form': form,
+        'courses': courses,
+    }
+    return render(request, 'admin_panel/bcsTF/training.html', context)
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
-def bcsAdminCourseDetail(request):
-    return render(request, 'admin_panel/bcsTF/courseDetail.html')
+def bcsAdminTrainingDelete(request, id):
+    current_course = Course.objects.get(id=id)
+    current_course.delete()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminTrainingEdit(request, id):
+    current_course = Course.objects.get(id=id)
+    form = forms.CourseCreateForm(instance=current_course)
+    if request.method == 'POST':
+        form = forms.CourseCreateForm(request.POST, instance=current_course)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('bcs_admin_training'))
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'admin_panel/bcsTF/editForm.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminCourseDetail(request, id):
+    course = Course.objects.get(id=id)
+    sections = Section.objects.filter(course=course)
+    form = forms.SectionCreateForm()
+    form2 = forms.ContentCreateForm()
+    if request.method == 'POST':
+        if 'add_section' in request.POST:
+            form = forms.SectionCreateForm(request.POST)
+            if form.is_valid():
+                section = form.save(commit=False)
+                section.course = course
+                section.save()
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        elif 'add_content' in request.POST:
+            form2 = forms.ContentCreateForm(request.POST, request.FILES)
+            if form2.is_valid():
+                content = form2.save(commit=False)
+                section_id = int(request.POST.get('section_name'))
+                current_section = Section.objects.get(id=section_id)
+                content.section = current_section
+                content.save()
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+    context = {
+        'course': course,
+        'sections': sections,
+        'form': form,
+        'form2': form2,
+    }
+    return render(request, 'admin_panel/bcsTF/courseDetail.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminCourseContentDelete(request, id):
+    current_content = Content.objects.get(id=id)
+    current_content.delete()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])

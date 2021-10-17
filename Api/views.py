@@ -5,7 +5,7 @@ from Api import serializer
 from rest_framework import generics
 from Blog import models
 from BusinessSecurity import models as bcsmodels
-from rest_framework import permissions
+from rest_framework import permissions, pagination
 
 
 # Create your views here.
@@ -39,16 +39,24 @@ class FilterApi(generics.ListAPIView):
         return models.FilterOption.objects.filter(sub_category=subcategory, sub_category__category=category)
 
 
+class Page(pagination.PageNumberPagination):
+    page_size = 5
+    page_size_query_param = 'limit'
+    max_page_size = 5
+
+
 class AllCommentCreateViewApi(generics.ListCreateAPIView):
     serializer_class = serializer.CommentSerializer
     queryset = models.Comment.objects.all()
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    pagination_class = Page
 
 
 class CommentCreateViewApi(generics.ListCreateAPIView):
     serializer_class = serializer.CommentSerializer
     queryset = models.Comment.objects.all()
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    pagination_class = Page
 
     def get_queryset(self):
         post = self.kwargs['post_id']
