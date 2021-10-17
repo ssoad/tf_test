@@ -1073,11 +1073,16 @@ def bcsAdminTrainingDelete(request, id):
 def bcsAdminTrainingEdit(request, id):
     current_course = Course.objects.get(id=id)
     form = forms.CourseCreateForm(instance=current_course)
+
     if request.method == 'POST':
         form = forms.CourseCreateForm(request.POST, instance=current_course)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('bcs_admin_training'))
+            next_page = request.POST.get('next', '/')
+            if next_page:
+                return HttpResponseRedirect(next_page)
+            else:
+                return HttpResponseRedirect(reverse('bcs_admin_training'))
 
     context = {
         'form': form,

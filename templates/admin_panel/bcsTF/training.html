@@ -52,7 +52,7 @@
                                 <td>{{ course.duration|capitalize }}</td>
                                 <td>40 Lectures</td>
                                 <td>
-                                    <a href="{% host_url 'bcs_admin_training_edit' id=course.id %}" class="btn">
+                                    <a href="{% host_url 'bcs_admin_training_edit' id=course.id %}?next={{ request.path|urlencode }}" class="btn">
                                         <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
                                         Edit
                                     </a>

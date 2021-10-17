@@ -29,7 +29,7 @@
                         Courses </a>
                 </div>
                 <hr>
-                <a href="{% host_url 'bcs_admin_training_edit' id=course.id %}"
+                <a href="{% host_url 'bcs_admin_training_edit' id=course.id %}?next={{ request.path|urlencode }}"
                    class="btn border-1 border-dark float-end">Edit <i
                         class="bi bi-pencil-square"></i></a>
 

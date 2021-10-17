@@ -50,10 +50,9 @@ class Content(models.Model):
 
     def get_duration(self):
         filename = self.course_video.url
-        print(filename)
 
         cap = cv2.VideoCapture(filename[1:])
-        fps = cap.get(cv2.CAP_PROP_FPS)  # OpenCV2 version 2 used "CV_CAP_PROP_FPS"
+        fps = cap.get(cv2.CAP_PROP_FPS)
         frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
         duration = frame_count / fps
 
