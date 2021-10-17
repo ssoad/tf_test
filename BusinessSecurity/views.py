@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from BusinessSecurity import forms, models
 from Account.models import User, Permissions, Interest
 from Account.forms import SelectPermissionForm, SelectBCSPermissionForm, InterestForm
+from Academy.models import Course, Section, Content
+import cv2
 
 
 # Create your views here.
@@ -1026,6 +1028,7 @@ def bcsAdminUserInterest(request):
     }
     return render(request, 'admin_panel/bcsTF/userInterest.html', context)
 
+
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminSingleUserInterest(request, id):
     selected_interest = Interest.objects.get(id=id)
@@ -1045,9 +1048,78 @@ def bcsAdminSingleUserInterest(request, id):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminTraining(request):
-    return render(request, 'admin_panel/bcsTF/training.html')
+    form = forms.CourseCreateForm()
+    courses = Course.objects.all()
+    if request.method == 'POST':
+        form = forms.CourseCreateForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    context = {
+        'form': form,
+        'courses': courses,
+    }
+    return render(request, 'admin_panel/bcsTF/training.html', context)
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
-def bcsAdminCourseDetail(request):
-    return render(request, 'admin_panel/bcsTF/courseDetail.html')
+def bcsAdminTrainingDelete(request, id):
+    current_course = Course.objects.get(id=id)
+    current_course.delete()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminTrainingEdit(request, id):
+    current_course = Course.objects.get(id=id)
+    form = forms.CourseCreateForm(instance=current_course)
+    if request.method == 'POST':
+        form = forms.CourseCreateForm(request.POST, instance=current_course)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('bcs_admin_training'))
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'admin_panel/bcsTF/editForm.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminCourseDetail(request, id):
+    course = Course.objects.get(id=id)
+    sections = Section.objects.filter(course=course)
+    form = forms.SectionCreateForm()
+    form2 = forms.ContentCreateForm()
+    if request.method == 'POST':
+        if 'add_section' in request.POST:
+            form = forms.SectionCreateForm(request.POST)
+            if form.is_valid():
+                section = form.save(commit=False)
+                section.course = course
+                section.save()
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        elif 'add_content' in request.POST:
+            form2 = forms.ContentCreateForm(request.POST, request.FILES)
+            if form2.is_valid():
+                content = form2.save(commit=False)
+                section_id = int(request.POST.get('section_name'))
+                current_section = Section.objects.get(id=section_id)
+                content.section = current_section
+                content.save()
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+    context = {
+        'course': course,
+        'sections': sections,
+        'form': form,
+        'form2': form2,
+    }
+    return render(request, 'admin_panel/bcsTF/courseDetail.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminCourseContentDelete(request, id):
+    current_content = Content.objects.get(id=id)
+    current_content.delete()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
