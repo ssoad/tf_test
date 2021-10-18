@@ -9,6 +9,7 @@ from django_countries.widgets import CountrySelectWidget
 from django_countries.fields import CountryField
 
 from allauth.account.forms import LoginForm as LF
+from django.db.models import Q
 
 
 class RegistrationForm(UserCreationForm):
@@ -107,6 +108,7 @@ class SelectPermissionForm(forms.ModelForm):
 
 class SelectBCSPermissionForm(forms.ModelForm):
     user = forms.ModelChoiceField(queryset=models.User.objects.filter(is_superuser=False, is_staff=False))
+    # user = forms.ModelChoiceField(queryset=models.User.objects.filter(Q(is_superuser=False, is_staff=False) and Q(permission_user__admin_type='bcs_admin')))
 
     class Meta:
         model = models.Permissions

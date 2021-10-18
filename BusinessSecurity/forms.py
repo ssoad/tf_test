@@ -78,10 +78,10 @@ class SectionCreateForm(forms.ModelForm):
 
 class ContentCreateForm(forms.ModelForm):
     # section = forms.ModelChoiceField(queryset=Section.objects.filter(course=3))
-    text_instruction = forms.FileField(widget=forms.FileInput(attrs={'accept': '.txt', 'class': 'form-control'}))
-    course_video = forms.FileField(widget=forms.FileInput(attrs={'accept': 'video/*', 'class': 'form-control'}))
-    preview_video = forms.FileField(widget=forms.FileInput(attrs={'accept': 'video/*', 'class': 'form-control'}), required=False)
-    resource_file = forms.FileField(widget=forms.FileInput(attrs={'accept': '.pdf', 'class': 'form-control'}))
+    # text_instruction = forms.FileField(widget=forms.FileInput(attrs={'accept': '.txt', 'class': 'form-control'}))
+    # course_video = forms.FileField(widget=forms.FileInput(attrs={'accept': 'video/*', 'class': 'form-control'}))
+    # preview_video = forms.FileField(widget=forms.FileInput(attrs={'accept': 'video/*', 'class': 'form-control'}), required=False)
+    # resource_file = forms.FileField(widget=forms.FileInput(attrs={'accept': '.pdf', 'class': 'form-control'}))
 
     class Meta:
         model = Content

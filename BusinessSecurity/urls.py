@@ -119,8 +119,11 @@ urlpatterns = [
     path('bcs_admin_training_delete/<id>', views.bcsAdminTrainingDelete, name='bcs_admin_training_delete'),
     path('bcs_admin_training_edit/<id>', views.bcsAdminTrainingEdit, name='bcs_admin_training_edit'),
     path('bcs_admin_course_detail/<id>', views.bcsAdminCourseDetail, name='bcs_admin_course_detail'),
+    path('bcs_admin_course_section_edit/<id>', views.bcsAdminCourseSectionEdit, name='bcs_admin_course_section_edit'),
     path('bcs_admin_course_content_delete/<id>', views.bcsAdminCourseContentDelete,
          name='bcs_admin_course_content_delete'),
+    path('bcs_admin_course_content_edit/<id>', views.bcsAdminCourseContentEdit,
+         name='bcs_admin_course_content_edit'),
 
     # team invidual user panel
     path('team_user_services/', views.teamUserServicesView, name='team_user_services'),

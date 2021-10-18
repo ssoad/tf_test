@@ -53,6 +53,14 @@
                                                 <th class="text-center">{{ section.content_section.all.count }}
                                                     downloadable resources
                                                 </th>
+                                                <th class="">
+                                                    <div class="">
+                                                        <a href="{% host_url 'bcs_admin_course_section_edit' id=section.id %}?next={{ request.path|urlencode }}" class="btn btn-primary">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </a>
+                                                    </div>
+
+                                                </th>
                                                 <th class="fw-bold text-end">
                                                     <button class="btn btn-primary" data-bs-toggle="modal"
                                                             data-bs-target="#{{ section.section_name|replacespace }}add">
@@ -91,6 +99,12 @@
                                                         <a href="{{ content.resource_file.url }}" download="File"
                                                            class="btn p-0">
                                                             <i class="bi bi-file-earmark-pdf"></i> Download
+                                                        </a>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <a href="{% host_url 'bcs_admin_course_content_edit' id=content.id %}?next={{ request.path|urlencode }}"
+                                                           class="">
+                                                            <i class="bi bi-pencil"></i>
                                                         </a>
                                                     </td>
                                                     <td class="text-center">
