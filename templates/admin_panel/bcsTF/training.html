@@ -52,7 +52,7 @@
                                 <td>{{ course.duration|capitalize }}</td>
                                 <td>40 Lectures</td>
                                 <td>
-                                    <a href="{% host_url 'bcs_admin_training_edit' id=course.id %}" class="btn">
+                                    <a href="{% host_url 'bcs_admin_training_edit' id=course.id %}?next={{ request.path|urlencode }}" class="btn">
                                         <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
                                         Edit
                                     </a>
@@ -63,25 +63,6 @@
                                 </td>
                             </tr>
                         {% endfor %}
-
-                            <tr>
-                                <td>1.</td>
-                                <td>
-                                    <a href="">Corporate Training</a>
-                                </td>
-                                <td>2 Month</td>
-                                <td>40 Lectures</td>
-                                <td>
-                                    <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-                                        <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
-                                        Edit
-                                    </button>
-                                    <button class="btn trash">
-                                        <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                        Delete
-                                    </button>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>

@@ -1073,11 +1073,16 @@ def bcsAdminTrainingDelete(request, id):
 def bcsAdminTrainingEdit(request, id):
     current_course = Course.objects.get(id=id)
     form = forms.CourseCreateForm(instance=current_course)
+
     if request.method == 'POST':
         form = forms.CourseCreateForm(request.POST, instance=current_course)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('bcs_admin_training'))
+            next_page = request.POST.get('next', '/')
+            if next_page:
+                return HttpResponseRedirect(next_page)
+            else:
+                return HttpResponseRedirect(reverse('bcs_admin_training'))
 
     context = {
         'form': form,
@@ -1123,3 +1128,41 @@ def bcsAdminCourseContentDelete(request, id):
     current_content = Content.objects.get(id=id)
     current_content.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminCourseContentEdit(request, id):
+    current_content = Content.objects.get(id=id)
+    form = forms.ContentCreateForm(instance=current_content)
+    if request.method == 'POST':
+        form = forms.ContentCreateForm(request.POST, request.FILES, instance=current_content)
+        if form.is_valid():
+            form.save()
+            next_page = request.POST.get('next', '/')
+            if next_page:
+                return HttpResponseRedirect(next_page)
+            else:
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    context = {
+        'form': form,
+    }
+    return render(request, 'admin_panel/bcsTF/editForm.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminCourseSectionEdit(request, id):
+    current_section = Section.objects.get(id=id)
+    form = forms.SectionCreateForm(instance=current_section)
+    if request.method == 'POST':
+        form = forms.SectionCreateForm(request.POST, request.FILES, instance=current_section)
+        if form.is_valid():
+            form.save()
+            next_page = request.POST.get('next', '/')
+            if next_page:
+                return HttpResponseRedirect(next_page)
+            else:
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    context = {
+        'form': form,
+    }
+    return render(request, 'admin_panel/bcsTF/editForm.html', context)
