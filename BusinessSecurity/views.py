@@ -661,8 +661,14 @@ def mainAdminNotificationView(request):
 
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
 def mainAdminEventsView(request):
+    form = forms.EventCreateForm()
+    if request.method == 'POST':
+        form = forms.EventCreateForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
-
+        'form': form,
     }
     return render(request, 'admin_panel/mainTF/eventWebinar.html', context)
 

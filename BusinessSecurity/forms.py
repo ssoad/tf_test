@@ -87,3 +87,12 @@ class ContentCreateForm(forms.ModelForm):
         model = Content
         fields = '__all__'
         exclude = ['section', ]
+
+
+class EventCreateForm(forms.ModelForm):
+    date_field = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'date'}))
+    time_field = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'time'}))
+
+    class Meta:
+        model = models.Events
+        fields = '__all__'

@@ -1,4 +1,5 @@
 {% extends 'base/main_admin_base.html' %} {% load static %}
+{% load crispy_forms_tags %}
 {% load hosts %}
 {% block title %} Events {% endblock title %} {% block headercss %}
     <link rel="stylesheet" href="{% static 'tfcss/admin_panel/mainTF/eventWebinar.css' %}"/> 
@@ -274,65 +275,11 @@
                     ></button>
                 </div>
                 <div class="modal-body">
-                    <form action="">
-                        <div class="col-auto mb-3">
-                            <label for="eventName">Event Name</label>
-                            <input
-                                    type="eventName"
-                                    class="form-control"
-                                    id="eventName"
-                                    placeholder="Enter Event Name"
-                            />
-                        </div>
-                        <div class="col-auto mb-3">
-                            <label for="medium">Medium</label>
-                            <select
-                                    class="form-select"
-                                    name="medium"
-                                    id="medium"
-                            >
-                                <option value="online">Onine</option>
-                                <option value="offline">Offline</option>
-                            </select>
-                        </div>
-                        <div class="col-auto mb-3">
-                            <label for="date">Date</label>
-                            <input
-                                    type="date"
-                                    class="form-control"
-                                    id="date"
-                            />
-                        </div>
-                        <div class="col-auto mb-3">
-                            <label for="time">Time</label>
-                            <input
-                                    type="time"
-                                    class="form-control"
-                                    id="time"
-                            />
-                        </div>
-                        <div class="col-auto mb-3">
-                            <label for="status">Status</label>
-                            <select
-                                    class="form-select"
-                                    name="status"
-                                    id="status"
-                            >
-                                <option value="active">active</option>
-                                <option value="deactive">deactive</option>
-                                <option value="canceled">canceled</option>
-                                <option value="upcoming">upcoming</option>
-                            </select>
-                        </div>
-                        <div class="col-auto mb-3">
-                            <label for="description">Descrtption</label>
-                            <textarea
-                                    class="form-control"
-                                    id="description"
-                                    placeholder="*******************"
-                            ></textarea>
-                        </div>
-                        <button type="button" class="btn btn-primary">
+                    <form action="" method="POST">
+                        {{ form.media }}
+                        {{ form|crispy }}
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">
                             Add Event
                         </button>
                     </form>
