@@ -123,6 +123,13 @@ def siteMapView(request):
     return render(request, 'pages/sitemap.html', context)
 
 
+def openTicketView(request):
+    context = {
+
+    }
+    return render(request, 'user_panel/pcs/ticket.html', context)
+
+
 @login_required
 def userDashboardView(request):
     context = {

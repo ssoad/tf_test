@@ -23,6 +23,7 @@ urlpatterns = [
     path('cyber_security_for_government/', views.cyberSecurityForGovernmentView, name='cyber_security_for_government'),
     path('media_celebrities/', views.mediaCelebritiesView, name='media_celebrities'),
     path('site_map/', views.siteMapView, name='site_map'),
+    path('open_ticket/', views.openTicketView, name='open_ticket'),
 
     # user panel
     path('pcs_user_dashboard/', views.userDashboardView, name='pcs_user_dashboard'),
