@@ -91,7 +91,7 @@ class ContentCreateForm(forms.ModelForm):
 
 class EventCreateForm(forms.ModelForm):
     date_field = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'date'}))
-    time_field = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'time'}))
+    time_field = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'time'}), input_formats=['%H:%M', '%I:%M%p', '%I:%M %p'])
 
     class Meta:
         model = models.Events

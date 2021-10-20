@@ -662,6 +662,7 @@ def mainAdminNotificationView(request):
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
 def mainAdminEventsView(request):
     form = forms.EventCreateForm()
+    events = models.Events.objects.all()
     if request.method == 'POST':
         form = forms.EventCreateForm(request.POST)
         if form.is_valid():
@@ -669,8 +670,34 @@ def mainAdminEventsView(request):
             return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
         'form': form,
+        'events': events,
     }
     return render(request, 'admin_panel/mainTF/eventWebinar.html', context)
+
+
+@user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
+def mainAdminEventsDeleteView(request, id):
+    current_event = models.Events.objects.get(id=id)
+    current_event.delete()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+@user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
+def mainAdminEventsEditView(request, id):
+    current_event = models.Events.objects.get(id=id)
+    form = forms.EventCreateForm(instance=current_event)
+    if request.method == 'POST':
+        form = forms.EventCreateForm(request.POST, instance=current_event)
+        if form.is_valid():
+            form.save()
+            next_page = request.POST.get('next', '/')
+            if next_page:
+                return HttpResponseRedirect(next_page)
+            else:
+                return HttpResponseRedirect(reverse('main_admin_events'))
+    context = {
+        'form': form,
+    }
+    return render(request, 'admin_panel/mainTF/editForm.html', context)
 
 
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
