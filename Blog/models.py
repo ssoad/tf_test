@@ -98,3 +98,11 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.post.title}\'s comment'
+
+
+class ReadingList(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reading_list_user')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='reading_list_post')
+
+    def __str__(self):
+        return f'{self.user} - {self.post}'

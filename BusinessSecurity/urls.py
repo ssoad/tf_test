@@ -55,7 +55,7 @@ urlpatterns = [
     path('main_admin_events/', views.mainAdminEventsView, name='main_admin_events'),
     path('main_admin_events_delete/<id>', views.mainAdminEventsDeleteView, name='main_admin_events_delete'),
     path('main_admin_events_edit/<id>', views.mainAdminEventsEditView, name='main_admin_events_edit'),
-    path('main_admin_event_detail/', views.mainAdminEventDetailView, name='main_admin_event_detail'),
+    path('main_admin_event_detail/<id>', views.mainAdminEventDetailView, name='main_admin_event_detail'),
     path('main_admin_support_view/', views.mainAdminSupportView, name='main_admin_support_view'),
     path('main_admin_support_delete_view/<id>/', views.mainAdminSupportDeleteView,
          name='main_admin_support_delete_view'),
@@ -65,10 +65,12 @@ urlpatterns = [
 
     # bcs user panel
     path('bcs_user_dashboard/', views.userDashboardView, name='bcs_user_dashboard'),
+    path('create_business/', views.createBusinessView, name='create_business'),
     path('bcs_user_services/', views.userServicesView, name='bcs_user_services'),
     path('bcs_user_order_history/', views.userOrderHistoryView, name='bcs_user_order_history'),
     path('bcs_user_subscriptions/', views.userSubscriptionsView, name='bcs_user_subscriptions'),
     path('bcs_user_events/', views.userEventsView, name='bcs_user_events'),
+    path('bcs_user_event_register/<id>/', views.userEventRegisterView, name='bcs_user_event_register'),
     path('bcs_user_notifications/', views.userNotificationsView, name='bcs_user_notifications'),
     path('bcs_user_settings/', views.userSettingsView, name='bcs_user_settings'),
     path('bcs_user_my_team/', views.bcsUserMyTeamView, name='bcs_user_my_team'),

@@ -183,3 +183,14 @@ class Events(models.Model):
 
     class Meta:
         verbose_name_plural = 'Events'
+
+
+class RegisteredEvents(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='registered_event_user')
+    event = models.ForeignKey(Events, on_delete=models.CASCADE, related_name='registered_event_event')
+
+    def __str__(self):
+        return f'{self.user} - {self.event}'
+
+    class Meta:
+        verbose_name_plural = 'Registered Events'

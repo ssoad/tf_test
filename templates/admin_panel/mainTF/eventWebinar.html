@@ -103,7 +103,7 @@
                             <tr>
                             <td>{{ forloop.counter }}</td>
                             <td>
-                                <a href="{% host_url 'main_admin_event_detail' %}">{{ event.event_name }}</a
+                                <a href="{% host_url 'main_admin_event_detail' id=event.id %}">{{ event.event_name }}</a
                                 >
                             </td>
                             <td>{{ event.date_field }}</td>
