@@ -56,10 +56,12 @@ class SubService(models.Model):
     class Meta:
         verbose_name_plural = 'Sub Services'
 
+
 duration_type = (
     ('month', 'Month'),
     ('year', 'Year'),
 )
+
 
 class SubscriptionBasedPackage(models.Model):
     service_id = models.ForeignKey(Service, on_delete=models.CASCADE)
@@ -148,3 +150,47 @@ class UsersBusiness(models.Model):
 
     class Meta:
         verbose_name_plural = 'User Businesses'
+
+
+medium_list = (
+    ('online', 'Online'),
+    ('offline', 'Offline'),
+)
+category_list = (
+    ('for_business_security', 'For Business CyberSecurity'),
+    ('for_personal_security', 'For Personal CyberSecurity'),
+)
+status_list = (
+    ('active', 'Active'),
+    ('completed', 'completed'),
+    ('canceled', 'canceled'),
+)
+
+
+class Events(models.Model):
+    event_name = models.CharField(max_length=264)
+    medium = models.CharField(choices=medium_list, max_length=264)
+    speaker = models.CharField(max_length=264)
+    category = models.CharField(choices=category_list, max_length=264)
+    address = models.CharField(max_length=264)
+    date_field = models.DateField()
+    time_field = models.TimeField()
+    status = models.CharField(choices=status_list, max_length=264)
+    event_description = HTMLField(max_length=5000)
+
+    def __str__(self):
+        return self.event_name
+
+    class Meta:
+        verbose_name_plural = 'Events'
+
+
+class RegisteredEvents(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='registered_event_user')
+    event = models.ForeignKey(Events, on_delete=models.CASCADE, related_name='registered_event_event')
+
+    def __str__(self):
+        return f'{self.user} - {self.event}'
+
+    class Meta:
+        verbose_name_plural = 'Registered Events'

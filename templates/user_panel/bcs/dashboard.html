@@ -207,7 +207,8 @@
     <section class="events mt-5 mb-3">
         <h3 class="fw-bold border-bottom border-gray pb-3 mb-4">Upcoming Events</h3>
         <div class="row mx-0 gy-3 gy-lg-0 justify-content-between">
-            <div class="col-12 col-lg-6 px-0 px-md-2">
+            {% for event in events %}
+                <div class="col-12 col-lg-6 px-0 px-md-2">
                 <div class="card shadow rounded-3">
                     <div class="row g-0">
                         <div class="col-md-4">
@@ -215,80 +216,47 @@
                         </div>
                         <div class="col-md-8">
                             <div class="card-body">
-                                <h5 class="card-title fw-bold fs-5x">Training For Business Executive
+                                <h5 class="card-title fw-bold fs-5x">{{ event.event_name }}
                                 </h5>
-                                <p class="card-text lh-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                                <p class="card-text lh-sm">{{ event.event_description|safe }}
                                 </p>
                                 <table class="table">
                                     <tbody>
                                         <tr>
                                             <td class="fw-bold">Speaker:</td>
-                                            <td class="ps-2">Rabiul Islam, Rabiul Islam</td>
+                                            <td class="ps-2">{{ event.speaker }}</td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <i class="icofont-ui-calendar"></i>
                                                 <span class="fw-bold">Date:</span>
                                             </td>
-                                            <td class="ps-2">05.05.2021</td>
+                                            <td class="ps-2">{{ event.date_field }}</td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <i class="icofont-clock-time"></i>
                                                 <span class="fw-bold">Time:</span>
                                             </td>
-                                            <td class="ps-2">08:05 AM</td>
+                                            <td class="ps-2">{{ event.time_field }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
-                                <button class="d-block mx-auto btn btn-sm bg-navy text-white px-4 py-1 mt-2">Register
-                                    Now</button>
+                                {% if event.id not in registered_event %}
+
+                                        <a href="{% host_url 'bcs_user_event_register' id=event.id %}"
+                                           class="d-block mx-auto btn btn-sm bg-navy text-white px-4 py-1 mt-2">Register</a>
+                                    {% else %}
+                                        <a href="{% host_url 'bcs_user_event_register' id=event.id %}"
+                                           class="d-block mx-auto btn btn-sm bg-navy text-white px-4 py-1 mt-2">Unregister</a>
+                                    {% endif %}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-lg-6 px-0 px-md-2">
-                <div class="card shadow rounded-3">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            <img src="{% static '' %}tfimg/user_panel/Mask Group 12.png" class="img-fluid rounded-start h-100" alt="...">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title fw-bold fs-5x">Training For Business Executive
-                                </h5>
-                                <p class="card-text lh-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                                </p>
-                                <table class="table">
-                                    <tbody>
-                                        <tr>
-                                            <td class="fw-bold">Speaker:</td>
-                                            <td class="ps-2">Rabiul Islam</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <i class="icofont-ui-calendar"></i>
-                                                <span class="fw-bold">Date:</span>
-                                            </td>
-                                            <td class="ps-2">05.05.2021</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <i class="icofont-clock-time"></i>
-                                                <span class="fw-bold">Time:</span>
-                                            </td>
-                                            <td class="ps-2">08:05 AM</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <button class="d-block mx-auto btn btn-sm bg-navy text-white px-4 py-1 mt-2">Register
-                                    Now</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
+
 
         </div>
 

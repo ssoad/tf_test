@@ -16,6 +16,7 @@
             {{ form.media }}
             {{ form|crispy }}
             {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.GET.next }}">
             <button type="submit" class="btn btn-primary my-3 text-capitalize">Update</button>
         </form>
     </div>

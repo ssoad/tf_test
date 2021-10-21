@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from BusinessSecurity import forms, models
 from Account.models import User, Permissions, Interest
 from Account.forms import SelectPermissionForm, SelectBCSPermissionForm, InterestForm
+from Academy.models import Course, Section, Content
+import cv2
 
 
 # Create your views here.
@@ -288,7 +290,7 @@ def appoinmentView(request):
 
 # Business Section
 @login_required
-def userDashboardView(request):
+def createBusinessView(request):
     current_user = request.user
     if not request.user.is_bcs:
         form = forms.CreateBusinessForm()
@@ -308,34 +310,30 @@ def userDashboardView(request):
             'form': form,
         }
         return render(request, 'user_panel/bcs/redirection.html', context)
-    elif request.user.is_bcs:
-        context = {
+    else:
+        return HttpResponseRedirect(reverse('bcs_user_dashboard'))
 
+
+@login_required
+def userDashboardView(request):
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+
+    elif request.user.is_bcs:
+        events = models.Events.objects.filter(status='active')
+        registered_event = models.RegisteredEvents.objects.filter(user=request.user).values_list('event', flat=True)
+
+        context = {
+            'events': events,
+            'registered_event': registered_event,
         }
         return render(request, 'user_panel/bcs/dashboard.html', context)
 
 
 @login_required
 def userServicesView(request):
-    current_user = request.user
     if not request.user.is_bcs:
-        form = forms.CreateBusinessForm()
-        if request.POST:
-            if 'new' in request.POST:
-                form = forms.CreateBusinessForm(request.POST, request.FILES)
-                position = request.POST.get('position')
-                business = form.save(commit=True)
-                current_user.is_bcs = True
-                current_user.save()
-                user_business = models.UsersBusiness.objects.create(user=current_user, business=business,
-                                                                    position=position, privilege='admin')
-                user_business.save()
-                return HttpResponseRedirect(reverse('bcs_app:bcs_user_dashboard'))
-
-        context = {
-            'form': form,
-        }
-        return render(request, 'user_panel/bcs/redirection.html', context)
+        return HttpResponseRedirect(reverse('create_business'))
     elif request.user.is_bcs:
         context = {
 
@@ -345,25 +343,9 @@ def userServicesView(request):
 
 @login_required
 def userOrderHistoryView(request):
-    current_user = request.user
     if not request.user.is_bcs:
-        form = forms.CreateBusinessForm()
-        if request.POST:
-            if 'new' in request.POST:
-                form = forms.CreateBusinessForm(request.POST, request.FILES)
-                position = request.POST.get('position')
-                business = form.save(commit=True)
-                current_user.is_bcs = True
-                current_user.save()
-                user_business = models.UsersBusiness.objects.create(user=current_user, business=business,
-                                                                    position=position, privilege='admin')
-                user_business.save()
-                return HttpResponseRedirect(reverse('bcs_app:bcs_user_dashboard'))
+        return HttpResponseRedirect(reverse('create_business'))
 
-        context = {
-            'form': form,
-        }
-        return render(request, 'user_panel/bcs/redirection.html', context)
     elif request.user.is_bcs:
         context = {
 
@@ -373,25 +355,9 @@ def userOrderHistoryView(request):
 
 @login_required
 def bcsUserMyTeamView(request):
-    current_user = request.user
     if not request.user.is_bcs:
-        form = forms.CreateBusinessForm()
-        if request.POST:
-            if 'new' in request.POST:
-                form = forms.CreateBusinessForm(request.POST, request.FILES)
-                position = request.POST.get('position')
-                business = form.save(commit=True)
-                current_user.is_bcs = True
-                current_user.save()
-                user_business = models.UsersBusiness.objects.create(user=current_user, business=business,
-                                                                    position=position, privilege='admin')
-                user_business.save()
-                return HttpResponseRedirect(reverse('bcs_app:bcs_user_dashboard'))
+        return HttpResponseRedirect(reverse('create_business'))
 
-        context = {
-            'form': form,
-        }
-        return render(request, 'user_panel/bcs/redirection.html', context)
     elif request.user.is_bcs:
         context = {
 
@@ -401,25 +367,9 @@ def bcsUserMyTeamView(request):
 
 @login_required
 def userSubscriptionsView(request):
-    current_user = request.user
     if not request.user.is_bcs:
-        form = forms.CreateBusinessForm()
-        if request.POST:
-            if 'new' in request.POST:
-                form = forms.CreateBusinessForm(request.POST, request.FILES)
-                position = request.POST.get('position')
-                business = form.save(commit=True)
-                current_user.is_bcs = True
-                current_user.save()
-                user_business = models.UsersBusiness.objects.create(user=current_user, business=business,
-                                                                    position=position, privilege='admin')
-                user_business.save()
-                return HttpResponseRedirect(reverse('bcs_app:bcs_user_dashboard'))
+        return HttpResponseRedirect(reverse('create_business'))
 
-        context = {
-            'form': form,
-        }
-        return render(request, 'user_panel/bcs/redirection.html', context)
     elif request.user.is_bcs:
         context = {
 
@@ -429,53 +379,38 @@ def userSubscriptionsView(request):
 
 @login_required
 def userEventsView(request):
-    current_user = request.user
     if not request.user.is_bcs:
-        form = forms.CreateBusinessForm()
-        if request.POST:
-            if 'new' in request.POST:
-                form = forms.CreateBusinessForm(request.POST, request.FILES)
-                position = request.POST.get('position')
-                business = form.save(commit=True)
-                current_user.is_bcs = True
-                current_user.save()
-                user_business = models.UsersBusiness.objects.create(user=current_user, business=business,
-                                                                    position=position, privilege='admin')
-                user_business.save()
-                return HttpResponseRedirect(reverse('bcs_app:bcs_user_dashboard'))
-
-        context = {
-            'form': form,
-        }
-        return render(request, 'user_panel/bcs/redirection.html', context)
+        return HttpResponseRedirect(reverse('create_business'))
     elif request.user.is_bcs:
+        registered_event = models.RegisteredEvents.objects.filter(user=request.user).values_list('event', flat=True)
+        events = models.Events.objects.filter(category='for_business_security',
+                                              registered_event_event__user=request.user)
         context = {
-
+            'events': events,
+            'registered_event': registered_event,
         }
         return render(request, 'user_panel/bcs/events.html', context)
 
 
 @login_required
-def userNotificationsView(request):
-    current_user = request.user
+def userEventRegisterView(request, id):
     if not request.user.is_bcs:
-        form = forms.CreateBusinessForm()
-        if request.POST:
-            if 'new' in request.POST:
-                form = forms.CreateBusinessForm(request.POST, request.FILES)
-                position = request.POST.get('position')
-                business = form.save(commit=True)
-                current_user.is_bcs = True
-                current_user.save()
-                user_business = models.UsersBusiness.objects.create(user=current_user, business=business,
-                                                                    position=position, privilege='admin')
-                user_business.save()
-                return HttpResponseRedirect(reverse('bcs_app:bcs_user_dashboard'))
+        return HttpResponseRedirect(reverse('create_business'))
+    elif request.user.is_bcs:
+        current_event = models.Events.objects.get(id=id)
+        is_register = models.RegisteredEvents.objects.filter(user=request.user, event=current_event)
+        if not is_register:
+            models.RegisteredEvents.objects.get_or_create(user=request.user, event=current_event)
+        else:
+            is_register.delete()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
-        context = {
-            'form': form,
-        }
-        return render(request, 'user_panel/bcs/redirection.html', context)
+
+@login_required
+def userNotificationsView(request):
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+
     elif request.user.is_bcs:
         context = {
 
@@ -485,25 +420,9 @@ def userNotificationsView(request):
 
 @login_required
 def userSettingsView(request):
-    current_user = request.user
     if not request.user.is_bcs:
-        form = forms.CreateBusinessForm()
-        if request.POST:
-            if 'new' in request.POST:
-                form = forms.CreateBusinessForm(request.POST, request.FILES)
-                position = request.POST.get('position')
-                business = form.save(commit=True)
-                current_user.is_bcs = True
-                current_user.save()
-                user_business = models.UsersBusiness.objects.create(user=current_user, business=business,
-                                                                    position=position, privilege='admin')
-                user_business.save()
-                return HttpResponseRedirect(reverse('bcs_app:bcs_user_dashboard'))
+        return HttpResponseRedirect(reverse('create_business'))
 
-        context = {
-            'form': form,
-        }
-        return render(request, 'user_panel/bcs/redirection.html', context)
     elif request.user.is_bcs:
         context = {
 
@@ -513,25 +432,9 @@ def userSettingsView(request):
 
 @login_required
 def employeeTrainingProgramView(request):
-    current_user = request.user
     if not request.user.is_bcs:
-        form = forms.CreateBusinessForm()
-        if request.POST:
-            if 'new' in request.POST:
-                form = forms.CreateBusinessForm(request.POST, request.FILES)
-                position = request.POST.get('position')
-                business = form.save(commit=True)
-                current_user.is_bcs = True
-                current_user.save()
-                user_business = models.UsersBusiness.objects.create(user=current_user, business=business,
-                                                                    position=position, privilege='admin')
-                user_business.save()
-                return HttpResponseRedirect(reverse('bcs_app:bcs_user_dashboard'))
+        return HttpResponseRedirect(reverse('create_business'))
 
-        context = {
-            'form': form,
-        }
-        return render(request, 'user_panel/bcs/redirection.html', context)
     elif request.user.is_bcs:
         context = {
 
@@ -541,25 +444,9 @@ def employeeTrainingProgramView(request):
 
 @login_required
 def bcsAppointmentView(request):
-    current_user = request.user
     if not request.user.is_bcs:
-        form = forms.CreateBusinessForm()
-        if request.POST:
-            if 'new' in request.POST:
-                form = forms.CreateBusinessForm(request.POST, request.FILES)
-                position = request.POST.get('position')
-                business = form.save(commit=True)
-                current_user.is_bcs = True
-                current_user.save()
-                user_business = models.UsersBusiness.objects.create(user=current_user, business=business,
-                                                                    position=position, privilege='admin')
-                user_business.save()
-                return HttpResponseRedirect(reverse('bcs_app:bcs_user_dashboard'))
+        return HttpResponseRedirect(reverse('create_business'))
 
-        context = {
-            'form': form,
-        }
-        return render(request, 'user_panel/bcs/redirection.html', context)
     elif request.user.is_bcs:
         context = {
 
@@ -659,16 +546,51 @@ def mainAdminNotificationView(request):
 
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
 def mainAdminEventsView(request):
+    form = forms.EventCreateForm()
+    events = models.Events.objects.all()
+    if request.method == 'POST':
+        form = forms.EventCreateForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
-
+        'form': form,
+        'events': events,
     }
     return render(request, 'admin_panel/mainTF/eventWebinar.html', context)
 
 
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
-def mainAdminEventDetailView(request):
-    context = {
+def mainAdminEventsDeleteView(request, id):
+    current_event = models.Events.objects.get(id=id)
+    current_event.delete()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
+
+@user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
+def mainAdminEventsEditView(request, id):
+    current_event = models.Events.objects.get(id=id)
+    form = forms.EventCreateForm(instance=current_event)
+    if request.method == 'POST':
+        form = forms.EventCreateForm(request.POST, instance=current_event)
+        if form.is_valid():
+            form.save()
+            next_page = request.POST.get('next', '/')
+            if next_page:
+                return HttpResponseRedirect(next_page)
+            else:
+                return HttpResponseRedirect(reverse('main_admin_events'))
+    context = {
+        'form': form,
+    }
+    return render(request, 'admin_panel/mainTF/editForm.html', context)
+
+
+@user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
+def mainAdminEventDetailView(request, id):
+    event = models.Events.objects.get(id=id)
+    context = {
+        'event': event,
     }
     return render(request, 'admin_panel/mainTF/eventDetail.html', context)
 
@@ -1026,6 +948,7 @@ def bcsAdminUserInterest(request):
     }
     return render(request, 'admin_panel/bcsTF/userInterest.html', context)
 
+
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminSingleUserInterest(request, id):
     selected_interest = Interest.objects.get(id=id)
@@ -1045,9 +968,121 @@ def bcsAdminSingleUserInterest(request, id):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminTraining(request):
-    return render(request, 'admin_panel/bcsTF/training.html')
+    form = forms.CourseCreateForm()
+    courses = Course.objects.all()
+    if request.method == 'POST':
+        form = forms.CourseCreateForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    context = {
+        'form': form,
+        'courses': courses,
+    }
+    return render(request, 'admin_panel/bcsTF/training.html', context)
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
-def bcsAdminCourseDetail(request):
-    return render(request, 'admin_panel/bcsTF/courseDetail.html')
+def bcsAdminTrainingDelete(request, id):
+    current_course = Course.objects.get(id=id)
+    current_course.delete()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminTrainingEdit(request, id):
+    current_course = Course.objects.get(id=id)
+    form = forms.CourseCreateForm(instance=current_course)
+
+    if request.method == 'POST':
+        form = forms.CourseCreateForm(request.POST, instance=current_course)
+        if form.is_valid():
+            form.save()
+            next_page = request.POST.get('next', '/')
+            if next_page:
+                return HttpResponseRedirect(next_page)
+            else:
+                return HttpResponseRedirect(reverse('bcs_admin_training'))
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'admin_panel/bcsTF/editForm.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminCourseDetail(request, id):
+    course = Course.objects.get(id=id)
+    sections = Section.objects.filter(course=course)
+    form = forms.SectionCreateForm()
+    form2 = forms.ContentCreateForm()
+    if request.method == 'POST':
+        if 'add_section' in request.POST:
+            form = forms.SectionCreateForm(request.POST)
+            if form.is_valid():
+                section = form.save(commit=False)
+                section.course = course
+                section.save()
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        elif 'add_content' in request.POST:
+            form2 = forms.ContentCreateForm(request.POST, request.FILES)
+            if form2.is_valid():
+                content = form2.save(commit=False)
+                section_id = int(request.POST.get('section_name'))
+                current_section = Section.objects.get(id=section_id)
+                content.section = current_section
+                content.save()
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+    context = {
+        'course': course,
+        'sections': sections,
+        'form': form,
+        'form2': form2,
+    }
+    return render(request, 'admin_panel/bcsTF/courseDetail.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminCourseContentDelete(request, id):
+    current_content = Content.objects.get(id=id)
+    current_content.delete()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminCourseContentEdit(request, id):
+    current_content = Content.objects.get(id=id)
+    form = forms.ContentCreateForm(instance=current_content)
+    if request.method == 'POST':
+        form = forms.ContentCreateForm(request.POST, request.FILES, instance=current_content)
+        if form.is_valid():
+            form.save()
+            next_page = request.POST.get('next', '/')
+            if next_page:
+                return HttpResponseRedirect(next_page)
+            else:
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    context = {
+        'form': form,
+    }
+    return render(request, 'admin_panel/bcsTF/editForm.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminCourseSectionEdit(request, id):
+    current_section = Section.objects.get(id=id)
+    form = forms.SectionCreateForm(instance=current_section)
+    if request.method == 'POST':
+        form = forms.SectionCreateForm(request.POST, request.FILES, instance=current_section)
+        if form.is_valid():
+            form.save()
+            next_page = request.POST.get('next', '/')
+            if next_page:
+                return HttpResponseRedirect(next_page)
+            else:
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    context = {
+        'form': form,
+    }
+    return render(request, 'admin_panel/bcsTF/editForm.html', context)

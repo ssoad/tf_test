@@ -1,5 +1,6 @@
 from django import forms
 from BusinessSecurity import models
+from Academy.models import Course, duration, Section, Content
 
 
 class AddServiceCategoryForm(forms.ModelForm):
@@ -59,3 +60,39 @@ class AddIndividualPackageFeatureForm(forms.ModelForm):
     class Meta:
         model = models.SubscriptionFeatures
         fields = ['feature_name', ]
+
+
+class CourseCreateForm(forms.ModelForm):
+    duration = forms.ChoiceField(choices=duration, widget=forms.Select(attrs={'class': 'form-select'}))
+
+    class Meta:
+        model = Course
+        fields = '__all__'
+
+
+class SectionCreateForm(forms.ModelForm):
+    class Meta:
+        model = Section
+        fields = ['section_name', ]
+
+
+class ContentCreateForm(forms.ModelForm):
+    # section = forms.ModelChoiceField(queryset=Section.objects.filter(course=3))
+    # text_instruction = forms.FileField(widget=forms.FileInput(attrs={'accept': '.txt', 'class': 'form-control'}))
+    # course_video = forms.FileField(widget=forms.FileInput(attrs={'accept': 'video/*', 'class': 'form-control'}))
+    # preview_video = forms.FileField(widget=forms.FileInput(attrs={'accept': 'video/*', 'class': 'form-control'}), required=False)
+    # resource_file = forms.FileField(widget=forms.FileInput(attrs={'accept': '.pdf', 'class': 'form-control'}))
+
+    class Meta:
+        model = Content
+        fields = '__all__'
+        exclude = ['section', ]
+
+
+class EventCreateForm(forms.ModelForm):
+    date_field = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'date'}))
+    time_field = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'time'}), input_formats=['%H:%M', '%I:%M%p', '%I:%M %p'])
+
+    class Meta:
+        model = models.Events
+        fields = '__all__'
