@@ -141,9 +141,15 @@
         {% for post in posts %}
         <div class="post col">
             <div class="card h-100">
-                <button class="btn add-btn"><i class="bi bi-plus-lg"></i>
+                {% if post.id not in reading_lists %}
+                <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}" class="btn add-btn"><i class="bi bi-plus-lg"></i>
                     <span>Add to my reading list</span>
-                </button>
+                </a>
+                {% else %}
+                <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}" class="btn add-btn"><i class="bi bi-dash-lg"></i>
+                    <span>Remove from my reading list</span>
+                </a>
+                {% endif %}
                 <img src="{{post.feature_image.url}}" class="card-img-top" alt="{{post.title}}">
                 <div class="card-body p-1 pt-2">
                     <a href="{% host_url path host 'blog' %}{{post.post_url}}" class="title">
