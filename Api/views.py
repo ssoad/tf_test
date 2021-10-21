@@ -5,7 +5,7 @@ from Api import serializer
 from rest_framework import generics
 from Blog import models
 from BusinessSecurity import models as bcsmodels
-from rest_framework import permissions, pagination
+from rest_framework import permissions, pagination, filters
 
 
 # Create your views here.
@@ -50,6 +50,8 @@ class AllCommentCreateViewApi(generics.ListCreateAPIView):
     queryset = models.Comment.objects.all()
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     pagination_class = Page
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['comment_date']
 
 
 class CommentCreateViewApi(generics.ListCreateAPIView):
