@@ -13,6 +13,8 @@ urlpatterns = [
     path('case_studies/<slug:name>/', views.postView, name='case_studies'),
     path('podcast/', views.postView, name='podcast'),
     path('podcast/<slug:name>/', views.postView, name='podcast'),
+    path('add_to_reading_list/', views.addToReadingListView, name='add_to_reading_list'),
+    path('add_to_reading_list/<id>/', views.addToReadingListView, name='add_to_reading_list'),
     path('filter_post_keyword/<str:type>/<str:keyword>/', views.filter_post_keywordView, name='filter_post_keyword'),
     path('filter_post_date/<str:type>/<str:range>/', views.filter_post_dateView, name='filter_post_date'),
 
