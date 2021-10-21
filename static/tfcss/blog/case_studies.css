@@ -142,15 +142,6 @@
 }
 
 
-/* 
-.get-updates label {
-    padding: 0 10px;
-    position: absolute;
-    top: 0.75rem;
-    right: 1rem;
-} */
-
-
 /* place inside media query for large device */
 
 .post.col-md-4:nth-child(3n-2) {
@@ -196,9 +187,6 @@ button.bg-light:hover {
     display: block;
     position: relative;
     border-radius: 4px;
-    /* background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat; */
     overflow: hidden;
     transition: all 1s;
 }

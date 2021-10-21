@@ -15,9 +15,10 @@ def sub(count):
 
 @register.filter
 def replacespace(value):
-    return str(value).replace("#", " sharp").replace(" ", "_").lower()
+    return str(value).replace(" ", "_").lower()
 
 
 @register.filter
 def capitalize(value):
     return str(value).replace("_", " ").title()
+

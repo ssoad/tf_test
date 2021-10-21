@@ -89,7 +89,8 @@
     margin-bottom: 2rem;
 }
 
-.ticket-filter .underline,.ticket-filter .overLine {
+.ticket-filter .underline,
+.ticket-filter .overLine {
     border-inline: 0;
     border-top: 0;
     border-bottom: 4px solid transparent;
@@ -113,20 +114,30 @@
 table.dataTable.no-footer {
     border: transparent;
 }
-#personal-tickets-table tbody td, #business-tickets-table tbody td, #academy-tickets-table tbody td{
+
+#personal-tickets-table tbody td,
+#business-tickets-table tbody td,
+#academy-tickets-table tbody td {
     text-align: start;
 }
-#personal-tickets-table_length , #business-tickets-table_length , #academy-tickets-table_length {
+
+#personal-tickets-table_length,
+#business-tickets-table_length,
+#academy-tickets-table_length {
     margin-inline-start: 3rem;
 }
 
-#personal-tickets-table_length select, #business-tickets-table_length select, #academy-tickets-table_length select {
+#personal-tickets-table_length select,
+#business-tickets-table_length select,
+#academy-tickets-table_length select {
     width: 5rem;
     margin-inline-start: 1rem;
     display: inline-block;
 }
 
-#personal-tickets-table .first,#business-tickets-table .first,#academy-tickets-table .first {
+#personal-tickets-table .first,
+#business-tickets-table .first,
+#academy-tickets-table .first {
     width: 10px;
 }
 
@@ -135,7 +146,9 @@ table.dataTable.no-footer {
     grid-template-columns: 150px auto;
 }
 
-#personal-tickets-table_filter, #business-tickets-table_filter, #academy-tickets-table_filter{
+#personal-tickets-table_filter,
+#business-tickets-table_filter,
+#academy-tickets-table_filter {
     background-color: #ffffff;
     box-shadow: 1px 1px 3px 1px #7a7a7a;
     padding: .5rem 1rem;
@@ -144,14 +157,12 @@ table.dataTable.no-footer {
     margin-inline-end: 1rem;
 }
 
-#personal-tickets-table_filter input, #business-tickets-table_filter input, #academy-tickets-table_filter input {
+#personal-tickets-table_filter input,
+#business-tickets-table_filter input,
+#academy-tickets-table_filter input {
     background-color: #ffffff;
     border-color: transparent;
     display: inline-block;
-}
-
-.form-control {
-    width: auto;
 }
 
 .modal-title {

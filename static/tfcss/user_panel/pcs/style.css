@@ -17,6 +17,10 @@ header.sticky-top {
     z-index: 9999;
 }
 
+a {
+    text-decoration: none;
+}
+
 .dropdown-menu .dropdown-item:active {
     background-color: #151331;
 }
@@ -971,7 +975,7 @@ footer#footer-large {
         margin-left: 18%;
     }
     .modal-backdrop.show {
-        opacity: 0.9;
+        opacity: 0.6;
         margin-left: 18%;
         margin-top: 5%;
     }
