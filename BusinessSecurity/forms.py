@@ -22,7 +22,7 @@ class AddServiceForm(forms.ModelForm):
 
 
 class AddSubServiceForm(forms.ModelForm):
-    sub_service = forms.ModelChoiceField(queryset=models.Service.objects.filter(has_sub_service=True),
+    service = forms.ModelChoiceField(queryset=models.Service.objects.filter(has_sub_service=True),
                                          widget=forms.Select(attrs={'class': 'form-select'}))
 
     class Meta:
