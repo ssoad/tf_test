@@ -2,7 +2,7 @@
 ## Commands to run
 ### Clone
 ```commandline
-git clone https://github.com/nhridoy/TechForing-Ltd.git
+https://github.com/nhridoy/MainTF.git
 ```
 ### Create Branch
 ```commandline
