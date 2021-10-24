@@ -783,6 +783,48 @@ def bcsAdminSubServiceEditView(request, id):
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsSubServiceFormView(request):
+    form = forms.AddForm()
+    form_lists = models.InputFields.objects.all()
+    print(request.POST)
+    if request.method == 'POST':
+        form = forms.AddForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    context = {
+        'form': form,
+        'form_lists': form_lists,
+    }
+    return render(request, 'admin_panel/bcsTF/subserviceForms.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminSubServiceFormDeleteView(request, id):
+    input_field = models.InputFields.objects.get(id=id)
+    input_field.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminSubServiceFormEditView(request, id):
+    current_input_field = models.InputFields.objects.get(id=id)
+    form = forms.AddForm(instance=current_input_field)
+
+    if request.method == 'POST':
+        form = forms.AddForm(request.POST, instance=current_input_field)
+        if form.is_valid():
+            form.save()
+
+            return HttpResponseRedirect(reverse('bcs_admin_sub_services_form'))
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'admin_panel/bcsTF/editForm.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminReadingListView(request):
     context = {
 
