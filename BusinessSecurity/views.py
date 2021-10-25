@@ -990,7 +990,7 @@ def bcsAdminProfile(request):
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminUserInterest(request):
     users_list = User.objects.all()
-    interests = Interest.objects.all()
+    interests = Interest.objects.filter(user__is_bcs=True)
     context = {
         'users_list': users_list,
         'interests': interests,
