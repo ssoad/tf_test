@@ -1,21 +1,27 @@
 from django.urls import path
 from Blog import views
 
-app_name = 'blog_app'
 
 urlpatterns = [
     path('', views.indexView, name='index'),
+    path('category/', views.categoryView, name='category'),
     path('category/<name>/', views.categoryView, name='category'),
     path('category/<str:name1>/<str:name2>/', views.category_detailView, name='category_detail'),
-    path('post/<slug:name>/', views.postView, name='blogs'),
-    path('case_studies/<slug:name>/', views.case_studiesView, name='case_studies'),
-    path('podcast/<slug:name>/', views.podcastView, name='podcast'),
+    path('articles/', views.postView, name='articles'),
+    path('articles/<slug:name>/', views.postView, name='articles'),
+    path('case_studies/', views.postView, name='case_studies'),
+    path('case_studies/<slug:name>/', views.postView, name='case_studies'),
+    path('podcast/', views.postView, name='podcast'),
+    path('podcast/<slug:name>/', views.postView, name='podcast'),
+    path('add_to_reading_list/', views.addToReadingListView, name='add_to_reading_list'),
+    path('add_to_reading_list/<id>/', views.addToReadingListView, name='add_to_reading_list'),
     path('filter_post_keyword/<str:type>/<str:keyword>/', views.filter_post_keywordView, name='filter_post_keyword'),
     path('filter_post_date/<str:type>/<str:range>/', views.filter_post_dateView, name='filter_post_date'),
 
     path('dashboard/', views.adminDashboardView, name='admin_dashboard'),
     path('new/', views.adminNewPostView, name='admin_new'),
     path('blogform/', views.adminBlogFormView, name='admin_blog_form'),
+    path('blogformedit/', views.adminBlogEditFormView, name='admin_blog_form_edit'),
     path('blogformedit/<int:id>', views.adminBlogEditFormView, name='admin_blog_form_edit'),
     path('delete_post/<int:id>', views.adminDeletePostView, name='admin_blog_delete'),
     path('delete_comment/<int:id>', views.adminDeleteCommentView, name='admin_comment_delete'),

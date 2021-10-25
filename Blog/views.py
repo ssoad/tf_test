@@ -94,7 +94,7 @@ def adminBlogFormView(request):
             #     instance.filter_option = subfil
             #     instance.save()
 
-            return HttpResponseRedirect(reverse('blog_app:admin_dashboard'))
+            return HttpResponseRedirect(reverse('admin_dashboard'))
 
     context = {
         'form': form,
@@ -175,14 +175,13 @@ def adminBlogEditFormView(request, id):
             #     instance.filter_option = subfil
             #     instance.save()
 
-            return HttpResponseRedirect(reverse('blog_app:admin_dashboard'))
+            return HttpResponseRedirect(reverse('admin_dashboard'))
 
     context = {
         'form': form,
         'tag_list': tag_list,
     }
     return render(request, 'admin_panel/blog/blogForm.html', context)
-
 
 
 @user_passes_test(permission_check, login_url='/accounts/login/')
@@ -304,7 +303,7 @@ def adminNewPostView(request):
             for tl in add_tags:
                 post.tag.add(tl)  # new
 
-            return HttpResponseRedirect(reverse('blog_app:index'))
+            return HttpResponseRedirect(reverse('index'))
 
     context = {
         'form': form,
@@ -348,14 +347,19 @@ def indexView(request):
 def postView(request, name):
     posts = models.Post.objects.all()
     post = models.Post.objects.get(post_url=name)
+    comments = models.Comment.objects.filter(post=post).order_by('-comment_date')
+    reading_lists = models.ReadingList.objects.filter(user=request.user).values_list('post', flat=True)
     total = post.total_view
-
+    category = str(request.path).split('/')[-3]
     post.total_view = total + 1
     post.save()
 
     context = {
-        'post': post, 'category': 'blogs',
-        'related_posts': posts.order_by('date')[:3]
+        'post': post, 'category': category,
+        'related_posts': posts.order_by('date')[:4],
+        'comments': comments[:5],
+        'comments_count': comments.count,
+        'reading_lists': reading_lists,
     }
     return render(request, 'blog/post.html', context)
 
@@ -384,19 +388,32 @@ def podcastView(request, name):
     return render(request, 'blog/post.html', context)
 
 
+@login_required
+def addToReadingListView(request, id):
+    current_post = models.Post.objects.get(id=id)
+    is_saved = models.ReadingList.objects.filter(user=request.user, post=current_post)
+    if not is_saved:
+        models.ReadingList.objects.get_or_create(user=request.user, post=current_post)
+    else:
+        is_saved.delete()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
 # for specific category
 def categoryView(request, name):
-    posts = models.Post.objects.filter(category__category__iexact=name)
+    posts = models.Post.objects.filter(category__category__iexact=str(name).replace('_', ' '))
     cat_path = str(request.path).split('/')[-2]
     subcategories = models.BlogSubCategory.objects.filter(category__category__iexact=name).order_by('sub_category')
-    
-    print(posts)
+    reading_lists = models.ReadingList.objects.filter(user=request.user).values_list('post', flat=True)
+
+    print(name)
     context = {
         'posts': posts.order_by('-date'),
         'path': name,
         'cat_path': cat_path,
         'important_posts': posts.order_by('-total_view'),
         'subcategories': subcategories,
+        'reading_lists': reading_lists,
     }
 
     return render(request, 'blog/category.html', context)

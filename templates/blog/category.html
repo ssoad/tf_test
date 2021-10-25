@@ -1,4 +1,4 @@
-{% extends 'base/blog_base.html' %} {% load my_filter %} {% load static %} {% block title %} {{cat_path}} {% endblock title %} {% block headercss %}
+{% extends 'base/blog_base.html' %} {% load my_filter %} {% load static %}{% load hosts %} {% block title %} {{cat_path}} {% endblock title %} {% block headercss %}
 <link rel="stylesheet" href="{% static 'tfcss/blog/blogs.css' %}">
 <link rel="stylesheet" href="{% static 'tfcss/blog/case_studies.css' %}">{% endblock headercss %} {% block content %}
 
@@ -22,7 +22,7 @@
                     <div id="{{ subcategory|replacespace|lower }}-collapse" class="accordion-collapse collapse" aria-labelledby="{{ subcategory|replacespace|lower }}" data-bs-parent="#accordionFlush">
                         <div class="accordion-body">
                             {% for filter_option in subcategory.filter_subcategory.all %}
-                            <a class="fw-bold" href="{% url 'blog_app:category' name=cat_path %}{{ subcategory|replacespace|lower }}">{{ filter_option }}</a> {% endfor %}
+                            <a class="fw-bold" href="{% host_url 'category' host 'blog' %}{{path}}/{{subcategory|replacespace}}/{{filter_option|replacespace}}">{{ filter_option }}</a> {% endfor %}
                         </div>
                     </div>
 
@@ -78,7 +78,7 @@
         <div class="row align-items-stretch post-container">
             <div class="col-md-4">
                 {% for post in important_posts %} {% if forloop.counter == 2 or forloop.counter == 3 %}
-                <a href="{% url 'blog_app:{{path}}' name=cat_path %}" class="url-wrapper {%if forloop.counter == 2%}mb-30p{% endif %} size gradient">
+                <a href="" class="url-wrapper {%if forloop.counter == 2%}mb-30p{% endif %} size gradient">
                     <img src="{{post.feature_image.url}}" class="position-absolute" alt="">
                     <div class="text">
                         <h2>{{post.title}}</h2>
@@ -141,12 +141,18 @@
         {% for post in posts %}
         <div class="post col">
             <div class="card h-100">
-                <button class="btn add-btn"><i class="bi bi-plus-lg"></i>
+                {% if post.id not in reading_lists %}
+                <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}" class="btn add-btn"><i class="bi bi-plus-lg"></i>
                     <span>Add to my reading list</span>
-                </button>
-                <img src="{{post.feature_image.url}}" class="card-img-top" alt="...">
+                </a>
+                {% else %}
+                <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}" class="btn add-btn"><i class="bi bi-dash-lg"></i>
+                    <span>Remove from my reading list</span>
+                </a>
+                {% endif %}
+                <img src="{{post.feature_image.url}}" class="card-img-top" alt="{{post.title}}">
                 <div class="card-body p-1 pt-2">
-                    <a href="" class="title">
+                    <a href="{% host_url path host 'blog' %}{{post.post_url}}" class="title">
                         <h6 class="fw-bold fs-7">{{post.title}}
                         </h6>
                     </a>
@@ -265,7 +271,7 @@
                 </button>
                 <img src="{% get_media_prefix %}${post.fields.feature_image}" class="card-img-top" alt="...">
                 <div class="card-body pt-2 p-0">
-                    <a href="{% url 'blog_app:blogs' name='slug_url' %}${post.fields.post_url}" class="title">
+                    <a href="" class="title">
                         <h6 class="fw-bold fs-7">${post.fields.title}</h6>
                     </a>
                     <div class="info-area">

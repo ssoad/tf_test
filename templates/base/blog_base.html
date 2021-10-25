@@ -1,4 +1,4 @@
-{% load static %}
+{% load static %}{% load hosts %}
 <!DOCTYPE html>
 <html lang="en-US" prefix="og: https://ogp.me/ns#">
 
@@ -12,9 +12,8 @@
 
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="shortcut icon" href="{% static 'img/Techforing-Icon.png' %}" type="image/x-icon" />
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/default.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"> {% block headercss %} {% endblock headercss %}
     <link rel="stylesheet" href="{% static 'tfcss/blog/style.css' %}">
@@ -35,16 +34,16 @@
                 <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
                         <li class="nav-item pe-3">
-                            <a class="nav-link" href="{% url 'blog_app:index' %}">HOME</a>
+                            <a class="nav-link" href="{% host_url 'home' host 'blog' %}">HOME</a>
                         </li>
                         <li class="nav-item pe-3">
-                            <a class="nav-link" href="{% url 'blog_app:category' name='articles' %}">ARTICLES</a>
+                            <a class="nav-link" href="{% host_url 'category' host 'blog' %}articles">ARTICLES</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'blog_app:category' name='case_studies' %}">CASE STUDIES</a>
+                            <a class="nav-link" href="{% host_url 'category' host 'blog' %}case_studies">CASE STUDIES</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'blog_app:category' name='podcast' %}">PODCAST</a>
+                            <a class="nav-link" href="{% host_url 'category' host 'blog' %}podcast">PODCAST</a>
                         </li>
                     </ul>
                 </div>
@@ -99,7 +98,9 @@
     <script src="{% static 'tfjs/footer.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
-    <script>hljs.highlightAll();</script>
+    <script>
+        hljs.highlightAll();
+    </script>
     <script>
         let links = ['home', 'blogs', 'case_studies', 'podcast'];
         let linkItems = document.querySelectorAll('.navbar-nav .nav-link');
@@ -138,8 +139,8 @@
             document.documentElement.scrollTop = 0;
         }
         const deleteBtn = document.querySelectorAll(".trash, .dlt")
-        deleteBtn.forEach(btn=>{
-            btn.addEventListener("click",()=>{
+        deleteBtn.forEach(btn => {
+            btn.addEventListener("click", () => {
                 btn.parentElement.parentElement.parentElement.style.display = "none"
             })
         })

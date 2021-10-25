@@ -1,4 +1,5 @@
 <!DOCTYPE html> {% load static %}
+{% load hosts %}
 <html lang="en">
 
 <head>
@@ -46,8 +47,8 @@
                         Admin
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{% url 'bcs_app:main_admin_profile' %}">My profile</a></li>
-                        <li><a class="dropdown-item" href="{% url 'account_app:logout' %}">Sgn out</a></li>
+                        <li><a class="dropdown-item" href="{% host_url 'main_admin_profile' %}">My profile</a></li>
+                        <li><a class="dropdown-item" href="{% host_url 'logout' %}">Sgn out</a></li>
                     </ul>
                 </span> -->
             </div>
@@ -63,7 +64,7 @@
                 <!-- Nav links starts here -->
                 <ul class="menubar">
                     <li>
-                        <a href="{% url 'blog_app:admin_dashboard' %}" class="nav-link active">
+                        <a href="{% host_url 'admin_dashboard' %}" class="nav-link active">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="29.273" height="23"
                                 viewBox="0 0 29.273 23">
                                 <path id="list-alt"
@@ -74,17 +75,17 @@
                         </a>
                     </li>
                     <!-- <li>
-                        <a href="{% url 'bcs_app:bcs_admin_reading_list' %}" class="nav-link">
+                        <a href="{% host_url 'bcs_admin_reading_list' %}" class="nav-link">
                             <i class="bi bi-file-earmark-fill"></i> Blogs
                         </a>
                     </li> -->
                     <li>
-                        <a href="{% url 'blog_app:admin_comment_list' %}" class="nav-link">
+                        <a href="{% host_url 'admin_comment_list' %}" class="nav-link">
                             <i class="bi bi-file-earmark-fill"></i> Comments
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="{% url 'blog_app:admin_category_list' %}">
+                        <a class="nav-link" href="{% host_url 'admin_category_list' %}">
                             <i class="bi bi-gear-wide-connected"></i> Category
                         </a>
                     </li>
@@ -95,9 +96,9 @@
                             services
                         </span>
                         <ul class="dropdown-container" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item nav-link" href="{% url 'bcs_app:bcs_admin_services' %}"><i
+                            <li><a class="dropdown-item nav-link" href="{% host_url 'bcs_admin_services' %}"><i
                                         class="bi bi-collection-fill"></i>Main Service</a></li>
-                            <li><a class="dropdown-item nav-link" href="{% url 'bcs_app:bcs_admin_sub_services' %}"><i
+                            <li><a class="dropdown-item nav-link" href="{% host_url 'bcs_admin_sub_services' %}"><i
                                         class="bi bi-collection-fill"></i>Sub Service</a></li>
                         </ul>
                     </li>
@@ -121,7 +122,7 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="{% url 'bcs_app:bcs_admin_reading_list' %}" class="nav-link">
+                        <a href="{% host_url 'bcs_admin_reading_list' %}" class="nav-link">
                             <i class="bi bi-file-earmark-fill"></i> Reading List
                         </a>
                     </li>
@@ -132,14 +133,14 @@
                             Subscription
                         </span>
                         <ul class="dropdown-container" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item nav-link" href="{% url 'bcs_app:bcs_admin_subscriptions' %}"><i
+                            <li><a class="dropdown-item nav-link" href="{% host_url 'bcs_admin_subscriptions' %}"><i
                                         class="bi bi-tag-fill"></i>Subscription List</a></li>
                             <li><a class="dropdown-item nav-link" href="#"><i
                                         class="bi bi-collection-fill"></i>Subscription package</a></li>
                         </ul>
                     </li>
                     <li>
-                        <a href="{% url 'bcs_app:bcs_admin_revenue' %}" class="nav-link">
+                        <a href="{% host_url 'bcs_admin_revenue' %}" class="nav-link">
                             <i class="bi bi-currency-dollar"></i> revenue
                         </a>
                     </li>

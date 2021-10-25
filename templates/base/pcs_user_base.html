@@ -1,5 +1,4 @@
-<!DOCTYPE html> {% load static %}
-{% load hosts %}
+<!DOCTYPE html> {% load static %} {% load hosts %}
 <html lang="en">
 
 
@@ -16,6 +15,7 @@
     </title>
     <link rel="icon" href="{%static ''%}tfimg/user_panel/Techforing-Icon.png" type="image/x-icon" />
 </head>
+
 <body>
     <!-- Header Start -->
     <header class="sticky-top">
@@ -40,16 +40,16 @@
                             </a>
                             <ul class="dropdown-menu border-0 shadow" aria-labelledby="navbarDropdown">
                                 <li>
-                                    <a class="dropdown-item text-center" href="{% host_url 'pcs_user_settings' host 'mysecurity' %}">
+                                    <a class="dropdown-item ps-3" href="{% host_url 'pcs_user_settings' host 'mysecurity' %}">
                                         <i class="icofont-ui-user me-2"></i> My Profile</a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item text-center" href="{% host_url 'pcs_user_settings' host 'mysecurity' %}">
+                                    <a class="dropdown-item ps-3" href="{% host_url 'pcs_user_settings' host 'mysecurity' %}">
                                         <i class="icofont-edit me-2"></i> Edit Profile
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item text-center" href="{% host_url 'logout' host 'account' %}">
+                                    <a class="dropdown-item ps-3" href="{% host_url 'logout' host 'account' %}">
                                         <i class="icofont-logout me-2"></i> Logout
                                     </a>
                                 </li>
@@ -102,16 +102,13 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{% host_url 'pcs_user_settings' host 'mysecurity' %}">
-                        <i class="icofont-options"></i> My Profile
+                    <a href="{% host_url 'open_ticket' %}">
+                        <i class="icofont-options"></i> Support
                     </a>
-                </li>
-                <li>
-                    <button type="button" class="btn btn-outline-navy px-4">Log Out</button>
                 </li>
             </ul>
         </div>
-	    </div>
+    </div>
     <div class="w-20 h-100 position-fixed bg-white shadow-sm px-1 pt-2 d-none d-lg-block">
         <ul class="menubar pt-3">
             <li>
@@ -145,11 +142,10 @@
                 </a>
             </li>
             <li>
-                <a href="{% host_url 'pcs_user_settings' host 'mysecurity' %}">
-                    <i class="icofont-options"></i> My Profile
+                <a href="{% host_url 'open_ticket' %}">
+                    <i class="icofont-options"></i> Support
                 </a>
             </li>
-            <a href="{% host_url 'account_logout' %}" class="mt-3 logout-btn ms-3 btn btn-outline-navy px-4">Log Out</a>
         </ul>
     </div>
     <main class="w-80 overflow-hidden">
@@ -252,6 +248,7 @@
             window.innerHeight > document.body.offsetHeight - window.scrollY - 10 ?
                 changeSidebarStyle('large') : changeSidebarStyle('small');
         };
+
         function dropdown($bs) {
             const CLASS_NAME = 'has-child-dropdown-show';
             $bs.Dropdown.prototype.toggle = function(_orginal) {
@@ -279,6 +276,7 @@
     </script>
     {% block customjs %} {% endblock customjs %}
 </body>
+
 </html>
 
 </html>

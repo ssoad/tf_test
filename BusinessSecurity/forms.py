@@ -21,9 +21,15 @@ class AddServiceForm(forms.ModelForm):
                   'is_subscription_based', 'service_header', 'service_body', 'service_footer', ]
 
 
+class AddForm(forms.ModelForm):
+    class Meta:
+        model = models.InputFields
+        fields = '__all__'
+
+
 class AddSubServiceForm(forms.ModelForm):
-    sub_service = forms.ModelChoiceField(queryset=models.Service.objects.filter(has_sub_service=True),
-                                         widget=forms.Select(attrs={'class': 'form-select'}))
+    service = forms.ModelChoiceField(queryset=models.Service.objects.filter(has_sub_service=True),
+                                     widget=forms.Select(attrs={'class': 'form-select'}))
 
     class Meta:
         model = models.SubService
@@ -87,3 +93,13 @@ class ContentCreateForm(forms.ModelForm):
         model = Content
         fields = '__all__'
         exclude = ['section', ]
+
+
+class EventCreateForm(forms.ModelForm):
+    date_field = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'date'}))
+    time_field = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'time'}),
+                                     input_formats=['%H:%M', '%I:%M%p', '%I:%M %p'])
+
+    class Meta:
+        model = models.Events
+        fields = '__all__'
