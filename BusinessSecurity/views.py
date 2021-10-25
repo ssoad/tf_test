@@ -337,9 +337,11 @@ def userServicesView(request):
     elif request.user.is_bcs:
         service_category = models.ServiceCategory.objects.all()
         services = models.Service.objects.all()
+        sub_services = models.SubService.objects.all()
         context = {
             'service_category': service_category,
             'services': services,
+            'sub_services': sub_services,
             'services_headings': list(services.values_list('service_title', flat=True)),
         }
         return render(request, 'user_panel/bcs/services.html', context)
