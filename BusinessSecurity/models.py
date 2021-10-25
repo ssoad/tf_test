@@ -44,8 +44,28 @@ class Service(models.Model):
         verbose_name_plural = 'Services'
 
 
+input_type = (
+    ('text', 'text'),
+    ('number', 'number'),
+    ('file', 'file'),
+)
+
+
+class InputFields(models.Model):
+    type = models.CharField(max_length=264, choices=input_type)
+    # name = models.CharField(max_length=264, blank=True, null=True)
+    placeholder = models.CharField(max_length=264, blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.type} - {self.placeholder}'
+
+    class Meta:
+        verbose_name_plural = 'Input Fields'
+
+
 class SubService(models.Model):
-    sub_service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='subservice_service')
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='subservice_service')
+    fields = models.ManyToManyField(InputFields, related_name='subservice_inputfields', through='SubServiceInput')
     title = models.CharField(max_length=264, verbose_name='Title')
     description = models.TextField(verbose_name='Description')
     total_customer = models.IntegerField(verbose_name='Total Customer', default=0, blank=True)
@@ -55,6 +75,15 @@ class SubService(models.Model):
 
     class Meta:
         verbose_name_plural = 'Sub Services'
+
+
+class SubServiceInput(models.Model):
+    subservice = models.ForeignKey(SubService, on_delete=models.CASCADE, related_name='subserviceinput_subservice')
+    inputfield = models.ForeignKey(InputFields, on_delete=models.CASCADE, related_name='subserviceinput_inputfield')
+    input_value = models.CharField(max_length=264, blank=True, null=True)
+
+    class Meta:
+        db_table = 'BusinessSecurity_subservice_inputfields'
 
 
 duration_type = (

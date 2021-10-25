@@ -77,16 +77,16 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for user in users %}
+                        {% for current_user in users %}
                             <tr>
                                 <td></td>
-                                <td>{{ user.first_name }} {{ user.last_name }}</td>
-                                <td>{{ user.email }}</td>
-                                <td>{{ user.phone_number }}</td>
-                                <td>{{ user.gender }}</td>
+                                <td>{{ current_user.first_name }} {{ user.last_name }}</td>
+                                <td>{{ current_user.email }}</td>
+                                <td>{{ current_user.phone_number }}</td>
+                                <td>{{ current_user.gender }}</td>
                                 <td>{{ current_user.business_user.business.company_name }}</td>
-                                <td>{{ current_user.business_user.business.position }}</td>
-                                <td>{{ current_user.business_user.business.privilege }}</td>
+                                <td>{{ current_user.business_user.position }}</td>
+                                <td>{{ current_user.business_user.privilege }}</td>
                                 <td>
                                     <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
                                         <i class="bi bi-pencil-square text-primary rounded-circle activites-icon"></i>

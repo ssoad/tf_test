@@ -335,8 +335,12 @@ def userServicesView(request):
     if not request.user.is_bcs:
         return HttpResponseRedirect(reverse('create_business'))
     elif request.user.is_bcs:
+        service_category = models.ServiceCategory.objects.all()
+        services = models.Service.objects.all()
         context = {
-
+            'service_category': service_category,
+            'services': services,
+            'services_headings': list(services.values_list('service_title', flat=True)),
         }
         return render(request, 'user_panel/bcs/services.html', context)
 
@@ -687,7 +691,7 @@ def bcsAdminServiceCategoryEditView(request, id):
         if form.is_valid():
             form.save()
 
-            return HttpResponseRedirect(reverse('bcs_app:bcs_admin_services_category'))
+            return HttpResponseRedirect(reverse('bcs_admin_services_category'))
 
     context = {
         'form': form,
@@ -728,7 +732,7 @@ def bcsAdminServiceEditView(request, id):
         if form.is_valid():
             form.save()
 
-            return HttpResponseRedirect(reverse('bcs_app:bcs_admin_services'))
+            return HttpResponseRedirect(reverse('bcs_admin_services'))
 
     context = {
         'form': form,
@@ -740,6 +744,7 @@ def bcsAdminServiceEditView(request, id):
 def bcsAdminSubServiceView(request):
     form = forms.AddSubServiceForm()
     sub_services = models.SubService.objects.all()
+    print(request.POST)
     if request.method == 'POST':
         form = forms.AddSubServiceForm(request.POST)
         if form.is_valid():
@@ -769,7 +774,49 @@ def bcsAdminSubServiceEditView(request, id):
         if form.is_valid():
             form.save()
 
-            return HttpResponseRedirect(reverse('bcs_app:bcs_admin_sub_services'))
+            return HttpResponseRedirect(reverse('bcs_admin_sub_services'))
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'admin_panel/bcsTF/editForm.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsSubServiceFormView(request):
+    form = forms.AddForm()
+    form_lists = models.InputFields.objects.all()
+    print(request.POST)
+    if request.method == 'POST':
+        form = forms.AddForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    context = {
+        'form': form,
+        'form_lists': form_lists,
+    }
+    return render(request, 'admin_panel/bcsTF/subserviceForms.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminSubServiceFormDeleteView(request, id):
+    input_field = models.InputFields.objects.get(id=id)
+    input_field.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminSubServiceFormEditView(request, id):
+    current_input_field = models.InputFields.objects.get(id=id)
+    form = forms.AddForm(instance=current_input_field)
+
+    if request.method == 'POST':
+        form = forms.AddForm(request.POST, instance=current_input_field)
+        if form.is_valid():
+            form.save()
+
+            return HttpResponseRedirect(reverse('bcs_admin_sub_services_form'))
 
     context = {
         'form': form,

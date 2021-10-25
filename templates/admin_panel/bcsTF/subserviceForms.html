@@ -24,7 +24,7 @@
                         Go back to list
                     </button>
                     <button class="btn border-1 servicesBtn addService float-end mb-4" >
-                        Add Sub Service
+                        Create a Form
                         <i class="bi bi-plus-circle-fill"></i></button>
                 </div>
             </div>
@@ -33,7 +33,7 @@
                     <div class="modal-dialog modal-lg add-form d-none">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4>Add Sub Service</h4>
+                                <h4>Add a Form</h4>
                                 <button type="button" class="btn-close form-close"></button>
                             </div>
                             <div class="modal-body px-3">
@@ -59,40 +59,35 @@
                             <thead>
                                 <tr>
                                     <th>SL</th>
-                                    <th>Service Name</th>
-                                    <th>Sub Service Name</th>
-                                    <th>Description</th>
+                                    <th>Form Type</th>
+                                    <th>Form Name</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            {% for subService in sub_services %}
+                            {% for form_list in form_lists %}
                                 <tr>
                                     <td>{{ forloop.counter }}</td>
-                                    <td>{{ subService.service.service_title }}</td>
-                                    <td>{{ subService.title }}</td>
-                                    <td>{{ subService.description }}</td>
+                                    <td>{{ form_list.type }}</td>
+                                    <td>{{ form_list.placeholder }}</td>
                                     <td>
-                                        <a href="{% host_url 'bcs_admin_sub_services_edit' id=subService.id %}" class="btn">
+                                        <a href="{% host_url 'bcs_admin_sub_services_form_edit' id=form_list.id %}" class="btn">
                                             <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
                                             Edit
                                         </a>
-                                        <a href="{% host_url 'bcs_admin_sub_services_delete' id=subService.id %}" class="btn trash">
+                                        <a href="{% host_url 'bcs_admin_sub_services_form_delete' id=form_list.id %}" class="btn trash">
                                             <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
                                             Delete
                                         </a>
                                     </td>
                                 </tr>
                             {% endfor %}
-
-
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-
       <!-- Modal -->
         <!-- <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
