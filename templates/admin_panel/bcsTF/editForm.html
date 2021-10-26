@@ -30,6 +30,12 @@
          if (e.key == 'Enter' || e.which == '13') {
             e.preventDefault();
         }
-    })
+    });
+     let format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    document.getElementById('id_title').addEventListener('keydown',e=>{
+         if(format.test(e.key))
+            e.preventDefault();
+
+    });
     </script>
 {% endblock customjs %}
