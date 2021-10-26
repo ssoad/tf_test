@@ -590,7 +590,20 @@
                         </div>
                         </div>`;
 
-            let formName = allForms[index];
+
+
+            fetchData('').then(function(data) {
+                previewForm.innerHTML = previewForm.innerHTML + data;
+                previewForm.removeChild(document.getElementById('progress'));
+                
+
+            }).catch(function(err) {
+                console.log(err)
+            })
+
+
+
+            {% comment %} let formName = allForms[index];
             let formUrl = `/bcs_services_form/${formName}`;
 
             fetchForm(formUrl).then(function(data) {
@@ -609,7 +622,7 @@
 
             }).catch(function(err) {
                 console.log(err)
-            })
+            }) {% endcomment %}
 
         })
     });
