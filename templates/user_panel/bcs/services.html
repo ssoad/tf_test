@@ -243,7 +243,7 @@
         </div>
         <div class="my-4 pt-5 px-3">
             <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
-                <button type="button" class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">Provide information
+                <button id="{{service.id}}" type="button" class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">Provide information
                     to
                     get a quotation
                 </button>
@@ -590,10 +590,18 @@
                         </div>
                         </div>`;
 
+            fetchData(`${location.origin}/api/bcs/sub_service/${btn.id}`).then(function(data) {
+                let list = '<div class="col-md-4 sub-services shadow"> <h5 class="fw-bold">Choose your services:</h5>';
+          
+                data.forEach((option,index) => {
+                    list+=`<div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="" id="sub-${option.id}">
+                    <label class="form-check-label" for="sub-${option.id}">${index+1}. ${option.title}</label>
+                </div>`;
+                });
+                
+                previewForm.innerHTML = list+'</div>';
 
-
-            fetchData('').then(function(data) {
-                previewForm.innerHTML = previewForm.innerHTML + data;
                 previewForm.removeChild(document.getElementById('progress'));
                 
 
@@ -627,7 +635,7 @@
         })
     });
 
-    function fetchForm(formUrl) {
+    function fetchData(formUrl) {
         return new Promise(function(resolve, reject) {
             $.ajax({
                 url: formUrl,
