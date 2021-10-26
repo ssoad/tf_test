@@ -1,7 +1,9 @@
-{% extends 'base/bcs_user_base.html' %} {% load static %} {% load hosts %} {% block title %} Dashboard {% endblock title %} {% block content %}
+{% extends 'base/bcs_user_base.html' %} {% load static %}
+{% load my_filter %}
+{% load hosts %} {% block title %} Dashboard {% endblock title %} {% block content %}
 <div class="dashboard-container overflow-hidden ps-md-2">
     <section class="dashboard-heading">
-        <h3 class="fw-bold">Hello, Anjelina</h3>
+        <h3 class="fw-bold">Hello, {{ user.first_name }}</h3>
         <h4>This is what we got for you today</h4>
     </section>
     <section class="orders mt-4">
@@ -113,61 +115,26 @@
     <section class="readings mt-5">
         <h4 class="fw-bold border-bottom border-gray pb-3 mb-4">My Reading List</h4>
         <div class="reading-list p-2 rounded-3 shadow bg-white">
-            <div class="row">
-                <div class="col-12 col-lg-7">
-                    <h5 class="fw-bold">LOREM IPSUM IS SIMPLY DUMMY TEXT-1</h5>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum asperiores possimus aut sit suscipit atque.</p>
-                </div>
-                <div class="col-6 col-lg-3 d-flex justify-content-center align-items-center flex-column">
-                    <h6 class="fw-bold">Publish Date:</h6>
-                    <h6>27 October, 2020</h6>
-                </div>
-                <div class="col-6 col-lg-2 d-flex justify-content-center align-items-center">
-                    <button class="btn btn-sm bg-navy text-white px-2 py-2">Read Full</button>
-                </div>
-            </div>
 
-            <div class="row">
+            {% for reading_list in user.reading_list_user.all %}
+                <div class="row">
                 <div class="col-12 col-lg-7">
-                    <h5 class="fw-bold">LOREM IPSUM IS SIMPLY DUMMY TEXT-2</h5>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum asperiores possimus aut sit suscipit atque.</p>
+                    <h5 class="fw-bold">{{ reading_list.post.title }}</h5>
+                    <p>{{ reading_list.post.short_description }}</p>
                 </div>
                 <div class="col-6 col-lg-3 d-flex justify-content-center align-items-center flex-column">
                     <h6 class="fw-bold">Publish Date:</h6>
-                    <h6>27 October, 2020</h6>
+                    <h6>{{ reading_list.post.date }}</h6>
                 </div>
-                <div class="col-6 col-lg-2 d-flex justify-content-center align-items-center">
-                    <button class="btn btn-sm bg-navy text-white px-2 py-2">Read Full</button>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="col-12 col-lg-7">
-                    <h5 class="fw-bold">LOREM IPSUM IS SIMPLY DUMMY TEXT 3</h5>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum asperiores possimus aut sit suscipit atque.</p>
-                </div>
-                <div class="col-6 col-lg-3 d-flex justify-content-center align-items-center flex-column">
-                    <h6 class="fw-bold">Publish Date:</h6>
-                    <h6>27 October, 2020</h6>
-                </div>
                 <div class="col-6 col-lg-2 d-flex justify-content-center align-items-center">
-                    <button class="btn btn-sm bg-navy text-white px-2 py-2">Read Full</button>
+                    <a href="{% host_url reading_list.post.category|replacespace host 'blog' %}{{ reading_list.post.post_url }}" class="btn btn-sm bg-navy text-white px-2 py-2">Read Full</a>
                 </div>
             </div>
+            {% endfor %}
 
-            <div class="row">
-                <div class="col-12 col-lg-7">
-                    <h5 class="fw-bold">LOREM IPSUM IS SIMPLY DUMMY TEXT 4</h5>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum asperiores possimus aut sit suscipit atque.</p>
-                </div>
-                <div class="col-6 col-lg-3 d-flex justify-content-center align-items-center flex-column">
-                    <h6 class="fw-bold">Publish Date:</h6>
-                    <h6>27 October, 2020</h6>
-                </div>
-                <div class="col-6 col-lg-2 d-flex justify-content-center align-items-center">
-                    <button class="btn btn-sm bg-navy text-white px-2 py-2">Read Full</button>
-                </div>
-            </div>
+
+
 
             <div class="btn-area d-flex justify-content-end">
                 <button type="button" id="prev-btn" class="btn btn-outline-navy px-3 py-1 me-3">Previous</button>

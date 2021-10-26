@@ -680,7 +680,7 @@
         {% for service in services %}
             {{ service|replacespace }}: [
                 {%for subservice in service.subservice_service.all%}
-                {{ subservice|replacespace }} = {
+                {{ subservice|replacespace|safe }} = {
                     title: '{{subservice|upper}}',
                     description: '{{subservice.description}}'
                 },
