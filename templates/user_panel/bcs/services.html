@@ -579,8 +579,6 @@
     let allServicesFromContainer;
     let allServices;
 
-
-
     quotationBtns.forEach((btn, index) => {
         btn.addEventListener('click', e => {
             previewServiceInfos.forEach(form => {
@@ -597,7 +595,9 @@
                 let list = '<div class="col-md-4 sub-services shadow"> <h5 class="fw-bold">Choose your services:</h5>';
                 let form = `<form method="POST" enctype="multipart/form-data" class="col-md-8 d-none information-form"><h5 class="fw-bold text-center border-bottom border-gray p-2">Please Provide Necessary Informations:</h5>{% csrf_token %}`;
                 let inputFields='';
-                data.forEach((option,index) => {
+                let option;
+                data.forEach((elem,index) => {
+                    option=elem.subservice;
                     list+=`<div class="form-check">
                     <input class="form-check-input" type="checkbox" name="" id="sub-${option.id}">
                     <label class="form-check-label" for="sub-${option.id}">${index+1}. ${option.title}</label>
@@ -611,21 +611,25 @@
                 
                 previewForm.removeChild(document.getElementById('progress'));
 
-                previewForm.innerHTML = '<div class="row">'+ list +'</div>' + form + inputFields +'<button type="submit" class="btn btn-navy mt-3">Submit</button>'+'</form>';
+                previewForm.innerHTML = '<div class="row mx-0">'+ list +'</div>' + form + inputFields +'<button type="submit" class="btn btn-navy mt-3">Submit</button>'+'</form>';
 
                 allServices = document.querySelectorAll('.sub-services .form-check');
                  allServices.forEach((check, index) => {
                     check.addEventListener('click', e => {
-                        document.querySelector('.information-form').classList.remove('d-none');
-                        document.getElementById(`${check.children[0].id}-input`).classList.remove('d-none');
 
-                        if (check.children[0].checked)
-                        document.getElementById(`${check.children[0].id}-input`).classList.remove('d-none');        
-                        else
+                        if (check.children[0].checked){
+                        document.querySelector('.information-form').classList.remove('d-none');
+
+                        document.getElementById(`${check.children[0].id}-input`).classList.remove('d-none');
+                        }        
+                        else{
                             document.getElementById(`${check.children[0].id}-input`).classList.add('d-none');
+                        if(Array.from(document.querySelectorAll('.sub-services .form-check-input')).every(checkbox => checkbox.checked==false))
+                            document.querySelector('.information-form').classList.add('d-none');
+
+                            }
                     })
                 });
-
 
             }).catch(function(err) {
                 console.log(err)
