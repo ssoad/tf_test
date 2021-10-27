@@ -80,4 +80,4 @@ class SubServiceApiView(generics.ListAPIView):
 
     def get_queryset(self):
         service_id = self.kwargs['id']
-        return bcsmodels.SubService.objects.filter(service_id=service_id)
+        return bcsmodels.SubServiceInput.objects.filter(subservice__service_id=service_id)
