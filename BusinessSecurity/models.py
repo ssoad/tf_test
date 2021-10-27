@@ -80,10 +80,17 @@ class SubService(models.Model):
 class SubServiceInput(models.Model):
     subservice = models.ForeignKey(SubService, on_delete=models.CASCADE, related_name='subserviceinput_subservice')
     inputfield = models.ForeignKey(InputFields, on_delete=models.CASCADE, related_name='subserviceinput_inputfield')
-    input_value = models.CharField(max_length=264, blank=True, null=True)
+
+    # input_value = models.CharField(max_length=264, blank=True, null=True)
 
     class Meta:
         db_table = 'BusinessSecurity_subservice_inputfields'
+
+
+class UserSubserviceInput(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_subservice_input')
+    inputfield = models.ForeignKey(SubServiceInput, on_delete=models.CASCADE, related_name='inputfield_input')
+    inputinfo = models.CharField(max_length=255)
 
 
 duration_type = (
