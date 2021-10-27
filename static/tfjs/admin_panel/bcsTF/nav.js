@@ -2,7 +2,7 @@ const navLinks = document.querySelectorAll('.nav-link')
 navLinks.forEach(link => {
   if (link.href == document.URL) {
     link.classList.add("active")
-    if (link.classList.contains("dropdown-item")){
+    if (link.classList.contains("dropdown-item")) {
       link.parentElement.parentElement.classList.add("show-dropdown-container");
     }
 
@@ -18,46 +18,62 @@ for (let i = 0; i < dropdown.length; i++) {
   dropdown[i].addEventListener("click", function () {
     var dropdownContent = this.nextElementSibling;
     if (dropdownContent.classList.contains("show-dropdown-container")) {
-      dropdownContent.classList.remove( "show-dropdown-container");
+      dropdownContent.classList.remove("show-dropdown-container");
     } else {
       dropdownContent.classList.add("show-dropdown-container");
     }
   });
 }
 
-
-$(document).ready(function () {
-  // console.log('data-table');
-  $(window).scroll(function () {
-    if ($(window).scrollTop() + $(window).height() > $(document).height() - 5) {
-      $(".aside-container").css("bottom", $(".footer").outerHeight()+2)
-      $(".aside-container").addClass("small-aside")
-      $(".footer").removeClass("footer-shrink")
-    } else {
-      $(".aside-container").css("bottom", "0")
-      $(".aside-container").removeClass("small-aside")
-      $(".footer").addClass("footer-shrink")
-    }
-  });
-});
-
 const deleteBtn = document.querySelectorAll(".trash, .dlt")
 
-deleteBtn.forEach(btn=>{
-    btn.addEventListener("click",()=>{
-        btn.parentElement.parentElement.style.display = "none"
-    })
+deleteBtn.forEach(btn => {
+  btn.addEventListener("click", () => {
+    btn.parentElement.parentElement.style.display = "none"
+  })
 })
 
 
 const hamburger = document.querySelector(".hamburger")
 const sideBarClose = document.querySelector(".sideBarClose")
 const aside = document.querySelector(".aside-container")
+const nav = document.querySelector("nav")
+const main = document.querySelector("main")
+const footer = document.querySelector("footer")
 
-hamburger.addEventListener("click", ()=>{
+hamburger.addEventListener("click", () => {
   aside.classList.toggle("show-aside")
 })
 
-sideBarClose.addEventListener("click", ()=>{
+sideBarClose.addEventListener("click", () => {
   aside.classList.remove("show-aside")
 })
+
+const shrinkBtn = document.querySelector(".shrink-btn")
+shrinkBtn.addEventListener("click", () => {
+  aside.classList.toggle("shrink-container")
+  aside.classList.toggle("mouseover")
+  nav.classList.toggle("nav-expand")
+  main.classList.toggle("main-expand")
+  footer.classList.toggle("footer-expand")
+})
+aside.addEventListener("mouseover", () => {
+  if (aside.classList.contains("mouseover"))
+    aside.classList.remove("shrink-container")
+})
+
+aside.addEventListener("mouseout", () => {
+  if (aside.classList.contains("mouseover"))
+    aside.classList.add("shrink-container")
+})
+
+
+// if(){
+//   console.log("true");
+//   aside.addEventListener("mouseover",()=>{
+//     if(aside.classList.contains("shrink-container"))
+//       aside.classList.remove("shrink-container")
+//   })
+
+
+// }
