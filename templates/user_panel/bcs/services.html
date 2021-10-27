@@ -595,7 +595,7 @@
 
             fetchData(`${location.origin}/api/bcs/sub_service/${btn.id}`).then(function(data) {
                 let list = '<div class="col-md-4 sub-services shadow"> <h5 class="fw-bold">Choose your services:</h5>';
-                let form = `<div class="col-md-8 d-none information-form"><h5 class="fw-bold text-center border-bottom border-gray p-2">Please Provide Necessary Informations:</h5>
+                let form = `<form method="POST" enctype="multipart/form-data" class="col-md-8 d-none information-form"><h5 class="fw-bold text-center border-bottom border-gray p-2">Please Provide Necessary Informations:</h5>
 `;
                 let inputFields='';
                 data.forEach((option,index) => {
@@ -612,7 +612,7 @@
                 
                 previewForm.removeChild(document.getElementById('progress'));
 
-                previewForm.innerHTML = '<div class="row">'+ list +'</div>' + form + inputFields +'</div>';
+                previewForm.innerHTML = '<div class="row">'+ list +'</div>' + form + inputFields +'<button type="submit" class="btn btn-navy mt-3">Submit</button>'+'</form>';
 
                 allServices = document.querySelectorAll('.sub-services .form-check');
                  allServices.forEach((check, index) => {
