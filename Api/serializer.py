@@ -67,6 +67,6 @@ class SubServiceSerializer(serializers.ModelSerializer):
     # fields = serializers.StringRelatedField(many=True)
 
     class Meta:
-        model = bcsmodels.SubService
-        fields = ['id', 'title', 'description', 'total_customer', 'service', 'fields']
-        depth = 1
+        model = bcsmodels.SubServiceInput
+        fields = '__all__'
+        depth = 2

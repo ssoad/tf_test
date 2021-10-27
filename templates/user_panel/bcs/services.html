@@ -595,8 +595,7 @@
 
             fetchData(`${location.origin}/api/bcs/sub_service/${btn.id}`).then(function(data) {
                 let list = '<div class="col-md-4 sub-services shadow"> <h5 class="fw-bold">Choose your services:</h5>';
-                let form = `<form method="POST" enctype="multipart/form-data" class="col-md-8 d-none information-form"><h5 class="fw-bold text-center border-bottom border-gray p-2">Please Provide Necessary Informations:</h5>
-`;
+                let form = `<form method="POST" enctype="multipart/form-data" class="col-md-8 d-none information-form"><h5 class="fw-bold text-center border-bottom border-gray p-2">Please Provide Necessary Informations:</h5>{% csrf_token %}`;
                 let inputFields='';
                 data.forEach((option,index) => {
                     list+=`<div class="form-check">
@@ -605,7 +604,7 @@
                 </div>`;
                     inputFields+=`<div class="mt-5 d-none" id="sub-${option.id}-input">`
                     option.fields.forEach(field => {
-                        inputFields+=`<label for="input-${field.id}.${option.id}">${field.placeholder.toUpperCase()}</label> <input class="form-control" type="${field.type}" id="input-${field.id}.${option.id}" name="hold-customer-information" placeholder="${field.placeholder}">`;
+                        inputFields+=`<label for="input-${field.id}.${option.id}">${field.placeholder.toUpperCase()}</label> <input class="form-control" type="${field.type}" id="input-${field.id}.${option.id}" name="input-${field.id}.${option.id}" placeholder="${field.placeholder}">`;
                     });
                     inputFields+=`</div>`
                 });
