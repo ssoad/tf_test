@@ -337,9 +337,11 @@ def userServicesView(request):
     elif request.user.is_bcs:
         service_category = models.ServiceCategory.objects.all()
         services = models.Service.objects.all()
+        sub_services = models.SubService.objects.all()
         context = {
             'service_category': service_category,
             'services': services,
+            'sub_services': sub_services,
             'services_headings': list(services.values_list('service_title', flat=True)),
         }
         return render(request, 'user_panel/bcs/services.html', context)
@@ -988,7 +990,7 @@ def bcsAdminProfile(request):
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminUserInterest(request):
     users_list = User.objects.all()
-    interests = Interest.objects.all()
+    interests = Interest.objects.filter(user__is_bcs=True)
     context = {
         'users_list': users_list,
         'interests': interests,

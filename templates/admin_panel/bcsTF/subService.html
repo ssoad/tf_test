@@ -168,4 +168,17 @@
 {% endblock content %}
 {% block customjs %}
     <script src="{% static 'tfjs/admin_panel/bcsTF/service.js' %}"></script>
+    <script>
+    document.getElementById('id_description').addEventListener('keydown',e=>{
+         if (e.key == 'Enter' || e.which == '13') {
+            e.preventDefault();
+        }
+    });
+    let format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    document.getElementById('id_title').addEventListener('keydown',e=>{
+         if(format.test(e.key))
+            e.preventDefault();
+
+    });
+    </script>
 {% endblock customjs %}

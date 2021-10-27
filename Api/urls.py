@@ -12,4 +12,5 @@ urlpatterns = [
     path('blogs/comment/<post_id>', views.CommentCreateViewApi.as_view(), name='comment_create_view_api'),
 
     path('bcs/package/<id>', views.PackageListViewApi.as_view(), name='package_list_api'),
+    path('bcs/sub_service/<id>', views.SubServiceApiView.as_view(), name='subservice_list_api'),
 ]

@@ -61,3 +61,9 @@ class PackageListSerializer(serializers.ModelSerializer):
         model = bcsmodels.SubscriptionBasedPackage
         fields = ['id', 'service_id', 'service_name', 'package_name', 'servers', 'websites', 'workstations', 'duration',
                   'duration_type', 'feature_subscription', 'price', ]
+
+
+class SubServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = bcsmodels.SubService
+        fields = '__all__'
