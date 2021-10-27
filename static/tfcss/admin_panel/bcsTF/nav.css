@@ -21,7 +21,7 @@ body {
 }
 
 ul {
-    list-style: none;
+    /* list-style: none; */
     padding-inline: 0;
 }
 
@@ -123,6 +123,9 @@ nav {
 
 aside {
     background: #fff;
+}
+aside li{
+    list-style: none;
 }
 
 .aside-container {
