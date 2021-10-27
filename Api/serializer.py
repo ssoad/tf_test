@@ -64,6 +64,9 @@ class PackageListSerializer(serializers.ModelSerializer):
 
 
 class SubServiceSerializer(serializers.ModelSerializer):
+    # fields = serializers.StringRelatedField(many=True)
+
     class Meta:
         model = bcsmodels.SubService
-        fields = '__all__'
+        fields = ['id', 'title', 'description', 'total_customer', 'service', 'fields']
+        depth = 1
