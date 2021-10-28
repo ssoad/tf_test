@@ -591,73 +591,74 @@
                         </div>
                         </div>`;
 
-            fetchData(`${location.origin}/api/bcs/sub_service/${btn.id}`).then(function(data) {
+            fetchData(`${location.origin}/api/bcs/sub_service/${btn.id}`)
+            .then(function(data) {
               previewForm.removeChild(document.getElementById('progress'));
 
                 let list = '<div class="col-md-4 sub-services shadow"> <h5 class="fw-bold">Choose your services:</h5>';
-                let form = `<form method="POST" enctype="multipart/form-data" class="col-md-8 d-none information-form"><h5 class="fw-bold text-center border-bottom border-gray p-2">Please Provide Necessary Informations:</h5>{% csrf_token %}`;
-                let inputFields='';
-                
-                data.forEach((option,index) => {
-                    
+                let form = `<form method="POST" enctype="multipart/form-data">{% csrf_token %}`                
+                data.forEach((option,index) => {    
                     list+=`<div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="" id="sub-${option.id}">
+                    <input class="form-check-input sub-services-check" type="checkbox" name="" id="sub-${option.id}" data-index="${index}" data-title="${option.title}" data-id="${option.id}">
                     <label class="form-check-label" for="sub-${option.id}">${index+1}. ${option.title}</label>
                 </div>`;
-
-                fetchData(`${location.origin}/api/bcs/sub_service_input/${option.id}`).then(function(fields) {
-
-                    inputFields+=`<div class="mt-5 d-none" id="sub-${option.id}-input">`;
-                    fields.forEach(field => {
-                        inputFields+=`<label for="input-${field.inputfield.id}.${option.id}">${field.inputfield.placeholder.toUpperCase()}</label> <input class="form-control" type="${field.inputfield.type}" 
-                        id="input-${field.inputfield.id}.${option.id}" name="${field.id}" placeholder="${field.inputfield.placeholder}">`;
-                    });
-                    inputFields+=`</div>`;
-                    addHtml();
-               
+                previewForm.innerHTML = '<div class="row mx-0">'+ list +'</div>' + '<div class="col-md-8 d-none form-container"><h5 class="fw-bold text-center border-bottom border-gray p-2">Please Provide Necessary Informations:</h5>'  + form +'<div class="information-form"></div><button type="submit" class="submit-btn btn btn-navy mt-3">Submit</button></form> </div>';
+                
+                });
+                addHtml()
             }).catch(function(err) {
                 console.log(err)
             });
-                });
-                
-               const addHtml=()=>{
-
-                
-                previewForm.innerHTML = '<div class="row mx-0">'+ list +'</div>' + form + inputFields +'<button type="submit" class="btn btn-navy mt-3">Submit</button>'+'</form>';
-
-                allServices = document.querySelectorAll('.sub-services .form-check');
-                 allServices.forEach((check, index) => {
-                    check.addEventListener('click', e => {
-                        console.log(check.children[0].id)
-                        if (check.children[0].checked){
-                        document.querySelector('.information-form').classList.remove('d-none');
-
-                        document.getElementById(`${check.children[0].id}-input`).classList.remove('d-none');
-                        }        
-                        else{
-                            document.getElementById(`${check.children[0].id}-input`).classList.add('d-none');
-                        if(Array.from(document.querySelectorAll('.sub-services .form-check-input')).every(checkbox => checkbox.checked==false))
-                            document.querySelector('.information-form').classList.add('d-none');
-
+            
+            const addHtml=()=>{
+                const allServices = document.querySelectorAll('.sub-services-check');
+                const formContainer = document.querySelector('.form-container');
+                const formC = document.querySelector('.form-container form');
+                const informationForm = document.querySelector('.information-form');
+                const informationFormBtn = document.querySelector('.information-form .submit-btn');
+                allServices.forEach((check, index) => {
+                    check.addEventListener('change', e => {
+                        if (check.checked){
+                            document.querySelector('.form-container').classList.remove('d-none');
+                            optionId = e.target.getAttribute("data-id")
+                            optionIndex = e.target.getAttribute("data-index")
+                            optionTitle = check.getAttribute("data-title")
+                            const div = document.createElement("div")
+                            div.setAttribute("id", `sub-${optionId}-input`)
+                            let inputFields='';
+                            // informationForm.children[optionIndex]
+                            formC.insertAdjacentHTML('beforebegin', `<p id="progress">Loading...</p>`);
+                            fetchData(`${location.origin}/api/bcs/sub_service_input/${optionId}`).then(function(fields) {
+                                formContainer.removeChild(document.getElementById("progress"))
+                                inputFields+=`<div class="mt-5"data-position="${optionIndex}">  <h6 class="heading">${optionTitle}</h6>`;
+                                    fields.forEach(field => {
+                                        inputFields+=`<label for="input-${field.inputfield.id}.${optionId}">${field.inputfield.placeholder.toUpperCase()}</label> <input class="form-control" type="${field.inputfield.type}" 
+                                        id="input-${field.inputfield.id}.${optionId}" name="${field.id}" placeholder="${field.inputfield.placeholder}">`;
+                                    });
+                                    inputFields+=`</div>`;
+                                    div.innerHTML = inputFields
+                                    informationForm.insertBefore(div, informationForm.children[optionIndex]);
+                                }).catch(function(err) {
+                                    console.log(err)
+                                });
+                            }        
+                            else{
+                                // console.log(e.target);
+                                informationForm.removeChild(document.getElementById(`sub-${e.target.getAttribute("data-id")}-input`))
+                                if(Array.from(document.querySelectorAll('.sub-services .form-check-input')).every(checkbox => checkbox.checked==false))
+                                document.querySelector('.form-container').classList.add('d-none');
+                                
                             }
-                    })
-                });
-
-               }
-
-            }).catch(function(err) {
-                console.log(err)
-            });
-
-
-
-            {% comment %} let formName = allForms[index];
-            let formUrl = `/bcs_services_form/${formName}`;
-
-            fetchForm(formUrl).then(function(data) {
-                previewForm.innerHTML = previewForm.innerHTML + data;
-                previewForm.removeChild(document.getElementById('progress'));
-                if (formJsAdded)
+                        })
+                    });
+                }
+                {% comment %} let formName = allForms[index];
+                let formUrl = `/bcs_services_form/${formName}`;
+                
+                fetchForm(formUrl).then(function(data) {
+                    previewForm.innerHTML = previewForm.innerHTML + data;
+                    previewForm.removeChild(document.getElementById('progress'));
+                    if (formJsAdded)
                     document.body.removeChild(document.getElementById('form-js'));
 
                 var formScript = document.createElement('script');

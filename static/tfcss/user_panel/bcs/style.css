@@ -450,14 +450,14 @@
                 border: 1px solid #d1d5d8;
             }
             
-            #preview-form .info-type .heading {
+            #preview-form  .heading {
                 font-weight: bold;
                 overflow: hidden;
                 text-align: center;
             }
             
-            #preview-form .info-type .heading:before,
-            #preview-form .info-type .heading:after {
+            #preview-form  .heading:before,
+            #preview-form  .heading:after {
                 background-color: #182f59;
                 content: "";
                 display: inline-block;
@@ -467,12 +467,12 @@
                 width: 50%;
             }
             
-            #preview-form .info-type .heading:before {
+            #preview-form  .heading:before {
                 right: 0.5em;
                 margin-left: -50%;
             }
             
-            #preview-form .info-type .heading:after {
+            #preview-form  .heading:after {
                 left: 0.5em;
                 margin-right: -50%;
             }
