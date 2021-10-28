@@ -18,8 +18,11 @@ def superuser_permission_check(user):
 
 
 def main_admin_permission_check(user):
-    return user.is_superuser or ((
-                                         user.permission_user.is_superadmin or user.permission_user.is_admin or user.permission_user.is_moderator or user.permission_user.is_editor) and user.permission_user.admin_type == 'main_admin')
+    try:
+        return user.is_superuser or ((
+                                             user.permission_user.is_superadmin or user.permission_user.is_admin or user.permission_user.is_moderator or user.permission_user.is_editor) and user.permission_user.admin_type == 'main_admin')
+    except:
+        return user.is_superuser
 
 
 def bcs_admin_permission_check(user):

@@ -579,8 +579,6 @@
     let allServicesFromContainer;
     let allServices;
 
-
-
     quotationBtns.forEach((btn, index) => {
         btn.addEventListener('click', e => {
             previewServiceInfos.forEach(form => {
@@ -594,42 +592,62 @@
                         </div>`;
 
             fetchData(`${location.origin}/api/bcs/sub_service/${btn.id}`).then(function(data) {
+              previewForm.removeChild(document.getElementById('progress'));
+
                 let list = '<div class="col-md-4 sub-services shadow"> <h5 class="fw-bold">Choose your services:</h5>';
                 let form = `<form method="POST" enctype="multipart/form-data" class="col-md-8 d-none information-form"><h5 class="fw-bold text-center border-bottom border-gray p-2">Please Provide Necessary Informations:</h5>{% csrf_token %}`;
                 let inputFields='';
+                
                 data.forEach((option,index) => {
+                    
                     list+=`<div class="form-check">
                     <input class="form-check-input" type="checkbox" name="" id="sub-${option.id}">
                     <label class="form-check-label" for="sub-${option.id}">${index+1}. ${option.title}</label>
                 </div>`;
-                    inputFields+=`<div class="mt-5 d-none" id="sub-${option.id}-input">`
-                    option.fields.forEach(field => {
-                        inputFields+=`<label for="input-${field.id}.${option.id}">${field.placeholder.toUpperCase()}</label> <input class="form-control" type="${field.type}" id="input-${field.id}.${option.id}" name="input-${field.id}.${option.id}" placeholder="${field.placeholder}">`;
+
+                fetchData(`${location.origin}/api/bcs/sub_service_input/${option.id}`).then(function(fields) {
+
+                    inputFields+=`<div class="mt-5 d-none" id="sub-${option.id}-input">`;
+                    fields.forEach(field => {
+                        inputFields+=`<label for="input-${field.inputfield.id}.${option.id}">${field.inputfield.placeholder.toUpperCase()}</label> <input class="form-control" type="${field.inputfield.type}" 
+                        id="input-${field.inputfield.id}.${option.id}" name="${field.id}" placeholder="${field.inputfield.placeholder}">`;
                     });
-                    inputFields+=`</div>`
+                    inputFields+=`</div>`;
+                    addHtml();
+               
+            }).catch(function(err) {
+                console.log(err)
+            });
                 });
                 
-                previewForm.removeChild(document.getElementById('progress'));
+               const addHtml=()=>{
 
-                previewForm.innerHTML = '<div class="row">'+ list +'</div>' + form + inputFields +'<button type="submit" class="btn btn-navy mt-3">Submit</button>'+'</form>';
+                
+                previewForm.innerHTML = '<div class="row mx-0">'+ list +'</div>' + form + inputFields +'<button type="submit" class="btn btn-navy mt-3">Submit</button>'+'</form>';
 
                 allServices = document.querySelectorAll('.sub-services .form-check');
                  allServices.forEach((check, index) => {
                     check.addEventListener('click', e => {
+                        console.log(check.children[0].id)
+                        if (check.children[0].checked){
                         document.querySelector('.information-form').classList.remove('d-none');
-                        document.getElementById(`${check.children[0].id}-input`).classList.remove('d-none');
 
-                        if (check.children[0].checked)
-                        document.getElementById(`${check.children[0].id}-input`).classList.remove('d-none');        
-                        else
+                        document.getElementById(`${check.children[0].id}-input`).classList.remove('d-none');
+                        }        
+                        else{
                             document.getElementById(`${check.children[0].id}-input`).classList.add('d-none');
+                        if(Array.from(document.querySelectorAll('.sub-services .form-check-input')).every(checkbox => checkbox.checked==false))
+                            document.querySelector('.information-form').classList.add('d-none');
+
+                            }
                     })
                 });
 
+               }
 
             }).catch(function(err) {
                 console.log(err)
-            })
+            });
 
 
 
