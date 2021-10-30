@@ -126,6 +126,11 @@ def UserSettings(request):
 
     return render(request, template_name)
 
+def UserCourses(request):
+    template_name = "user_panel/academy/mycourses.html"
+
+    return render(request, template_name)
+
 
 # Import mimetypes module
 import mimetypes

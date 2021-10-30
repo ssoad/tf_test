@@ -24,4 +24,5 @@ urlpatterns = [
     path('academy_user_events/', views.UserEvents, name='academy_user_events'),
     path('academy_user_notifications/', views.UserNotifications, name='academy_user_notifications'),
     path('academy_user_settings/', views.UserSettings, name='academy_user_settings'),
+    path('academy_my_courses/', views.UserCourses, name='academy_my_courses'),
 ]
