@@ -1,4 +1,5 @@
 from django import template
+from Academy import models
 
 register = template.Library()
 
@@ -22,3 +23,12 @@ def replacespace(value):
 def capitalize(value):
     return str(value).replace("_", " ").title()
 
+
+@register.filter
+def classCount(value):
+    current_course = models.Course.objects.get(id=value)
+    classes = 0
+    for section in current_course.section_course.all():
+        classes += section.content_section.count()
+
+    return classes

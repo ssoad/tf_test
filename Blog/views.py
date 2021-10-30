@@ -194,10 +194,58 @@ def adminBlogView(request):
 
 @user_passes_test(permission_check, login_url='/accounts/login/')
 def adminCategoryListView(request):
-    context = {
+    categories = models.BlogCategory.objects.all()
+    sub_categories = models.BlogSubCategory.objects.all()
+    filter_options = models.FilterOption.objects.all()
+    form1 = forms.CategoryForm()
+    form2 = forms.SubCategoryForm()
+    form3 = forms.FilterOptionForm()
 
+    if request.method == 'POST':
+        if 'category-btn' in request.POST:
+            form1 = forms.CategoryForm(request.POST)
+            form1.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        elif 'subcategory-btn' in request.POST:
+            form2 = forms.SubCategoryForm(request.POST)
+            form2.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        elif 'filter-btn' in request.POST:
+            form3 = forms.FilterOptionForm(request.POST)
+            form3.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+    context = {
+        'categories': categories,
+        'sub_categories': sub_categories,
+        'filter_options': filter_options,
+
+        'form1': form1,
+        'form2': form2,
+        'form3': form3,
     }
-    return render(request, 'admin_panel/blog/categoryList.html')
+    return render(request, 'admin_panel/blog/categoryList.html', context)
+
+
+@user_passes_test(permission_check, login_url='/accounts/login/')
+def categoryDeleteView(request, id):
+    current_category = models.BlogCategory.objects.get(id=id)
+    current_category.delete()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@user_passes_test(permission_check, login_url='/accounts/login/')
+def subCategoryDeleteView(request, id):
+    current_subcategory = models.BlogSubCategory.objects.get(id=id)
+    current_subcategory.delete()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@user_passes_test(permission_check, login_url='/accounts/login/')
+def filterDeleteView(request, id):
+    current_filter = models.FilterOption.objects.get(id=id)
+    current_filter.delete()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
 @user_passes_test(permission_check, login_url='/accounts/login/')

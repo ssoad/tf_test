@@ -342,7 +342,15 @@ def userServicesView(request):
         services = models.Service.objects.all()
         sub_services = models.SubService.objects.all()
         if request.method == 'POST':
-            print(request.POST)
+            data_list = request.POST
+            print(data_list)
+            for data in data_list:
+                if data != 'csrfmiddlewaretoken':
+                    current_input = models.SubServiceInput.objects.get(id=data)
+                    input_data = models.UserSubserviceInput(user=request.user, inputfield=current_input,
+                                                            inputinfo=data_list[data])
+                    input_data.save()
+                    print('hello')
         context = {
             'service_category': service_category,
             'services': services,
