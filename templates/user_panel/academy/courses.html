@@ -1,14 +1,38 @@
-{% extends 'base/academy_user_base.html' %} {% load static %} {% load hosts %} {% block title %} My Courses {% endblock title %} {% block content %}
+{% extends 'base/academy_user_base.html' %} {% load static %} {% load my_filter %} {% load hosts %} {% block title %} My Courses {% endblock title %} {% block content %}
 <div class="course-container mt-2 mb-4 position-relative">
     <div class="courses">
         <h4 class="fw-bold border-bottom border-gray pb-14p mb-4">My Courses</h4>
 
         <h5 class="fw-bold mb-3">PROFESSIONAL</h5>
-        <div class="row mx-0 bg-lightgreen shadow py-3">
+        {% for course in courses %}
+            <div class="row mx-0 bg-lightgreen shadow py-3 mb-3">
             <div class="col-md-5 d-flex">
-                <div>
-                    <img src="./tfimg/services/user.png" alt="">
+                <div class="ps-2">
+                    <h6 class="fw-bold">{{ course.course_name }}</h6>
+                    <p class="mb-0 fs-14 text-justify">
+                        {{ course.short_description }}
+                    </p>
                 </div>
+            </div>
+            <div class="col-md-2 text-center">
+                <h6 class="fw-bold">Duration</h6>
+                <p>{{ course.duration|capitalize }}</p>
+            </div>
+            <div class="col-md-2 text-center">
+                <h6 class="fw-bold">Total Classes</h6>
+                <p>{{ course.id|classCount }} Classes</p>
+            </div>
+            <div class="col-md-3 d-flex align-items-center justify-content-evenly">
+                <a href="{% host_url 'academy_user_courses' host 'academy' %}{{ course.id }}" class="btn bg-green py-1 px-3">View</a>
+            </div>
+
+        </div>
+        {% endfor %}
+
+{% comment %}
+        <div class="row mx-0 bg-lightgreen shadow py-3 mb-3">
+            <div class="col-md-5 d-flex">
+
                 <div class="ps-2">
                     <h6 class="fw-bold">CCSP Course For Professional</h6>
                     <p class="mb-0 fs-14 text-justify">This eight-week course consists of instructional content and expert-led lab classes, which will be a massive boost to becoming certified cybersecurity professional.
@@ -26,7 +50,10 @@
             <div class="col-md-3 d-flex align-items-center justify-content-evenly">
                 <button class="view-btn btn bg-green py-1 px-3">View</button>
             </div>
+
         </div>
+{% endcomment %}
+
         <!-- <h5 class="mt-5 fw-bold mb-3">CORPORATE</h5>
         <div class="row mx-0 bg-lightgreen shadow py-3">
             <div class="col-md-5 d-flex">
