@@ -62,6 +62,16 @@ def UserCourses(request):
     return render(request, "user_panel/academy/courses.html", context)
 
 
+def myCourses(request):
+
+    courses = models.Course.objects.all()
+
+    context = {
+        'courses': courses,
+    }
+
+    return render(request, "user_panel/academy/mycourses.html", context)
+
 def UserCoursesDetails(request, id):
     course = models.Course.objects.get(id=id)
 
@@ -72,8 +82,10 @@ def UserCoursesDetails(request, id):
     return render(request, "user_panel/academy/details.html", context)
 
 
-def UserFiles(request):
+def UserFiles(request, id):
+    course = models.Course.objects.get(id=id)
     context = {
+        'course': course,
         'content_type': 'instruction',
         'section_no': 1,
         'module_no': 1
@@ -123,11 +135,6 @@ def UserNotifications(request):
 
 def UserSettings(request):
     template_name = "user_panel/academy/settings.html"
-
-    return render(request, template_name)
-
-def UserCourses(request):
-    template_name = "user_panel/academy/mycourses.html"
 
     return render(request, template_name)
 
