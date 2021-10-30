@@ -1,4 +1,4 @@
-let menuItemsName = ['courses', 'files', 'exams', 'events', 'notifications', 'settings'];
+let menuItemsName = ['user_courses', 'my_courses', 'exams', 'events', 'notifications', 'settings'];
 let url = window.location.href;
 
 menuItemsName.forEach((item, index) => {
