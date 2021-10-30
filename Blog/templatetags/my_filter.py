@@ -32,3 +32,8 @@ def classCount(value):
         classes += section.content_section.count()
 
     return classes
+
+
+@register.simple_tag
+def define(val=None):
+    return val

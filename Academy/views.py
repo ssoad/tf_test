@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from Academy import models
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -84,11 +85,17 @@ def UserCoursesDetails(request, id):
 
 def UserFiles(request, id):
     course = models.Course.objects.get(id=id)
+    # section = models.Section.objects.filter(course=course)
+    content = models.Content.objects.filter(section__course=course)
+    paginator = Paginator(content, 1)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     context = {
         'course': course,
         'content_type': 'instruction',
         'section_no': 1,
-        'module_no': 1
+        'module_no': 1,
+        'page_obj': page_obj
     }
 
     return render(request, "user_panel/academy/files.html", context)
