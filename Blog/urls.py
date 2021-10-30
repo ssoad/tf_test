@@ -34,4 +34,11 @@ urlpatterns = [
     path('filteroptionview/', views.adminFilterOptionView, name='admin_filter_view'),
     path('subcategorylist/', views.adminSubCategoryListView, name='admin_subcategory_list'),
     path('subcategoryview/', views.adminSubCategoryView, name='admin_subcategory_view'),
+
+    path('category_delete/', views.categoryDeleteView, name='category_delete'),
+    path('category_delete/<id>/', views.categoryDeleteView, name='category_delete'),
+    path('subcategory_delete/', views.subCategoryDeleteView, name='subcategory_delete'),
+    path('subcategory_delete/<id>/', views.subCategoryDeleteView, name='subcategory_delete'),
+    path('filter_delete/', views.filterDeleteView, name='filter_delete'),
+    path('filter_delete/<id>/', views.filterDeleteView, name='filter_delete'),
 ]
