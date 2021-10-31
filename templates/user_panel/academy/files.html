@@ -9,24 +9,24 @@
                 <div class="row g-3">
                     <h5 class="mt-4 mb-2 fw-bold">{{ content.section }}</h5>
                     <div class="col-md-6" style="min-height: 380px;">
-                            <div class="module-instruction py-5">
-                                <div class="module-video">
-                                    <video controls class="w-100" preload="metadata" type="video/mp4"
-                                           src="{{ content.course_video.url }}"></video>
-                                    <h5>{{ content }}</h5>
-                                </div>
-                                <div class="text-start border border-success p-3 rounded-3">
-                                    {{ content.text_instruction.url }}
-                                    This eight-week course consists of instructional content and expert-led lab
-                                    classes,
-                                    which
-                                    will be a massive boost to becoming certified cybersecurity professional.
-                                    This eight-week course consists of instructional content and expert-led lab
-                                    classes,
-                                    which
-                                    will be a massive boost to becoming certified cybersecurity professional.
-                                </div>
+                        <div class="module-instruction py-5">
+                            <div class="module-video">
+                                <video controls class="w-100" preload="metadata" type="video/mp4"
+                                       src="{{ content.course_video.url }}"></video>
+                                <h5>{{ content }}</h5>
                             </div>
+                            <div class="text-start border border-success p-3 rounded-3">
+                                {{ content.text_instruction.url }}
+                                This eight-week course consists of instructional content and expert-led lab
+                                classes,
+                                which
+                                will be a massive boost to becoming certified cybersecurity professional.
+                                This eight-week course consists of instructional content and expert-led lab
+                                classes,
+                                which
+                                will be a massive boost to becoming certified cybersecurity professional.
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-6 text-center" style="height: 380px;overflow-y: auto;">
                         <div class="d-none px-3">
@@ -75,7 +75,8 @@
 
 
 
-                                                                            {% host_url 'academy_user_files' host 'academy' %}{{ course.id }}"
+
+                                                                            {% host_url 'academy_user_files' host 'academy' %}{{ course.id }}?page="
                                                                        class="btn p-0 bg-white pe-3">
                                                                         <i class="icofont-video-alt text-green"></i>
                                                                         {{ content_section.lecture_name }}
@@ -102,9 +103,20 @@
         </section>
     {% endfor %}
 
-    {% for page_num in page_obj.paginator.page_range %}
-
+ {% comment %}   {% for page_num in page_obj.paginator.page_range %}
+        {{ page_num }} <br>
+        {{ break }}
     {% endfor %}
+    {{ page_obj.object_list }}
+    {% for foo in page_obj %}
+        {{ foo.counter }}
+
+
+            {#{{ object.section }}#}
+
+    {% endfor %}{% endcomment %}
+    {#{{ contents }}#}
+
 
 
     <div class="course-nav-container">
