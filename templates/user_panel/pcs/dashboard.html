@@ -1,7 +1,7 @@
-{% extends 'base/pcs_user_base.html' %} {% load static %} {% load hosts %} {% block title %} Dashboard {% endblock title %} {% block content %}
+{% extends 'base/pcs_user_base.html' %} {% load static %} {% load my_filter %} {% load hosts %} {% block title %} Dashboard {% endblock title %} {% block content %}
 <div class="dashboard-container overflow-hidden">
     <section class="dashboard-heading">
-        <h3 class="fw-bold">Hello, Anjelina</h3>
+        <h3 class="fw-bold">Hello, {{ user }}</h3>
         <h4>This is what we got for you today</h4>
     </section>
     <section class="orders mt-5">
@@ -109,63 +109,28 @@
 
     <!-- reading list  -->
     <section class="readings mt-5">
-        <h4 class="fw-bold border-bottom border-gray pb-3 mb-3">My Reading List</h4>
-        <div class="reading-list p-3 rounded-3 shadow bg-white">
-            <div class="row">
-                <div class="col-12 col-lg-7">
-                    <h5 class="fw-bold">LOREM IPSUM IS SIMPLY DUMMY TEXT 1</h5>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum asperiores possimus aut sit suscipit atque.</p>
-                </div>
-                <div class="col-6 col-lg-3 d-flex justify-content-center align-items-center flex-column">
-                    <h6 class="fw-bold">Publish Date:</h6>
-                    <h6>27 October, 2020</h6>
-                </div>
-                <div class="col-6 col-lg-2 d-flex justify-content-center align-items-center">
-                    <button class="btn btn-sm bg-navy text-white px-2 py-2">Read Full</button>
-                </div>
-            </div>
+        <h4 class="fw-bold border-bottom border-gray pb-3 mb-4">My Reading List</h4>
+        <div class="reading-list p-2 rounded-3 shadow bg-white">
 
-            <div class="row">
+            {% for reading_list in user.reading_list_user.all %}
+                <div class="row">
                 <div class="col-12 col-lg-7">
-                    <h5 class="fw-bold">LOREM IPSUM IS SIMPLY DUMMY TEXT 2</h5>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum asperiores possimus aut sit suscipit atque.</p>
+                    <h5 class="fw-bold">{{ reading_list.post.title }}</h5>
+                    <p>{{ reading_list.post.short_description }}</p>
                 </div>
                 <div class="col-6 col-lg-3 d-flex justify-content-center align-items-center flex-column">
                     <h6 class="fw-bold">Publish Date:</h6>
-                    <h6>27 October, 2020</h6>
+                    <h6>{{ reading_list.post.date }}</h6>
                 </div>
-                <div class="col-6 col-lg-2 d-flex justify-content-center align-items-center">
-                    <button class="btn btn-sm bg-navy text-white px-2 py-2">Read Full</button>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="col-12 col-lg-7">
-                    <h5 class="fw-bold">LOREM IPSUM IS SIMPLY DUMMY TEXT 3</h5>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum asperiores possimus aut sit suscipit atque.</p>
-                </div>
-                <div class="col-6 col-lg-3 d-flex justify-content-center align-items-center flex-column">
-                    <h6 class="fw-bold">Publish Date:</h6>
-                    <h6>27 October, 2020</h6>
-                </div>
                 <div class="col-6 col-lg-2 d-flex justify-content-center align-items-center">
-                    <button class="btn btn-sm bg-navy text-white px-2 py-2">Read Full</button>
+                    <a href="{% host_url reading_list.post.category|replacespace host 'blog' %}{{ reading_list.post.post_url }}" class="btn btn-sm bg-navy text-white px-2 py-2">Read Full</a>
                 </div>
             </div>
+            {% endfor %}
 
-            <div class="row">
-                <div class="col-12 col-lg-7">
-                    <h5 class="fw-bold">LOREM IPSUM IS SIMPLY DUMMY TEXT 4</h5>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum asperiores possimus aut sit suscipit atque.</p>
-                </div>
-                <div class="col-6 col-lg-3 d-flex justify-content-center align-items-center flex-column">
-                    <h6 class="fw-bold">Publish Date:</h6>
-                    <h6>27 October, 2020</h6>
-                </div>
-                <div class="col-6 col-lg-2 d-flex justify-content-center align-items-center">
-                    <button class="btn btn-sm bg-navy text-white px-2 py-2">Read Full</button>
-                </div>
-            </div>
+
+
 
             <div class="btn-area d-flex justify-content-end">
                 <button type="button" id="prev-btn" class="btn btn-outline-navy px-3 py-1 me-3">Previous</button>
@@ -177,7 +142,8 @@
     <section class="events mt-5 mb-3">
         <h3 class="fw-bold border-bottom border-gray pb-3 mb-4">Upcoming Events</h3>
         <div class="row mx-0 gy-3 gy-lg-0 justify-content-between">
-            <div class="col-12 col-lg-6 px-0 px-md-2">
+            {% for event in events %}
+                <div class="col-12 col-lg-6 px-0 px-md-2">
                 <div class="card shadow rounded-3">
                     <div class="row g-0">
                         <div class="col-md-4">
@@ -185,80 +151,47 @@
                         </div>
                         <div class="col-md-8">
                             <div class="card-body">
-                                <h5 class="card-title fw-bold fs-5x">Training For Business Executive
+                                <h5 class="card-title fw-bold fs-5x">{{ event.event_name }}
                                 </h5>
-                                <p class="card-text lh-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                                <p class="card-text lh-sm">{{ event.event_description|safe }}
                                 </p>
                                 <table class="table">
                                     <tbody>
                                         <tr>
                                             <td class="fw-bold">Speaker:</td>
-                                            <td class="ps-2">Rabiul Islam, Rabiul Islam</td>
+                                            <td class="ps-2">{{ event.speaker }}</td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <i class="icofont-ui-calendar"></i>
                                                 <span class="fw-bold">Date:</span>
                                             </td>
-                                            <td class="ps-2">05.05.2021</td>
+                                            <td class="ps-2">{{ event.date_field }}</td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <i class="icofont-clock-time"></i>
                                                 <span class="fw-bold">Time:</span>
                                             </td>
-                                            <td class="ps-2">08:05 AM</td>
+                                            <td class="ps-2">{{ event.time_field }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
-                                <button class="d-block mx-auto btn btn-sm bg-navy text-white px-4 py-1 mt-2">Register
-                                    Now</button>
+                                {% if event.id not in registered_event %}
+
+                                        <a href="{% host_url 'bcs_user_event_register' id=event.id %}"
+                                           class="d-block mx-auto btn btn-sm bg-navy text-white px-4 py-1 mt-2">Register</a>
+                                    {% else %}
+                                        <a href="{% host_url 'bcs_user_event_register' id=event.id %}"
+                                           class="d-block mx-auto btn btn-sm bg-navy text-white px-4 py-1 mt-2">Unregister</a>
+                                    {% endif %}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-lg-6 px-0 px-md-2">
-                <div class="card shadow rounded-3">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            <img src="{% static '' %}tfimg/user_panel/Mask Group 12.png" class="img-fluid rounded-start h-100" alt="...">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title fw-bold fs-5x">Training For Business Executive
-                                </h5>
-                                <p class="card-text lh-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                                </p>
-                                <table class="table">
-                                    <tbody>
-                                        <tr>
-                                            <td class="fw-bold">Speaker:</td>
-                                            <td class="ps-2">Rabiul Islam</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <i class="icofont-ui-calendar"></i>
-                                                <span class="fw-bold">Date:</span>
-                                            </td>
-                                            <td class="ps-2">05.05.2021</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <i class="icofont-clock-time"></i>
-                                                <span class="fw-bold">Time:</span>
-                                            </td>
-                                            <td class="ps-2">08:05 AM</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <button class="d-block mx-auto btn btn-sm bg-navy text-white px-4 py-1 mt-2">Register
-                                    Now</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
+
 
         </div>
 

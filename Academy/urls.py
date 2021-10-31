@@ -14,12 +14,7 @@ urlpatterns = [
     path('download/', views.download_file, name='demo_download'),
     path('download/<str:path>', views.download_file, name='download'),
 
-    # academy user panel
-    path('academy_user_courses/', views.UserCourses, name='academy_user_courses'),
-    path('academy_user_courses/<id>/', views.UserCoursesDetails, name='academy_user_courses_details'),
-    path('academy_my_courses/', views.myCourses, name='academy_my_courses'),
-    path('academy_user_files/', views.UserFiles, name='academy_user_files'),
-    path('academy_user_files/<id>/', views.UserFiles, name='academy_user_files'),
+
     path('academy_user_files/<str:section>/<str:module>/<str:content_type>', views.course_material,
          name='course_material'),
     path('academy_user_exams/', views.UserExams, name='academy_user_exams'),
