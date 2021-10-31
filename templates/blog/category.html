@@ -1,11 +1,11 @@
-{% extends 'base/blog_base.html' %} {% load my_filter %} {% load static %}{% load hosts %} {% block title %} {{cat_path}} {% endblock title %} {% block headercss %}
+{% extends 'base/blog_base.html' %} {% load my_filter %} {% load static %}{% load hosts %} {% block title %} {{cat_path|capitalize}} {% endblock title %} {% block headercss %}
 <link rel="stylesheet" href="{% static 'tfcss/blog/blogs.css' %}">
 <link rel="stylesheet" href="{% static 'tfcss/blog/case_studies.css' %}">{% endblock headercss %} {% block content %}
 
 <section class="row mx-0 banner-1">
     <div class="col-md-6 col-lg-7 col-xl-8 pe-2 banner-bg">
         <div class="d-flex flex-column justify-content-center h-100">
-            <h4 class="fw-bold">{{cat_path|upper}}</h4>
+            <h4 class="fw-bold">{{cat_path|capitalize|upper}}</h4>
             <h5>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</h5>
         </div>
     </div>
@@ -78,7 +78,7 @@
         <div class="row align-items-stretch post-container">
             <div class="col-md-4">
                 {% for post in important_posts %} {% if forloop.counter == 2 or forloop.counter == 3 %}
-                <a href="" class="url-wrapper {%if forloop.counter == 2%}mb-30p{% endif %} size gradient">
+                <a href="{% host_url path host 'blog' %}{{post.post_url}}" class="url-wrapper {%if forloop.counter == 2%}mb-30p{% endif %} size gradient">
                     <img src="{{post.feature_image.url}}" class="position-absolute" alt="">
                     <div class="text">
                         <h2>{{post.title}}</h2>
@@ -97,7 +97,7 @@
 
             <div class="col-md-4">
                 {% for post in important_posts %}
-                <a href="" class="url-wrapper h-100 gradient">
+                <a href="{% host_url path host 'blog' %}{{post.post_url}}" class="url-wrapper h-100 gradient">
                     <img src="{{post.feature_image.url}}" class="position-absolute" alt="">
                     <div class="text">
                         <h2>{{post.title}}gfjhgjg</h2>
@@ -115,7 +115,7 @@
             </div>
             <div class="col-md-4">
                 {% for post in important_posts %} {% if forloop.counter == 4 or forloop.counter == 5 %}
-                <a href="" class="url-wrapper {%if forloop.counter == 4%}mb-30p{% endif %} size gradient">
+                <a href="{% host_url path host 'blog' %}{{post.post_url}}" class="url-wrapper {%if forloop.counter == 4%}mb-30p{% endif %} size gradient">
                     <img src="{{post.feature_image.url}}" class="position-absolute" alt="">
                     <div class="text">
                         <h2>{{post.title}}</h2>
