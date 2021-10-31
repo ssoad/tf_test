@@ -449,12 +449,13 @@ def addToReadingListView(request, id):
 
 # for specific category
 def categoryView(request, name):
-    posts = models.Post.objects.filter(category__category__iexact=str(name).replace('_', ' '))
+
+    posts = models.Post.objects.filter(Q(category__category__iexact=str(name).replace('_', ' ')) or Q(category__category__iexact=str(name)))
     cat_path = str(request.path).split('/')[-2]
-    subcategories = models.BlogSubCategory.objects.filter(category__category__iexact=name).order_by('sub_category')
+    subcategories = models.BlogSubCategory.objects.filter(category__category__iexact=str(name).replace('_', ' ')).order_by('sub_category')
     reading_lists = models.ReadingList.objects.filter(user=request.user).values_list('post', flat=True)
 
-    print(name)
+    print(str(name).replace('_', ' ').title())
     context = {
         'posts': posts.order_by('-date'),
         'path': name,

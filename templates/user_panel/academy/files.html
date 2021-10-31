@@ -15,17 +15,27 @@
                                        src="{{ content.course_video.url }}"></video>
                                 <h5>{{ content }}</h5>
                             </div>
-                            <div class="text-start border border-success p-3 rounded-3">
-                                {{ content.text_instruction.url }}
-                                This eight-week course consists of instructional content and expert-led lab
-                                classes,
-                                which
-                                will be a massive boost to becoming certified cybersecurity professional.
-                                This eight-week course consists of instructional content and expert-led lab
-                                classes,
-                                which
-                                will be a massive boost to becoming certified cybersecurity professional.
+                               <button type="button" class="modal-btn btn p-1 border-bottom" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                {{ content }}.txt
+                                </button>
+                           
+                            <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable modal-xl">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Instruction</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
+                            <div class="modal-body" title="{{content.text_instruction.url}}">
+                            
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
                         </div>
                     </div>
                     <div class="col-md-6 text-center" style="height: 380px;overflow-y: auto;">
@@ -71,18 +81,13 @@
                                                                  aria-labelledby="material-heading-1-1"
                                                                  data-bs-parent="#course-module">
                                                                 <div class="accordion-body text-start px-3 bg-light">
-                                                                    <a href="
-
-
-
-
-                                                                            {% host_url 'academy_user_files' host 'academy' %}{{ course.id }}?page="
-                                                                       class="btn p-0 bg-white pe-3">
+                                                                    <a href="{% host_url 'academy_user_files' host 'academy' %}{{ course.id }}?page="
+                                                                       class="btn p-0 bg-white pe-3 course_video">
                                                                         <i class="icofont-video-alt text-green"></i>
                                                                         {{ content_section.lecture_name }}
                                                                     </a>
                                                                     <a href="{{ content_section.resource_file.url }}"
-                                                                       download="File" class="btn p-0 mb-2">
+                                                                       download="File" class="btn p-0">
                                                                         <i class="fa fa-check-circle text-green"></i>
                                                                         Download
                                                                     </a>
@@ -102,21 +107,6 @@
             </div>
         </section>
     {% endfor %}
-
- {% comment %}   {% for page_num in page_obj.paginator.page_range %}
-        {{ page_num }} <br>
-        {{ break }}
-    {% endfor %}
-    {{ page_obj.object_list }}
-    {% for foo in page_obj %}
-        {{ foo.counter }}
-
-
-            {#{{ object.section }}#}
-
-    {% endfor %}{% endcomment %}
-    {#{{ contents }}#}
-
 
 
     <div class="course-nav-container">
@@ -144,56 +134,14 @@
     </div>
 {% endblock content %} {% block customjs %}
     <script>
-        if (window.location.pathname.includes('0')) {
-            window.location.pathname = window.location.pathname.replace('0', '1');
-        }
+        document.querySelectorAll('.course_video').forEach((video,index)=>{
+            video.href+=index+1;
+        })
 
-
-        const sectionNo = parseInt('{{section_no}}');
-        const moduleNo = parseInt('{{module_no}}');
-
-        document.getElementById(`section-collapse-${sectionNo}`).classList.add('show');
-        document.getElementById(`material-${sectionNo}-${moduleNo}`).classList.add('show');
-
-        // let updateActiveModule = (slide) => {
-        //     modules.forEach((row, index) => {
-        //         row.classList.add('d-none');
-        //         if (row.classList.contains('slide-right'))
-        //             row.classList.remove('slide-right');
-        //         if (row.classList.contains('slide-left'))
-        //             row.classList.remove('slide-left');
-
-        //         document.getElementById(`material-${index + 1}`).classList.remove('show');
-        //     });
-        //     if (activeState >= modules.length || activeState < 0) {
-        //         activeState = 0;
-        //     }
-        //     modules[activeState].classList.remove('d-none');
-        //     document.getElementById(`material-${activeState + 1}`).classList.add('show');
-
-        //     if (slide == 'right') {
-        //         modules[activeState].classList.add('slide-right');
-        //         modules[activeState + 1].classList.add('slide-right');
-        //     } else if (slide == 'left') {
-        //         modules[activeState].classList.add('slide-left');
-        //         modules[activeState + 1].classList.add('slide-left');
-        //     }
-
-        // }
-
-        // let modules = document.querySelectorAll('.materials .module-video');
-        // let prev = document.getElementById('prev-btn');
-        // let next = document.getElementById('next-btn');
-        // let activeState = 0;
-
-        // //updateActiveModule('right');
-        // next.addEventListener('click', () => {
-        //     activeState++;
-        //     updateActiveModule('right');
-        // });
-        // prev.addEventListener('click', () => {
-        //     activeState--;
-        //     updateActiveModule('left');
-        // });
+        fetch(location.origin+document.querySelector('.modal-body').title)
+  .then(response => response.text())
+  .then(text => {
+      document.querySelector('.modal-body').innerHTML=text;
+  })
     </script>
 {% endblock customjs %}
