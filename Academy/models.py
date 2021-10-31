@@ -12,8 +12,14 @@ duration = (
     ('one_year', 'One Year'),
 )
 
+course_type = (
+    ('Business', 'Business'),
+    ('Personal', 'Personal'),
+)
+
 
 class Course(models.Model):
+    course_type = models.CharField(max_length=264, choices=course_type)
     course_name = models.CharField(max_length=264)
     duration = models.CharField(max_length=264, choices=duration)
     short_description = models.TextField(max_length=1000)
