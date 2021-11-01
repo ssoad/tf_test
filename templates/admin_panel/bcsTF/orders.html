@@ -1,0 +1,35 @@
+{% extends 'base/bcs_admin_base.html' %}{% load hosts %} {% load static %} {% block title %} Orders {% endblock title %}
+{% block headercss %}
+<link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/order.css' %}" /> {% endblock headercss %}
+{% block content %}
+
+<main>
+    <h3 style="min-height: 100vh;">Order List</h3>
+
+
+    <table id="order-table" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>service</th>
+                <th>user</th>
+                <th>status</th>
+                <th>View</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+
+
+                <td>1</td>
+                <td>risk assessment</td>
+                <td>abc</td>
+                <td>in progress</td>
+                <td><a href="{% host_url 'bcs_admin_order_detail' %}"><i class="bi bi-eye-fill"></i></a></td>
+            </tr>
+        </tbody>
+    </table>
+</main>
+{% endblock content %} {% block customjs %}
+<script src="{% static 'tfjs/admin_panel/bcsTF/order.js' %}"></script>
+{% endblock customjs %}
