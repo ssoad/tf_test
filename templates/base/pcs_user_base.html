@@ -177,30 +177,7 @@
             </div>
         </footer>
     </main>
-    <footer id="footer-large" class="position-sticky d-none bg-blue p-2 pt-4 p-md-5 pb-md-2">
-        <div class="d-flex justify-content-center mb-4">
-            <a href="" class="me-5">PRIVACY POLICY</a>
-            <a href="">TERMS OF USE</a>
-        </div>
-        <div class="d-flex justify-content-center align-items-center">
-            <a href="https://www.facebook.com/techforing/">
-                <img src="{% static '' %}tfimg/user_panel/facebook.png" class="me-3" alt="">
-            </a>
-            <a href="https://www.linkedin.com/company/techforingltd./">
-                <img src="{% static '' %}tfimg/user_panel/linkedin.png" class="me-3" alt="">
-            </a>
-            <a href="https://twitter.com/techforingltd?lang=en">
-                <img src="{% static '' %}tfimg/user_panel/twitter.png" class="me-3" alt="">
-            </a>
-            <a href="https://www.instagram.com/techforingltd/">
-                <img src="{% static '' %}tfimg/user_panel/Instagram.png" alt="">
-            </a>
-        </div>
-        <div class="p-3 p-md-4 pb-2 text-center text-white ">
-            <p class="pt-4 border-top border-light">Copyright &copy; 2021 Techforing Ltd.
-            </p>
-        </div>
-    </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
     <script src="{%static ''%}tfjs/user_panel/pcs/menubar.js"></script>
     <script>
@@ -209,7 +186,7 @@
             if (url.includes(item))
                 activeIndex = index + 1;
         });
-        window.onscroll = function(ev) {
+        {% comment %} window.onscroll = function(ev) {
             let styleElem = document.head.appendChild(document.createElement("style"));
             let logoutBtn = document.querySelector('.w-20 .menubar .logout-btn');
             let footerSmall = document.getElementById('footer-small');
@@ -247,7 +224,7 @@
             }
             window.innerHeight > document.body.offsetHeight - window.scrollY - 10 ?
                 changeSidebarStyle('large') : changeSidebarStyle('small');
-        };
+        }; {% endcomment %}
 
         function dropdown($bs) {
             const CLASS_NAME = 'has-child-dropdown-show';
