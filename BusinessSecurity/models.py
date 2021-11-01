@@ -100,9 +100,10 @@ duration_type = (
 
 order_status = (
     ('new', 'New'),
-    ('following', 'Following'),
+    ('attending', 'Attending'),
     ('on_progress', 'On Progress'),
-    ('delivered', 'Delivered'),
+    ('completed', 'Completed'),
+    ('canceled', 'Canceled'),
 )
 
 

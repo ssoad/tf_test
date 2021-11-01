@@ -353,7 +353,8 @@ def userServicesView(request):
                     input_data = models.UserSubserviceInput(user=request.user, inputfield=current_input,
                                                             inputinfo=data_list[data])
                     input_data.save()
-                    order = models.Order.objects.get_or_create(user=request.user, order_status='new', service=current_service)
+                    order = models.Order.objects.get_or_create(user=request.user, order_status='new',
+                                                               service=current_service)
                     print(order)
                     order[0].subserviceinput.add(input_data)
 
@@ -1169,6 +1170,20 @@ def bcsAdminCourseSectionEdit(request, id):
     return render(request, 'admin_panel/bcsTF/editForm.html', context)
 
 
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminOrdersView(request):
+    orders = models.Order.objects.all()
+    context = {
+        'orders': orders,
+    }
+    return render(request, 'admin_panel/bcsTF/orders.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminOrdersDetailView(request):
+    return render(request, 'admin_panel/bcsTF/order_detail.html')
+
+
 # bcs academy user panel
 @login_required
 def UserCourses(request):
@@ -1183,6 +1198,7 @@ def UserCourses(request):
 
         return render(request, "user_panel/academy/courses.html", context)
 
+
 @login_required
 def myCourses(request):
     if not request.user.is_bcs:
@@ -1196,6 +1212,7 @@ def myCourses(request):
         }
 
         return render(request, "user_panel/academy/mycourses.html", context)
+
 
 @login_required
 def UserCoursesDetails(request, id):
@@ -1213,6 +1230,7 @@ def UserCoursesDetails(request, id):
             return render(request, "user_panel/academy/details.html", context)
         except:
             return HttpResponse('You are not authorized to view this page')
+
 
 @login_required
 def UserFiles(request, id):
@@ -1240,10 +1258,3 @@ def UserFiles(request, id):
             return render(request, "user_panel/academy/files.html", context)
         except:
             return HttpResponse('You are not authorized to view this page')
-
-
-def bcsAdminOrdersView(request):
-    return render(request, 'admin_panel/bcsTF/orders.html')
-
-def bcsAdminOrdersDetailView(request):
-    return render(request, 'admin_panel/bcsTF/order_detail.html')
