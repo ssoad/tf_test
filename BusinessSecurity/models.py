@@ -108,6 +108,7 @@ order_status = (
 
 class Order(models.Model):
     subserviceinput = models.ManyToManyField(UserSubserviceInput, related_name='order_subservice')
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='order_service')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='order_user')
     order_status = models.CharField(max_length=250, choices=order_status, default='new')
 

@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponseRedirect, reverse, HttpResponse
+from django.shortcuts import render, HttpResponseRedirect, reverse, HttpResponse, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from BusinessSecurity import forms, models
 from Academy.forms import CourseCreateForm, SectionCreateForm, ContentCreateForm
@@ -344,15 +344,21 @@ def userServicesView(request):
         sub_services = models.SubService.objects.all()
         if request.method == 'POST':
             data_list = request.POST
-            print(data_list)
+            # print(request.POST)
+            current_service = get_object_or_404(models.Service, service_title=data_list['service_name'])
+
             for data in data_list:
-                if data != 'csrfmiddlewaretoken':
+                if data != 'csrfmiddlewaretoken' and data != 'service_name':
                     current_input = models.SubServiceInput.objects.get(id=data)
                     input_data = models.UserSubserviceInput(user=request.user, inputfield=current_input,
                                                             inputinfo=data_list[data])
                     input_data.save()
-                    # order = models.Order.objects.get_or_create(user=request.user, order_status='new')
-                    # print(order)
+                    order = models.Order.objects.get_or_create(user=request.user, order_status='new', service=current_service)
+                    print(order)
+                    order[0].subserviceinput.add(input_data)
+
+                    # if order[0].service != input_data.inputfield.subservice.service:
+                    #
                     # for order_service in order[0].subserviceinput.all():
                     #     if order_service.inputfield.subservice.service != input_data.inputfield.subservice.service:
                     #         new_order = models.Order.objects.create(user=request.user)
