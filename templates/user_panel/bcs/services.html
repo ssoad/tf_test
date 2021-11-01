@@ -32,10 +32,7 @@
                     </div>
                 </div>
                 {% endfor %}
-
-
             </div>
-
             {% endfor %}
 
 
@@ -563,7 +560,7 @@
               previewForm.removeChild(document.getElementById('progress'));
 
                 let list = '<div class="col-md-4 sub-services shadow"> <h5 class="fw-bold">Choose your services:</h5>';
-                let form = `<form method="POST" enctype="multipart/form-data">{% csrf_token %}`                
+                let form = `<form method="POST" enctype="multipart/form-data">{% csrf_token %}<input type='hidden' id='service_name' value='' name='service_name'/>`
                 data.forEach((option,index) => {    
                     list+=`<div class="form-check">
                     <input class="form-check-input sub-services-check" type="checkbox" name="" id="sub-${option.id}" data-index="${index}" data-title="${option.title}" data-id="${option.id}">

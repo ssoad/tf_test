@@ -98,6 +98,19 @@ duration_type = (
     ('year', 'Year'),
 )
 
+order_status = (
+    ('new', 'New'),
+    ('following', 'Following'),
+    ('on_progress', 'On Progress'),
+    ('delivered', 'Delivered'),
+)
+
+
+class Order(models.Model):
+    subserviceinput = models.ManyToManyField(UserSubserviceInput, related_name='order_subservice')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='order_user')
+    order_status = models.CharField(max_length=250, choices=order_status, default='new')
+
 
 class SubscriptionBasedPackage(models.Model):
     service_id = models.ForeignKey(Service, on_delete=models.CASCADE)

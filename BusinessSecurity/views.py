@@ -351,7 +351,17 @@ def userServicesView(request):
                     input_data = models.UserSubserviceInput(user=request.user, inputfield=current_input,
                                                             inputinfo=data_list[data])
                     input_data.save()
-                    print('hello')
+                    # order = models.Order.objects.get_or_create(user=request.user, order_status='new')
+                    # print(order)
+                    # for order_service in order[0].subserviceinput.all():
+                    #     if order_service.inputfield.subservice.service != input_data.inputfield.subservice.service:
+                    #         new_order = models.Order.objects.create(user=request.user)
+                    #         new_order.subserviceinput.add(input_data)
+                    #         print('new')
+                    #         break
+                    #     else:
+                    #         order[0].subserviceinput.add(input_data)
+                    #         print('old')
         context = {
             'service_category': service_category,
             'services': services,
