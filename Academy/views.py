@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from Academy import models
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -50,48 +51,6 @@ def educationalInstituteView(request):
     }
 
     return render(request, 'academypages/pages/educational_institute.html', context)
-
-
-# user panel
-def UserCourses(request):
-    courses = models.Course.objects.all()
-    context = {
-        'courses': courses,
-    }
-
-    return render(request, "user_panel/academy/courses.html", context)
-
-
-def myCourses(request):
-
-    courses = models.Course.objects.all()
-
-    context = {
-        'courses': courses,
-    }
-
-    return render(request, "user_panel/academy/mycourses.html", context)
-
-def UserCoursesDetails(request, id):
-    course = models.Course.objects.get(id=id)
-
-    context = {
-        'course': course,
-    }
-
-    return render(request, "user_panel/academy/details.html", context)
-
-
-def UserFiles(request, id):
-    course = models.Course.objects.get(id=id)
-    context = {
-        'course': course,
-        'content_type': 'instruction',
-        'section_no': 1,
-        'module_no': 1
-    }
-
-    return render(request, "user_panel/academy/files.html", context)
 
 
 # to get specific course material

@@ -1,467 +1,147 @@
-{% extends 'base/academy_user_base.html' %} {% load static %} {% load hosts %} {% block title %} My
+{% extends 'base/academy_user_base.html' %} {% load static %} {% load my_filter %} {% load hosts %} {% block title %} My
     Files {% endblock title %} {% block content %}
 
-    <section class="my-files-container px-2">
-        <h4 class="fw-bold border-bottom border-gray pb-14p">{{ course.course_name }}</h4>
 
-        <div class="materials">
-            <div class="row g-3">
-                <h5 class="mt-4 mb-2 fw-bold">{{ course }}</h5>
-                <div class="col-md-6" style="min-height: 380px;">
-                    {% if content_type == 'video' %}
-                        <div class="module-video">
-                            <video controls class="w-100" preload="metadata" type="video/mp4"
-                                   src="{% static '' %}videos/academy/Rabiul Islam - Cybersecurity Specialist _ Ethical Hacker.mp4#t=0.5"></video>
-                            <h6>Module {{ module_no }}: Berief Discussion of Hacking</h6>
-                        </div>
-
-                    {% else %}
+    {% for content in page_obj %}
+        <section class="my-files-container px-2">
+            <h4 class="fw-bold border-bottom border-gray pb-14p">{{ course.course_name }}</h4>
+            <div class="materials">
+                <div class="row g-3">
+                    <h5 class="mt-4 mb-2 fw-bold">{{ content.section }}</h5>
+                    <div class="col-md-6" style="min-height: 380px;">
                         <div class="module-instruction py-5">
-                            <button type="button" class="btn btn-outline-success w-100 h-100" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal">
-                                <div class="text-start">
-                                    This eight-week course consists of instructional content and expert-led lab classes,
-                                    which
-                                    will be a massive boost to becoming certified cybersecurity professional.
-                                    This eight-week course consists of instructional content and expert-led lab classes,
-                                    which
-                                    will be a massive boost to becoming certified cybersecurity professional.
-                                </div>
-                            </button>
+                            <div class="module-video">
+                                <video controls class="w-100" preload="metadata" type="video/mp4"
+                                       src="{{ content.course_video.url }}"></video>
+                                <h5>{{ content }}</h5>
+                            </div>
+                               <button type="button" class="modal-btn btn p-1 border-bottom" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                {{ content }}.txt
+                                </button>
+                           
+                            <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable modal-xl">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Instruction</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" title="{{content.text_instruction.url}}">
+                            
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                            </div>
                         </div>
-                        <!-- Modal -->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                             aria-hidden="true">
-                            <div class="modal-dialog modal-xl modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Module Instruction</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        Full instruction will appear here..................
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-center" style="height: 380px;overflow-y: auto;">
+                        <div class="d-none px-3">
+                            <input class="form-control me-2 rounded-pill shadow-sm fontAwesome" type="search"
+                                   placeholder="&#xf002; Search..." aria-label="Search">
+                        </div>
+                        <h4 class="fw-bold mb-3">Course Contents</h4>
+                        <div class="accordion accordion-flush" id="course-section">
+                            {% for section in course.section_course.all %}
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="section-{{ section|replacespace }}">
+                                        <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#section-collapse-{{ section|replacespace }}"
+                                                aria-expanded="false"
+                                                aria-controls="section-collapse-{{ section|replacespace }}">
+                                            {{ section }}
                                         </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
+                                    </h2>
 
-                    <div class="course-nav-container">
-                        {% if content_type == 'instruction' %}
-                            <a href="{% host_url 'academy_user_files' host 'academy' %}section-{{ section_no }}/module-{{ module_no }}/{{ content_type }}"
-                               class="btn">Previous</a>
-                            <a href="{% host_url 'academy_user_files' host 'academy' %}section-{{ section_no }}/module-{{ module_no }}/{{ content_type }}"
-                               class="btn">Next</a> {% else %}
-                            <a href="{% host_url 'academy_user_files' host 'academy' %}section-{{ section_no }}/module-{{ module_no|add:'-1' }}/{{ content_type }}"
-                               class="btn">Previous</a>
-                            <a href="{% host_url 'academy_user_files' host 'academy' %}section-{{ section_no }}/module-{{ module_no|add:'1' }}/{{ content_type }}"
-                               class="btn">Next</a> {% endif %}
-                    </div>
-                </div>
-                <div class="col-md-6 text-center" style="height: 380px;overflow-y: auto;">
-                    <div class="d-none px-3">
-                        <input class="form-control me-2 rounded-pill shadow-sm fontAwesome" type="search"
-                               placeholder="&#xf002; Search..." aria-label="Search">
-                    </div>
-                    <h4 class="fw-bold mb-3">Course Contents</h4>
-                    <div class="accordion accordion-flush" id="course-section">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="section-1">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#section-collapse-1" aria-expanded="false"
-                                        aria-controls="section-collapse-1">
-                                    Introduction Of Ethical Hacking
-                                </button>
-                            </h2>
-                            <div id="section-collapse-1" class="accordion-collapse collapse" aria-labelledby="section-1"
-                                 data-bs-parent="#course-section">
-                                <div class="accordion-body">
-                                    <div class="course-info">
-                                        <div class="accordion accordion-flush" id="course-module">
-                                            <div class="accordion-item">
-                                                <h2 class="accordion-header" id="material-heading-1-1">
-                                                    <button class="accordion-button collapsed" type="button"
-                                                            data-bs-toggle="collapse" data-bs-target="#material-1-1"
-                                                            aria-expanded="false" aria-controls="material-1-1">
-                                                        Module 1: Welcome And Introduction To The Instructor!
-                                                    </button>
-                                                </h2>
-                                                <div id="material-1-1" class="accordion-collapse collapse"
-                                                     aria-labelledby="material-heading-1-1"
-                                                     data-bs-parent="#course-module">
-                                                    <div class="accordion-body text-start px-3 bg-light">
-                                                        <a href="" class="btn p-0 mb-2">
-                                                            <i class="fa fa-check-circle text-green"></i> Text
-                                                            instruction module 1
-                                                        </a>
-                                                        <button class="btn p-0 bg-white pe-3">
-                                                            <i class="icofont-video-alt text-green"></i>
-                                                            Brief discussion on hacking
-                                                        </button>
-                                                    </div>
+                                    <div id="section-collapse-{{ section|replacespace }}"
+                                         class="accordion-collapse collapse {% if content.section == section %} show {% endif %}"
+                                         aria-labelledby="section-{{ section|replacespace }}"
+                                         data-bs-parent="#course-section">
+                                        <div class="accordion-body">
+                                            <div class="course-info">
+                                                <div class="accordion accordion-flush" id="course-module">
+                                                    {% for content_section in section.content_section.all %}
+                                                        <div class="accordion-item">
+                                                            <h2 class="accordion-header" id="material-heading-1-1">
+                                                                <button class="accordion-button collapsed"
+                                                                        type="button"
+                                                                        data-bs-toggle="collapse"
+                                                                        data-bs-target="#material-{{ content_section.section.id }}-{{ content_section.id }}"
+                                                                        aria-expanded="false"
+                                                                        aria-controls="material-{{ content_section.section.id }}-{{ content_section.id }}">
+                                                                    {{ content_section }}
+                                                                </button>
+                                                            </h2>
+                                                            <div id="material-{{ content_section.section.id }}-{{ content_section.id }}"
+                                                                 class="accordion-collapse collapse {% if content == content_section %} show {% endif %}"
+                                                                 aria-labelledby="material-heading-1-1"
+                                                                 data-bs-parent="#course-module">
+                                                                <div class="accordion-body text-start px-3 bg-light">
+                                                                    <a href="{% host_url 'academy_user_files' host 'academy' %}{{ course.id }}?page="
+                                                                       class="btn p-0 bg-white pe-3 course_video">
+                                                                        <i class="icofont-video-alt text-green"></i>
+                                                                        {{ content_section.lecture_name }}
+                                                                    </a>
+                                                                    <a href="{{ content_section.resource_file.url }}"
+                                                                       download="File" class="btn p-0">
+                                                                        <i class="fa fa-check-circle text-green"></i>
+                                                                        Download
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% endfor %}
                                                 </div>
                                             </div>
-                                            <div class="accordion-item">
-                                                <h2 class="accordion-header" id="material-heading-1-2">
-                                                    <button class="accordion-button collapsed" type="button"
-                                                            data-bs-toggle="collapse" data-bs-target="#material-1-2"
-                                                            aria-expanded="false" aria-controls="material-1-2">
-                                                        Module 2: What is Hacking? Who is Hacker?
-                                                    </button>
-                                                </h2>
-                                                <div id="material-1-2" class="accordion-collapse collapse"
-                                                     aria-labelledby="material-heading-1-2"
-                                                     data-bs-parent="#course-module">
-                                                    <div class="accordion-body text-start px-3 bg-light">
-                                                        <a href="" class="btn p-0 mb-2">
-                                                            <i class="fa fa-check-circle text-green"></i> Text
-                                                            instruction module 2
-                                                        </a>
-                                                        <button class="btn p-0 bg-white pe-3">
-                                                            <i class="icofont-video-alt text-green"></i>
-                                                            Brief discussion on hacking
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="accordion-item">
-                                                <h2 class="accordion-header" id="material-heading-1-3">
-                                                    <button class="accordion-button collapsed" type="button"
-                                                            data-bs-toggle="collapse" data-bs-target="#material-1-3"
-                                                            aria-expanded="false" aria-controls="material-1-3">
-                                                        Module 3:
-                                                    </button>
-                                                </h2>
-                                                <div id="material-1-3" class="accordion-collapse collapse"
-                                                     aria-labelledby="material-heading-1-3"
-                                                     data-bs-parent="#course-module">
-                                                    <div class="accordion-body text-start px-3 bg-light">
-                                                        <a href="" class="btn p-0 mb-2">
-                                                            <i class="fa fa-check-circle text-green"></i> Text
-                                                            instruction module 3
-                                                        </a>
-                                                        <button class="btn p-0 bg-white pe-3">
-                                                            <i class="icofont-video-alt text-green"></i>
-                                                            Brief discussion on hacking
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="accordion-item">
-                                                <h2 class="accordion-header" id="material-heading-1-4">
-                                                    <button class="accordion-button collapsed" type="button"
-                                                            data-bs-toggle="collapse" data-bs-target="#material-1-4"
-                                                            aria-expanded="false" aria-controls="material-1-4">
-                                                        Module 4:
-                                                    </button>
-                                                </h2>
-                                                <div id="material-1-4" class="accordion-collapse collapse"
-                                                     aria-labelledby="material-heading-1-4"
-                                                     data-bs-parent="#course-module">
-                                                    <div class="accordion-body text-start px-3 bg-light">
-                                                        <a href="" class="btn p-0 mb-2">
-                                                            <i class="fa fa-check-circle text-green"></i> Text
-                                                            instruction module 4
-                                                        </a>
-                                                        <button class="btn p-0 bg-white pe-3">
-                                                            <i class="icofont-video-alt text-green"></i>
-                                                            Brief discussion on hacking
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            {% endfor %}
                         </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="section-2">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#section-collapse-2" aria-expanded="false"
-                                        aria-controls="section-collapse-2">
-                                    RISK ASSESMENTS
-                                </button>
-                            </h2>
-                            <div id="section-collapse-2" class="accordion-collapse collapse" aria-labelledby="section-2"
-                                 data-bs-parent="#course-section">
-                                <div class="accordion-body">
-                                    <div class="course-info">
-                                        <div class="accordion accordion-flush" id="course-module">
-                                            <div class="accordion-item">
-                                                <h2 class="accordion-header" id="material-heading-2-1">
-                                                    <button class="accordion-button collapsed" type="button"
-                                                            data-bs-toggle="collapse" data-bs-target="#material-2-1"
-                                                            aria-expanded="false" aria-controls="material-2-1">
-                                                        Module 1: Welcome And Introduction To The Instructor!
-                                                    </button>
-                                                </h2>
-                                                <div id="material-2-1" class="accordion-collapse collapse"
-                                                     aria-labelledby="material-heading-2-1"
-                                                     data-bs-parent="#course-module">
-                                                    <div class="accordion-body text-start px-3 bg-light">
-                                                        <a href="" class="btn p-0 mb-2">
-                                                            <i class="fa fa-check-circle text-green"></i> Text
-                                                            instruction module 1
-                                                        </a>
-                                                        <button class="btn p-0 bg-white pe-3">
-                                                            <i class="icofont-video-alt text-green"></i>
-                                                            Brief discussion on hacking
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="accordion-item">
-                                                <h2 class="accordion-header" id="material-heading-2-2">
-                                                    <button class="accordion-button collapsed" type="button"
-                                                            data-bs-toggle="collapse" data-bs-target="#material-2-2"
-                                                            aria-expanded="false" aria-controls="material-2-2">
-                                                        Module 2: What is Hacking? Who is Hacker?
-                                                    </button>
-                                                </h2>
-                                                <div id="material-2-2" class="accordion-collapse collapse"
-                                                     aria-labelledby="material-heading-2-2"
-                                                     data-bs-parent="#course-module">
-                                                    <div class="accordion-body text-start px-3 bg-light">
-                                                        <a href="" class="btn p-0 mb-2">
-                                                            <i class="fa fa-check-circle text-green"></i> Text
-                                                            instruction module 2
-                                                        </a>
-                                                        <button class="btn p-0 bg-white pe-3">
-                                                            <i class="icofont-video-alt text-green"></i>
-                                                            Brief discussion on hacking
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="accordion-item">
-                                                <h2 class="accordion-header" id="material-heading-2-3">
-                                                    <button class="accordion-button collapsed" type="button"
-                                                            data-bs-toggle="collapse" data-bs-target="#material-2-3"
-                                                            aria-expanded="false" aria-controls="material-2-3">
-                                                        Module 3:
-                                                    </button>
-                                                </h2>
-                                                <div id="material-2-3" class="accordion-collapse collapse"
-                                                     aria-labelledby="material-heading-2-3"
-                                                     data-bs-parent="#course-module">
-                                                    <div class="accordion-body text-start px-3 bg-light">
-                                                        <a href="" class="btn p-0 mb-2">
-                                                            <i class="fa fa-check-circle text-green"></i> Text
-                                                            instruction module 3
-                                                        </a>
-                                                        <button class="btn p-0 bg-white pe-3">
-                                                            <i class="icofont-video-alt text-green"></i>
-                                                            Brief discussion on hacking
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="accordion-item">
-                                                <h2 class="accordion-header" id="material-heading-2-4">
-                                                    <button class="accordion-button collapsed" type="button"
-                                                            data-bs-toggle="collapse" data-bs-target="#material-2-4"
-                                                            aria-expanded="false" aria-controls="material-2-4">
-                                                        Module 4:
-                                                    </button>
-                                                </h2>
-                                                <div id="material-2-4" class="accordion-collapse collapse"
-                                                     aria-labelledby="material-heading-2-4"
-                                                     data-bs-parent="#course-module">
-                                                    <div class="accordion-body text-start px-3 bg-light">
-                                                        <a href="" class="btn p-0 mb-2">
-                                                            <i class="fa fa-check-circle text-green"></i> Text
-                                                            instruction module 4
-                                                        </a>
-                                                        <button class="btn p-0 bg-white pe-3">
-                                                            <i class="icofont-video-alt text-green"></i>
-                                                            Brief discussion on hacking
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="section-3">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#section-collapse-3" aria-expanded="false"
-                                        aria-controls="section-collapse-3">
-                                    MALWARE THREATS
-                                </button>
-                            </h2>
-                            <div id="section-collapse-3" class="accordion-collapse collapse" aria-labelledby="section-3"
-                                 data-bs-parent="#course-section">
-                                <div class="accordion-body">
-                                    <div class="course-info">
-                                        <div class="accordion accordion-flush" id="course-module">
-                                            <div class="accordion-item">
-                                                <h2 class="accordion-header" id="material-heading-3-1">
-                                                    <button class="accordion-button collapsed" type="button"
-                                                            data-bs-toggle="collapse" data-bs-target="#material-3-1"
-                                                            aria-expanded="false" aria-controls="material-3-1">
-                                                        Module 1: Welcome And Introduction To The Instructor!
-                                                    </button>
-                                                </h2>
-                                                <div id="material-3-1" class="accordion-collapse collapse"
-                                                     aria-labelledby="material-heading-3-1"
-                                                     data-bs-parent="#course-module">
-                                                    <div class="accordion-body text-start px-3 bg-light">
-                                                        <a href="" class="btn p-0 mb-2">
-                                                            <i class="fa fa-check-circle text-green"></i> Text
-                                                            instruction module 1
-                                                        </a>
-                                                        <button class="btn p-0 bg-white pe-3">
-                                                            <i class="icofont-video-alt text-green"></i>
-                                                            Brief discussion on hacking
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="accordion-item">
-                                                <h2 class="accordion-header" id="material-heading-3-2">
-                                                    <button class="accordion-button collapsed" type="button"
-                                                            data-bs-toggle="collapse" data-bs-target="#material-3-2"
-                                                            aria-expanded="false" aria-controls="material-3-2">
-                                                        Module 2: What is Hacking? Who is Hacker?
-                                                    </button>
-                                                </h2>
-                                                <div id="material-3-2" class="accordion-collapse collapse"
-                                                     aria-labelledby="material-heading-3-2"
-                                                     data-bs-parent="#course-module">
-                                                    <div class="accordion-body text-start px-3 bg-light">
-                                                        <a href="" class="btn p-0 mb-2">
-                                                            <i class="fa fa-check-circle text-green"></i> Text
-                                                            instruction module 2
-                                                        </a>
-                                                        <button class="btn p-0 bg-white pe-3">
-                                                            <i class="icofont-video-alt text-green"></i>
-                                                            Brief discussion on hacking
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="accordion-item">
-                                                <h2 class="accordion-header" id="material-heading-3-3">
-                                                    <button class="accordion-button collapsed" type="button"
-                                                            data-bs-toggle="collapse" data-bs-target="#material-3-3"
-                                                            aria-expanded="false" aria-controls="material-3-3">
-                                                        Module 3:
-                                                    </button>
-                                                </h2>
-                                                <div id="material-3-3" class="accordion-collapse collapse"
-                                                     aria-labelledby="material-heading-3-3"
-                                                     data-bs-parent="#course-module">
-                                                    <div class="accordion-body text-start px-3 bg-light">
-                                                        <a href="" class="btn p-0 mb-2">
-                                                            <i class="fa fa-check-circle text-green"></i> Text
-                                                            instruction module 3
-                                                        </a>
-                                                        <button class="btn p-0 bg-white pe-3">
-                                                            <i class="icofont-video-alt text-green"></i>
-                                                            Brief discussion on hacking
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="accordion-item">
-                                                <h2 class="accordion-header" id="material-heading-3-4">
-                                                    <button class="accordion-button collapsed" type="button"
-                                                            data-bs-toggle="collapse" data-bs-target="#material-3-4"
-                                                            aria-expanded="false" aria-controls="material-3-4">
-                                                        Module 4:
-                                                    </button>
-                                                </h2>
-                                                <div id="material-3-4" class="accordion-collapse collapse"
-                                                     aria-labelledby="material-heading-3-4"
-                                                     data-bs-parent="#course-module">
-                                                    <div class="accordion-body text-start px-3 bg-light">
-                                                        <a href="" class="btn p-0 mb-2">
-                                                            <i class="fa fa-check-circle text-green"></i> Text
-                                                            instruction module 4
-                                                        </a>
-                                                        <button class="btn p-0 bg-white pe-3">
-                                                            <i class="icofont-video-alt text-green"></i>
-                                                            Brief discussion on hacking
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
                     </div>
-
                 </div>
             </div>
-    </section>
+        </section>
+    {% endfor %}
+
+
+    <div class="course-nav-container">
+        <div class="pagination">
+         <span class="step-links">
+                                {% if page_obj.has_previous %}
+                                    <a href="?page=1" class="btn"
+                                       style="background-color: white; color: black; width: 100px;border: 1px solid gray;border-radius: 50rem;margin-right: 0rem;">&laquo; first</a>
+                                    <a href="?page={{ page_obj.previous_page_number }}" class="btn"
+                                       style="background-color: #5bc2ae;color: white;width: 100px;border-radius: 50rem;">previous</a>
+                                {% endif %}
+
+             <span class="current">
+                                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                                </span>
+
+             {% if page_obj.has_next %}
+                 <a href="?page={{ page_obj.next_page_number }}" class="btn"
+                    style="background-color: #5bc2ae;color: white;width: 100px;border-radius: 50rem;">next</a>
+                 <a href="?page={{ page_obj.paginator.num_pages }}" class="btn"
+                    style="background-color: white; color: black; width: 100px;border: 1px solid gray;border-radius: 50rem;margin-right: 0rem;">last &raquo;</a>
+             {% endif %}
+                            </span>
+        </div>
+    </div>
 {% endblock content %} {% block customjs %}
     <script>
-        if (window.location.pathname.includes('0')) {
-            window.location.pathname = window.location.pathname.replace('0', '1');
-        }
+        document.querySelectorAll('.course_video').forEach((video,index)=>{
+            video.href+=index+1;
+        })
 
-
-        const sectionNo = parseInt('{{section_no}}');
-        const moduleNo = parseInt('{{module_no}}');
-
-        document.getElementById(`section-collapse-${sectionNo}`).classList.add('show');
-        document.getElementById(`material-${sectionNo}-${moduleNo}`).classList.add('show');
-
-        // let updateActiveModule = (slide) => {
-        //     modules.forEach((row, index) => {
-        //         row.classList.add('d-none');
-        //         if (row.classList.contains('slide-right'))
-        //             row.classList.remove('slide-right');
-        //         if (row.classList.contains('slide-left'))
-        //             row.classList.remove('slide-left');
-
-        //         document.getElementById(`material-${index + 1}`).classList.remove('show');
-        //     });
-        //     if (activeState >= modules.length || activeState < 0) {
-        //         activeState = 0;
-        //     }
-        //     modules[activeState].classList.remove('d-none');
-        //     document.getElementById(`material-${activeState + 1}`).classList.add('show');
-
-        //     if (slide == 'right') {
-        //         modules[activeState].classList.add('slide-right');
-        //         modules[activeState + 1].classList.add('slide-right');
-        //     } else if (slide == 'left') {
-        //         modules[activeState].classList.add('slide-left');
-        //         modules[activeState + 1].classList.add('slide-left');
-        //     }
-
-        // }
-
-        // let modules = document.querySelectorAll('.materials .module-video');
-        // let prev = document.getElementById('prev-btn');
-        // let next = document.getElementById('next-btn');
-        // let activeState = 0;
-
-        // //updateActiveModule('right');
-        // next.addEventListener('click', () => {
-        //     activeState++;
-        //     updateActiveModule('right');
-        // });
-        // prev.addEventListener('click', () => {
-        //     activeState--;
-        //     updateActiveModule('left');
-        // });
+        fetch(location.origin+document.querySelector('.modal-body').title)
+  .then(response => response.text())
+  .then(text => {
+      document.querySelector('.modal-body').innerHTML=text;
+  })
     </script>
 {% endblock customjs %}

@@ -1,10 +1,11 @@
-from django.shortcuts import render, HttpResponseRedirect, reverse, HttpResponse
+from django.shortcuts import render, HttpResponseRedirect, reverse, HttpResponse, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from BusinessSecurity import forms, models
+from Academy.forms import CourseCreateForm, SectionCreateForm, ContentCreateForm
 from Account.models import User, Permissions, Interest
 from Account.forms import SelectPermissionForm, SelectBCSPermissionForm, InterestForm
 from Academy.models import Course, Section, Content
-import cv2
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -343,14 +344,30 @@ def userServicesView(request):
         sub_services = models.SubService.objects.all()
         if request.method == 'POST':
             data_list = request.POST
-            print(data_list)
+            # print(request.POST)
+            current_service = get_object_or_404(models.Service, service_title=data_list['service_name'])
+
             for data in data_list:
-                if data != 'csrfmiddlewaretoken':
+                if data != 'csrfmiddlewaretoken' and data != 'service_name':
                     current_input = models.SubServiceInput.objects.get(id=data)
                     input_data = models.UserSubserviceInput(user=request.user, inputfield=current_input,
                                                             inputinfo=data_list[data])
                     input_data.save()
-                    print('hello')
+                    order = models.Order.objects.get_or_create(user=request.user, order_status='new', service=current_service)
+                    print(order)
+                    order[0].subserviceinput.add(input_data)
+
+                    # if order[0].service != input_data.inputfield.subservice.service:
+                    #
+                    # for order_service in order[0].subserviceinput.all():
+                    #     if order_service.inputfield.subservice.service != input_data.inputfield.subservice.service:
+                    #         new_order = models.Order.objects.create(user=request.user)
+                    #         new_order.subserviceinput.add(input_data)
+                    #         print('new')
+                    #         break
+                    #     else:
+                    #         order[0].subserviceinput.add(input_data)
+                    #         print('old')
         context = {
             'service_category': service_category,
             'services': services,
@@ -1030,12 +1047,14 @@ def bcsAdminSingleUserInterest(request, id):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminTraining(request):
-    form = forms.CourseCreateForm()
-    courses = Course.objects.all()
+    form = CourseCreateForm()
+    courses = Course.objects.filter(course_type='Business')
     if request.method == 'POST':
-        form = forms.CourseCreateForm(request.POST)
+        form = CourseCreateForm(request.POST)
         if form.is_valid():
-            form.save()
+            course = form.save(commit=False)
+            course.course_type = 'Business'
+            course.save()
             return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
         'form': form,
@@ -1054,10 +1073,10 @@ def bcsAdminTrainingDelete(request, id):
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminTrainingEdit(request, id):
     current_course = Course.objects.get(id=id)
-    form = forms.CourseCreateForm(instance=current_course)
+    form = CourseCreateForm(instance=current_course)
 
     if request.method == 'POST':
-        form = forms.CourseCreateForm(request.POST, instance=current_course)
+        form = CourseCreateForm(request.POST, instance=current_course)
         if form.is_valid():
             form.save()
             next_page = request.POST.get('next', '/')
@@ -1076,18 +1095,18 @@ def bcsAdminTrainingEdit(request, id):
 def bcsAdminCourseDetail(request, id):
     course = Course.objects.get(id=id)
     sections = Section.objects.filter(course=course)
-    form = forms.SectionCreateForm()
-    form2 = forms.ContentCreateForm()
+    form = SectionCreateForm()
+    form2 = ContentCreateForm()
     if request.method == 'POST':
         if 'add_section' in request.POST:
-            form = forms.SectionCreateForm(request.POST)
+            form = SectionCreateForm(request.POST)
             if form.is_valid():
                 section = form.save(commit=False)
                 section.course = course
                 section.save()
                 return HttpResponseRedirect(request.META['HTTP_REFERER'])
         elif 'add_content' in request.POST:
-            form2 = forms.ContentCreateForm(request.POST, request.FILES)
+            form2 = ContentCreateForm(request.POST, request.FILES)
             if form2.is_valid():
                 content = form2.save(commit=False)
                 section_id = int(request.POST.get('section_name'))
@@ -1115,9 +1134,9 @@ def bcsAdminCourseContentDelete(request, id):
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminCourseContentEdit(request, id):
     current_content = Content.objects.get(id=id)
-    form = forms.ContentCreateForm(instance=current_content)
+    form = ContentCreateForm(instance=current_content)
     if request.method == 'POST':
-        form = forms.ContentCreateForm(request.POST, request.FILES, instance=current_content)
+        form = ContentCreateForm(request.POST, request.FILES, instance=current_content)
         if form.is_valid():
             form.save()
             next_page = request.POST.get('next', '/')
@@ -1134,9 +1153,9 @@ def bcsAdminCourseContentEdit(request, id):
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminCourseSectionEdit(request, id):
     current_section = Section.objects.get(id=id)
-    form = forms.SectionCreateForm(instance=current_section)
+    form = SectionCreateForm(instance=current_section)
     if request.method == 'POST':
-        form = forms.SectionCreateForm(request.POST, request.FILES, instance=current_section)
+        form = SectionCreateForm(request.POST, request.FILES, instance=current_section)
         if form.is_valid():
             form.save()
             next_page = request.POST.get('next', '/')
@@ -1148,3 +1167,76 @@ def bcsAdminCourseSectionEdit(request, id):
         'form': form,
     }
     return render(request, 'admin_panel/bcsTF/editForm.html', context)
+
+
+# bcs academy user panel
+@login_required
+def UserCourses(request):
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+
+    elif request.user.is_bcs:
+        courses = Course.objects.filter(course_type='Business')
+        context = {
+            'courses': courses,
+        }
+
+        return render(request, "user_panel/academy/courses.html", context)
+
+@login_required
+def myCourses(request):
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+
+    elif request.user.is_bcs:
+        courses = Course.objects.filter(course_type='Business')
+
+        context = {
+            'courses': courses,
+        }
+
+        return render(request, "user_panel/academy/mycourses.html", context)
+
+@login_required
+def UserCoursesDetails(request, id):
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+
+    elif request.user.is_bcs:
+        try:
+            course = Course.objects.get(id=id, course_type='Business')
+
+            context = {
+                'course': course,
+            }
+
+            return render(request, "user_panel/academy/details.html", context)
+        except:
+            return HttpResponse('You are not authorized to view this page')
+
+@login_required
+def UserFiles(request, id):
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+
+    elif request.user.is_bcs:
+        try:
+            course = Course.objects.get(id=id, course_type='Business')
+            # section = Section.objects.filter(course=course)
+            contents = Content.objects.filter(section__course=course)
+            paginator = Paginator(contents, 1)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+
+            context = {
+                'course': course,
+                'contents': contents,
+                'content_type': 'instruction',
+                'section_no': 1,
+                'module_no': 1,
+                'page_obj': page_obj
+            }
+
+            return render(request, "user_panel/academy/files.html", context)
+        except:
+            return HttpResponse('You are not authorized to view this page')
