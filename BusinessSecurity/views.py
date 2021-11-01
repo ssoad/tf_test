@@ -1240,3 +1240,10 @@ def UserFiles(request, id):
             return render(request, "user_panel/academy/files.html", context)
         except:
             return HttpResponse('You are not authorized to view this page')
+
+
+def bcsAdminOrdersView(request):
+    return render(request, 'admin_panel/bcsTF/orders.html')
+
+def bcsAdminOrdersDetailView(request):
+    return render(request, 'admin_panel/bcsTF/order_detail.html')

@@ -132,7 +132,8 @@ path('bcs_admin_sub_services_form_delete/<id>', views.bcsAdminSubServiceFormDele
          name='bcs_admin_course_content_delete'),
     path('bcs_admin_course_content_edit/<id>', views.bcsAdminCourseContentEdit,
          name='bcs_admin_course_content_edit'),
-
+     path('bcs_admin_orders', views.bcsAdminOrdersView, name= 'bcs_admin_orders'),
+     path('bcs_admin_order_detail', views.bcsAdminOrdersDetailView, name= 'bcs_admin_order_detail'),
 
     # bcs academy user panel
     path('academy_user_courses/', views.UserCourses, name='academy_user_courses'),
