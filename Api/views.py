@@ -89,3 +89,10 @@ class SubServiceInputApiView(generics.ListAPIView):
     def get_queryset(self):
         service_id = self.kwargs['id']
         return bcsmodels.SubServiceInput.objects.filter(subservice_id=service_id)
+
+class UserSubServiceOrderApiView(generics.ListAPIView):
+    serializer_class = serializer.UserSubServiceOrderSerializer
+
+    def get_queryset(self):
+        subservice_id = self.kwargs['id']
+        return bcsmodels.Order.objects.filter(id=subservice_id)

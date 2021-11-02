@@ -115,6 +115,11 @@ class Order(models.Model):
     order_date = models.DateTimeField(auto_now_add=True)
 
 
+class OrderStaff(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='orderstaff_order')
+    staff = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orderstaff_user')
+
+
 class SubscriptionBasedPackage(models.Model):
     service_id = models.ForeignKey(Service, on_delete=models.CASCADE)
     package_name = models.CharField(max_length=264, verbose_name='Package Name')

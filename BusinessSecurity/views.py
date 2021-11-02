@@ -1188,6 +1188,51 @@ def bcsAdminOrdersDetailView(request, id):
     return render(request, 'admin_panel/bcsTF/order_detail.html', context)
 
 
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminOrderNewView(request, id):
+    current_order = models.Order.objects.get(id=id)
+    current_order.order_status = 'new'
+    current_order.save()
+    staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminOrderAttendingView(request, id):
+    current_order = models.Order.objects.get(id=id)
+    current_order.order_status = 'attending'
+    current_order.save()
+    staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminOrderProgressView(request, id):
+    current_order = models.Order.objects.get(id=id)
+    current_order.order_status = 'on_progress'
+    current_order.save()
+    staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminOrderCompletedView(request, id):
+    current_order = models.Order.objects.get(id=id)
+    current_order.order_status = 'completed'
+    current_order.save()
+    staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminOrderCanceledView(request, id):
+    current_order = models.Order.objects.get(id=id)
+    current_order.order_status = 'canceled'
+    current_order.save()
+    staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
 # bcs academy user panel
 @login_required
 def UserCourses(request):

@@ -135,6 +135,16 @@ path('bcs_admin_sub_services_form_delete/<id>', views.bcsAdminSubServiceFormDele
     path('bcs_admin_orders/', views.bcsAdminOrdersView, name='bcs_admin_orders'),
     path('bcs_admin_order_detail/', views.bcsAdminOrdersDetailView, name='bcs_admin_order_detail'),
     path('bcs_admin_order_detail/<id>/', views.bcsAdminOrdersDetailView, name='bcs_admin_order_detail'),
+    path('bcs_admin_order_new/', views.bcsAdminOrderNewView, name='bcs_admin_order_new'),
+    path('bcs_admin_order_new/<id>/', views.bcsAdminOrderNewView, name='bcs_admin_order_new'),
+    path('bcs_admin_order_attending/', views.bcsAdminOrderAttendingView, name='bcs_admin_order_attending'),
+    path('bcs_admin_order_attending/<id>/', views.bcsAdminOrderAttendingView, name='bcs_admin_order_attending'),
+    path('bcs_admin_order_progress/', views.bcsAdminOrderProgressView, name='bcs_admin_order_progress'),
+    path('bcs_admin_order_progress/<id>/', views.bcsAdminOrderProgressView, name='bcs_admin_order_progress'),
+    path('bcs_admin_order_completed/', views.bcsAdminOrderCompletedView, name='bcs_admin_order_completed'),
+    path('bcs_admin_order_completed/<id>/', views.bcsAdminOrderCompletedView, name='bcs_admin_order_completed'),
+    path('bcs_admin_order_canceled/', views.bcsAdminOrderCanceledView, name='bcs_admin_order_canceled'),
+    path('bcs_admin_order_canceled/<id>/', views.bcsAdminOrderCanceledView, name='bcs_admin_order_canceled'),
 
     # bcs academy user panel
     path('academy_user_courses/', views.UserCourses, name='academy_user_courses'),

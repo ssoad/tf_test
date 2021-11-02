@@ -74,6 +74,7 @@ class SubServiceSerializer(serializers.ModelSerializer):
         # exclude = ['fields']
         # depth = 1
 
+
 class SubServiceInputSerializer(serializers.ModelSerializer):
     # fields = serializers.StringRelatedField(many=True)
     # subservice_info = serializers.CharField(source='subservice.title')
@@ -83,3 +84,10 @@ class SubServiceInputSerializer(serializers.ModelSerializer):
         # fields = '__all__'
         exclude = ['subservice']
         depth = 1
+
+
+class UserSubServiceOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = bcsmodels.Order
+        fields = '__all__'
+        # depth = 2
