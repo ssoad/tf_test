@@ -1,69 +1,91 @@
-{% extends 'base/bcs_admin_base.html' %}{% load hosts %} {% load static %} {% block title %} Orders {% endblock title %}
+{% extends 'base/bcs_admin_base.html' %}{% load hosts %} {% load my_filter %} {% load static %} {% block title %}
+    Orders {% endblock title %}
 {% block headercss %}
-<link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/order.css' %}" /> {% endblock headercss %}
+    <link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/order.css' %}"/> {% endblock headercss %}
 {% block content %}
 
-<main>
-    <h3>Order No 1528/757857</h3>
-    <div class="order-info">
-        <div class="container-fluid text-capitalize">
+    <main>
+        <div class="order-info">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3>Order ID: {{ current_order.id }}</h3>
+                        <p>User: <span class="text-bold">{{ current_order.user }}</span></p>
+                        <p>User Phone: <span class="text-bold">{{ current_order.user.phone_number }}</span></p>
+                        <p>User Email: <span class="text-bold">{{ current_order.user.email }}</span></p>
+                        <p>Order Date: <span class="text-bold">{{ current_order.order_date }}</span></p>
+                        <p>Status:
+                        {% if current_order.order_status == 'new' %}
+                            <span class="badge bg-primary">{{ current_order.order_status|capitalize }}</span>
+                        {% elif current_order.order_status == 'attending' %}
+                            <span class="badge bg-warning text-dark">{{ current_order.order_status|capitalize }}</span>
+                        {% elif current_order.order_status == 'on_progress' %}
+                            <span class="badge bg-info text-dark">{{ current_order.order_status|capitalize }}</span>
+                        {% elif current_order.order_status == 'completed' %}
+                            <span class="badge bg-success">{{ current_order.order_status|capitalize }}</span>
+                        {% elif current_order.order_status == 'canceled' %}
+                            <span class="badge bg-danger">{{ current_order.order_status|capitalize }}</span>
+                        {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <h4 class="mt-3 fw-bolder">Order Services</h4>
             <div class="row">
-                <div class="col-md-12">
-                    <h3>Order 1</h3>
-                    <p>user: <span class="text-bold">User 1</span></p>
-                    <p>order Date: <span class="text-bold">1/2/21</span></p>
-                    <p>Status: <span class="text-bold">in progress</span></p>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="container-fluid">
-        <h4 class="mt-3 fw-bolder">Order Services</h4>
-        <div class="row">
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Sub Service 1</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                {% for order in current_order.subserviceinput.all %}
+                {{ order.inputfield }}
+                {% endfor %}
+
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Sub Service 1</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of
+                                the card's content.</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Sub Service 1</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Sub Service 1</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of
+                                the card's content.</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Sub Service 1</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Sub Service 1</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of
+                                the card's content.</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Sub Service 1</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Sub Service 1</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of
+                                the card's content.</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</main>
+    </main>
 {% endblock content %} {% block customjs %}
-<script src="{% static 'tfjs/admin_panel/bcsTF/order.js' %}"></script>
+    <script src="{% static 'tfjs/admin_panel/bcsTF/order.js' %}"></script>
 {% endblock customjs %}

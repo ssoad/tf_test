@@ -1180,8 +1180,12 @@ def bcsAdminOrdersView(request):
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
-def bcsAdminOrdersDetailView(request):
-    return render(request, 'admin_panel/bcsTF/order_detail.html')
+def bcsAdminOrdersDetailView(request, id):
+    current_order = models.Order.objects.get(id=id)
+    context = {
+        'current_order': current_order,
+    }
+    return render(request, 'admin_panel/bcsTF/order_detail.html', context)
 
 
 # bcs academy user panel

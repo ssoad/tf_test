@@ -112,6 +112,7 @@ class Order(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='order_service')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='order_user')
     order_status = models.CharField(max_length=250, choices=order_status, default='new')
+    order_date = models.DateTimeField(auto_now_add=True)
 
 
 class SubscriptionBasedPackage(models.Model):
