@@ -597,7 +597,7 @@ def mainAdminOrdersDetailView(request, id):
             form2 = forms.OrderPriceForm(request.POST, instance=current_order)
             if form2.is_valid():
                 current_order.order_status = 'on_progress'
-                new_staff = models.OrderStaff.objects.create(order=current_order, staff=request.user)
+                new_staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
                 form2.save()
                 return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
@@ -1223,7 +1223,7 @@ def bcsAdminOrdersDetailView(request, id):
             form = forms.OrderPriceForm(request.POST, instance=current_order)
             if form.is_valid():
                 current_order.order_status = 'on_progress'
-                new_staff = models.OrderStaff.objects.create(order=current_order, staff=request.user)
+                new_staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
                 form.save()
                 return HttpResponseRedirect(request.META['HTTP_REFERER'])
         context = {
