@@ -3,7 +3,6 @@
 {% block headercss %}
     <link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/order.css' %}"/> {% endblock headercss %}
 {% block content %}
-
     <main>
         <h3>Order List</h3>
 
@@ -29,6 +28,8 @@
                     <td>{{ order.user }}</td>
                     {% if order.order_status == 'new' %}
                         <td><p class="badge bg-primary">{{ order.order_status|capitalize }}</p></td>
+                    {% elif order.order_status == 'assigned' %}
+                        <td><p class="badge bg-secondary">{{ order.order_status|capitalize }}</p></td>
                     {% elif order.order_status == 'attending' %}
                         <td><p class="badge bg-warning text-dark">{{ order.order_status|capitalize }}</p></td>
                     {% elif order.order_status == 'on_progress' %}

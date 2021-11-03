@@ -1,8 +1,10 @@
-{% extends 'base/bcs_admin_base.html' %}{% load hosts %} {% load crispy_forms_tags %} {% load my_filter %} {% load static %}
+{% extends 'base/main_admin_base.html' %}{% load hosts %} {% load crispy_forms_tags %} {% load my_filter %} {% load static %}
 {% block title %}
     Orders {% endblock title %}
 {% block headercss %}
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/order.css' %}"/> {% endblock headercss %}
+
 {% block content %}
 
     <main>
@@ -34,6 +36,8 @@
                         <div class="d-flex gap-3">
                             <a href="{% host_url 'bcs_admin_order_new' %}{{ current_order.id }}"><span
                                     class="badge bg-primary">New</span></a>
+                            <a role="button" data-bs-toggle="modal" data-bs-target="#assignModal"><span
+                                    class="badge bg-secondary">Assign To</span></a>
                             <a href="{% host_url 'bcs_admin_order_attending' %}{{ current_order.id }}"><span
                                     class="badge bg-warning text-dark">Attending</span></a>
                             <a role="button" data-bs-toggle="modal" data-bs-target="#exampleModal"><span
@@ -62,21 +66,41 @@
         </div>
 
         <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="assignModal" tabindex="-1" aria-labelledby="assignModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Assign To</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form action="" method="POST">
                         <div class="modal-body">
-                            {{ form|crispy }}
+                            {{ form1|crispy }}
                             {% csrf_token %}
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Add to Progress</button>
+                            <button type="submit" class="btn btn-primary" name="assign-btn">Assign Order</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Set Price</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="" method="POST">
+                        <div class="modal-body">
+                            {{ form2|crispy }}
+                            {% csrf_token %}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" name="price-btn">Add to Progress</button>
                         </div>
                     </form>
                 </div>
@@ -154,10 +178,21 @@
             </div>
         </div>
     </main>
-{% endblock content %} {% block customjs %}
+{% endblock content %}
+{% block customjs %}
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        // In your Javascript (external .js resource or <script> tag)
+        $(document).ready(function () {
+            $('.js-example-basic-single').select2({
+                dropdownParent: $("#assignModal"),
+                width: '100%'
+            })
+        });
+    </script>
     <script src="{% static 'tfjs/admin_panel/bcsTF/order.js' %}"></script>
     <script>
-        console.log(document.querySelectorAll('.card-title.trash').length)
         document.querySelectorAll('.card-title.trash').forEach(elem => {
             elem.parentNode.parentNode.parentNode.outerHTML = '';
         })

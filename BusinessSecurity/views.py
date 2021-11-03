@@ -6,6 +6,7 @@ from Account.models import User, Permissions, Interest
 from Account.forms import SelectPermissionForm, SelectBCSPermissionForm, InterestForm
 from Academy.models import Course, Section, Content
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 
 # Create your views here.
@@ -67,12 +68,6 @@ def enterpriseCyberSecurityView(request):
 
 
 # ---------------------------------------------
-
-def enterpriseCyberSecurityView(request):
-    context = {
-
-    }
-    return render(request, 'pages/enterprise_cybersecurity.html', context)
 
 
 def vulnerabilityAssessmentView(request):
@@ -567,10 +562,50 @@ def mainAdminProfileView(request):
 
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
 def mainAdminOrdersView(request):
+    orders = models.Order.objects.all()
     context = {
-
+        'orders': orders,
     }
     return render(request, 'admin_panel/mainTF/orders.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def mainAdminOrdersDetailView(request, id):
+    current_order = models.Order.objects.get(id=id)
+
+    try:
+        order_staff = models.OrderStaff.objects.get(order=current_order)
+        form1 = forms.OrderAssignForm(instance=order_staff)
+    except:
+        form1 = forms.OrderAssignForm()
+
+    form2 = forms.OrderPriceForm(instance=current_order)
+    if request.method == 'POST':
+        if 'assign-btn' in request.POST:
+            try:
+                form1 = forms.OrderAssignForm(request.POST, instance=order_staff)
+            except:
+                form1 = forms.OrderAssignForm(request.POST)
+            if form1.is_valid():
+                form = form1.save(commit=False)
+                form.order = current_order
+                form.save()
+                current_order.order_status = 'assigned'
+                current_order.save()
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        elif 'price-btn' in request.POST:
+            form2 = forms.OrderPriceForm(request.POST, instance=current_order)
+            if form2.is_valid():
+                current_order.order_status = 'on_progress'
+                new_staff = models.OrderStaff.objects.create(order=current_order, staff=request.user)
+                form2.save()
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    context = {
+        'current_order': current_order,
+        'form1': form1,
+        'form2': form2,
+    }
+    return render(request, 'admin_panel/mainTF/order_detail.html', context)
 
 
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
@@ -1172,7 +1207,7 @@ def bcsAdminCourseSectionEdit(request, id):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminOrdersView(request):
-    orders = models.Order.objects.all()
+    orders = models.Order.objects.filter(orderstaff_order__staff=request.user)
     context = {
         'orders': orders,
     }
@@ -1181,56 +1216,91 @@ def bcsAdminOrdersView(request):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminOrdersDetailView(request, id):
-    current_order = models.Order.objects.get(id=id)
-    context = {
-        'current_order': current_order,
-    }
-    return render(request, 'admin_panel/bcsTF/order_detail.html', context)
+    try:
+        current_order = models.Order.objects.get(id=id, orderstaff_order__staff=request.user)
+        form = forms.OrderPriceForm(instance=current_order)
+        if request.method == 'POST':
+            form = forms.OrderPriceForm(request.POST, instance=current_order)
+            if form.is_valid():
+                current_order.order_status = 'on_progress'
+                new_staff = models.OrderStaff.objects.create(order=current_order, staff=request.user)
+                form.save()
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        context = {
+            'current_order': current_order,
+            'form': form,
+        }
+        return render(request, 'admin_panel/bcsTF/order_detail.html', context)
+    except:
+        return HttpResponse("You don't have permission to view this page!")
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminOrderNewView(request, id):
-    current_order = models.Order.objects.get(id=id)
-    current_order.order_status = 'new'
-    current_order.save()
-    staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    try:
+        current_order = models.Order.objects.get(Q(id=id, orderstaff_order__staff=request.user, orderstaff_order__staff__is_staff=True, orderstaff_order__staff__is_sales_head=True) | Q(id=id, orderstaff_order__staff__is_superuser=True) | Q(id=id, orderstaff_order__staff__is_staff=True, orderstaff_order__staff__is_sales_head=True))
+        current_order.order_status = 'new'
+        current_order.price = 0
+        if current_order.orderstaff_order.exists():
+            for staff in current_order.orderstaff_order.all():
+                staff.delete()
+        current_order.save()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    except:
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminOrderAttendingView(request, id):
-    current_order = models.Order.objects.get(id=id)
-    current_order.order_status = 'attending'
-    current_order.save()
-    staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    try:
+        current_order = models.Order.objects.get(
+            Q(id=id, orderstaff_order__staff=request.user, orderstaff_order__staff__is_staff=True,
+              orderstaff_order__staff__is_sales_head=True) | Q(id=id, orderstaff_order__staff__is_superuser=True) | Q(id=id,
+                                                                                                                      orderstaff_order__staff__is_staff=True,
+                                                                                                                      orderstaff_order__staff__is_sales_head=True))
+
+        current_order.order_status = 'attending'
+        current_order.save()
+        staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    except:
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
-def bcsAdminOrderProgressView(request, id):
-    current_order = models.Order.objects.get(id=id)
-    current_order.order_status = 'on_progress'
-    current_order.save()
-    staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminOrderCompletedView(request, id):
-    current_order = models.Order.objects.get(id=id)
-    current_order.order_status = 'completed'
-    current_order.save()
-    staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    try:
+        current_order = models.Order.objects.get(
+            Q(id=id, orderstaff_order__staff=request.user, orderstaff_order__staff__is_staff=True,
+              orderstaff_order__staff__is_sales_head=True) | Q(id=id, orderstaff_order__staff__is_superuser=True) | Q(id=id,
+                                                                                                                      orderstaff_order__staff__is_staff=True,
+                                                                                                                      orderstaff_order__staff__is_sales_head=True))
+
+        current_order.order_status = 'completed'
+        current_order.save()
+        staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    except:
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminOrderCanceledView(request, id):
-    current_order = models.Order.objects.get(id=id)
-    current_order.order_status = 'canceled'
-    current_order.save()
-    staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    try:
+        current_order = models.Order.objects.get(
+            Q(id=id, orderstaff_order__staff=request.user, orderstaff_order__staff__is_staff=True,
+              orderstaff_order__staff__is_sales_head=True) | Q(id=id, orderstaff_order__staff__is_superuser=True) | Q(id=id,
+                                                                                                                      orderstaff_order__staff__is_staff=True,
+                                                                                                                      orderstaff_order__staff__is_sales_head=True))
+
+        current_order.order_status = 'canceled'
+        current_order.save()
+        staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    except:
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
 # bcs academy user panel

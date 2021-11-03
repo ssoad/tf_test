@@ -68,9 +68,6 @@ class AddIndividualPackageFeatureForm(forms.ModelForm):
         fields = ['feature_name', ]
 
 
-
-
-
 class EventCreateForm(forms.ModelForm):
     date_field = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'date'}))
     time_field = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'time'}),
@@ -79,3 +76,18 @@ class EventCreateForm(forms.ModelForm):
     class Meta:
         model = models.Events
         fields = '__all__'
+
+
+class OrderPriceForm(forms.ModelForm):
+    class Meta:
+        model = models.Order
+        fields = ['price', ]
+
+
+class OrderAssignForm(forms.ModelForm):
+    # staff = forms.ModelChoiceField(queryset=models.User.objects.filter(is_staff=True, is_sales=True), widget=forms.Select(attrs={'class': 'js-example-basic-single form-control form-select'}))
+
+    class Meta:
+        model = models.OrderStaff
+        fields = ['staff', ]
+
