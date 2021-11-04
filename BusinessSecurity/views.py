@@ -546,7 +546,7 @@ def emailInvitationView(request):
 @login_required
 def openTicketView(request):
     form = forms.TicketCreateForm()
-    tickets = models.Ticket.objects.filter(user=request.user)
+    tickets = models.Ticket.objects.filter(user=request.user).order_by('-ticket_date')
     if request.method == 'POST':
         form = forms.TicketCreateForm(request.POST, request.FILES)
         if form.is_valid():
