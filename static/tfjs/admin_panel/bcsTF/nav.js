@@ -43,6 +43,7 @@ const footer = document.querySelector("footer")
 
 hamburger.addEventListener("click", () => {
   aside.classList.toggle("show-aside")
+  aside.classList.contains("shrink-container") && aside.classList.remove("shrink-container")
 })
 
 sideBarClose.addEventListener("click", () => {
@@ -52,20 +53,19 @@ sideBarClose.addEventListener("click", () => {
 const shrinkBtn = document.querySelector(".shrink-btn")
 shrinkBtn.addEventListener("click", () => {
   aside.classList.toggle("shrink-container")
-  aside.classList.toggle("mouseover")
   nav.classList.toggle("nav-expand")
   main.classList.toggle("main-expand")
   footer.classList.toggle("footer-expand")
 })
-aside.addEventListener("mouseover", () => {
-  if (aside.classList.contains("mouseover"))
-    aside.classList.remove("shrink-container")
-})
+// aside.addEventListener("mouseover", () => {
+//   if (aside.classList.contains("mouseover"))
+//     aside.classList.remove("shrink-container")
+// })
 
-aside.addEventListener("mouseout", () => {
-  if (aside.classList.contains("mouseover"))
-    aside.classList.add("shrink-container")
-})
+// aside.addEventListener("mouseout", () => {
+//   if (aside.classList.contains("mouseover"))
+//     aside.classList.add("shrink-container")
+// })
 
 
 // if(){
@@ -74,6 +74,4 @@ aside.addEventListener("mouseout", () => {
 //     if(aside.classList.contains("shrink-container"))
 //       aside.classList.remove("shrink-container")
 //   })
-
-
 // }
