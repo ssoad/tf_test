@@ -93,6 +93,7 @@ class OrderAssignForm(forms.ModelForm):
 
 
 class TicketCreateForm(forms.ModelForm):
+    ticket_category = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-select'}))
 
     class Meta:
         model = models.Ticket
