@@ -18,7 +18,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <!-- bootstrap icon -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-    <!-- <link rel="stylesheet" href="https://npmcdn.com/tootik@1.0.2/css/tootik.min.css"> -->
+    <link rel="stylesheet" href="https://npmcdn.com/tootik@1.0.2/css/tootik.min.css">
     <link rel="stylesheet" href="{%static ''%}tfcss/admin_panel/bcsTF/nav.css" />
     {% block headercss %} {% endblock headercss %}
 
@@ -72,7 +72,7 @@
                 <ul class="menubar">
                     <div class="div w-100"></div>
                     <li>
-                        <a href="{% host_url 'bcs_admin_dashboard' %}" class="nav-link active"  >
+                        <a href="{% host_url 'bcs_admin_dashboard' %}" class="nav-link active"  data-tootik="dashboard" data-tootik-conf="right">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="29.273" height="23"
                                 viewBox="0 0 29.273 23">
                                 <path id="list-alt"
