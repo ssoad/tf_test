@@ -109,7 +109,7 @@
             </ul>
         </div>
     </div>
-    <div class="w-20 h-100 position-fixed bg-white shadow-sm px-1 pt-2 d-none d-lg-block">
+    <div class="w-20 h-100 position-fixed bg-main shadow-sm px-1 pt-2 d-none d-lg-block">
         <ul class="menubar pt-3">
             <li>
                 <a href="{% host_url 'pcs_user_dashboard' host 'mysecurity' %}">
@@ -149,7 +149,7 @@
         </ul>
     </div>
     <main class="w-80 overflow-hidden">
-        <div class="bg-main ps-2 ps-lg-3 py-3 pe-2">
+        <div class="ps-2 ps-lg-3 py-3 pe-2">
             {% block content %} {% endblock content %}
         </div>
         <footer id="footer-small" class="bg-blue p-2 pt-4 p-md-5 pb-md-2">
