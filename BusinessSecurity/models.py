@@ -100,9 +100,11 @@ duration_type = (
 
 order_status = (
     ('new', 'New'),
-    ('following', 'Following'),
+    ('assigned', 'Assigned'),
+    ('attending', 'Attending'),
     ('on_progress', 'On Progress'),
-    ('delivered', 'Delivered'),
+    ('completed', 'Completed'),
+    ('canceled', 'Canceled'),
 )
 
 
@@ -111,6 +113,13 @@ class Order(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='order_service')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='order_user')
     order_status = models.CharField(max_length=250, choices=order_status, default='new')
+    order_date = models.DateTimeField(auto_now_add=True)
+    price = models.PositiveIntegerField(default=0)
+
+
+class OrderStaff(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='orderstaff_order')
+    staff = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orderstaff_user')
 
 
 class SubscriptionBasedPackage(models.Model):

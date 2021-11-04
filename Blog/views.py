@@ -375,9 +375,11 @@ def adminDeleteCommentView(request, id):
 
 
 # Admin Section End Here
+
+
 def indexView(request):
-    articles = models.Post.objects.filter(category__category__iexact='articles')
-    case_studies = models.Post.objects.filter(category__category__iexact='case_studies')
+    articles = models.Post.objects.filter(Q(category__category__iexact='articles') | Q(category__category__iexact='Articles'))
+    case_studies = models.Post.objects.filter(Q(category__category__iexact='case_studies') | Q(category__category__iexact='Case Studies'))
     categories = models.BlogCategory.objects.all()
     subcategories = models.BlogSubCategory.objects.all()
     print(articles)
@@ -450,7 +452,7 @@ def addToReadingListView(request, id):
 # for specific category
 def categoryView(request, name):
 
-    posts = models.Post.objects.filter(Q(category__category__iexact=str(name).replace('_', ' ')) or Q(category__category__iexact=str(name)))
+    posts = models.Post.objects.filter(Q(category__category__iexact=str(name).replace('_', ' ')) | Q(category__category__iexact=str(name)))
     cat_path = str(request.path).split('/')[-2]
     subcategories = models.BlogSubCategory.objects.filter(category__category__iexact=str(name).replace('_', ' ')).order_by('sub_category')
     reading_lists = models.ReadingList.objects.filter(user=request.user).values_list('post', flat=True)
@@ -460,7 +462,7 @@ def categoryView(request, name):
         'posts': posts.order_by('-date'),
         'path': name,
         'cat_path': cat_path,
-        'important_posts': posts.order_by('-total_view'),
+        'important_posts': posts.order_by('-total_view')[:5],
         'subcategories': subcategories,
         'reading_lists': reading_lists,
     }

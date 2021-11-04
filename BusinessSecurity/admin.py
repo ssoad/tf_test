@@ -13,6 +13,7 @@ admin.site.register(models.InputFields)
 admin.site.register(models.SubServiceInput)
 admin.site.register(models.UserSubserviceInput)
 admin.site.register(models.Order)
+admin.site.register(models.OrderStaff)
 
 admin.site.register(models.SubscriptionBasedPackage)
 admin.site.register(models.SubscriptionFeatures)

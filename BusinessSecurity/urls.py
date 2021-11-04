@@ -46,11 +46,14 @@ urlpatterns = [
     path('get_start/', views.getStartView, name='get_start'),
 
     path('appoinment/', views.appoinmentView, name='appoinment'),
+    path('open_tickets/', views.openTicketView, name='open_tickets'),
     # main admin panel
 
     path('main_admin_dashboard/', views.mainAdminDashboardView, name='main_admin_dashboard'),
     path('main_admin_profile/', views.mainAdminProfileView, name='main_admin_profile'),
     path('main_admin_orders/', views.mainAdminOrdersView, name='main_admin_orders'),
+    path('main_admin_order_detail/', views.mainAdminOrdersDetailView, name='main_admin_order_detail'),
+    path('main_admin_order_detail/<id>/', views.mainAdminOrdersDetailView, name='main_admin_order_detail'),
     path('main_admin_notification/', views.mainAdminNotificationView, name='main_admin_notification'),
     path('main_admin_events/', views.mainAdminEventsView, name='main_admin_events'),
     path('main_admin_events_delete/<id>', views.mainAdminEventsDeleteView, name='main_admin_events_delete'),
@@ -96,7 +99,7 @@ urlpatterns = [
          name='bcs_admin_sub_services_delete'),
     path('bcs_admin_sub_services_edit/<id>', views.bcsAdminSubServiceEditView, name='bcs_admin_sub_services_edit'),
     path('bcs_admin_sub_services_form/', views.bcsSubServiceFormView, name='bcs_admin_sub_services_form'),
-path('bcs_admin_sub_services_form_delete/<id>', views.bcsAdminSubServiceFormDeleteView,
+    path('bcs_admin_sub_services_form_delete/<id>', views.bcsAdminSubServiceFormDeleteView,
          name='bcs_admin_sub_services_form_delete'),
     path('bcs_admin_sub_services_form_edit/<id>', views.bcsAdminSubServiceFormEditView, name='bcs_admin_sub_services_form_edit'),
 
@@ -132,8 +135,17 @@ path('bcs_admin_sub_services_form_delete/<id>', views.bcsAdminSubServiceFormDele
          name='bcs_admin_course_content_delete'),
     path('bcs_admin_course_content_edit/<id>', views.bcsAdminCourseContentEdit,
          name='bcs_admin_course_content_edit'),
-     path('bcs_admin_orders', views.bcsAdminOrdersView, name= 'bcs_admin_orders'),
-     path('bcs_admin_order_detail', views.bcsAdminOrdersDetailView, name= 'bcs_admin_order_detail'),
+    path('bcs_admin_orders/', views.bcsAdminOrdersView, name='bcs_admin_orders'),
+    path('bcs_admin_order_detail/', views.bcsAdminOrdersDetailView, name='bcs_admin_order_detail'),
+    path('bcs_admin_order_detail/<id>/', views.bcsAdminOrdersDetailView, name='bcs_admin_order_detail'),
+    path('bcs_admin_order_new/', views.bcsAdminOrderNewView, name='bcs_admin_order_new'),
+    path('bcs_admin_order_new/<id>/', views.bcsAdminOrderNewView, name='bcs_admin_order_new'),
+    path('bcs_admin_order_attending/', views.bcsAdminOrderAttendingView, name='bcs_admin_order_attending'),
+    path('bcs_admin_order_attending/<id>/', views.bcsAdminOrderAttendingView, name='bcs_admin_order_attending'),
+    path('bcs_admin_order_completed/', views.bcsAdminOrderCompletedView, name='bcs_admin_order_completed'),
+    path('bcs_admin_order_completed/<id>/', views.bcsAdminOrderCompletedView, name='bcs_admin_order_completed'),
+    path('bcs_admin_order_canceled/', views.bcsAdminOrderCanceledView, name='bcs_admin_order_canceled'),
+    path('bcs_admin_order_canceled/<id>/', views.bcsAdminOrderCanceledView, name='bcs_admin_order_canceled'),
 
     # bcs academy user panel
     path('academy_user_courses/', views.UserCourses, name='academy_user_courses'),

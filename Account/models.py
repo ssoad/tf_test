@@ -59,6 +59,16 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(verbose_name='Superuser Status', default=False, help_text='Designate if the '
                                                                                                  'user has superuser '
                                                                                                  'status')
+    is_sales_head = models.BooleanField(verbose_name='Sales Head Status', default=False, help_text='Designate if the '
+                                                                                                   'user is sales head ')
+    is_sales = models.BooleanField(verbose_name='Sales Status', default=False, help_text='Designate if the '
+                                                                                         'user is sales')
+    is_blogger = models.BooleanField(verbose_name='Blog Admin Status', default=False, help_text='Designate if the '
+                                                                                                'user is Blog Admin ')
+    is_bcs_head = models.BooleanField(verbose_name='BCS Admin Status', default=False, help_text='Designate if the '
+                                                                                                'user is BCS Admin')
+    is_pcs_head = models.BooleanField(verbose_name='PCS Admin Status', default=False, help_text='Designate if the '
+                                                                                                'user is PCS Admin')
     is_bcs = models.BooleanField(verbose_name='Business Status', default=False, help_text='Designate if the user is '
                                                                                           'associated with a business')
     newsletter = models.BooleanField(verbose_name='Newsletter', default=False, help_text='Receive Email About Update '
