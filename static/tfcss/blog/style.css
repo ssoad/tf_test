@@ -230,6 +230,7 @@ a.nav-link:after {
     box-shadow: 1px 1px 3px 1px #707070;
     position: relative;
     height: auto;
+    margin-right: 10px;
 }
 
 .post .card:hover {
@@ -239,10 +240,6 @@ a.nav-link:after {
 
 .post .card img {
     border-radius: 0;
-}
-
-.post .card {
-    margin-right: 10px;
 }
 
 .post .card:hover .add-btn {
@@ -352,4 +349,10 @@ footer {
 
 .copyright-btn:focus {
     border: 2px solid #182f59;
+}
+
+@media (max-width:460px) {
+    .post .card {
+        margin-right: 0;
+    }
 }

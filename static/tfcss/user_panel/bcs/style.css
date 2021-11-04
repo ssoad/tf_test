@@ -43,7 +43,7 @@
             }
             
             .menubar li:hover {
-                background-color: #70727494;
+                background-color: #a8a8a86a;
             }
             
             .menubar li a {
@@ -61,12 +61,12 @@
             
             .menubar li i {
                 padding: 8px;
-                border: 1px solid var(--navy);
+                /* border: 1px solid var(--navy); */
                 color: var(--navy);
                 border-radius: 50%;
                 width: 30px;
                 height: 30px;
-                font-size: 18px;
+                font-size: 20px;
                 margin-right: 5px;
                 display: flex;
                 justify-content: center;
@@ -1067,7 +1067,6 @@
                 .w-20 {
                     width: 5%;
                     z-index: 10000;
-                    /* transition: all 0.2s ease-in; */
                 }
                 .w-80 {
                     width: 95%;
