@@ -9,7 +9,7 @@
             <h5>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</h5>
         </div>
     </div>
-    <div class="col-md-6 col-lg-5 col-xl-4">
+    <div class="col-md-6 col-lg-5 col-xl-4 px-0 px-md-2">
         <div class="bg-gray px-3 py-2 h-100 d-flex flex-column justify-content-center">
             <div class="accordion accordion-flush" id="accordionFlush">
                 {% for subcategory in subcategories %}
@@ -34,7 +34,7 @@
     </div>
 </section>
 
-<div class="mt-3 d-flex justify-content-center justify-content-md-start">
+<div class="mt-3 d-none d-md-flex justify-content-center justify-content-md-start">
     <div class="dropdown">
         <button class="btn border border-secondary text-navy bg-white dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
             Filter Posts By Keyword
@@ -45,7 +45,7 @@
             </li>
         </ul>
     </div>
-    <div class="dropdown ms-5">
+    <div class="dropdown ms-md-5">
         <button class="btn border border-secondary text-navy bg-white dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
             Upload Date
         </button>
@@ -70,12 +70,12 @@
     {% endif %}
 </div>
 
-
-<section class="important-case-studies mt-4">
+{% if cat_path|capitalize|upper != 'PODCAST' %}
+<section class="important-case-studies mt-4 px-2 px-md-0">
     <a href="" class="container-heading">MOST IMPORTANT CASE
         STUDIES</a>
     <div class="bg-light">
-        <div class="row align-items-stretch post-container">
+        <div class="row mx-0 align-items-stretch post-container">
             <div class="col-md-4">
                 {% for post in important_posts %} {% if forloop.counter == 2 or forloop.counter == 3 %}
                 <a href="{% host_url path host 'blog' %}{{post.post_url}}" class="url-wrapper {%if forloop.counter == 2%}mb-30p{% endif %} size gradient">
@@ -95,12 +95,12 @@
                 {% endif %} {% endfor %}
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-4 mb-4 mb-md-0">
                 {% for post in important_posts %}
                 <a href="{% host_url path host 'blog' %}{{post.post_url}}" class="url-wrapper h-100 gradient">
                     <img src="{{post.feature_image.url}}" class="position-absolute" alt="">
                     <div class="text">
-                        <h2>{{post.title}}gfjhgjg</h2>
+                        <h2>{{post.title}}</h2>
                         <span class="date">
                             <i class="bi bi-calendar"></i>
                             July 19, 2019
@@ -134,8 +134,9 @@
         </div>
     </div>
 </section>
+{% endif %}
 <!-- recent case-studies  -->
-<section class="recent-case-studies mt-4">
+<section class="recent-case-studies mt-4 px-2 px-md-0">
     <a href="" class="container-heading mb-3">RECENT CASE STUDIES</a>
     <div class="case-studies row row-cols-1 row-cols-md-3 g-5">
         {% for post in posts %}
@@ -199,11 +200,11 @@
         <div class="col-md-7">
             <div class="get-updates">
                 <form class="row">
-                    <div class="col-auto">
+                    <div class="col-md-auto">
                         <label for="name">Name</label>
                         <input type="text" class="form-control" id="name" placeholder="Enter your name">
                     </div>
-                    <div class="col-auto">
+                    <div class="col-md-auto">
                         <label for="email">Email Address</label>
                         <input type="email" class="form-control" id="email" placeholder="Enter your email address">
                     </div>
@@ -338,7 +339,7 @@
                     btn.classList.add('show-btn');
             });
             btn.addEventListener('mouseout', e => {
-                if (e.target.tagName == 'BUTTON')
+                if (e.target.tagName == 'A')
                     btn.classList.remove('show-btn');
             });
         });

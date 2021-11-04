@@ -75,43 +75,43 @@
         </a>
         <ul class="menubar">
             <li>
-                <a href="{% host_url 'bcs_user_dashboard' %}">
+                <a href="{% host_url 'bcs_user_dashboard' %}" title="Dashboard">
                     <i class="icofont-home"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
             <li>
-                <a href="{% host_url 'bcs_user_services' %}">
+                <a href="{% host_url 'bcs_user_services' %}" title="Services">
                     <i class="icofont-cubes"></i>
                     <span>Services</span>
                 </a>
             </li>
             <li>
-                <a href="{% host_url 'bcs_user_order_history' %}">
+                <a href="{% host_url 'bcs_user_order_history' %}" title="My Orders">
                     <i class="icofont-cart-alt"></i>
                     <span>Order History</span>
                 </a>
             </li>
             <li>
-                <a href="{% host_url 'bcs_user_my_team' %}">
+                <a href="{% host_url 'bcs_user_my_team' %}" title="My Team">
                     <i class="icofont-people"></i>
                     <span>My Team</span>
                 </a>
             </li>
             <li>
-                <a href="{% host_url 'bcs_user_subscriptions' %}">
+                <a href="{% host_url 'bcs_user_subscriptions' %}" title="Subscriptions">
                     <i class="icofont-dollar"></i>
                     <span>Subscriptions</span>
                 </a>
             </li>
             <li>
-                <a href="{% url 'bcs_user_events' %}">
+                <a href="{% url 'bcs_user_events' %}" title="Events & Webinars">
                     <i class="icofont-ui-calendar"></i>
                     <span>Events & Webinars</span>
                 </a>
             </li>
             <li>
-                <a href="{% host_url 'bcs_user_notifications' %}">
+                <a href="{% host_url 'bcs_user_notifications' %}" title="Notifications">
                     <i class="icofont-notification"></i>
                     <span>Notifications</span>
                 </a>
@@ -240,7 +240,7 @@
                 document.querySelector('.w-20').style.width = menuWidth;
                 document.querySelector('.w-80').style.width = contentWidth;
             }
-            document.querySelector('.w-20').addEventListener('mouseover', e => {
+            {% comment %} document.querySelector('.w-20').addEventListener('mouseover', e => {
                 if (!expanded) {
                     expandedBtn.style.display = 'none';
                     menubarSize('18%', '95%');
@@ -254,7 +254,7 @@
                     menubarSize('5%', '95%');
                     hideLinkText();
                 }
-            });
+            }); {% endcomment %}
 
             expandedBtn.addEventListener('click', e => {
                 expanded = expanded ? false : true;
