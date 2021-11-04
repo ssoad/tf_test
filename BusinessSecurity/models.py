@@ -133,6 +133,7 @@ ticket_status = (
 
 
 class Ticket(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ticket_user')
     ticket_type = models.CharField(max_length=255, choices=ticket_type)
     ticket_category = models.CharField(max_length=255, verbose_name='Category')
     ticket_title = models.CharField(max_length=255, verbose_name='Title')
@@ -140,6 +141,9 @@ class Ticket(models.Model):
     ticket_attachment = models.ImageField(verbose_name='Attachment', upload_to='ticket/')
     ticket_status = models.CharField(max_length=255, choices=ticket_status)
     ticket_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.ticket_title
 
 
 class SubscriptionBasedPackage(models.Model):

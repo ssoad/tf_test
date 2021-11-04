@@ -546,11 +546,12 @@ def emailInvitationView(request):
 @login_required
 def openTicketView(request):
     form = forms.TicketCreateForm()
-    print(request.POST)
+    tickets = models.Ticket.objects.filter(user=request.user)
     if request.method == 'POST':
         form = forms.TicketCreateForm(request.POST, request.FILES)
         if form.is_valid():
             ticket = form.save(commit=False)
+            ticket.user = request.user
             ticket.ticket_type = 'bcs'
             ticket.ticket_status = 'open'
             ticket.ticket_category = request.POST.get('ticket_category')
@@ -558,15 +559,19 @@ def openTicketView(request):
             return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
         'form': form,
+        'tickets': tickets,
     }
     return render(request, 'user_panel/bcs/ticket.html', context)
-  
-def ticketDetailView(request):
-    context = {
 
+
+def ticketDetailView(request, id):
+    ticket = models.Ticket.objects.get(id=id)
+    context = {
+        'ticket': ticket,
     }
     return render(request, 'user_panel/bcs/ticket_detail.html', context)
-  
+
+
 # Main Admin Sections
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
 def mainAdminDashboardView(request):
