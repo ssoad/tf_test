@@ -91,3 +91,11 @@ class OrderAssignForm(forms.ModelForm):
         model = models.OrderStaff
         fields = ['staff', ]
 
+
+class TicketCreateForm(forms.ModelForm):
+    ticket_category = forms.Field(widget=forms.Select(attrs={'class': 'form-select'}))
+
+    class Meta:
+        model = models.Ticket
+        fields = ['ticket_title', 'ticket_category', 'ticket_description', 'ticket_attachment']
+        # exclude = ['ticket_type', 'ticket_status']

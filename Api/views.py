@@ -75,13 +75,20 @@ class PackageListViewApi(generics.ListAPIView):
         return bcsmodels.SubscriptionBasedPackage.objects.filter(service_id=service_id)
 
 
+class ServiceListApiView(generics.ListAPIView):
+    serializer_class = serializer.ServiceSerializer
+    queryset = bcsmodels.Service.objects.all()
+
+    # def get_queryset(self):
+    #     service_id = self.kwargs['id']
+    #     return bcsmodels.Service.objects.all()
+
 class SubServiceApiView(generics.ListAPIView):
     serializer_class = serializer.SubServiceSerializer
 
     def get_queryset(self):
         service_id = self.kwargs['id']
         return bcsmodels.SubService.objects.filter(service_id=service_id)
-
 
 class SubServiceInputApiView(generics.ListAPIView):
     serializer_class = serializer.SubServiceInputSerializer
