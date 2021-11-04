@@ -18,7 +18,7 @@ menuItemsName.forEach((item, index) => {
                 .menubar li:nth-child(${index + 1}):not(:last-child) a {
                     color: white;
                 }
-                .menubar li:nth-child(${index + 1}):not(:last-child)::after {
+                ..menubar li:nth-child(${index + 1}):not(:last-child)::after {
                     content: '';
                     height: 4px;
                     background-color: white;

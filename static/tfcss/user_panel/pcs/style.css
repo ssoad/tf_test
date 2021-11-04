@@ -35,8 +35,8 @@ a {
 
 .menubar {
     list-style-type: none;
-    padding: 10px;
-    padding-left: 0;
+    padding: 10px 2px;
+    z-index: 9;
 }
 
 .menubar li {
@@ -60,15 +60,20 @@ a {
 
 .menubar li i {
     padding: 8px;
-    border: 1px solid black;
+    color: var(--navy);
     border-radius: 50%;
     width: 30px;
     height: 30px;
-    font-size: 18px;
+    font-size: 20px;
     margin-right: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.menu-expand-btn {
+    position: absolute;
+    left: 100px
 }
 
 
@@ -155,6 +160,11 @@ a {
     border: 1px solid var(--navy);
     color: var(--navy);
     background-color: white;
+}
+
+.btn-check:focus+.btn,
+.btn:focus {
+    box-shadow: none;
 }
 
 .rounded-5 {
@@ -965,11 +975,12 @@ footer#footer-large {
         width: 45% !important;
     }
     .w-20 {
-        width: 18%;
-        z-index: 9;
+        width: 5%;
+        z-index: 10000;
     }
     .w-80 {
-        width: 82%;
+        width: 95%;
+        margin-left: 5%;
     }
     main {
         margin-left: 18%;
