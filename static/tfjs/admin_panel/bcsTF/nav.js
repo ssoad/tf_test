@@ -36,6 +36,7 @@ deleteBtn.forEach(btn => {
 
 const hamburger = document.querySelector(".hamburger")
 const sideBarClose = document.querySelector(".sideBarClose")
+const sideBarText = document.querySelectorAll(".nav-text")
 const aside = document.querySelector(".aside-container")
 const nav = document.querySelector("nav")
 const main = document.querySelector("main")
@@ -56,6 +57,10 @@ shrinkBtn.addEventListener("click", () => {
   nav.classList.toggle("nav-expand")
   main.classList.toggle("main-expand")
   footer.classList.toggle("footer-expand")
+  sideBarText.forEach(text=>{
+    text.classList.toggle("d-none")
+  })
+
 })
 // aside.addEventListener("mouseover", () => {
 //   if (aside.classList.contains("mouseover"))
