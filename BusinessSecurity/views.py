@@ -546,12 +546,16 @@ def emailInvitationView(request):
 @login_required
 def openTicketView(request):
     form = forms.TicketCreateForm()
+    print(request.POST)
     if request.method == 'POST':
-        form = forms.TicketCreateForm(request.POST)
+        form = forms.TicketCreateForm(request.POST, request.FILES)
         if form.is_valid():
             ticket = form.save(commit=False)
             ticket.ticket_type = 'bcs'
-
+            ticket.ticket_status = 'open'
+            ticket.ticket_category = request.POST.get('ticket_category')
+            ticket.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
         'form': form,
     }
