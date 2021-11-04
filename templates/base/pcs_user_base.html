@@ -1,7 +1,6 @@
 <!DOCTYPE html> {% load static %} {% load hosts %}
 <html lang="en">
 
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /> {% block meta %} {% endblock meta %}
@@ -17,54 +16,7 @@
 </head>
 
 <body>
-    <!-- Header Start -->
-    <header class="sticky-top">
-        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-0">
-            <div class="container-fluid d-flex justify-content-lg-around px-1 px-md-5">
-                <a class="navbar-brand pt-2" href="/">
-                    <img src="{% static '' %}tfimg/user_panel/logo.png" width="125" height="60" alt="Logo">
-                </a>
-                <button class="navbar-toggler d-block d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center fw-bolder">
-                        <li class="nav-item me-4">
-                            <a class="nav-link text-navy fw-bold py-0" href="{% host_url 'bcs_user_dashboard' %}">Service For Your Business</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                {{ user }}
-                                <img class="ms-2 rounded-circle" src="{% static '' %}tfimg/user_panel/anjelina.jpg"
-                                    width="40" height="40" alt="">
-                            </a>
-                            <ul class="dropdown-menu border-0 shadow" aria-labelledby="navbarDropdown">
-                                <li>
-                                    <a class="dropdown-item ps-3" href="{% host_url 'pcs_user_settings' host 'mysecurity' %}">
-                                        <i class="icofont-ui-user me-2"></i> My Profile</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item ps-3" href="{% host_url 'pcs_user_settings' host 'mysecurity' %}">
-                                        <i class="icofont-edit me-2"></i> Edit Profile
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item ps-3" href="{% host_url 'logout' host 'account' %}">
-                                        <i class="icofont-logout me-2"></i> Logout
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <button class="btn btn-sm px-3 btn-outline-primary mx-auto mb-5 d-block d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
-                                <i class="icofont-long-arrow-right"></i>
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasExampleLabel">Menubar</h5>
@@ -109,45 +61,109 @@
             </ul>
         </div>
     </div>
-    <div class="w-20 h-100 position-fixed bg-main shadow-sm px-1 pt-2 d-none d-lg-block">
+
+
+    <div class="w-20 h-100 position-fixed bg-white shadow-sm px-1 pt-2 d-none d-lg-block">
+        <a class="my-3" href="/">
+            <img class="mx-auto my-3 logo-sm" src="{% static '' %}tfimg/user_panel/Techforing-Icon.png" width="40" height="40" alt="Logo">
+            <img class="mx-auto my-1 logo-lg" src="{% static '' %}tfimg/user_panel/logo.png" width="125" height="60" alt="Logo">
+        </a>
         <ul class="menubar pt-3">
             <li>
-                <a href="{% host_url 'pcs_user_dashboard' host 'mysecurity' %}">
-                    <i class="icofont-home"></i> Dashboard
+                <a href="{% host_url 'pcs_user_dashboard' host 'mysecurity' %}" data-tootik="Dashboard" data-tootik-conf="right">
+                    <i class="icofont-home"></i>
+                    <span>Dashboard</span>
                 </a>
             </li>
             <li>
-                <a href="{% host_url 'pcs_user_services' host 'mysecurity' %}">
-                    <i class="icofont-cubes"></i> Services
+                <a href="{% host_url 'pcs_user_services' host 'mysecurity' %}" data-tootik="Services" data-tootik-conf="right">
+                    <i class="icofont-cubes"></i>
+                    <span>Services</span>
                 </a>
             </li>
             <li>
-                <a href="{% host_url 'pcs_user_order_history' host 'mysecurity' %}">
-                    <i class="icofont-cart-alt"></i> Order History
+                <a href="{% host_url 'pcs_user_order_history' host 'mysecurity' %}" data-tootik="Order History" data-tootik-conf="right">
+                    <i class="icofont-cart-alt"></i>
+                    <span>Order History</span>
                 </a>
             </li>
             <li>
-                <a href="{% host_url 'pcs_user_subscriptions' host 'mysecurity' %}">
-                    <i class="icofont-dollar"></i> Subscriptions
+                <a href="{% host_url 'pcs_user_subscriptions' host 'mysecurity' %}" data-tootik="Subscriptions" data-tootik-conf="right">
+                    <i class="icofont-dollar"></i>
+                    <span>Subscriptions</span>
                 </a>
             </li>
             <li>
-                <a href="{% host_url 'pcs_user_events' host 'mysecurity' %}">
-                    <i class="icofont-ui-calendar"></i> Events & Webinars
+                <a href="{% host_url 'pcs_user_events' host 'mysecurity' %}" data-tootik="Events & Webinars" data-tootik-conf="right">
+                    <i class="icofont-ui-calendar"></i>
+                    <span>Events & Webinars</span>
                 </a>
             </li>
             <li>
-                <a href="{% host_url 'pcs_user_notifications' host 'mysecurity' %}">
-                    <i class="icofont-notification"></i> Notifications
+                <a href="{% host_url 'pcs_user_notifications' host 'mysecurity' %}" data-tootik="Notifications" data-tootik-conf="right">
+                    <i class="icofont-notification"></i>
+                    <span>Notifications</span>
                 </a>
             </li>
             <li>
-                <a href="{% host_url 'open_ticket' host 'mysecurity' %}">
-                    <i class="icofont-options"></i> Support
+                <a href="{% host_url 'open_ticket' host 'mysecurity' %}" data-tootik="Support" data-tootik-conf="right">
+                    <i class="icofont-options"></i>
+                    <span>Support</span>
                 </a>
             </li>
         </ul>
     </div>
+
+    <!-- Header Start -->
+    <header class="sticky-top">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-0">
+            <div class="container-fluid d-flex justify-content-lg-around px-1 px-md-5">
+                <button class="btn menu-expand-btn d-none d-lg-block"><i class="icofont-navigation-menu"></i></button>
+                <a class="navbar-brand pt-2 d-lg-none" href="/">
+                    <img src="{% static '' %}tfimg/user_panel/logo.png" width="125" height="60" alt="Logo">
+                </a>
+                <button class="navbar-toggler d-block d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center fw-bolder">
+                        <li class="nav-item me-4">
+                            <a class="nav-link text-navy fw-bold py-0" href="{% host_url 'bcs_user_dashboard' %}">Service For Your Business</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ user }}
+                                <img class="ms-2 rounded-circle" src="{% static '' %}tfimg/user_panel/anjelina.jpg"
+                                    width="40" height="40" alt="">
+                            </a>
+                            <ul class="dropdown-menu border-0 shadow" aria-labelledby="navbarDropdown">
+                                <li>
+                                    <a class="dropdown-item ps-3" href="{% host_url 'pcs_user_settings' host 'mysecurity' %}">
+                                        <i class="icofont-ui-user me-2"></i> My Profile</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item ps-3" href="{% host_url 'pcs_user_settings' host 'mysecurity' %}">
+                                        <i class="icofont-edit me-2"></i> Edit Profile
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item ps-3" href="{% host_url 'logout' host 'account' %}">
+                                        <i class="icofont-logout me-2"></i> Logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <button class="btn btn-sm px-3 btn-outline-primary mx-auto mb-5 d-block d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+                                <i class="icofont-long-arrow-right"></i>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
     <main class="w-80 overflow-hidden">
         <div class="ps-2 ps-lg-3 py-3 pe-2">
             {% block content %} {% endblock content %}
@@ -181,50 +197,72 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
     <script src="{%static ''%}tfjs/user_panel/pcs/menubar.js"></script>
     <script>
-        let activeIndex = 1;
-        menuItemsName.forEach((item, index) => {
-            if (url.includes(item))
-                activeIndex = index + 1;
-        });
-        {% comment %} window.onscroll = function(ev) {
-            let styleElem = document.head.appendChild(document.createElement("style"));
-            let logoutBtn = document.querySelector('.w-20 .menubar .logout-btn');
-            let footerSmall = document.getElementById('footer-small');
-            let footerLarge = document.getElementById('footer-large');
-            let sideMenubar = document.querySelector('.w-20 .menubar');
-            let changeSidebarStyle = type => {
-                let menubarPadding = type == 'large' ? 0 : 10;
-                let menubarLiPadding = type == 'large' ? 2 : 10;
-                let menubarLiChildSize = type == 'large' ? 20 : 30;
-                let menubarLiFirstChildSize = type == 'large' ? 12 : 25;
-                let logoutBtnPaddingY = type == 'large' ? 0.2 : 0.3;
-                let logoutBtnMarginTop = type == 'large' ? 0.5 : 1;
-                let iconFontSize = type == 'large' ? 15 : 18;
-                if (type == 'large') {
-                    footerSmall.classList.add('d-none');
-                    footerLarge.classList.remove('d-none');
-                } else {
-                    footerSmall.classList.remove('d-none');
-                    footerLarge.classList.add('d-none');
-                }
-                sideMenubar.style.padding = `${menubarPadding}px`;
-                sideMenubar.style.paddingLeft = '0';
+        window.onload = function() {
+            let logoSm = document.querySelector('.logo-sm');
+            let logoLg = document.querySelector('.logo-lg');
+            let expandedBtn = document.querySelector('.menu-expand-btn');
+            let expanded = false;
+
+            let hideLinkText = () => {
+                logoSm.style.display = 'block';
+                logoLg.style.display = 'none';
                 document.querySelectorAll('.w-20 .menubar li').forEach(li => {
-                    li.style.paddingTop = `${menubarLiPadding}px`;
-                    li.style.paddingBottom = `${menubarLiPadding}px`;
-                    li.children[0].children[0].style.width = `${menubarLiChildSize}px`;
-                    li.children[0].children[0].style.height = `${menubarLiChildSize}px`;
-                    li.children[0].children[0].style.fontSize = `${iconFontSize}px`;
-                });
-                styleElem.innerHTML = `.w-20 .menubar li:nth-child(${activeIndex})::after {width:${menubarLiFirstChildSize}px;
-                                                                            top: ${menubarLiFirstChildSize}px;};`
-                logoutBtn.style.marginTop = `${logoutBtnMarginTop}rem`;
-                logoutBtn.style.paddingTop = `${logoutBtnPaddingY}rem`;
-                logoutBtn.style.paddingBottom = `${logoutBtnPaddingY}rem`;
+                    li.style.paddingLeft = '6px';
+                    li.children[0].children[1].style.display = 'none';
+                    li.children[0].style.justifyContent = 'center';
+                })
+                if (!document.getElementById('tooltip'))
+                    document.head.insertAdjacentHTML('beforeend', '<link id="tooltip" rel="stylesheet" href="https://npmcdn.com/tootik@1.0.2/css/tootik.min.css">')
             }
-            window.innerHeight > document.body.offsetHeight - window.scrollY - 10 ?
-                changeSidebarStyle('large') : changeSidebarStyle('small');
-        }; {% endcomment %}
+            let showLinkText = () => {
+                logoSm.style.display = 'none';
+                logoLg.style.display = 'block';
+                document.querySelectorAll('.w-20 .menubar li').forEach(li => {
+                    li.style.paddingLeft = '15px';
+                    li.children[0].children[1].style.display = 'initial';
+                    li.children[0].style.justifyContent = 'flex-start';
+                })
+                document.getElementById('tooltip').outerHTML = '';
+
+            }
+
+            let menubarSize = (menuWidth, contentWidth) => {
+                    document.querySelector('.w-20').style.width = menuWidth;
+                    document.querySelector('.w-80').style.width = contentWidth;
+                }
+                // document.querySelector('.w-20').addEventListener('mouseover', e => {
+                //     if (!expanded) {
+                //         expandedBtn.style.display = 'none';
+                //         menubarSize('18%', '95%');
+                //         showLinkText();
+                //     }
+                // });
+
+            // document.querySelector('.w-20').addEventListener('mouseout', e => {
+            //     if (!expanded) {
+            //         expandedBtn.style.display = 'initial';
+            //         menubarSize('5%', '95%');
+            //         hideLinkText();
+            //     }
+            // }); 
+
+            expandedBtn.addEventListener('click', e => {
+                expanded = expanded ? false : true;
+                if (expanded) {
+                    menubarSize('18%', '82%');
+                    document.querySelector('.w-80').style.marginLeft = '18%';
+                    expandedBtn.style.left = '280px';
+                    showLinkText();
+                } else {
+                    menubarSize('5%', '95%');
+                    document.querySelector('.w-80').style.marginLeft = '5%';
+                    expandedBtn.style.left = '100px';
+                    hideLinkText();
+                }
+            });
+
+            hideLinkText();
+        }
 
         function dropdown($bs) {
             const CLASS_NAME = 'has-child-dropdown-show';
