@@ -35,6 +35,13 @@ urlpatterns = [
     path('pcs_user_settings/', views.userSettingsView, name='pcs_user_settings'),
     path('pcs_appoinment/', views.pcsAppoinmentView, name='pcs_appoinment'),
 
+    # pcs academy user panel
+    path('academy_user_courses/', views.UserCourses, name='academy_user_courses'),
+    path('academy_user_courses/<id>/', views.UserCoursesDetails, name='academy_user_courses_details'),
+    path('academy_my_courses/', views.myCourses, name='academy_my_courses'),
+    path('academy_user_files/', views.UserFiles, name='academy_user_files'),
+    path('academy_user_files/<id>/', views.UserFiles, name='academy_user_files'),
+
 # pcs admin panel
     path('pcs_admin_dashboard/',views.pcsAdminDashboard, name='pcs_admin_dashboard'),
     path('pcs_admin_services/',views.pcsAdminService, name='pcs_admin_services'),
@@ -50,4 +57,14 @@ urlpatterns = [
     path('pcs_admin_user_interest/',views.pcsAdminUserInterest, name='pcs_admin_user_interest'),
     path('pcs_admin_training/',views.pcsAdminTraining, name='pcs_admin_training'),
     path('pcs_admin_course_detail/',views.pcsAdminCourseDetail, name='pcs_admin_course_detail'),
+
+    path('pcs_admin_training/', views.pcsAdminTraining, name='pcs_admin_training'),
+    path('pcs_admin_training_delete/<id>', views.pcsAdminTrainingDelete, name='pcs_admin_training_delete'),
+    path('pcs_admin_training_edit/<id>', views.pcsAdminTrainingEdit, name='pcs_admin_training_edit'),
+    path('pcs_admin_course_detail/<id>', views.pcsAdminCourseDetail, name='pcs_admin_course_detail'),
+    path('pcs_admin_course_section_edit/<id>', views.pcsAdminCourseSectionEdit, name='pcs_admin_course_section_edit'),
+    path('pcs_admin_course_content_delete/<id>', views.pcsAdminCourseContentDelete,
+         name='pcs_admin_course_content_delete'),
+    path('pcs_admin_course_content_edit/<id>', views.pcsAdminCourseContentEdit,
+         name='pcs_admin_course_content_edit'),
 ]

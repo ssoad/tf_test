@@ -32,45 +32,9 @@
                     </div>
                 </div>
                 {% endfor %}
-
-
             </div>
-
             {% endfor %}
 
-            <h5 class="mt-2 services-type">Risk assessment</h5>
-            <div class="row mx-0 mb-4 gy-4 pt-4">
-                <div class="col-md-6 px-0 pe-md-5">
-                    <div class="bg-lightgreen p-2 rounded shadow-md">
-                        <div class="text-center">
-                            <img class="service-icon" src="{% static '' %}tfimg/user_panel/services/vulnerability.png">
-                        </div>
-                        <div class="ps-2 mt-2">
-                            <h6 class="service-title">Vulnerability Assessment</h6>
-                            <p class="lh-1 fs-14">Personal information security from cyber criminals and unknown entities
-                            </p>
-                        </div>
-                        <div class="view-btn">
-                            <button class="btn btn-sm">View</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 px-0 ps-md-5">
-                    <div class="bg-lightgreen p-2 rounded shadow-md">
-                        <div class="text-center">
-                            <img class="service-icon" src="{% static '' %}tfimg/user_panel/services/testing.png">
-                        </div>
-                        <div class="ps-2 mt-2">
-                            <h6 class="service-title">Penetration Testing</h6>
-                            <p class="lh-1 fs-14">Personal information security from cyber criminals and unknown entities
-                            </p>
-                        </div>
-                        <div class="view-btn">
-                            <button class="btn btn-sm">View</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
         </div>
 
@@ -578,6 +542,9 @@
     let allServicesInputFrom;
     let allServicesFromContainer;
     let allServices;
+      let mainHeading = document.querySelector('.services .main-heading');
+    let mainHeadingText = 'All Business Cybersecurity Services';
+    let servicesHeading = {{ services_headings | safe }};
 
     quotationBtns.forEach((btn, index) => {
         btn.addEventListener('click', e => {
@@ -596,20 +563,22 @@
               previewForm.removeChild(document.getElementById('progress'));
 
                 let list = '<div class="col-md-4 sub-services shadow"> <h5 class="fw-bold">Choose your services:</h5>';
-                let form = `<form method="POST" enctype="multipart/form-data">{% csrf_token %}`                
-                data.forEach((option,index) => {    
+                let form = `<form method="POST" enctype="multipart/form-data">{% csrf_token %}<input type='hidden' id='service_name' value='' name='service_name'/>`
+                data.forEach((option,index) => {
                     list+=`<div class="form-check">
                     <input class="form-check-input sub-services-check" type="checkbox" name="" id="sub-${option.id}" data-index="${index}" data-title="${option.title}" data-id="${option.id}">
                     <label class="form-check-label" for="sub-${option.id}">${index+1}. ${option.title}</label>
                 </div>`;
                 previewForm.innerHTML = '<div class="row mx-0">'+ list +'</div>' + '<div class="col-md-8 d-none form-container"><h5 class="fw-bold text-center border-bottom border-gray p-2">Please Provide Necessary Informations:</h5>'  + form +'<div class="information-form"></div><button type="submit" class="submit-btn btn btn-navy mt-3">Submit</button></form> </div>';
-                
+
                 });
+               document.getElementById('service_name').value=mainHeading.textContent.trim();
+
                 addHtml()
             }).catch(function(err) {
                 console.log(err)
             });
-            
+
             const addHtml=()=>{
                 const allServices = document.querySelectorAll('.sub-services-check');
                 const formContainer = document.querySelector('.form-container');
@@ -632,7 +601,7 @@
                                 formContainer.removeChild(document.getElementById("progress"))
                                 inputFields+=`<div class="mt-5"data-position="${optionIndex}">  <h6 class="heading">${optionTitle}</h6>`;
                                     fields.forEach(field => {
-                                        inputFields+=`<label for="input-${field.inputfield.id}.${optionId}">${field.inputfield.placeholder.toUpperCase()}</label> <input class="form-control" type="${field.inputfield.type}" 
+                                        inputFields+=`<label for="input-${field.inputfield.id}.${optionId}">${field.inputfield.placeholder.toUpperCase()}</label> <input class="form-control" type="${field.inputfield.type}"
                                         id="input-${field.inputfield.id}.${optionId}" name="${field.id}" placeholder="${field.inputfield.placeholder}">`;
                                     });
                                     inputFields+=`</div>`;
@@ -641,20 +610,20 @@
                                 }).catch(function(err) {
                                     console.log(err)
                                 });
-                            }        
+                            }
                             else{
                                 // console.log(e.target);
                                 informationForm.removeChild(document.getElementById(`sub-${e.target.getAttribute("data-id")}-input`))
                                 if(Array.from(document.querySelectorAll('.sub-services .form-check-input')).every(checkbox => checkbox.checked==false))
                                 document.querySelector('.form-container').classList.add('d-none');
-                                
+
                             }
                         })
                     });
                 }
                 {% comment %} let formName = allForms[index];
                 let formUrl = `/bcs_services_form/${formName}`;
-                
+
                 fetchForm(formUrl).then(function(data) {
                     previewForm.innerHTML = previewForm.innerHTML + data;
                     previewForm.removeChild(document.getElementById('progress'));
@@ -749,7 +718,7 @@
                 let positionTop = e.target.parentNode.offsetTop + 50;
                 previewService.style.top = `${positionTop}px`;
                 previewService.style.left = `${17 * index}%`;
-                
+
             });
         });
     }
@@ -763,9 +732,6 @@
         if (!e.target.classList.contains('preview-service') && !e.target.parentNode.classList.contains('preview-service'))
             previewService.classList.add('d-none');
     });
-    let mainHeading = document.querySelector('.services .main-heading');
-    let mainHeadingText = 'All Business Cybersecurity Services';
-    let servicesHeading = {{ services_headings | safe }};
 
 
     allBtn = Array.from(allBtn);

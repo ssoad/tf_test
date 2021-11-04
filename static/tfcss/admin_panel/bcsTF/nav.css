@@ -102,7 +102,6 @@ nav {
 .navbar {
     width: calc(100% - 20%);
     margin-inline-start: 20%;
-    padding-block: 1.8rem;
 }
 
 /* .navbar .container-fluid {
@@ -115,7 +114,6 @@ nav {
 
 .navbar-brand img {
     padding-inline: 2rem;
-    margin-block: 1rem;
     width: 200px;
 }
 
@@ -267,7 +265,7 @@ main {
     width: calc(100% - 20%);
     margin-inline-start: 20%;
     padding-inline: 1rem;
-    margin-block-start: 9rem;
+    margin-block-start: 6rem;
 }
 
 
@@ -838,9 +836,8 @@ button {
     display: block;
     padding-inline: 0rem; 
     margin-block: 0rem;
-    margin-top: 1rem;
     width: 50px;
-    margin-inline-start: 0.8rem;
+    margin-inline: auto;
 }
 
 .shrink-container .nav-text {

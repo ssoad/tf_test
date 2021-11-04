@@ -66,12 +66,14 @@ class PackageListSerializer(serializers.ModelSerializer):
 class SubServiceSerializer(serializers.ModelSerializer):
     # fields = serializers.StringRelatedField(many=True)
     # subservice_info = serializers.CharField(source='subservice.title')
+    service_name = serializers.CharField(source='service.service_title')
 
     class Meta:
         model = bcsmodels.SubService
-        # fields = '__all__'
-        exclude = ['fields']
+        fields = ['id', 'title', 'description', 'total_customer', 'service', 'service_name']
+        # exclude = ['fields']
         # depth = 1
+
 
 class SubServiceInputSerializer(serializers.ModelSerializer):
     # fields = serializers.StringRelatedField(many=True)
@@ -82,3 +84,10 @@ class SubServiceInputSerializer(serializers.ModelSerializer):
         # fields = '__all__'
         exclude = ['subservice']
         depth = 1
+
+
+class UserSubServiceOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = bcsmodels.Order
+        fields = '__all__'
+        # depth = 2

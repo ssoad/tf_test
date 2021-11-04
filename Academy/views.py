@@ -53,56 +53,6 @@ def educationalInstituteView(request):
     return render(request, 'academypages/pages/educational_institute.html', context)
 
 
-# user panel
-def UserCourses(request):
-    courses = models.Course.objects.all()
-    context = {
-        'courses': courses,
-    }
-
-    return render(request, "user_panel/academy/courses.html", context)
-
-
-def myCourses(request):
-
-    courses = models.Course.objects.all()
-
-    context = {
-        'courses': courses,
-    }
-
-    return render(request, "user_panel/academy/mycourses.html", context)
-
-def UserCoursesDetails(request, id):
-    course = models.Course.objects.get(id=id)
-
-    context = {
-        'course': course,
-    }
-
-    return render(request, "user_panel/academy/details.html", context)
-
-
-def UserFiles(request, id):
-    course = models.Course.objects.get(id=id)
-    # section = models.Section.objects.filter(course=course)
-    contents = models.Content.objects.filter(section__course=course)
-    paginator = Paginator(contents, 1)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    context = {
-        'course': course,
-        'contents': contents,
-        'content_type': 'instruction',
-        'section_no': 1,
-        'module_no': 1,
-        'page_obj': page_obj
-    }
-
-    return render(request, "user_panel/academy/files.html", context)
-
-
 # to get specific course material
 def course_material(request, section, module, content_type):
     template_name = "user_panel/academy/files.html"

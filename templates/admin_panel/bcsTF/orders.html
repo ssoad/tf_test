@@ -1,11 +1,12 @@
-{% extends 'base/main_admin_base.html' %} {% load static %} {% load crispy_forms_tags %} {% load my_filter %} {% load hosts %}
-{% block title %} Orders {% endblock title %}
+{% extends 'base/bcs_admin_base.html' %}{% load hosts %} {% load my_filter %} {% load static %} {% block title %}
+    Orders {% endblock title %}
 {% block headercss %}
-    <link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/order.css' %}"/>
-{% endblock headercss %}
+    <link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/order.css' %}"/> {% endblock headercss %}
 {% block content %}
-<main>
+    <main>
         <h3>Order List</h3>
+
+
         <table id="order-table" class="table table-bordered">
             <thead>
             <tr>
@@ -47,14 +48,13 @@
                             {% endfor %}
                         {% endif %}
                     </td>
-                    <td><a href="{% host_url 'main_admin_order_detail' %}{{ order.id }}"><i
+                    <td><a href="{% host_url 'bcs_admin_order_detail' %}{{ order.id }}"><i
                             class="bi bi-eye-fill"></i></a></td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
     </main>
-{% endblock content %}
-{% block customjs %}
+{% endblock content %} {% block customjs %}
     <script src="{% static 'tfjs/admin_panel/bcsTF/order.js' %}"></script>
 {% endblock customjs %}
