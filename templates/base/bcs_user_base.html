@@ -75,43 +75,43 @@
         </a>
         <ul class="menubar">
             <li>
-                <a href="{% host_url 'bcs_user_dashboard' %}" title="Dashboard">
+                <a href="{% host_url 'bcs_user_dashboard' %}" data-bs-placement="right" data-toggle="tooltip" title="Dashboard">
                     <i class="icofont-home"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
             <li>
-                <a href="{% host_url 'bcs_user_services' %}" title="Services">
+                <a href="{% host_url 'bcs_user_services' %}" data-bs-placement="right" data-toggle="tooltip" title="Services">
                     <i class="icofont-cubes"></i>
                     <span>Services</span>
                 </a>
             </li>
             <li>
-                <a href="{% host_url 'bcs_user_order_history' %}" title="My Orders">
+                <a href="{% host_url 'bcs_user_order_history' %}" data-toggle="tooltip" title="My Orders">
                     <i class="icofont-cart-alt"></i>
                     <span>Order History</span>
                 </a>
             </li>
             <li>
-                <a href="{% host_url 'bcs_user_my_team' %}" title="My Team">
+                <a href="{% host_url 'bcs_user_my_team' %}" data-toggle="tooltip" title="My Team">
                     <i class="icofont-people"></i>
                     <span>My Team</span>
                 </a>
             </li>
             <li>
-                <a href="{% host_url 'bcs_user_subscriptions' %}" title="Subscriptions">
+                <a href="{% host_url 'bcs_user_subscriptions' %}" data-toggle="tooltip" title="Subscriptions">
                     <i class="icofont-dollar"></i>
                     <span>Subscriptions</span>
                 </a>
             </li>
             <li>
-                <a href="{% url 'bcs_user_events' %}" title="Events & Webinars">
+                <a href="{% url 'bcs_user_events' %}" data-toggle="tooltip" title="Events & Webinars">
                     <i class="icofont-ui-calendar"></i>
                     <span>Events & Webinars</span>
                 </a>
             </li>
             <li>
-                <a href="{% host_url 'bcs_user_notifications' %}" title="Notifications">
+                <a href="{% host_url 'bcs_user_notifications' %}" data-toggle="tooltip" title="Notifications">
                     <i class="icofont-notification"></i>
                     <span>Notifications</span>
                 </a>
@@ -299,6 +299,10 @@
                 });
             });
         };
+
+        $(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip();   
+});
     </script>
     {% block customjs %} {% endblock customjs %}
 </body>
