@@ -96,5 +96,5 @@ class TicketCreateForm(forms.ModelForm):
 
     class Meta:
         model = models.Ticket
-        # fields = '__all__'
-        exclude = ['ticket_type', 'ticket_status']
+        fields = ['ticket_title', 'ticket_category', 'ticket_description', 'ticket_attachment']
+        # exclude = ['ticket_type', 'ticket_status']
