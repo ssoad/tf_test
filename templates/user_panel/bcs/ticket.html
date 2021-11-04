@@ -47,7 +47,7 @@
     <section class="container">
         <div id="liveAlertPlaceholder"></div>
         <div class="d-flex justify-content-end">
-            <button class="btn btn-navy rounded-0" data-bs-toggle="modal" data-bs-target="#ticketForm">Create a new
+            <button class="btn btn-navy rounded-0 modal-open" data-bs-toggle="modal" data-bs-target="#ticketForm">Create a new
                 Ticket
             </button>
         </div>
@@ -170,5 +170,23 @@
                 alert('You have added this post to your reading list.', 'success')
             })
         }
+    </script>
+    <script>
+        const ticketService = document.getElementById("id_ticket_category")
+        const openModal = document.querySelector(".modal-open")
+
+        openModal.addEventListener('click', ()=>{
+            fetch("http://127.0.0.1:8000/api/bcs/services/")
+                .then(res=> res.json())
+                .then(data=>{
+                    data.map(item=>{
+                        const option = document.createElement("option")
+                        option.setAttribute("value", item.service_title)
+                        option.innerText = item.service_title
+                        ticketService.appendChild(option)
+                    })
+                })
+        })
+
     </script>
 {% endblock customjs %}
