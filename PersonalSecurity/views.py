@@ -145,6 +145,11 @@ def openTicketView(request):
     }
     return render(request, 'user_panel/pcs/ticket.html', context)
 
+def ticketDetailView(request):
+    context = {
+
+    }
+    return render(request, 'user_panel/pcs/ticket_detail.html', context)
 
 @login_required
 def userDashboardView(request):

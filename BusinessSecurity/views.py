@@ -560,8 +560,13 @@ def openTicketView(request):
         'form': form,
     }
     return render(request, 'user_panel/bcs/ticket.html', context)
+  
+def ticketDetailView(request):
+    context = {
 
-
+    }
+    return render(request, 'user_panel/bcs/ticket_detail.html', context)
+  
 # Main Admin Sections
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
 def mainAdminDashboardView(request):
