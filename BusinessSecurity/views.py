@@ -542,11 +542,21 @@ def emailInvitationView(request):
     }
     return render(request, 'user_panel/team/thanks.html', context)
 
-def openTicketView(request):
-    context = {
 
+@login_required
+def openTicketView(request):
+    form = forms.TicketCreateForm()
+    if request.method == 'POST':
+        form = forms.TicketCreateForm(request.POST)
+        if form.is_valid():
+            ticket = form.save(commit=False)
+            ticket.ticket_type = 'bcs'
+
+    context = {
+        'form': form,
     }
     return render(request, 'user_panel/bcs/ticket.html', context)
+
 
 # Main Admin Sections
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
@@ -1243,7 +1253,10 @@ def bcsAdminOrdersDetailView(request, id):
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminOrderNewView(request, id):
     try:
-        current_order = models.Order.objects.get(Q(id=id, orderstaff_order__staff=request.user, orderstaff_order__staff__is_staff=True, orderstaff_order__staff__is_sales_head=True) | Q(id=id, orderstaff_order__staff__is_superuser=True) | Q(id=id, orderstaff_order__staff__is_staff=True, orderstaff_order__staff__is_sales_head=True))
+        current_order = models.Order.objects.get(
+            Q(id=id, orderstaff_order__staff=request.user, orderstaff_order__staff__is_staff=True,
+              orderstaff_order__staff__is_sales_head=True) | Q(id=id, orderstaff_order__staff__is_superuser=True) | Q(
+                id=id, orderstaff_order__staff__is_staff=True, orderstaff_order__staff__is_sales_head=True))
         current_order.order_status = 'new'
         current_order.price = 0
         if current_order.orderstaff_order.exists():
@@ -1260,9 +1273,10 @@ def bcsAdminOrderAttendingView(request, id):
     try:
         current_order = models.Order.objects.get(
             Q(id=id, orderstaff_order__staff=request.user, orderstaff_order__staff__is_staff=True,
-              orderstaff_order__staff__is_sales_head=True) | Q(id=id, orderstaff_order__staff__is_superuser=True) | Q(id=id,
-                                                                                                                      orderstaff_order__staff__is_staff=True,
-                                                                                                                      orderstaff_order__staff__is_sales_head=True))
+              orderstaff_order__staff__is_sales_head=True) | Q(id=id, orderstaff_order__staff__is_superuser=True) | Q(
+                id=id,
+                orderstaff_order__staff__is_staff=True,
+                orderstaff_order__staff__is_sales_head=True))
 
         current_order.order_status = 'attending'
         current_order.save()
@@ -1272,16 +1286,15 @@ def bcsAdminOrderAttendingView(request, id):
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-
-
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminOrderCompletedView(request, id):
     try:
         current_order = models.Order.objects.get(
             Q(id=id, orderstaff_order__staff=request.user, orderstaff_order__staff__is_staff=True,
-              orderstaff_order__staff__is_sales_head=True) | Q(id=id, orderstaff_order__staff__is_superuser=True) | Q(id=id,
-                                                                                                                      orderstaff_order__staff__is_staff=True,
-                                                                                                                      orderstaff_order__staff__is_sales_head=True))
+              orderstaff_order__staff__is_sales_head=True) | Q(id=id, orderstaff_order__staff__is_superuser=True) | Q(
+                id=id,
+                orderstaff_order__staff__is_staff=True,
+                orderstaff_order__staff__is_sales_head=True))
 
         current_order.order_status = 'completed'
         current_order.save()
@@ -1296,9 +1309,10 @@ def bcsAdminOrderCanceledView(request, id):
     try:
         current_order = models.Order.objects.get(
             Q(id=id, orderstaff_order__staff=request.user, orderstaff_order__staff__is_staff=True,
-              orderstaff_order__staff__is_sales_head=True) | Q(id=id, orderstaff_order__staff__is_superuser=True) | Q(id=id,
-                                                                                                                      orderstaff_order__staff__is_staff=True,
-                                                                                                                      orderstaff_order__staff__is_sales_head=True))
+              orderstaff_order__staff__is_sales_head=True) | Q(id=id, orderstaff_order__staff__is_superuser=True) | Q(
+                id=id,
+                orderstaff_order__staff__is_staff=True,
+                orderstaff_order__staff__is_sales_head=True))
 
         current_order.order_status = 'canceled'
         current_order.save()
