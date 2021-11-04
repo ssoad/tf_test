@@ -1,0 +1,166 @@
+{% extends 'base/bcs_user_base.html' %} {% load static %} {% load hosts %}{% load crispy_forms_tags %} {% load my_filter %} {% block title %} Support {% endblock title %} {% block headercss %}
+<!-- data table css -->
+<link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" />
+
+<link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/bcsTF/order.css" />
+<style>
+    /* data table pagination style */
+    
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        padding-inline: 0.3rem;
+    }
+    
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        background: transparent;
+        border-color: transparent;
+    }
+    
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        padding-inline: 0.3rem;
+    }
+    
+    .page-link {
+        border-radius: 8px;
+    }
+    
+    .page-item.active .page-link {
+        background-color: var(--var-primary-color);
+        border-color: var(--var-primary-color);
+    }
+    
+    thead {
+        font-size: 1.125rem;
+        text-transform: uppercase;
+        text-align: center;
+    }
+    
+    table.dataTable tbody td,
+    table.dataTable thead th {
+        text-align: center;
+    }
+</style>
+{% endblock headercss %} {% block content %}
+
+<section class="container">
+    <div id="liveAlertPlaceholder"></div>
+    <div class="d-flex justify-content-end">
+        <button class="btn btn-navy rounded-0" data-bs-toggle="modal" data-bs-target="#ticketForm">Create a new Ticket</button>
+    </div>
+    <div class="text-center py-5 my-5">
+        <i class="icofont-box fs-4 bg-navy rounded-circle p-1"></i>
+        <h4 class="mt-2">You haven't opened any ticket yet!</h4>
+    </div>
+
+
+    <table id="order-table" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Ticket ID</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>status</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>20421</td>
+                <td><a href="">Penetration testing form not working</a></td>
+                <td>Ajob kichu</td>
+                <td>Pending</td>
+                <td>20-12-21</td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- Modal -->
+    <div class="modal fade" id="ticketForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Provide Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form>
+                    <div class="modal-body">
+
+
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Problem Category</label>
+                            <select id="category" class="form-select" aria-label="Default select example">
+                <option selected></option>
+                <option value="1">Category 1</option>
+                <option value="2">Category 2</option>
+                <option value="3">Category 3</option>
+              </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="title" aria-describedby="ticket title">
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <div class="form-floating">
+                                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                                <label for="floatingTextarea2">Describe your problem...</label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="formFile">Attachment</label>
+                            <input class="form-control" type="file" id="formFile">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-navy">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %} {% block customjs %}
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<!-- data table library -->
+<script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // console.log('data-table');
+        $("#order-table").DataTable({
+            scrollx: true,
+            scrollCollapse: true,
+            paging: false,
+            oLanguage: {
+                sSearch: `_INPUT_ <i class="icofont-search-2"></i>`,
+                sSearchPlaceholder: "Search...",
+            },
+            info: false,
+            sorting: false,
+        });;
+    });
+    var alertPlaceholder = document.getElementById('liveAlertPlaceholder')
+    var alertTrigger = document.querySelector('form button')
+
+    function alert(message, type) {
+        document.querySelector('.alert') && document.querySelector('.alert').remove();
+        var wrapper = document.createElement('div')
+        wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+
+        alertPlaceholder.append(wrapper)
+        $(".alert").fadeTo(2000, 500).slideUp(500, function() {
+            $(".alert").slideUp(500);
+        });
+    }
+
+    if (alertTrigger) {
+        alertTrigger.addEventListener('click', function() {
+            alert('You have added this post to your reading list.', 'success')
+        })
+    }
+</script>
+{% endblock customjs %}

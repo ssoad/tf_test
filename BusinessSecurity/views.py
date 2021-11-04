@@ -542,6 +542,11 @@ def emailInvitationView(request):
     }
     return render(request, 'user_panel/team/thanks.html', context)
 
+def openTicketView(request):
+    context = {
+
+    }
+    return render(request, 'user_panel/bcs/ticket.html', context)
 
 # Main Admin Sections
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/')

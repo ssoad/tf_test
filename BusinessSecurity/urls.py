@@ -46,6 +46,7 @@ urlpatterns = [
     path('get_start/', views.getStartView, name='get_start'),
 
     path('appoinment/', views.appoinmentView, name='appoinment'),
+    path('open_tickets/', views.openTicketView, name='open_tickets'),
     # main admin panel
 
     path('main_admin_dashboard/', views.mainAdminDashboardView, name='main_admin_dashboard'),
