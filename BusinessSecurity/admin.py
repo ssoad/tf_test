@@ -22,3 +22,5 @@ admin.site.register(models.Business)
 admin.site.register(models.UsersBusiness)
 admin.site.register(models.Events)
 admin.site.register(models.RegisteredEvents)
+
+admin.site.register(models.Ticket)

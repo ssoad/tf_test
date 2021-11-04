@@ -122,6 +122,26 @@ class OrderStaff(models.Model):
     staff = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orderstaff_user')
 
 
+ticket_type = (
+    ('bcs', 'BCS'),
+    ('pcs', 'PCS'),
+)
+ticket_status = (
+    ('open', 'Open'),
+    ('closed', 'Closed'),
+)
+
+
+class Ticket(models.Model):
+    ticket_type = models.CharField(max_length=255, choices=ticket_type)
+    ticket_category = models.CharField(max_length=255, verbose_name='Category')
+    ticket_title = models.CharField(max_length=255, verbose_name='Title')
+    ticket_description = HTMLField(verbose_name='Description')
+    ticket_attachment = models.ImageField(verbose_name='Attachment', upload_to='ticket/')
+    ticket_status = models.CharField(max_length=255, choices=ticket_status)
+    ticket_date = models.DateTimeField(auto_now_add=True)
+
+
 class SubscriptionBasedPackage(models.Model):
     service_id = models.ForeignKey(Service, on_delete=models.CASCADE)
     package_name = models.CharField(max_length=264, verbose_name='Package Name')

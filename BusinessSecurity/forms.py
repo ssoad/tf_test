@@ -91,3 +91,10 @@ class OrderAssignForm(forms.ModelForm):
         model = models.OrderStaff
         fields = ['staff', ]
 
+
+class TicketCreateForm(forms.ModelForm):
+
+    class Meta:
+        model = models.Ticket
+        # fields = '__all__'
+        exclude = ['ticket_type', 'ticket_status']
