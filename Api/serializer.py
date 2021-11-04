@@ -63,6 +63,12 @@ class PackageListSerializer(serializers.ModelSerializer):
                   'duration_type', 'feature_subscription', 'price', ]
 
 
+class ServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = bcsmodels.Service
+        fields = ['service_title']
+
+
 class SubServiceSerializer(serializers.ModelSerializer):
     # fields = serializers.StringRelatedField(many=True)
     # subservice_info = serializers.CharField(source='subservice.title')
