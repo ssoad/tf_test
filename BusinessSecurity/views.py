@@ -779,7 +779,7 @@ def ticketOpenCloseView(request, id):
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-# BCS Admin Secction
+# BCS Admin Section
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminDashboardView(request):
     context = {
@@ -1370,6 +1370,32 @@ def bcsAdminOrderCanceledView(request, id):
     except:
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminTicketsView(request):
+    tickets = models.Ticket.objects.filter(ticket_type='bcs')
+    context = {
+        'tickets': tickets,
+    }
+    return render(request, 'admin_panel/bcsTF/allTickets.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminTicketsDetailView(request, id):
+    ticket = models.Ticket.objects.get(id=id)
+    commentform = forms.TicketCommentForm()
+    if request.method == 'POST':
+        commentform = forms.TicketCommentForm(request.POST)
+        if commentform.is_valid():
+            comment = commentform.save(commit=False)
+            comment.user = request.user
+            comment.ticket = ticket
+            comment.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    context = {
+        'ticket': ticket,
+        'commentform': commentform,
+    }
+    return render(request, 'admin_panel/bcsTF/ticket_detail.html', context)
 
 # bcs academy user panel
 @login_required

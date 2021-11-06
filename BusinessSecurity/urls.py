@@ -152,7 +152,9 @@ urlpatterns = [
     path('bcs_admin_order_completed/<id>/', views.bcsAdminOrderCompletedView, name='bcs_admin_order_completed'),
     path('bcs_admin_order_canceled/', views.bcsAdminOrderCanceledView, name='bcs_admin_order_canceled'),
     path('bcs_admin_order_canceled/<id>/', views.bcsAdminOrderCanceledView, name='bcs_admin_order_canceled'),
-
+    path('bcs_admin_all_tickets/', views.bcsAdminTicketsView, name='bcs_admin_all_tickets'),
+    path('bcs_admin_tickets_detail/', views.bcsAdminTicketsDetailView, name='bcs_admin_tickets_detail'),
+    path('bcs_admin_tickets_detail/<id>', views.bcsAdminTicketsDetailView, name='bcs_admin_tickets_detail'),
     # bcs academy user panel
     path('academy_user_courses/', views.UserCourses, name='academy_user_courses'),
     path('academy_user_courses/<id>/', views.UserCoursesDetails, name='academy_user_courses_details'),
