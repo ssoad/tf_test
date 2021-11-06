@@ -24,3 +24,5 @@ admin.site.register(models.Events)
 admin.site.register(models.RegisteredEvents)
 
 admin.site.register(models.Ticket)
+admin.site.register(models.TicketStaff)
+admin.site.register(models.TicketComment)

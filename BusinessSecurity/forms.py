@@ -99,3 +99,9 @@ class TicketCreateForm(forms.ModelForm):
         model = models.Ticket
         fields = ['ticket_title', 'ticket_category', 'ticket_description', 'ticket_attachment']
         # exclude = ['ticket_type', 'ticket_status']
+
+
+class TicketCommentForm(forms.ModelForm):
+    class Meta:
+        model = models.TicketComment
+        fields = ['comment']
