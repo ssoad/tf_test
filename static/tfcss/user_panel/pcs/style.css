@@ -35,13 +35,13 @@ a {
 
 .menubar {
     list-style-type: none;
-    padding: 10px;
-    padding-left: 0;
+    padding: 10px 2px;
+    z-index: 9;
 }
 
 .menubar li {
     padding: 10px 0;
-    padding-left: 15px;
+    padding-left: 6px;
     border-bottom: 1px solid rgba(128, 128, 128, 0.5);
 }
 
@@ -52,6 +52,7 @@ a {
     color: black;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .menubar li:last-child {
@@ -60,15 +61,32 @@ a {
 
 .menubar li i {
     padding: 8px;
-    border: 1px solid black;
+    color: var(--navy);
     border-radius: 50%;
     width: 30px;
     height: 30px;
-    font-size: 18px;
+    font-size: 23px;
     margin-right: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.w-20 .menubar li span {
+    display: none;
+}
+
+.w-20 .logo-sm {
+    display: block;
+}
+
+.w-20 .logo-lg {
+    display: none;
+}
+
+.menu-expand-btn {
+    position: absolute;
+    left: 100px
 }
 
 
@@ -155,6 +173,11 @@ a {
     border: 1px solid var(--navy);
     color: var(--navy);
     background-color: white;
+}
+
+.btn-check:focus+.btn,
+.btn:focus {
+    box-shadow: none;
 }
 
 .rounded-5 {
@@ -965,11 +988,12 @@ footer#footer-large {
         width: 45% !important;
     }
     .w-20 {
-        width: 18%;
-        z-index: 9;
+        width: 5%;
+        z-index: 10000;
     }
     .w-80 {
-        width: 82%;
+        width: 95%;
+        margin-left: 5%;
     }
     main {
         margin-left: 18%;
@@ -1010,6 +1034,9 @@ footer#footer-large {
 }
 
 @media (max-width: 500px) {
+    .menubar li a {
+        justify-content: flex-start;
+    }
     .dashboard-container .orders h5,
     .dashboard-container .subscription h5,
     .dashboard-container .readings .reading-list h5 {

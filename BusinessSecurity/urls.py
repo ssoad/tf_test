@@ -47,6 +47,8 @@ urlpatterns = [
 
     path('appoinment/', views.appoinmentView, name='appoinment'),
     path('open_tickets/', views.openTicketView, name='open_tickets'),
+    path('ticket_details/', views.ticketDetailView, name='ticket_details'),
+    path('ticket_details/<id>/', views.ticketDetailView, name='ticket_details'),
     # main admin panel
 
     path('main_admin_dashboard/', views.mainAdminDashboardView, name='main_admin_dashboard'),
@@ -65,6 +67,10 @@ urlpatterns = [
     path('main_admin_stuff_view/', views.mainAdminSupportStuffView, name='main_admin_stuff_view'),
     path('main_admin_all_tickets/', views.mainAdminTicketsView, name='main_admin_all_tickets'),
     path('main_admin_tickets_detail/', views.mainAdminTicketsDetailView, name='main_admin_tickets_detail'),
+    path('main_admin_tickets_detail/<id>', views.mainAdminTicketsDetailView, name='main_admin_tickets_detail'),
+    path('tickets_status_change/', views.ticketOpenCloseView, name='tickets_status_change'),
+    path('tickets_status_change/<id>/', views.ticketOpenCloseView, name='tickets_status_change'),
+
 
     # bcs user panel
     path('bcs_user_dashboard/', views.userDashboardView, name='bcs_user_dashboard'),
@@ -146,7 +152,9 @@ urlpatterns = [
     path('bcs_admin_order_completed/<id>/', views.bcsAdminOrderCompletedView, name='bcs_admin_order_completed'),
     path('bcs_admin_order_canceled/', views.bcsAdminOrderCanceledView, name='bcs_admin_order_canceled'),
     path('bcs_admin_order_canceled/<id>/', views.bcsAdminOrderCanceledView, name='bcs_admin_order_canceled'),
-
+    path('bcs_admin_all_tickets/', views.bcsAdminTicketsView, name='bcs_admin_all_tickets'),
+    path('bcs_admin_tickets_detail/', views.bcsAdminTicketsDetailView, name='bcs_admin_tickets_detail'),
+    path('bcs_admin_tickets_detail/<id>', views.bcsAdminTicketsDetailView, name='bcs_admin_tickets_detail'),
     # bcs academy user panel
     path('academy_user_courses/', views.UserCourses, name='academy_user_courses'),
     path('academy_user_courses/<id>/', views.UserCoursesDetails, name='academy_user_courses_details'),

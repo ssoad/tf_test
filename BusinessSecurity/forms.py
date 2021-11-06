@@ -93,9 +93,15 @@ class OrderAssignForm(forms.ModelForm):
 
 
 class TicketCreateForm(forms.ModelForm):
-    ticket_category = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-select'}))
+    ticket_category = forms.Field(widget=forms.Select(attrs={'class': 'form-select'}))
 
     class Meta:
         model = models.Ticket
         fields = ['ticket_title', 'ticket_category', 'ticket_description', 'ticket_attachment']
         # exclude = ['ticket_type', 'ticket_status']
+
+
+class TicketCommentForm(forms.ModelForm):
+    class Meta:
+        model = models.TicketComment
+        fields = ['comment']

@@ -46,39 +46,43 @@
 
     <section class="container">
         <div id="liveAlertPlaceholder"></div>
-        <div class="d-flex justify-content-end">
-            <button class="btn btn-navy rounded-0 modal-open" data-bs-toggle="modal" data-bs-target="#ticketForm">Create a new
+        <div class="d-flex justify-content-end mb-5">
+            <button class="btn btn-navy rounded-0 modal-open" data-bs-toggle="modal" data-bs-target="#ticketForm">Create
+                a new
                 Ticket
             </button>
         </div>
-        <div class="text-center py-5 my-5">
-            <i class="icofont-box fs-4 bg-navy rounded-circle p-1"></i>
-            <h4 class="mt-2">You haven't opened any ticket yet!</h4>
-        </div>
-
-
-        <table id="order-table" class="table table-bordered">
-            <thead>
-            <tr>
-                <th>No.</th>
-                <th>Ticket ID</th>
-                <th>Title</th>
-                <th>Category</th>
-                <th>status</th>
-                <th>Date</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>1</td>
-                <td>20421</td>
-                <td><a href="">Penetration testing form not working</a></td>
-                <td>Ajob kichu</td>
-                <td>Pending</td>
-                <td>20-12-21</td>
-            </tr>
-            </tbody>
-        </table>
+        {% if not tickets.exists %}
+            <div class="text-center py-5 my-5">
+                <i class="icofont-box fs-4 bg-navy rounded-circle p-1"></i>
+                <h4 class="mt-2">You haven't opened any ticket yet!</h4>
+            </div>
+        {% else %}
+            <table id="order-table" class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Ticket ID</th>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>status</th>
+                    <th>Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for ticket in tickets %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ ticket.id }}</td>
+                        <td><a href="{% host_url 'ticket_details' %}{{ ticket.id }}">{{ ticket.ticket_title }}</a></td>
+                        <td>{{ ticket.ticket_category }}</td>
+                        <td>{{ ticket.ticket_status }}</td>
+                        <td>{{ ticket.ticket_date }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
         <!-- Modal -->
         <div class="modal fade" id="ticketForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-centered modal-xl">
@@ -175,11 +179,11 @@
         const ticketService = document.getElementById("id_ticket_category")
         const openModal = document.querySelector(".modal-open")
 
-        openModal.addEventListener('click', ()=>{
+        openModal.addEventListener('click', () => {
             fetch("http://127.0.0.1:8000/api/bcs/services/")
-                .then(res=> res.json())
-                .then(data=>{
-                    data.map(item=>{
+                .then(res => res.json())
+                .then(data => {
+                    data.map(item => {
                         const option = document.createElement("option")
                         option.setAttribute("value", item.service_title)
                         option.innerText = item.service_title

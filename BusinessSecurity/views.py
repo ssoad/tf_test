@@ -546,16 +546,40 @@ def emailInvitationView(request):
 @login_required
 def openTicketView(request):
     form = forms.TicketCreateForm()
+    tickets = models.Ticket.objects.filter(user=request.user).order_by('-ticket_date')
     if request.method == 'POST':
-        form = forms.TicketCreateForm(request.POST)
+        form = forms.TicketCreateForm(request.POST, request.FILES)
         if form.is_valid():
             ticket = form.save(commit=False)
+            ticket.user = request.user
             ticket.ticket_type = 'bcs'
-
+            ticket.ticket_status = 'open'
+            ticket.ticket_category = request.POST.get('ticket_category')
+            ticket.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
         'form': form,
+        'tickets': tickets,
     }
     return render(request, 'user_panel/bcs/ticket.html', context)
+
+
+def ticketDetailView(request, id):
+    ticket = models.Ticket.objects.get(id=id)
+    commentform = forms.TicketCommentForm()
+    if request.method == 'POST':
+        commentform = forms.TicketCommentForm(request.POST)
+        if commentform.is_valid():
+            comment = commentform.save(commit=False)
+            comment.user = request.user
+            comment.ticket = ticket
+            comment.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    context = {
+        'ticket': ticket,
+        'commentform': commentform,
+    }
+    return render(request, 'user_panel/bcs/ticket_detail.html', context)
 
 
 # Main Admin Sections
@@ -716,21 +740,46 @@ def mainAdminSupportStuffView(request):
 
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
 def mainAdminTicketsView(request):
+    tickets = models.Ticket.objects.all()
     context = {
-
+        'tickets': tickets,
     }
     return render(request, 'admin_panel/mainTF/allTickets.html', context)
 
 
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
-def mainAdminTicketsDetailView(request):
+def mainAdminTicketsDetailView(request, id):
+    ticket = models.Ticket.objects.get(id=id)
+    commentform = forms.TicketCommentForm()
+    if request.method == 'POST':
+        commentform = forms.TicketCommentForm(request.POST)
+        if commentform.is_valid():
+            comment = commentform.save(commit=False)
+            comment.user = request.user
+            comment.ticket = ticket
+            comment.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
-
+        'ticket': ticket,
+        'commentform': commentform,
     }
-    return render(request, 'admin_panel/mainTF/ticketView.html', context)
+    return render(request, 'admin_panel/mainTF/ticket_detail.html', context)
 
 
-# BCS Admin Secction
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def ticketOpenCloseView(request, id):
+    current_ticket = models.Ticket.objects.get(id=id)
+    if current_ticket.ticket_status == 'open':
+        current_ticket.ticket_status = 'closed'
+        current_ticket.save()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    elif current_ticket.ticket_status == 'closed':
+        current_ticket.ticket_status = 'open'
+        current_ticket.save()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+# BCS Admin Section
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminDashboardView(request):
     context = {
@@ -1321,6 +1370,32 @@ def bcsAdminOrderCanceledView(request, id):
     except:
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminTicketsView(request):
+    tickets = models.Ticket.objects.filter(ticket_type='bcs')
+    context = {
+        'tickets': tickets,
+    }
+    return render(request, 'admin_panel/bcsTF/allTickets.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminTicketsDetailView(request, id):
+    ticket = models.Ticket.objects.get(id=id)
+    commentform = forms.TicketCommentForm()
+    if request.method == 'POST':
+        commentform = forms.TicketCommentForm(request.POST)
+        if commentform.is_valid():
+            comment = commentform.save(commit=False)
+            comment.user = request.user
+            comment.ticket = ticket
+            comment.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    context = {
+        'ticket': ticket,
+        'commentform': commentform,
+    }
+    return render(request, 'admin_panel/bcsTF/ticket_detail.html', context)
 
 # bcs academy user panel
 @login_required

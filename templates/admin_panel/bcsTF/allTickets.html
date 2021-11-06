@@ -1,4 +1,4 @@
-{% extends 'base/main_admin_base.html' %} {% load static %}
+{% extends 'base/bcs_admin_base.html' %} {% load static %}
 {% load crispy_forms_tags %}
 {% load hosts %}
 
@@ -70,7 +70,7 @@
                         <td>{{ forloop.counter }}</td>
                         <td>{{ ticket.id }}</td>
                         <td><a href="
-                                {% host_url 'main_admin_tickets_detail' %}{{ ticket.id }}">{{ ticket.ticket_title }}</a>
+                                {% host_url 'bcs_admin_tickets_detail' %}{{ ticket.id }}">{{ ticket.ticket_title }}</a>
                         </td>
                         <td>{{ ticket.ticket_category }}</td>
                         <td>{{ ticket.ticket_type|upper }}</td>
