@@ -13,7 +13,6 @@ menuItemsName.forEach((item, index) => {
         }
         .menubar li:nth-child(${index + 1}):not(:last-child) i {
                     color: white;
-                    border: 1px solid white;
                 }
                 .menubar li:nth-child(${index + 1}):not(:last-child) a {
                     color: white;
