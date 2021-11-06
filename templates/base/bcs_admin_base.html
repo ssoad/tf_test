@@ -61,7 +61,7 @@
         <!-- top bar section ends here -->
         <!-- sidebar section starts here -->
         <aside>
-            <div class="aside-container position-fixed bg-white px-1 pt-2 d-none d-lg-block">
+            <div class="aside-container position-fixed px-1 pt-2 d-none d-lg-block">
                 <!-- Brand/logo-->
                 <a class="navbar-brand" href="#">
                     <button class="btn btn-close sideBarClose"></button>
@@ -83,13 +83,13 @@
                         </a>
                     </li>
                     <div class="div"></div>
-                    <li>
+                    <li data-tootik="order" data-tootik-conf="right">
                         <a href="{% host_url 'bcs_admin_orders' %}" class="nav-link">
                             <i class="icofont-cube"></i> <span class="nav-text">order</span> 
                         </a>
                     </li>
                     <div class="div"></div>
-                    <li>
+                    <li data-tootik="services" data-tootik-conf="right">
                         <span class="nav-link dropdown-btn dropdown-toggle" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-collection-fill"></i>
@@ -119,7 +119,7 @@
                         </ul>
                     </li>
                     <div class="div"></div>
-                    <li>
+                    <li data-tootik="users & admin" data-tootik-conf="right">
                         <span class="nav-link dropdown-btn dropdown-toggle" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-people-fill"></i>
@@ -139,14 +139,14 @@
                         </ul>
                     </li>
                     <div class="div"></div>
-                    <li>
+                    <li data-tootik="Reading List" data-tootik-conf="right">
                         <a href="{% host_url 'bcs_admin_reading_list' %}" class="nav-link">
                             <i class="bi bi-file-earmark-fill"></i>
                             <span class="nav-text">Reading List</span>
                         </a>
                     </li>
                     <div class="div"></div>
-                    <li>
+                    <li data-tootik="Subscription" data-tootik-conf="right">
                         <span class="nav-link dropdown-btn dropdown-toggle" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-tag-fill"></i>
@@ -167,19 +167,19 @@
                         </ul>
                     </li>
                     <div class="div"></div>
-                    <li>
+                    <li data-tootik="revenue" data-tootik-conf="right">
                         <a href="{% host_url 'bcs_admin_revenue' %}" class="nav-link">
-                            <i class="bi bi-currency-dollar"></i> <span class="nav-text">revenue</span>
+                            <i class="icofont-dollar"></i> <span class="nav-text">revenue</span>
                         </a>
                     </li>
                     <div class="div"></div>
-                    <li>
+                    <li data-tootik="user interest" data-tootik-conf="right">
                         <a href="{% host_url 'bcs_admin_user_interest' %}" class="nav-link">
-                            <i class="bi bi-check-square"></i> <span class="nav-text">user interest</span>
+                            <i class="icofont-tick-mark"></i> <span class="nav-text">user interest</span>
                         </a>
                     </li>
                     <div class="div"></div>
-                    <li>
+                    <li data-tootik="Training" data-tootik-conf="right">
                         <a href="{% host_url 'bcs_admin_training' %}" class="nav-link">
                             <i class="bi bi-award-fill"></i> <span class="nav-text">Training</span>
                         </a>

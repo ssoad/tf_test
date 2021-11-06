@@ -138,15 +138,12 @@ nav {
 
 /* sidebar style starts here */
 
-aside {
-    background: #fff;
-}
-
 aside li {
     list-style: none;
 }
 
 .aside-container {
+    background-color: #ededed;
     width: var(--sidebar-width);
     z-index: 12;
     top: 6.4rem;
@@ -160,42 +157,51 @@ aside li {
     box-shadow: 0px 1px 1px 1px var(--var-box-shadow-color);
     /* overflow-y: hidden; */
     transition: all 0.3s;
-    background-color: #241241;
 }
 
 
-.aside-container:hover::-webkit-scrollbar {
+.aside-container li::before, .aside-container li::after{
+    display: none;
+}
+
+/* .aside-container:hover::-webkit-scrollbar {
     opacity: 0;
     width: 2px;
     position: relative;
     z-index: -1;
     background-color: #fff;
-}
+} */
 
-.aside-container:hover::-webkit-scrollbar-thumb {
+/* .aside-container:hover::-webkit-scrollbar-thumb {
     opacity: 0;
     border-radius: 10px;
     position: relative;
     z-index: -1;
     -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, .3);
     background-color: #182f596e;
-}
+} */
 
 .dropdown-container {
-    width: 80%;
-    margin: 0 auto;
-    background: white;
-    border-radius: 5px;
+    position: absolute;
+    display: block;
+    z-index: 1;
+    top: 0;
+    background-color: #ededed;
     overflow: hidden;
-    max-height: 0;
-    transition: max-height 0.5s;
+    width: 0;
+    right: -300px;
 }
 
 .show-dropdown-container {
-    box-shadow: 1px 1px 2px 1px #707070;
-    max-height: 200px;
-    padding: 1rem;
-    margin-block: 1rem;
+    width: 100%;  
+}
+
+.clicked::after{
+    transform: rotate(-90deg);  
+}
+
+.dropdown-toggle::after{
+   transition: transform .3s;
 }
 
 
@@ -836,7 +842,10 @@ button {
 
 .shrink-container {
     width: var(--shrinked-sidebar-width);
-    background-color: #ededed !important;
+}
+.shrink-container .show-dropdown-container {
+   width: 250px;
+   right: -254px;
 }
 
 .shrink-container .dropdown-toggle::after{
@@ -887,8 +896,14 @@ button {
     margin-top: .7rem;
     padding: 0 ;
 }
+
+.shrink-container li::before, .shrink-container li::after{
+    display: block;
+}
+
 [data-tootik][data-tootik-conf*=right]:after{
     z-index: 999999;
+    text-transform: capitalize;
 }
 .nav-link i:hover{
     background-color: #fff;
