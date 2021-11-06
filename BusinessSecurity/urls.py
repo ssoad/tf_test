@@ -67,6 +67,10 @@ urlpatterns = [
     path('main_admin_stuff_view/', views.mainAdminSupportStuffView, name='main_admin_stuff_view'),
     path('main_admin_all_tickets/', views.mainAdminTicketsView, name='main_admin_all_tickets'),
     path('main_admin_tickets_detail/', views.mainAdminTicketsDetailView, name='main_admin_tickets_detail'),
+    path('main_admin_tickets_detail/<id>', views.mainAdminTicketsDetailView, name='main_admin_tickets_detail'),
+    path('tickets_status_change/', views.ticketOpenCloseView, name='tickets_status_change'),
+    path('tickets_status_change/<id>/', views.ticketOpenCloseView, name='tickets_status_change'),
+
 
     # bcs user panel
     path('bcs_user_dashboard/', views.userDashboardView, name='bcs_user_dashboard'),

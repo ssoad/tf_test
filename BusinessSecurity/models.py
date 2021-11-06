@@ -146,6 +146,21 @@ class Ticket(models.Model):
         return self.ticket_title
 
 
+class TicketStaff(models.Model):
+    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name='ticketstaff_order')
+    staff = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ticketstaff_user')
+
+
+class TicketComment(models.Model):
+    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name='ticketcomment_ticket')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ticketcomment_user')
+    comment = HTMLField()
+    comment_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.ticket} - comment - {self.user}'
+
+
 class SubscriptionBasedPackage(models.Model):
     service_id = models.ForeignKey(Service, on_delete=models.CASCADE)
     package_name = models.CharField(max_length=264, verbose_name='Package Name')
