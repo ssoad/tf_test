@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="{%static ''%}tfcss/icofont/icofont.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-    <link rel="stylesheet" href="{%static ''%}tfcss/user_panel/bcs/style.css" /> {% block headercss %} {% endblock headercss %}
+    <link rel="stylesheet" href="{%static ''%}tfcss/user_panel/bcs/style.css" />
+    <link id="tooltip" rel="stylesheet" href="https://npmcdn.com/tootik@1.0.2/css/tootik.min.css"> {% block headercss %} {% endblock headercss %}
     <title>
         {% block title %} {% endblock title %}
     </title>
@@ -18,53 +19,8 @@
 <body>
 
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Menubar</h5>
-        </div>
-        <div class="offcanvas-body pt-0">
-            <ul class="menubar">
-                <li>
-                    <a href="{% host_url 'bcs_user_dashboard' %}">
-                        <i class="icofont-home"></i> Dashboard
-                    </a>
-                </li>
-                <li>
-                    <a href="{% host_url 'bcs_user_services' %}">
-                        <i class="icofont-cubes"></i> Services
-                    </a>
-                </li>
-                <li>
-                    <a href="{% host_url 'bcs_user_order_history' %}">
-                        <i class="icofont-cart-alt"></i> Order History
-                    </a>
-                </li>
-                <li>
-                    <a href="{% host_url 'bcs_user_my_team' %}">
-                        <i class="icofont-people"></i> My Team
-                    </a>
-                </li>
-                <li>
-                    <a href="{% host_url 'bcs_user_subscriptions' %}">
-                        <i class="icofont-dollar"></i> Subscriptions
-                    </a>
-                </li>
-                <li>
-                    <a href="{% host_url 'bcs_user_events' %}">
-                        <i class="icofont-ui-calendar"></i> Events & Webinars
-                    </a>
-                </li>
-                <li>
-                    <a href="{% host_url 'bcs_user_notifications' %}">
-                        <i class="icofont-notification"></i> Notifications
-                    </a>
-                </li>
-                <li>
-                    <a href="{% host_url 'user_profile' %}">
-                        <i class="icofont-options"></i> My Profile
-                    </a>
-                </li>
-                <a href="{% host_url 'logout' %}" class="mt-2 logout-btn ms-3 btn btn-outline-navy px-4">Log Out</a>
-            </ul>
+        <div class="offcanvas-body pt-5">
+
         </div>
     </div>
     <div class="w-20 h-100 position-fixed bg-white shadow-sm px-1 pt-2 d-none d-lg-block">
@@ -215,6 +171,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
     <script src="{%static ''%}tfjs/user_panel/bcs/menubar.js"></script>
     <script>
+        document.querySelector('.navbar-toggler').addEventListener('click', e => {
+            document.querySelector('.offcanvas-body').innerHTML = document.querySelector('.w-20 .menubar').outerHTML;
+        })
         window.onload = function() {
             let logoSm = document.querySelector('.logo-sm');
             let logoLg = document.querySelector('.logo-lg');
@@ -228,9 +187,13 @@
                     li.style.paddingLeft = '6px';
                     li.children[0].children[1].style.display = 'none';
                     li.children[0].style.justifyContent = 'center';
-                })
+                });
+               
+                if (document.getElementById('modal-spacing'))
+                    document.getElementById('modal-spacing').outerHTML='';
+
                 if (!document.getElementById('tooltip'))
-                    document.head.insertAdjacentHTML('beforeend', '<link id="tooltip" rel="stylesheet" href="https://npmcdn.com/tootik@1.0.2/css/tootik.min.css">')
+                    document.head.insertAdjacentHTML('beforeend', '<link id="tooltip" rel="stylesheet" href="https://npmcdn.com/tootik@1.0.2/css/tootik.min.css">');
             }
             let showLinkText = () => {
                 logoSm.style.display = 'none';
@@ -239,7 +202,10 @@
                     li.style.paddingLeft = '15px';
                     li.children[0].children[1].style.display = 'initial';
                     li.children[0].style.justifyContent = 'flex-start';
-                })
+                });
+                document.head.insertAdjacentHTML('beforeend', `<style id="modal-spacing"> .modal-dialog {
+                    padding-left: 18%;
+                }</style>`);
                 document.getElementById('tooltip').outerHTML = '';
 
             }
@@ -279,7 +245,6 @@
                 }
             });
 
-            hideLinkText();
         }
 
         function dropdown($bs) {
