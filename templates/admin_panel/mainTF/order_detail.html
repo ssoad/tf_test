@@ -2,11 +2,10 @@
 {% block title %}
     Orders {% endblock title %}
 {% block headercss %}
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/order.css' %}"/> {% endblock headercss %}
 
 {% block content %}
-
     <main>
         <div class="order-info">
             <div class="container-fluid">
@@ -122,7 +121,8 @@
 
                                 {% for fieldOrder in current_order.subserviceinput.all %}
                                     {% if order.inputfield.subservice == fieldOrder.inputfield.subservice %}
-                                        <p class="card-text">{{ fieldOrder.inputfield.inputfield.placeholder }}: {{ fieldOrder.inputinfo }}</p>
+                                        <p class="card-text">{{ fieldOrder.inputfield.inputfield.placeholder }}: <span
+                                                class="items">{{ fieldOrder.inputinfo }}</span></p>
                                     {% endif %}
                                 {% endfor %}
                             </div>
@@ -195,6 +195,32 @@
     <script>
         document.querySelectorAll('.card-title.trash').forEach(elem => {
             elem.parentNode.parentNode.parentNode.outerHTML = '';
+        })
+    </script>
+    <script>
+        const inputItem = document.querySelectorAll('.items');
+        inputItem.forEach((item, index) => {
+            if (item.innerHTML.includes('/media/')) {
+                let image = item.innerHTML;
+                item.innerHTML = `<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#imageModal${index}">View</button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="imageModal${index}" tabindex="-1" aria-labelledby="imageModal${index}Label" aria-hidden="true">
+                                      <div class="modal-dialog">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Image</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                          </div>
+                                          <div class="modal-body">
+                                            <img src="${image}" alt="">
+                                          </div>
+                                          <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>`
+            }
         })
     </script>
 {% endblock customjs %}
