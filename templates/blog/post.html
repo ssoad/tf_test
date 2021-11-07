@@ -240,9 +240,12 @@
                             </p>
                         </div>
                     </div>
-
                     {% endfor %}
                 </section>
+                <!-- load more data  -->
+                    <section class="my-5 container d-flex justify-content-center">
+                        <button id="load-more-btn" class="btn btn-navy rounded-pill">Load More</button>
+                    </section>
                 {% endif %}
             </div>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw==" crossorigin="anonymous" />
@@ -312,7 +315,6 @@
 
     {% if post.comment_option == 'enabled'%}
     <script>
-        const baseUrl = "http://127.0.0.1:8000/api/"
         const postId = '{{post.id}}'
         const userId = '{{user.id}}'
         const csrf_token = document.querySelector("input[name='csrfmiddlewaretoken']")
@@ -327,28 +329,6 @@
         const commentCount = document.querySelector(".commentCount")
         const commentDetail = document.querySelector("#floatingTextarea2")
 
-        // fetch(`${baseUrl}blogs/comment/${postId}`)
-        //     .then(response => response.json())
-        //     .then(result => {
-        //         result.results.map(comment => {
-        //             const commentBody = document.createElement("div")
-        //             commentCount.innerText = result.length
-        //             commentBody.classList.add("comment")
-        //             commentBody.innerHTML = `<div class="comment-mg">
-        //                     <img src="{% static 'tfimg/blog/Clip.jpg' %}" alt="">
-        //                 </div>
-        //                 <div class="comment-body">
-        //                     <div class="comment-info">
-        //                         <span class="comment-author">${comment.author}</span>
-        //                         <small class="comment-time">${moment(comment.comment_date).format('MMMM Do YYYY, h:mm a')}</small>
-        //                     </div>
-        //                     <p>
-        //                         ${comment.comment}
-        //                     </p>
-        //                 </div>`
-        //             commentContainer.appendChild(commentBody)
-        //         })
-        //     })
         commentSubmit.addEventListener("click", (e) => {
             e.preventDefault()
             const requestBody = {
@@ -389,7 +369,41 @@
 
                 document.getElementById('floatingTextarea2').value='';
                window.scrollBy(0, 200);
-        })
+        });
+
+        let pageNo = 2;
+         document.getElementById('load-more-btn').addEventListener('click', e => {
+            fetch(`${location.origin}/api/blogs/comment/${postId}?limit=5&page=${pageNo}`)
+             .then(response => response.json())
+             .then(result => {
+                 if(!result.results){
+                     e.target.style.display='none';
+                     e.stopPropagation();
+                 }
+                 result?.results?.forEach(comment => {
+                     let commentBody = `<div class="comment">
+                            <div class="comment-mg">
+                             <img src="{% static 'tfimg/blog/Clip.jpg' %}" alt="">
+                         </div>
+                         <div class="comment-body">
+                             <div class="comment-info">
+                                 <span class="comment-author">${comment.author}</span>
+                                 <small class="comment-time">${moment(comment.comment_date).format('MMMM   Do YYYY, h:mm a')}</small>
+                             </div>
+                             <p>
+                                 ${comment.comment}
+                             </p>
+                         </div>
+                         </div>`;
+                     commentContainer.insertAdjacentHTML('beforeend', commentBody);
+                 })
+             })
+             .catch(err=> alert(err.message));
+
+            pageNo++;
+        });
+
+      
     </script>
     {% endif %}
     <script>
