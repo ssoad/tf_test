@@ -1,6 +1,6 @@
-{% extends 'base/bcs_user_base.html' %} {% load static %} {% block title %} Ticket View {% endblock title %}
+{% extends 'base/bcs_admin_base.html' %} {% load static %} {% block title %} Ticket View {% endblock title %}
 {% block headercss %} {% endblock headercss %} {% block content %}
-
+<main>
     <section class="px-3">
         <h5 class="fw-bold">TICKET {{ ticket.id }}</h5>
         <h6 class="fw-bold"><span class="text-green">Submitted on: </span>{{ ticket.ticket_date }}</h6>
@@ -49,12 +49,13 @@
                         {{ commentform.media }}
                         {{ commentform }}
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-navy px-4 mt-3">Reply</button>
+                        <button type="submit" class="btn btn-primary px-4 mt-3">Reply</button>
                     </form>
                 </div>
             {% endif %}
         {% endif %}
     </section>
+</main>
 
 
 {% endblock content %} {% block customjs %} {% endblock customjs %}

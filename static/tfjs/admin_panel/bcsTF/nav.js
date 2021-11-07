@@ -5,7 +5,6 @@ navLinks.forEach(link => {
     if (link.classList.contains("dropdown-item")) {
       link.parentElement.parentElement.classList.add("show-dropdown-container");
     }
-
   } else {
     link.classList.remove("active")
     // link.parentElement.parentElement.classList.remove("show-dropdown-container");
@@ -14,13 +13,25 @@ navLinks.forEach(link => {
 
 
 const dropdown = document.querySelectorAll(".dropdown-btn");
+const dropdownContainers = document.querySelectorAll(".dropdown-container");
 for (let i = 0; i < dropdown.length; i++) {
   dropdown[i].addEventListener("click", function () {
     var dropdownContent = this.nextElementSibling;
-    if (dropdownContent.classList.contains("show-dropdown-container")) {
+    dropdownContainers.forEach(item=>{
+      item.classList.remove("show-dropdown-container")
+      if (item.classList.contains("active-container") && item != dropdownContent) {
+        item.classList.remove("active-container");
+        item.previousElementSibling.classList.remove("clicked")
+      }
+    })
+    if (dropdownContent.classList.contains("active-container")) {
       dropdownContent.classList.remove("show-dropdown-container");
+      dropdownContent.classList.remove("active-container");
+      dropdown[i].classList.remove("clicked");
     } else {
       dropdownContent.classList.add("show-dropdown-container");
+      dropdownContent.classList.add("active-container");
+      dropdown[i].classList.add("clicked");
     }
   });
 }
@@ -36,6 +47,7 @@ deleteBtn.forEach(btn => {
 
 const hamburger = document.querySelector(".hamburger")
 const sideBarClose = document.querySelector(".sideBarClose")
+const sideBarText = document.querySelectorAll(".nav-text")
 const aside = document.querySelector(".aside-container")
 const nav = document.querySelector("nav")
 const main = document.querySelector("main")
@@ -56,6 +68,10 @@ shrinkBtn.addEventListener("click", () => {
   nav.classList.toggle("nav-expand")
   main.classList.toggle("main-expand")
   footer.classList.toggle("footer-expand")
+  sideBarText.forEach(text=>{
+    text.classList.toggle("d-none")
+  })
+
 })
 // aside.addEventListener("mouseover", () => {
 //   if (aside.classList.contains("mouseover"))

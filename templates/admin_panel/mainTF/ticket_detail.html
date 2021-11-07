@@ -1,6 +1,6 @@
 {% extends 'base/main_admin_base.html' %} {% load static %} {% block title %} Ticket View {% endblock title %}
 {% block headercss %} {% endblock headercss %} {% block content %}
-
+<main>
     <section class="px-3">
         <h5 class="fw-bold">TICKET {{ ticket.id }}</h5>
         <h6 class="fw-bold"><span class="text-green">Submitted on: </span>{{ ticket.ticket_date }}</h6>
@@ -22,7 +22,7 @@
                 <h6 class="fw-bold">Solution:</h6>
                 {% for comment in ticket.ticketcomment_ticket.all %}
                     {% if user == comment.user %}
-                        <div class="d-flex shadow-sm bg-lightgreen p-2 mb-3">
+                        <div class="d-flex shadow-sm bg-lightgreen p-2 mb-3 justify-content-between">
                             <div class="d-flex align-items-center pe-3">
                                 <p>{{ comment.comment|safe }}</p>
                             </div>
@@ -30,7 +30,7 @@
                                  style="width: 40px;height: 40px;border-radius: 50%;object-fit: cover;" alt="">
                         </div>
                     {% elif user != comment.user %}
-                        <div class="d-flex shadow-sm bg-lightgreen p-2 mb-3">
+                        <div class="d-flex shadow-sm bg-lightgreen p-2 mb-3 justify-content-between">
                             <img src="{{ comment.user.profile_pic.url }}"
                                  style="width: 40px;height: 40px;border-radius: 50%;object-fit: cover;" alt="">
                             <div class="d-flex align-items-center ps-3">
@@ -41,18 +41,21 @@
                 {% endfor %}
             </div>
         {% endif %}
-        {% if user.is_superuser or user.is_staff or ticket.ticketcomment_ticket.all.count > 0 %}
-            <div class="reply-box mt-3">
-                <h6 class="fw-bold">Recent Messages</h6>
-                <form action="" method="POST" enctype="multipart/form-data">
-                    {{ commentform.media }}
-                    {{ commentform }}
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-navy px-4 mt-3">Reply</button>
-                </form>
-            </div>
+        {% if ticket.ticket_status == 'open' %}
+            {% if user.is_superuser or user.is_staff or ticket.ticketcomment_ticket.all.count > 0 %}
+                <div class="reply-box mt-3">
+                    <h6 class="fw-bold">Recent Messages</h6>
+                    <form action="" method="POST" enctype="multipart/form-data">
+                        {{ commentform.media }}
+                        {{ commentform }}
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary px-4 mt-3">Reply</button>
+                    </form>
+                </div>
+            {% endif %}
         {% endif %}
     </section>
+</main>
 
 
 {% endblock content %} {% block customjs %} {% endblock customjs %}
