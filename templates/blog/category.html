@@ -1,6 +1,15 @@
 {% extends 'base/blog_base.html' %} {% load my_filter %} {% load static %}{% load hosts %} {% block title %} {{cat_path|capitalize}} {% endblock title %} {% block headercss %}
-<link rel="stylesheet" href="{% static 'tfcss/blog/blogs.css' %}">
-<link rel="stylesheet" href="{% static 'tfcss/blog/case_studies.css' %}">{% endblock headercss %} {% block content %}
+<link rel="stylesheet" href="{% static 'tfcss/blog/category.css' %}">
+<style>
+.banner-1 .banner-bg {
+    color: white;
+    background-image: url("{% static '' %}tfimg/blog/{{cat_path}}.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+</style>
+{% endblock headercss %} {% block content %}
 
 <section class="row mx-0 banner-1">
     <div class="col-md-6 col-lg-7 col-xl-8 pe-2 banner-bg">
@@ -11,6 +20,7 @@
     </div>
     <div class="col-md-6 col-lg-5 col-xl-4 px-0 px-md-2">
         <div class="bg-gray px-3 py-2 h-100 d-flex flex-column justify-content-center">
+        {% if cat_path|capitalize|upper != 'PODCAST' %}
             <div class="accordion accordion-flush" id="accordionFlush">
                 {% for subcategory in subcategories %}
                 <div class="accordion-item {%if forloop.counter == 2%}mt-2{% endif %}">
@@ -29,6 +39,9 @@
                 </div>
                 {% endfor %}
             </div>
+            {% else %}
+            <h4 class="text-center fw-bold">Upcoming Podcast</h4>
+            {% endif %}
 
         </div>
     </div>
@@ -71,9 +84,8 @@
 </div>
 
 {% if cat_path|capitalize|upper != 'PODCAST' %}
-<section class="important-case-studies mt-4  px-md-0">
-    <a href="" class="container-heading">MOST IMPORTANT CASE
-        STUDIES</a>
+<section class="important-posts mt-4  px-md-0">
+    <a href="" class="container-heading">MOST IMPORTANT {{cat_path|capitalize|upper}}</a>
     <div class="bg-light">
         <div class="row mx-0 align-items-stretch post-container">
             <div class="col-md-4">
@@ -135,10 +147,10 @@
     </div>
 </section>
 {% endif %}
-<!-- recent case-studies  -->
-<section class="recent-case-studies mt-4 px-2 px-md-0">
+<!-- recent posts  -->
+<section class="recent-posts mt-4 px-2 px-md-0">
     <a href="" class="container-heading mb-3">RECENT CASE STUDIES</a>
-    <div class="case-studies row row-cols-1 row-cols-md-3 g-5">
+    <div class="posts row row-cols-1 row-cols-md-3 g-5">
         {% for post in posts %}
         <div class="post col">
             <div class="card h-100">
@@ -175,7 +187,7 @@
         </div>
         {% endfor %}
     </div>
-    <div class="d-none filtered-case-studies row mx-0 g-5">
+    <div class="d-none filtered-posts row mx-0 g-5">
 
     </div>
 </section>
