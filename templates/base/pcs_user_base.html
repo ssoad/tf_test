@@ -173,7 +173,11 @@
                     li.style.paddingLeft = '6px';
                     li.children[0].children[1].style.display = 'none';
                     li.children[0].style.justifyContent = 'center';
-                })
+                });
+
+                if (document.getElementById('modal-spacing'))
+                    document.getElementById('modal-spacing').outerHTML='';
+
                 if (!document.getElementById('tooltip'))
                     document.head.insertAdjacentHTML('beforeend', '<link id="tooltip" rel="stylesheet" href="https://npmcdn.com/tootik@1.0.2/css/tootik.min.css">')
             }
@@ -184,7 +188,10 @@
                     li.style.paddingLeft = '15px';
                     li.children[0].children[1].style.display = 'initial';
                     li.children[0].style.justifyContent = 'flex-start';
-                })
+                });
+                document.head.insertAdjacentHTML('beforeend', `<style id="modal-spacing"> .modal-dialog {
+                    padding-left: 18%;
+                }</style>`);
                 document.getElementById('tooltip').outerHTML = '';
 
             }
