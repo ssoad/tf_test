@@ -383,10 +383,27 @@ def userOrderHistoryView(request):
         return HttpResponseRedirect(reverse('create_business'))
 
     elif request.user.is_bcs:
+        orders = models.Order.objects.filter(user=request.user)
         context = {
-
+            'orders': orders,
         }
         return render(request, 'user_panel/bcs/order_history.html', context)
+
+
+@login_required
+def userOrderDetailsView(request, id):
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+
+    elif request.user.is_bcs:
+        try:
+            current_order = models.Order.objects.get(user=request.user, id=id)
+            context = {
+                'current_order': current_order,
+            }
+            return render(request, 'user_panel/bcs/order_detail.html', context)
+        except:
+            return HttpResponse("You don't have permission to view this page")
 
 
 @login_required
