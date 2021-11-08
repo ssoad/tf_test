@@ -25,6 +25,7 @@
     <div class="offcanvas-body pt-5">
 
     </div>
+<<<<<<< HEAD
 </div>
 <div class="w-20 h-100 position-fixed bg-white shadow-sm px-1 pt-2 d-none d-lg-block">
     <a class="my-3" href="/">
@@ -82,6 +83,62 @@
                 <span>Support</span>
             </a>
         </li>
+=======
+    <div class="w-20 h-100 position-fixed bg-white shadow-sm px-1 pt-2 d-none d-lg-block">
+        <a class="my-3" href="/">
+            <img class="mx-auto my-3 logo-sm" src="{% static '' %}tfimg/user_panel/Techforing-Icon.png" width="40" height="40" alt="Logo">
+            <img class="mx-auto my-1 logo-lg" src="{% static '' %}tfimg/user_panel/logo.png" width="125" height="60" alt="Logo">
+        </a>
+        <ul class="menubar">
+            <li data-tootik="Dashboard" data-tootik-conf="right">
+                <a href="{% host_url 'bcs_user_dashboard' %}">
+                    <i class="icofont-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li data-tootik="Services" data-tootik-conf="right">
+                <a href="{% host_url 'bcs_user_services' %}">
+                    <i class="icofont-cubes"></i>
+                    <span>Services</span>
+                </a>
+            </li>
+            <li data-tootik="Order History" data-tootik-conf="right">
+                <a href="{% host_url 'bcs_user_order_history' %}">
+                    <i class="icofont-cart-alt"></i>
+                    <span>Order History</span>
+                </a>
+            </li>
+            <li data-tootik="My Team" data-tootik-conf="right">
+                <a href="{% host_url 'bcs_user_my_team' %}">
+                    <i class="icofont-people"></i>
+                    <span>My Team</span>
+                </a>
+            </li>
+            <li data-tootik="Subscriptions" data-tootik-conf="right">
+                <a href="{% host_url 'bcs_user_subscriptions' %}">
+                    <i class="icofont-dollar"></i>
+                    <span>Subscriptions</span>
+                </a>
+            </li>
+            <li data-tootik="Eevents & Webinars" data-tootik-conf="right">
+                <a href="{% url 'bcs_user_events' %}">
+                    <i class="icofont-ui-calendar"></i>
+                    <span>Events & Webinars</span>
+                </a>
+            </li>
+            <li data-tootik="Notifications" data-tootik-conf="right">
+                <a href="{% host_url 'bcs_user_notifications' %}">
+                    <i class="icofont-notification"></i>
+                    <span>Notifications</span>
+                </a>
+            </li>
+            <li data-tootik="Support" data-tootik-conf="right">
+                <a href="{% host_url 'open_tickets' %}">
+                    <i class="icofont-options"></i>
+                    <span>Support</span>
+                </a>
+            </li>
+>>>>>>> 6d3d25e3a781d746d24ebafb9feb9b3b4321ed8c
 
     </ul>
 
