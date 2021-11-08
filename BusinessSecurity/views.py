@@ -939,6 +939,7 @@ def bcsAdminSubServiceEditView(request, id):
 def bcsSubServiceFormView(request):
     form = forms.AddForm()
     form_lists = models.InputFields.objects.all()
+    select_choices = models.SelectChoice.objects.all()
     print(request.POST)
     if request.method == 'POST':
         form = forms.AddForm(request.POST)
@@ -948,6 +949,7 @@ def bcsSubServiceFormView(request):
     context = {
         'form': form,
         'form_lists': form_lists,
+        'select_choices': select_choices,
     }
     return render(request, 'admin_panel/bcsTF/subserviceForms.html', context)
 
