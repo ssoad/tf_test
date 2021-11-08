@@ -105,7 +105,7 @@
         if(e.target.id === 'id_type'){
             if(e.target.value === 'select'){
             let selectOptions = '';
-                selectChoices.forEach(option=> {
+                selectChoices.forEach(option => {
                     selectOptions+= `<option value=${option.id}>${option.choices}</option>`;
                 });
                 e.target.insertAdjacentHTML('afterend','<label for="choiceList">Choose Options</label><select id="choiceList" name="options" class="form-select js-example-basic-single" multiple>'+selectOptions+'</select>');
