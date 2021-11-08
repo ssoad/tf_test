@@ -83,6 +83,7 @@ class ServiceListApiView(generics.ListAPIView):
     #     service_id = self.kwargs['id']
     #     return bcsmodels.Service.objects.all()
 
+
 class SubServiceApiView(generics.ListAPIView):
     serializer_class = serializer.SubServiceSerializer
 
@@ -90,12 +91,22 @@ class SubServiceApiView(generics.ListAPIView):
         service_id = self.kwargs['id']
         return bcsmodels.SubService.objects.filter(service_id=service_id)
 
+
 class SubServiceInputApiView(generics.ListAPIView):
     serializer_class = serializer.SubServiceInputSerializer
 
     def get_queryset(self):
         service_id = self.kwargs['id']
         return bcsmodels.SubServiceInput.objects.filter(subservice_id=service_id)
+
+
+class ChoiceApiView(generics.ListAPIView):
+    serializer_class = serializer.ChoiceSerializer
+
+    def get_queryset(self):
+        id = self.kwargs['id']
+        return bcsmodels.SelectChoiceRelation.objects.filter(input_field_id=id)
+
 
 class UserSubServiceOrderApiView(generics.ListAPIView):
     serializer_class = serializer.UserSubServiceOrderSerializer
