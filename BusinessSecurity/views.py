@@ -939,12 +939,12 @@ def bcsAdminSubServiceEditView(request, id):
 def bcsSubServiceFormView(request):
     form = forms.AddForm()
     form_lists = models.InputFields.objects.all()
-    select_choices = models.SelectChoice.objects.all()
+    select_choices = list(models.SelectChoice.objects.all().values_list('choices', flat=True))
     print(request.POST)
     if request.method == 'POST':
         form = forms.AddForm(request.POST)
         if form.is_valid():
-            form.save()
+            # form.save()
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     context = {
         'form': form,
