@@ -601,12 +601,35 @@
                                 formContainer.removeChild(document.getElementById("progress"))
                                 inputFields+=`<div class="mt-5"data-position="${optionIndex}">  <h6 class="heading">${optionTitle}</h6>`;
                                     fields.forEach(field => {
-                                        inputFields+=`<label for="input-${field.inputfield.id}.${optionId}">${field.inputfield.placeholder.toUpperCase()}</label> <input class="form-control" type="${field.inputfield.type}"
+                                        inputFields+=`<label for="input-${field.inputfield.id}.${optionId}">${field.inputfield.placeholder.toUpperCase()}</label>`;
+                                        if(field.inputfield.type === 'select'){
+                                            inputFields+=`<select id="choiceList" name="options" class="form-select">`;
+                                        fetchData(`${location.origin}/api/bcs/choice_field/${field.inputfield.id}`).then(function(data) {
+                                            
+                                            data[0].choice_field.forEach(choice => {
+                                                inputFields+=` <option value="${choice.choices}">${choice.choices}</option>`;
+                                            });
+
+                                            inputFields+='</select>';
+                                            inputFields+=`</div>`;
+                                            div.innerHTML = inputFields;
+                                            informationForm.insertBefore(div, informationForm.children[optionIndex]);
+                                            }).catch(function(err) {
+                                                console.log(err)
+                                            });   
+                                            
+                                                     
+                                        }
+                                        else{
+                                        inputFields+=`<input class="form-control" type="${field.inputfield.type}"
                                         id="input-${field.inputfield.id}.${optionId}" name="${field.id}" placeholder="${field.inputfield.placeholder}">`;
+                                        inputFields+=`</div>`;
+                                            div.innerHTML = inputFields;
+                                            informationForm.insertBefore(div, informationForm.children[optionIndex]);
+                                        }
+                                        
                                     });
-                                    inputFields+=`</div>`;
-                                    div.innerHTML = inputFields
-                                    informationForm.insertBefore(div, informationForm.children[optionIndex]);
+                                    
                                 }).catch(function(err) {
                                     console.log(err)
                                 });
@@ -621,27 +644,6 @@
                         })
                     });
                 }
-                {% comment %} let formName = allForms[index];
-                let formUrl = `/bcs_services_form/${formName}`;
-
-                fetchForm(formUrl).then(function(data) {
-                    previewForm.innerHTML = previewForm.innerHTML + data;
-                    previewForm.removeChild(document.getElementById('progress'));
-                    if (formJsAdded)
-                    document.body.removeChild(document.getElementById('form-js'));
-
-                var formScript = document.createElement('script');
-
-                formScript.setAttribute('src', "{%static ''%}tfjs/user_panel/bcs/forms.js");
-                formScript.setAttribute('id', "form-js");
-                formJsAdded = true;
-                document.body.appendChild(formScript);
-                dropdown(bootstrap);
-
-            }).catch(function(err) {
-                console.log(err)
-            }) {% endcomment %}
-
         })
     });
 
