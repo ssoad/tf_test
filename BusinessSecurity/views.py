@@ -939,12 +939,24 @@ def bcsAdminSubServiceEditView(request, id):
 def bcsSubServiceFormView(request):
     form = forms.AddForm()
     form_lists = models.InputFields.objects.all()
-    select_choices = list(models.SelectChoice.objects.all().values_list('choices', flat=True))
-    print(request.POST)
+    select_choices = list(models.SelectChoice.objects.all().values('id', 'choices'))
+
+    # print(request.POST)
     if request.method == 'POST':
         form = forms.AddForm(request.POST)
         if form.is_valid():
-            # form.save()
+            current_input = form.save()
+            # print(current_input.id)
+            current_input_field = models.InputFields.objects.get(id=current_input.id)
+            # print(request.POST.getlist('options'))
+            if request.POST.getlist('options'):
+                for i in request.POST.getlist('options'):
+                    field = models.SelectChoice.objects.get(id=i)
+                    # print(field)
+                    new_choices = models.SelectChoiceRelation.objects.get_or_create(input_field=current_input_field)
+                    new_choices[0].choice_field.add(field)
+                    new_choices[0].save()
+
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     context = {
         'form': form,
