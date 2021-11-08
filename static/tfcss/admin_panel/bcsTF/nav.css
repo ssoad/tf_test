@@ -189,11 +189,11 @@ aside li {
     background-color: #ededed;
     overflow: hidden;
     width: 0;
-    right: -300px;
 }
 
 .show-dropdown-container {
-    width: 100%;  
+    width: 315px;  
+    right: -300px;
 }
 
 .clicked::after{
