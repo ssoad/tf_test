@@ -603,7 +603,7 @@
                                     fields.forEach(field => {
                                         inputFields+=`<label for="input-${field.inputfield.id}.${optionId}">${field.inputfield.placeholder.toUpperCase()}</label>`;
                                         if(field.inputfield.type === 'select'){
-                                            inputFields+=`<select id="choiceList" name="options" class="form-select">`;
+                                            inputFields+=`<select id="choiceList" name="${field.id}" class="form-select">`;
                                         fetchData(`${location.origin}/api/bcs/choice_field/${field.inputfield.id}`).then(function(data) {
                                             
                                             data[0].choice_field.forEach(choice => {

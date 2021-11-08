@@ -341,6 +341,8 @@ def userServicesView(request):
         if request.method == 'POST':
             data_list = request.POST
             file_list = request.FILES
+            print(data_list)
+            print(file_list)
 
             current_service = get_object_or_404(models.Service, service_title=data_list['service_name'])
 
