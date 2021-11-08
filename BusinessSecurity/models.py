@@ -48,6 +48,7 @@ input_type = (
     ('text', 'text'),
     ('number', 'number'),
     ('file', 'file'),
+    ('select', 'select'),
 )
 
 
@@ -61,6 +62,19 @@ class InputFields(models.Model):
 
     class Meta:
         verbose_name_plural = 'Input Fields'
+
+
+class SelectChoice(models.Model):
+    choices = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.choices
+
+
+class SelectChoiceRelation(models.Model):
+    input_field = models.ForeignKey(InputFields, on_delete=models.CASCADE,
+                                    related_name='selectchoicerelation_inputfield')
+    choice_field = models.ManyToManyField(SelectChoice, related_name='selectchoicerelation_selectchoice')
 
 
 class SubService(models.Model):

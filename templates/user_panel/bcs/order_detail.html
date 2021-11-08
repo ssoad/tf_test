@@ -1,0 +1,338 @@
+{% extends 'base/bcs_user_base.html' %}{% load hosts %} {% load crispy_forms_tags %} {% load my_filter %} {% load static %}
+{% block title %}
+    Orders {% endblock title %}
+{% block headercss %}
+
+    <link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/order.css' %}"/>
+
+    <style>
+
+        /*tooltip Box*/
+        .con-tooltip {
+            position: relative;
+            border-radius: 9px;
+            display: inline-block;
+            transition: all 0.3s ease-in-out;
+            cursor: default;
+        }
+
+        /*tooltip */
+        .tooltip {
+            visibility: hidden;
+            z-index: 1041;
+            opacity: .40;
+
+            width: 100%;
+            padding: 10px 20px;
+
+            background: #333;
+            color: white;
+            position: absolute;
+            top: -140%;
+
+            border-radius: 9px;
+            font: 16px;
+            transform: translateY(9px);
+            transition: all 0.3s ease-in-out;
+
+            box-shadow: 0 0 3px rgba(56, 54, 54, 0.86);
+        }
+
+
+        /* tooltip  after*/
+        .tooltip::after {
+            content: " ";
+            width: 0;
+            height: 0;
+
+            border-style: solid;
+            border-width: 12px 12.5px 0 12.5px;
+            border-color: #333 transparent transparent transparent;
+
+            position: absolute;
+            left: 40%;
+
+        }
+
+        .con-tooltip:hover .tooltip {
+            visibility: visible;
+
+            opacity: 1;
+            transition: .3s linear;
+            animation: odsoky 1s ease-in-out infinite alternate;
+
+        }
+
+        @keyframes odsoky {
+            0% {
+                transform: translateY(6px);
+            }
+
+            100% {
+                transform: translateY(1px);
+            }
+
+        }
+
+        /*hover ToolTip*/
+        .left:hover {
+            transform: translateX(-6px);
+        }
+
+        .top:hover {
+            transform: translateY(-6px);
+        }
+
+        .bottom:hover {
+            transform: translateY(6px);
+        }
+
+        .right:hover {
+            transform: translateX(6px);
+        }
+
+
+        /*left*/
+
+        .left .tooltip {
+            top: -20%;
+            left: -170%;
+        }
+
+        .left .tooltip::after {
+            top: 40%;
+            left: 90%;
+            transform: rotate(-90deg);
+        }
+
+
+        /*right*/
+
+        .right .tooltip {
+            top: -20%;
+            left: 115%;
+        }
+
+        .right .tooltip::after {
+            top: 40%;
+            left: -12%;
+            transform: rotate(90deg);
+        }
+
+        .con-tooltip .card-body {
+            background-color: #3e3e3e14;
+        }
+
+        .fixed-top {
+            z-index: unset;
+        }
+
+        .card-body .card-text:nth-child(n+4) {
+            display: none;
+        }
+    </style>
+
+{% endblock headercss %}
+{% block content %}
+    <main>
+        <div class="order-info">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3>Order ID: {{ current_order.id }}</h3>
+                        <p>User: <span class="text-bold">{{ current_order.user }}</span></p>
+                        <p>User Phone: <span class="text-bold">{{ current_order.user.phone_number }}</span></p>
+                        <p>User Email: <span class="text-bold">{{ current_order.user.email }}</span></p>
+                        <p>Order Date: <span class="text-bold">{{ current_order.order_date }}</span></p>
+                        <p>Status:
+                            {% if current_order.order_status == 'new' %}
+                                <span class="badge bg-primary">{{ current_order.order_status|capitalize }}</span>
+                            {% elif current_order.order_status == 'assigned' %}
+                                <span class="badge bg-secondary">{{ current_order.order_status|capitalize }}</span>
+                            {% elif current_order.order_status == 'attending' %}
+                                <span class="badge bg-warning text-dark">{{ current_order.order_status|capitalize }}</span>
+                            {% elif current_order.order_status == 'on_progress' %}
+                                <span class="badge bg-info text-dark">{{ current_order.order_status|capitalize }}</span>
+                            {% elif current_order.order_status == 'completed' %}
+                                <span class="badge bg-success">{{ current_order.order_status|capitalize }}</span>
+                            {% elif current_order.order_status == 'canceled' %}
+                                <span class="badge bg-danger">{{ current_order.order_status|capitalize }}</span>
+                            {% endif %}
+                        </p>
+
+                    </div>
+                    <div class="col-md-6">
+                        <h3>Company: {{ current_order.user.business_user.business.company_name }}</h3>
+                        <p>Company Type: <span
+                                class="text-bold">{{ current_order.user.business_user.business.industry_type|capitalize }}</span>
+                        </p>
+                        <p>Website: <a href="{{ current_order.user.business_user.business.website }}" target="_blank"
+                                       class="text-bold">{{ current_order.user.business_user.business.website }}</a></p>
+                        <p>Business Size: <span
+                                class="text-bold">{{ current_order.user.business_user.business.business_size }}</span>
+                        </p>
+                        <p>User Position: <span class="text-bold">{{ current_order.user.business_user.position }}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="assignModal" tabindex="-1" aria-labelledby="assignModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Assign To</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="" method="POST">
+                        <div class="modal-body">
+                            {{ form1|crispy }}
+                            {% csrf_token %}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" name="assign-btn">Assign Order</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Set Price</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="" method="POST">
+                        <div class="modal-body">
+                            {{ form2|crispy }}
+                            {% csrf_token %}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" name="price-btn">Add to Progress</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mb-5">
+            <h4 class="mt-3 fw-bolder services-type">{{ current_order.service }}</h4>
+            <div class="row">
+                {% for order in current_order.subserviceinput.all %}
+                    <div class="col-md-3 {{ order.inputfield.subservice|replacespace }} con-tooltip bottom">
+                        <div class="card h-100 shadow-lg">
+                            <div class="card-body">
+                                {% ifchanged %}
+                                    <h5 class="card-title text-center fw-bold">{{ order.inputfield.subservice }}</h5>
+                                {% else %}
+                                    <h5 class="card-title trash">{{ order.inputfield.subservice }}</h5>
+                                {% endifchanged %}
+
+                                {% for fieldOrder in current_order.subserviceinput.all %}
+                                    {% if order.inputfield.subservice == fieldOrder.inputfield.subservice %}
+                                        <p class="card-text">{{ fieldOrder.inputfield.inputfield.placeholder }}: <span
+                                                class="items">{{ fieldOrder.inputinfo }}</span></p>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="tooltip">
+                            {% for fieldOrder in current_order.subserviceinput.all %}
+                                {% if order.inputfield.subservice == fieldOrder.inputfield.subservice %}
+                                    <p class="card-text">{{ fieldOrder.inputfield.inputfield.placeholder }}: <span
+                                            class="items">{{ fieldOrder.inputinfo }}</span></p>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+                {% comment %}
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Sub Service 1</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of
+                                the card's content.</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Sub Service 1</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of
+                                the card's content.</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Sub Service 1</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of
+                                the card's content.</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Sub Service 1</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of
+                                the card's content.</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                </div>
+            {% endcomment %}
+            </div>
+        </div>
+    </main>
+{% endblock content %}
+{% block customjs %}
+    <script src="{% static 'tfjs/admin_panel/bcsTF/order.js' %}"></script>
+    <script>
+        console.log(document.querySelectorAll('.card-title.trash').length)
+        document.querySelectorAll('.card-title.trash').forEach(elem => {
+            elem.parentNode.parentNode.parentNode.outerHTML = '';
+        })
+    </script>
+    <script>
+        const inputItem = document.querySelectorAll('.items');
+        inputItem.forEach((item, index) => {
+            if (item.innerHTML.includes('/media/')) {
+                let image = item.innerHTML;
+
+                item.innerHTML = `<a type="button" class="p-0 text-success" data-bs-toggle="modal" data-bs-target="#imageModal${index}">View</a>`;
+
+                console.log(item.parentNode.parentNode)
+                document.querySelector('main').insertAdjacentHTML('beforeend', `<div class="modal fade" id="imageModal${index}" tabindex="-1" aria-labelledby="imageModal${index}Label" aria-hidden="true">
+                                      <div class="modal-dialog">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Media File</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                          </div>
+                                          <div class="modal-body">
+                                            <img src="${image}" class="img-fluid" alt="">
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>`);
+
+            }
+        })
+    </script>
+{% endblock customjs %}
