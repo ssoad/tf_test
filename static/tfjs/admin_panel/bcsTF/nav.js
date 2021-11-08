@@ -2,18 +2,14 @@ const navLinks = document.querySelectorAll('.nav-link')
 navLinks.forEach(link => {
   if (link.href == document.URL) {
     link.classList.add("active")
-    if (link.classList.contains("dropdown-item")) {
-      link.parentElement.parentElement.classList.add("show-dropdown-container");
-    }
   } else {
     link.classList.remove("active")
-    // link.parentElement.parentElement.classList.remove("show-dropdown-container");
   }
 })
 
+const dropdownContainers = document.querySelectorAll(".dropdown-container");
 
 const dropdown = document.querySelectorAll(".dropdown-btn");
-const dropdownContainers = document.querySelectorAll(".dropdown-container");
 for (let i = 0; i < dropdown.length; i++) {
   dropdown[i].addEventListener("click", function () {
     var dropdownContent = this.nextElementSibling;
@@ -35,6 +31,17 @@ for (let i = 0; i < dropdown.length; i++) {
     }
   });
 }
+const mainSection = document.querySelector("main")
+mainSection.addEventListener("click", ()=>{
+  dropdownContainers.forEach(item=>{
+    item.classList.remove("show-dropdown-container")
+    item.classList.remove("active-container")
+  })
+  dropdown.forEach(item=>{
+    item.classList.remove("clicked");
+
+  })
+})
 
 const deleteBtn = document.querySelectorAll(".trash, .dlt")
 
