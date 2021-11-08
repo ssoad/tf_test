@@ -15,5 +15,6 @@ urlpatterns = [
     path('bcs/services/', views.ServiceListApiView.as_view(), name='service_list_api'),
     path('bcs/sub_service/<id>', views.SubServiceApiView.as_view(), name='subservice_list_api'),
     path('bcs/sub_service_input/<id>', views.SubServiceInputApiView.as_view(), name='subservice_input_list_api'),
+    path('bcs/choice_field/<id>', views.ChoiceApiView.as_view(), name='choice_field'),
     path('bcs/user_order/<id>', views.UserSubServiceOrderApiView.as_view(), name='user_order'),
 ]
