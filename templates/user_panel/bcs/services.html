@@ -601,15 +601,16 @@
                                 formContainer.removeChild(document.getElementById("progress"))
                                 inputFields+=`<div class="mt-5"data-position="${optionIndex}">  <h6 class="heading">${optionTitle}</h6>`;
                                     fields.forEach(field => {
-                                        inputFields+=`<label for="input-${field.inputfield.id}.${optionId}">${field.inputfield.placeholder.toUpperCase()}</label>`;
+                                            console.log("label ")
                                         if(field.inputfield.type === 'select'){
-                                            inputFields+=`<select id="choiceList" name="${field.id}" class="form-select">`;
-                                        fetchData(`${location.origin}/api/bcs/choice_field/${field.inputfield.id}`).then(function(data) {
-                                            
+                                        fetchData(`${location.origin}/api/bcs/choice_field/${field.inputfield.id}`)
+                                            .then(function(data) {
+                                        inputFields+=`<label for="input-${field.inputfield.id}.${optionId}">${field.inputfield.placeholder.toUpperCase()}</label>`;
+                                            inputFields+=`<select id="input-${field.inputfield.id}.${optionId}" name="${field.id}" class="form-select">`;
                                             data[0].choice_field.forEach(choice => {
                                                 inputFields+=` <option value="${choice.choices}">${choice.choices}</option>`;
                                             });
-
+                                            console.log("option ")
                                             inputFields+='</select>';
                                             inputFields+=`</div>`;
                                             div.innerHTML = inputFields;
@@ -618,14 +619,16 @@
                                                 console.log(err)
                                             });   
                                             
-                                                     
+                                                 console.log("select ")    
                                         }
                                         else{
+                                        inputFields+=`<label for="input-${field.inputfield.id}.${optionId}">${field.inputfield.placeholder.toUpperCase()}</label>`;
                                         inputFields+=`<input class="form-control" type="${field.inputfield.type}"
                                         id="input-${field.inputfield.id}.${optionId}" name="${field.id}" placeholder="${field.inputfield.placeholder}">`;
                                         inputFields+=`</div>`;
                                             div.innerHTML = inputFields;
                                             informationForm.insertBefore(div, informationForm.children[optionIndex]);
+                                        console.log("input ")
                                         }
                                         
                                     });
