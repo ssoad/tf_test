@@ -1,21 +1,89 @@
 {% extends 'base/bcs_user_base.html' %} {% load static %} {% load hosts %} {% block headercss %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css"> {% endblock headercss %} {% block title %} My Team {% endblock title %} {% block content %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+<style>
+    .profile-details{
+        margin-block: 1rem;
+    }
+    .company-img{
+        /* border: 1px solid #000; */
+        text-align: center;
+        margin: 1rem;
+    }
+    .company-img img{
+        width: 100px;
+        height: 100px;
+    }
+</style>
+
+{% endblock headercss %} {% block title %} My Team {% endblock title %} {% block content %}
 
 <div class="team-container">
+    <div class="company-profile">
+        <div class="pt-3 border-bottom border-gray pb-2 align-items-center">
+            <h3 class="fw-bold mb-0">Your Business Profifle</h3>
+            <div class="profile-details row">
+                <div class="col-md-3">
+                    <div class="company-img">
+                        <img src="{%static 'tfimg/user_panel/Techforing-Icon.png'%}" alt="">
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="company-detail d-grid align-items-center">
+                        <h4>ABC company</h4>
+                        <p>www.website.com</p>
+                        <p>company size: 10</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
     <section class="team-statistics mb-5">
         <div class="pt-3 border-bottom border-gray pb-2 d-flex justify-content-between align-items-center">
-            <h4 class="fw-bold mb-0">Create your team</h4>
-
-            {% if condition %}
-            <button data-bs-toggle="modal" data-bs-target="#addNew" class="btn bg-navy">
-                <i class="fa fa-plus-circle"></i>
-                Invite User</button> {% endif %}
-        </div>
-        <div class="d-flex mt-5 py-5 justify-content-center align-items-center">
+            <h4 class="fw-bold mb-0">Your team</h4>
             <button data-bs-toggle="modal" data-bs-target="#addNew" class="btn btn-lg bg-navy">
                 <i class="fa fa-plus-circle"></i>
                 Invite User</button>
+        </div>
+        <div class="d-flex py-5">
+            <div class="col-md-4">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <div class="card-title d-flex">
+                            <img src="..." class="card-img-top" alt="...">
+                            <h5>Card title</h5>
+                        </div>
+                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                      <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <div class="card-title d-flex">
+                            <img src="..." class="card-img-top" alt="...">
+                            <h5>Card title</h5>
+                        </div>
+                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                      <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <div class="card-title d-flex">
+                            <img src="..." class="card-img-top" alt="...">
+                            <h5>Card title</h5>
+                        </div>
+                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                      <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="modal fade" id="addNew" tabindex="-1" aria-labelledby="trainingModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-xl">
