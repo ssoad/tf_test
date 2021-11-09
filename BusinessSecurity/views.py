@@ -414,10 +414,28 @@ def bcsUserMyTeamView(request):
         return HttpResponseRedirect(reverse('create_business'))
 
     elif request.user.is_bcs:
-        context = {
+        try:
+            current_business = models.UsersBusiness.objects.get(user=request.user)
 
-        }
-        return render(request, 'user_panel/bcs/my_team.html', context)
+            context = {
+                'current_business': current_business,
+            }
+            return render(request, 'user_panel/bcs/my_team.html', context)
+        except:
+            return HttpResponse("You don't have permission to view this page.")
+
+
+@login_required
+def bcsUserTeamMemberDeleteView(request, id):
+    current_employee = models.UsersBusiness.objects.get(id=id)
+    current_user = models.User.objects.get(id=current_employee.user.id)
+    if current_user == request.user:
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    else:
+        current_user.is_bcs = False
+        current_user.save()
+        current_employee.delete()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
 @login_required

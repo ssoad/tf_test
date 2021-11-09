@@ -253,9 +253,10 @@ class Business(models.Model):
 
 class UsersBusiness(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='business_user')
-    business = models.OneToOneField(Business, on_delete=models.CASCADE, related_name='business_business')
+    business = models.ForeignKey(Business, on_delete=models.CASCADE, related_name='business_business')
     position = models.CharField(max_length=264)
     privilege = models.CharField(max_length=264, choices=privilege)
+    joined_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'{self.user} - {self.business} - {self.position}'
