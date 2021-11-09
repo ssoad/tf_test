@@ -41,16 +41,18 @@
                 {% endfor %}
             </div>
         {% endif %}
-        {% if user.is_superuser or user.is_staff or ticket.ticketcomment_ticket.all.count > 0 %}
-            <div class="reply-box mt-3">
-                <h6 class="fw-bold">Recent Messages</h6>
-                <form action="" method="POST" enctype="multipart/form-data">
-                    {{ commentform.media }}
-                    {{ commentform }}
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-navy px-4 mt-3">Reply</button>
-                </form>
-            </div>
+        {% if ticket.ticket_status == 'open' %}
+            {% if user.is_superuser or user.is_staff or ticket.ticketcomment_ticket.all.count > 0 %}
+                <div class="reply-box mt-3">
+                    <h6 class="fw-bold">Recent Messages</h6>
+                    <form action="" method="POST" enctype="multipart/form-data">
+                        {{ commentform.media }}
+                        {{ commentform }}
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-navy px-4 mt-3">Reply</button>
+                    </form>
+                </div>
+            {% endif %}
         {% endif %}
     </section>
 

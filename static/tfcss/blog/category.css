@@ -1,12 +1,3 @@
-.banner-1 .banner-bg {
-    /* padding: 4rem 1rem; */
-    color: white;
-    background-image: url("../../tfimg/blog/case_studies_banner.png");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
 .row.banner-1 {
     height: 300px;
 }
@@ -78,21 +69,21 @@
     height: 3px;
 }
 
-.important-case-studies .card {
+.important-posts .card {
     height: 330px;
     box-shadow: 1px 1px 3px 1px #707070;
     border: 5px solid #182f59a1;
 }
 
-.important-case-studies .card-body {
+.important-posts .card-body {
     background-image: linear-gradient(to bottom, #182f59bd, #182f5963);
 }
 
-.important-case-studies .card:hover .card-body {
+.important-posts .card:hover .card-body {
     background-image: linear-gradient(to bottom, #182f59, #182f59);
 }
 
-.important-case-studies .more-importants .post {
+.important-posts .more-importants .post {
     height: 155px;
 }
 

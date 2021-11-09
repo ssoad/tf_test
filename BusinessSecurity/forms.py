@@ -1,6 +1,7 @@
 from django import forms
 from BusinessSecurity import models
 from Academy.models import Course, duration, Section, Content
+from django.db.models import Q
 
 
 class AddServiceCategoryForm(forms.ModelForm):
@@ -85,7 +86,7 @@ class OrderPriceForm(forms.ModelForm):
 
 
 class OrderAssignForm(forms.ModelForm):
-    # staff = forms.ModelChoiceField(queryset=models.User.objects.filter(is_staff=True, is_sales=True), widget=forms.Select(attrs={'class': 'js-example-basic-single form-control form-select'}))
+    staff = forms.ModelChoiceField(queryset=models.User.objects.filter(Q(is_staff=True, is_sales=True) | Q(is_superuser=True)), widget=forms.Select(attrs={'class': 'js-example-basic-single form-control form-select'}))
 
     class Meta:
         model = models.OrderStaff

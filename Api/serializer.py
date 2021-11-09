@@ -81,13 +81,19 @@ class SubServiceSerializer(serializers.ModelSerializer):
         # depth = 1
 
 
+class ChoiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = bcsmodels.SelectChoiceRelation
+        # fields = '__all__'
+        exclude = ['input_field']
+        depth = 2
+
+
 class SubServiceInputSerializer(serializers.ModelSerializer):
-    # fields = serializers.StringRelatedField(many=True)
-    # subservice_info = serializers.CharField(source='subservice.title')
 
     class Meta:
         model = bcsmodels.SubServiceInput
-        # fields = '__all__'
+        # fields = ('id', 'inputfield', 'choices')
         exclude = ['subservice']
         depth = 1
 
