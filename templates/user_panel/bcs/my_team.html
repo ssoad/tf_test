@@ -1,4 +1,4 @@
-{% extends 'base/bcs_user_base.html' %} {% load static %} {% load hosts %} {% block headercss %}
+{% extends 'base/bcs_user_base.html' %} {% load static %} {% load my_filter %} {% load crispy_forms_tags %} {% load hosts %} {% block headercss %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
     <style>
@@ -16,6 +16,18 @@
             width: 100px;
             height: 100px;
         }
+
+        .img-change {
+            visibility: hidden;
+        }
+
+        .company-logo:hover + .img-change {
+            visibility: visible;
+        }
+
+        .img-change:hover {
+            visibility: visible;
+        }
     </style>
 
 {% endblock headercss %} {% block title %} My Team {% endblock title %} {% block content %}
@@ -25,27 +37,73 @@
             <div class="pt-3 border-bottom border-gray pb-2 align-items-center">
                 <div class="d-flex justify-content-between align-items-center">
                     <h3 class="fw-bold mb-0">Your Business Profile</h3>
-                    <button class="btn btn-lg bg-navy" data-tootik="Edit Business" data-tootik-conf="left">
+                    <button class="btn btn-lg bg-navy" data-bs-toggle="modal" data-bs-target="#infoChangeModal" data-tootik="Edit Business" data-tootik-conf="left">
                         <i class="fa fa-pencil"></i>
                     </button>
                 </div>
                 <div class="profile-details row">
-                    <div class="col-md-3">
-                        <div class="company-img">
-                            <img src="{{ current_business.business.company_logo.url }}" alt="">
+                    <div class="col-md-3 align-items-center justify-content-center d-flex">
+                        <div class="company-img position-relative border border-2 rounded-circle"
+                             style="width: fit-content">
+                            <img src="{{ current_business.business.company_logo.url }}"
+                                 class="rounded-circle p-1 company-logo" alt="">
+                            <div data-tootik="Change Logo" class="img-change overlay position-absolute top-0 start-0 bottom-0 end-0 w-100 h-100 m-auto d-flex align-items-center justify-content-center rounded-circle"
+                                 data-bs-toggle="modal" data-bs-target="#imageChangeModal"
+                                 style="background: #00000033; cursor: pointer"><i class="fa fa-camera"></i></div>
                         </div>
                     </div>
                     <div class="col-md-9">
                         <div class="company-detail d-grid align-items-center">
                             <h4>{{ current_business.business.company_name }}</h4>
-                            <p>company type: {{ current_business.business.industry_type }}</p>
+                            <p>company type: {{ current_business.business.industry_type|capitalize }}</p>
                             <p>{{ current_business.business.website }}</p>
                             <p>company size: {{ current_business.business.business_size }}</p>
                         </div>
                     </div>
                 </div>
             </div>
-
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="imageChangeModal" tabindex="-1" aria-labelledby="imageChangeModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="imageChangeModalLabel">Change Company Logo</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ image_form|crispy }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-navy" name="img-btn">Upload</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <!-- Modal -->
+        <div class="modal fade" id="infoChangeModal" tabindex="-1" aria-labelledby="infoChangeModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="infoChangeModalLabel">Change Company Information</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ info_form|crispy }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-navy" name="info-btn">Update</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
         </div>
         <section class="team-statistics mb-5">
             <div class="pt-3 border-bottom border-gray pb-2 d-flex justify-content-between align-items-center">
@@ -77,10 +135,11 @@
                                             <a href="#" class="btn btn-navy" data-tootik="View Profile"><i
                                                     class="fa fa-user-o"></i></a>
                                             {% if current_business.business.business_business.count > 1 %}
-                                            <a href="#" class="btn btn-navy" data-tootik="Edit Position"><i
-                                                    class="fa fa-pencil"></i></a>
-                                            <a href="{% host_url 'bcs_user_team_member_delete' %}{{ employee.id }}" class="btn btn-navy" data-tootik="Remove Employee"><i
-                                                    class="fa fa-trash-o"></i></a>
+                                                <a href="#" class="btn btn-navy" data-tootik="Edit Position"><i
+                                                        class="fa fa-pencil"></i></a>
+                                                <a href="{% host_url 'bcs_user_team_member_delete' %}{{ employee.id }}"
+                                                   class="btn btn-navy" data-tootik="Remove Employee"><i
+                                                        class="fa fa-trash-o"></i></a>
                                             {% endif %}
 
                                         </div>
@@ -150,7 +209,6 @@
                 </div>
             </div>
         </section>
-
     </div>
 {% endblock content %} {% block customjs %}
 

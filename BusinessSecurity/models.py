@@ -76,6 +76,9 @@ class SelectChoiceRelation(models.Model):
                                     related_name='selectchoicerelation_inputfield')
     choice_field = models.ManyToManyField(SelectChoice, related_name='selectchoicerelation_selectchoice')
 
+    def __str__(self):
+        return f'{self.input_field.type} - {self.input_field.placeholder}'
+
 
 class SubService(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='subservice_service')

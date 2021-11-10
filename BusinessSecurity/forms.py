@@ -36,6 +36,9 @@ class AddSubServiceForm(forms.ModelForm):
         model = models.SubService
         fields = '__all__'
         exclude = ['total_customer', ]
+        widgets = {
+            'fields': forms.SelectMultiple(attrs={'class': 'form-select js-example-basic-multiple'})
+        }
 
 
 class CreateBusinessForm(forms.ModelForm):
@@ -86,7 +89,9 @@ class OrderPriceForm(forms.ModelForm):
 
 
 class OrderAssignForm(forms.ModelForm):
-    staff = forms.ModelChoiceField(queryset=models.User.objects.filter(Q(is_staff=True, is_sales=True) | Q(is_superuser=True)), widget=forms.Select(attrs={'class': 'js-example-basic-single form-control form-select'}))
+    staff = forms.ModelChoiceField(
+        queryset=models.User.objects.filter(Q(is_staff=True, is_sales=True) | Q(is_superuser=True)),
+        widget=forms.Select(attrs={'class': 'js-example-basic-single form-control form-select'}))
 
     class Meta:
         model = models.OrderStaff
@@ -106,3 +111,19 @@ class TicketCommentForm(forms.ModelForm):
     class Meta:
         model = models.TicketComment
         fields = ['comment']
+
+
+class BusinessLogoForm(forms.ModelForm):
+    class Meta:
+        model = models.Business
+        fields = ['company_logo']
+
+
+class BusinessInfoForm(forms.ModelForm):
+    # industry_type = forms.Field(widget=forms.Select(attrs={'class': 'form-select'}))
+    class Meta:
+        model = models.Business
+        exclude = ['company_logo', 'unique_id']
+        widgets = {
+            'industry_type': forms.Select(attrs={'class': 'form-select'})
+        }

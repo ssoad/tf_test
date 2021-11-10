@@ -417,8 +417,22 @@ def bcsUserMyTeamView(request):
         try:
             current_business = models.UsersBusiness.objects.get(user=request.user)
 
+            image_form = forms.BusinessLogoForm(instance=current_business.business)
+            info_form = forms.BusinessInfoForm(instance=current_business.business)
+            if request.method == 'POST':
+                if 'img-btn' in request.POST:
+                    image_form = forms.BusinessLogoForm(request.POST, request.FILES, instance=current_business.business)
+                    if image_form.is_valid():
+                        image_form.save()
+                elif 'info-btn' in request.POST:
+                    info_form = forms.BusinessInfoForm(request.POST, instance=current_business.business)
+                    if info_form.is_valid():
+                        info_form.save()
+                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
             context = {
                 'current_business': current_business,
+                'image_form': image_form,
+                'info_form': info_form,
             }
             return render(request, 'user_panel/bcs/my_team.html', context)
         except:
