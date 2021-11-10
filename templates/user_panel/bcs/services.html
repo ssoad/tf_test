@@ -172,15 +172,10 @@
 {{service}}
     </div>
         <div class="row mx-0 bg-lightgreen shadow-md">
-            <div class="col-md-3 service-img">
-                <img src="{{ service.service_icon.url }}" class="img-fluid d-block mx-auto" alt="...">
-            </div>
-            <div class="col-md-9 service-body">
+
+            <div class="col-md-12 ">
                 <div class="py-2">
                     <h4 class="fw-bold">{{ service.service_title }}</h4>
-                    <h6 class="fw-semi text-start fontAwesome mt-3">
-                        {{ service.short_description }}
-                    </h6>
                     <p class="mt-3 mb-0">{{ service.service_header|safe }}</p>
                 </div>
             </div>
@@ -601,15 +596,16 @@
                                 formContainer.removeChild(document.getElementById("progress"))
                                 inputFields+=`<div class="mt-5"data-position="${optionIndex}">  <h6 class="heading">${optionTitle}</h6>`;
                                     fields.forEach(field => {
-                                        inputFields+=`<label for="input-${field.inputfield.id}.${optionId}">${field.inputfield.placeholder.toUpperCase()}</label>`;
+                                            console.log("label ")
                                         if(field.inputfield.type === 'select'){
-                                            inputFields+=`<select id="choiceList" name="options" class="form-select">`;
-                                        fetchData(`${location.origin}/api/bcs/choice_field/${field.inputfield.id}`).then(function(data) {
-                                            
+                                        fetchData(`${location.origin}/api/bcs/choice_field/${field.inputfield.id}`)
+                                            .then(function(data) {
+                                        inputFields+=`<label for="input-${field.inputfield.id}.${optionId}">${field.inputfield.placeholder.toUpperCase()}</label>`;
+                                            inputFields+=`<select id="input-${field.inputfield.id}.${optionId}" name="${field.id}" class="form-select">`;
                                             data[0].choice_field.forEach(choice => {
                                                 inputFields+=` <option value="${choice.choices}">${choice.choices}</option>`;
                                             });
-
+                                            console.log("option ")
                                             inputFields+='</select>';
                                             inputFields+=`</div>`;
                                             div.innerHTML = inputFields;
@@ -618,14 +614,16 @@
                                                 console.log(err)
                                             });   
                                             
-                                                     
+                                                 console.log("select ")    
                                         }
                                         else{
+                                        inputFields+=`<label for="input-${field.inputfield.id}.${optionId}">${field.inputfield.placeholder.toUpperCase()}</label>`;
                                         inputFields+=`<input class="form-control" type="${field.inputfield.type}"
                                         id="input-${field.inputfield.id}.${optionId}" name="${field.id}" placeholder="${field.inputfield.placeholder}">`;
                                         inputFields+=`</div>`;
                                             div.innerHTML = inputFields;
                                             informationForm.insertBefore(div, informationForm.children[optionIndex]);
+                                        console.log("input ")
                                         }
                                         
                                     });

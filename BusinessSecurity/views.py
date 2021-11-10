@@ -341,6 +341,8 @@ def userServicesView(request):
         if request.method == 'POST':
             data_list = request.POST
             file_list = request.FILES
+            print(data_list)
+            print(file_list)
 
             current_service = get_object_or_404(models.Service, service_title=data_list['service_name'])
 
@@ -412,10 +414,42 @@ def bcsUserMyTeamView(request):
         return HttpResponseRedirect(reverse('create_business'))
 
     elif request.user.is_bcs:
-        context = {
+        try:
+            current_business = models.UsersBusiness.objects.get(user=request.user)
 
-        }
-        return render(request, 'user_panel/bcs/my_team.html', context)
+            image_form = forms.BusinessLogoForm(instance=current_business.business)
+            info_form = forms.BusinessInfoForm(instance=current_business.business)
+            if request.method == 'POST':
+                if 'img-btn' in request.POST:
+                    image_form = forms.BusinessLogoForm(request.POST, request.FILES, instance=current_business.business)
+                    if image_form.is_valid():
+                        image_form.save()
+                elif 'info-btn' in request.POST:
+                    info_form = forms.BusinessInfoForm(request.POST, instance=current_business.business)
+                    if info_form.is_valid():
+                        info_form.save()
+                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            context = {
+                'current_business': current_business,
+                'image_form': image_form,
+                'info_form': info_form,
+            }
+            return render(request, 'user_panel/bcs/my_team.html', context)
+        except:
+            return HttpResponse("You don't have permission to view this page.")
+
+
+@login_required
+def bcsUserTeamMemberDeleteView(request, id):
+    current_employee = models.UsersBusiness.objects.get(id=id)
+    current_user = models.User.objects.get(id=current_employee.user.id)
+    if current_user == request.user:
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    else:
+        current_user.is_bcs = False
+        current_user.save()
+        current_employee.delete()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
 @login_required

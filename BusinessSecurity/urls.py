@@ -85,6 +85,8 @@ urlpatterns = [
     path('bcs_user_notifications/', views.userNotificationsView, name='bcs_user_notifications'),
     path('bcs_user_settings/', views.userSettingsView, name='bcs_user_settings'),
     path('bcs_user_my_team/', views.bcsUserMyTeamView, name='bcs_user_my_team'),
+    path('bcs_user_team_member_delete/', views.bcsUserTeamMemberDeleteView, name='bcs_user_team_member_delete'),
+    path('bcs_user_team_member_delete/<id>/', views.bcsUserTeamMemberDeleteView, name='bcs_user_team_member_delete'),
     path('employee_training_program/', views.employeeTrainingProgramView, name='employee_training_program'),
 
     path('bcs_appointment/', views.bcsAppointmentView, name='bcs_appointment'),
