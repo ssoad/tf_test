@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from Academy import models
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
+from Academy.models import Course, Section, Content
+
 
 
 # Create your views here.
@@ -119,3 +122,78 @@ def download_file(request, path=''):
         return response
     except:
         return HttpResponse('File not found on the server.')
+
+# bcs academy user panel
+@login_required
+def UserCourses(request):
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+
+    elif request.user.is_bcs:
+        courses = Course.objects.filter(course_type='Business')
+        context = {
+            'courses': courses,
+        }
+
+        return render(request, "user_panel/academy/courses.html", context)
+
+
+@login_required
+def myCourses(request):
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+
+    elif request.user.is_bcs:
+        courses = Course.objects.filter(course_type='Business')
+
+        context = {
+            'courses': courses,
+        }
+
+        return render(request, "user_panel/academy/mycourses.html", context)
+
+
+@login_required
+def UserCoursesDetails(request, id):
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+
+    elif request.user.is_bcs:
+        try:
+            course = Course.objects.get(id=id, course_type='Business')
+
+            context = {
+                'course': course,
+            }
+
+            return render(request, "user_panel/academy/details.html", context)
+        except:
+            return HttpResponse('You are not authorized to view this page')
+
+
+@login_required
+def UserFiles(request, id):
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+
+    elif request.user.is_bcs:
+        try:
+            course = Course.objects.get(id=id, course_type='Business')
+            # section = Section.objects.filter(course=course)
+            contents = Content.objects.filter(section__course=course)
+            paginator = Paginator(contents, 1)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+
+            context = {
+                'course': course,
+                'contents': contents,
+                'content_type': 'instruction',
+                'section_no': 1,
+                'module_no': 1,
+                'page_obj': page_obj
+            }
+
+            return render(request, "user_panel/academy/files.html", context)
+        except:
+            return HttpResponse('You are not authorized to view this page')
