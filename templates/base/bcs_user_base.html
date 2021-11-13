@@ -108,10 +108,10 @@
                         <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">
                             {{ user }}
-                            <img class="ms-2 rounded-circle" src="{% static '' %}tfimg/user_panel/anjelina.jpg"
+                            <img class="ms-2 rounded-circle" src="{{ user.profile_pic.url }}"
                                  width="40" height="40" alt="">
                         </a>
-                        <ul class="dropdown-menu border-0 shadow" aria-labelledby="navbarDropdown">
+                        <ul class="dropdown-menu border-0 shadow end-0" aria-labelledby="navbarDropdown">
                             <li>
                                 <a class="dropdown-item ps-3" href="{% host_url 'user_profile' %}">
                                     <i class="icofont-ui-user me-2"></i> My Profile</a>

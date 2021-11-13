@@ -180,7 +180,7 @@
         const openModal = document.querySelector(".modal-open")
 
         openModal.addEventListener('click', () => {
-            fetch(location.origin+"/")
+            fetch(location.origin+"/api/bcs/services/")
                 .then(res => res.json())
                 .then(data => {
                     data.map(item => {
