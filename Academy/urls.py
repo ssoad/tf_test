@@ -21,4 +21,11 @@ urlpatterns = [
     path('academy_user_events/', views.UserEvents, name='academy_user_events'),
     path('academy_user_notifications/', views.UserNotifications, name='academy_user_notifications'),
     path('academy_user_settings/', views.UserSettings, name='academy_user_settings'),
+
+    # bcs academy user panel
+    path('academy_user_courses/', views.UserCourses, name='academy_user_courses'),
+    path('academy_user_courses/<id>/', views.UserCoursesDetails, name='academy_user_courses_details'),
+    path('academy_my_courses/', views.myCourses, name='academy_my_courses'),
+    path('academy_user_files/', views.UserFiles, name='academy_user_files'),
+    path('academy_user_files/<id>/', views.UserFiles, name='academy_user_files'),
 ]
