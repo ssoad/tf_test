@@ -296,4 +296,3 @@ MEDIA_ROOT = MEDIA_DIR
 # Login
 LOGIN_URL = '/accounts/login/'
 AUTH_USER_MODEL = 'Account.User'
-
