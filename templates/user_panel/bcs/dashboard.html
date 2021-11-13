@@ -114,9 +114,10 @@
     <!-- reading list  -->
     <section class="readings mt-5">
         <h4 class="fw-bold border-bottom border-gray pb-3 mb-4">My Reading List</h4>
+        {% if user.reading_list_user.all.count > 0 %}
         <div class="reading-list p-2 rounded-3 shadow bg-white">
 
-            {% for reading_list in user.reading_list_user.all %}
+{% for reading_list in user.reading_list_user.all %}
                 <div class="row">
                 <div class="col-12 col-lg-7">
                     <h5 class="fw-bold">{{ reading_list.post.title }}</h5>
@@ -133,14 +134,15 @@
             </div>
             {% endfor %}
 
-
-
-
             <div class="btn-area d-flex justify-content-end">
                 <button type="button" id="prev-btn" class="btn btn-outline-navy px-3 py-1 me-3">Previous</button>
                 <button type="button" id="next-btn" class="btn btn-outline-navy px-3 py-1">Next</button>
             </div>
+{%else%}
+<div class='text-center py-4'>Nothing on your reading list. <a href="{% host_url 'index' host 'blog' %}">Add Now</a></div
         </div>
+{% endif %}
+            
     </section>
 
     <section class="subscription mt-5 mb-3">

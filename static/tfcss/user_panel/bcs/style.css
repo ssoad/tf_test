@@ -1012,6 +1012,10 @@
             }
             /* footer  */
             
+            footer {
+                width: 95%;
+            }
+            
             footer a {
                 text-decoration: none;
                 color: white;
@@ -1023,8 +1027,8 @@
             }
             
             footer img {
-                width: 40px;
-                height: 40px;
+                width: 30px;
+                height: 30px;
             }
             
             footer#footer-large {

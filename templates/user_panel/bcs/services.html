@@ -700,39 +700,8 @@
             });
         }
 
-        let showInputField = (target, id) => {
-            if (target.children[0].checked)
-                document.getElementById(id).classList.remove('d-none');
-            else
-                document.getElementById(id).classList.add('d-none');
-        }
-        let takeOthersPlatformInput = (id, visible) => {
-            if (visible)
-                document.getElementById(id).classList.toggle('d-none');
-            else
-                document.getElementById(id).classList.add('d-none');
-
-        }
-
-        let noOfServer = (id) => {
-            document.getElementById(id).classList.toggle('d-none');
-        }
-
-        let takeApiInfo = (id, visible) => {
-            if (visible)
-                document.querySelector(id).classList.remove('d-none');
-            else
-                document.querySelector(id).classList.add('d-none');
-
-        }
-        let hostedWebsite = (id, visible) => {
-            if (visible)
-                document.querySelector(id).classList.remove('d-none');
-            else
-                document.querySelector(id).classList.add('d-none');
-
-        }
-
+    
+ {% comment %}
         let servicesInformation = {
         {% for service in services %}
             {{ service|replacespace }}: [
@@ -770,7 +739,7 @@
         document.body.addEventListener('click', e => {
             if (!e.target.classList.contains('preview-service') && !e.target.parentNode.classList.contains('preview-service'))
                 previewService.classList.add('d-none');
-        });
+        }); {% endcomment %}
 
 
         allBtn = Array.from(allBtn);
