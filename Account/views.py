@@ -106,9 +106,23 @@ def profileView(request):
 
 @login_required
 def profileEdit(request):
+    info_forms = forms.ProfileInfoForm(instance=request.user)
+    img_forms = forms.ProfilePictureForm(instance=request.user)
+    if request.method == 'POST':
+        if 'info-btn' in request.POST:
+            info_forms = forms.ProfileInfoForm(request.POST, instance=request.user)
+            if info_forms.is_valid():
+                info_forms.save()
+                return redirect('user_profile')
+        elif 'img-btn' in request.POST:
+            img_forms = forms.ProfilePictureForm(request.POST, request.FILES, instance=request.user)
+            if img_forms.is_valid():
+                img_forms.save()
+                return redirect('user_profile')
     context = {
-            
-        }
+        'info_forms': info_forms,
+        'img_forms': img_forms,
+    }
     return render(request, 'account/profile_edit.html', context)
 
 
@@ -116,6 +130,3 @@ def profileEdit(request):
 def logoutView(request):
     logout(request)
     return HttpResponseRedirect('/accounts/login/')
-
-
-
