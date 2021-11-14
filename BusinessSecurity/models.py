@@ -33,7 +33,7 @@ class Service(models.Model):
     service_header = HTMLField(verbose_name='Service Header', blank=True)
     service_body = HTMLField(verbose_name='Service Body', blank=True)
     service_footer = HTMLField(verbose_name='Service Footer', blank=True)
-    has_sub_service = models.BooleanField(default=False, verbose_name='Has Sub Services')
+    has_sub_service = models.BooleanField(default=True, verbose_name='Has Sub Services')
     is_subscription_based = models.BooleanField(default=False, verbose_name='Is Subscription Based')
     total_customer = models.IntegerField(verbose_name='Total Customer', default=0, blank=True)
 
@@ -211,7 +211,7 @@ class UserAllowed(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='allowed_service')
 
     def __str__(self):
-        return f"{self.user.first_name} - {self.service.service_title}"
+        return f"{self.user.full_name} - {self.service.service_title}"
 
     class Meta:
         verbose_name_plural = 'Users Allowed'

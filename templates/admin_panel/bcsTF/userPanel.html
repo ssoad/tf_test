@@ -17,7 +17,7 @@
                 <div class="short-info">
                     <img src="{{ current_user.profile_pic.url }}" alt="" class="avatar">
                     <div class="info-body">
-                        <p class="text-primary">{{ current_user.first_name }} {{ current_user.last_name }}</p>
+                        <p class="text-primary">{{ current_user.full_name }}</p>
                         <p>{{ current_user.business_user.business.company_name }}</p>
                         <p class="text-success">{{ current_user.business_user.position }}</p>
                         <p class="text-success">{{ current_user.business_user.privilege }}</p>

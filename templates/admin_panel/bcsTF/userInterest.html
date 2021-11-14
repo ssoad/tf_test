@@ -29,7 +29,7 @@
                             {% for interest in interests %}
                                 <tr>
                                     <td>{{ forloop.counter }}</td>
-                                    <td> {{ interest.user.first_name }} </td>
+                                    <td> {{ interest.user.full_name }} </td>
                                     <td>
                                         {{ interest.user.email }}
                                     </td>

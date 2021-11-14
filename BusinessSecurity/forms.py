@@ -18,7 +18,7 @@ class AddServiceForm(forms.ModelForm):
 
     class Meta:
         model = models.Service
-        fields = ['category', 'service_icon', 'service_title', 'short_description', 'has_sub_service',
+        fields = ['category', 'service_icon', 'service_title', 'short_description',
                   'is_subscription_based', 'service_header', 'service_body', 'service_footer', ]
 
 

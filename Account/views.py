@@ -60,19 +60,63 @@ def profileView(request):
     current_user = request.user
     interests = models.Interest.objects.get(user=current_user)
     form = forms.InterestForm(instance=interests)
-    if request.method == 'POST':
-        form = forms.InterestForm(request.POST, instance=interests)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
-    context = {
-        # 'interests': interests,
-        'form': form,
-    }
-    return render(request, 'account/profile.html', context)
+    if not current_user.phone_number \
+            or not current_user.country \
+            or not current_user.phone_number \
+            or not current_user.birth_date \
+            or not current_user.gender:
+
+        emails = current_user.emailaddress_set.all
+        if not current_user.phone_number \
+                or not current_user.country:
+            form = forms.CountryPhoneForm(instance=current_user)
+            message = 'Add Country and Phone Number'
+            if request.POST:
+                form = forms.CountryPhoneForm(request.POST, instance=current_user)
+                if form.is_valid():
+                    form.save()
+                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        elif not current_user.birth_date \
+                or not current_user.gender:
+            form = forms.BirthDateGenderForm(instance=current_user)
+            message = 'Add Date of Birth and Gender'
+            if request.POST:
+                form = forms.BirthDateGenderForm(request.POST, instance=current_user)
+                if form.is_valid():
+                    form.save()
+                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        context = {
+            'emails': emails,
+            'form': form,
+            'message': message,
+        }
+        return render(request, 'account/profile-info-add.html', context)
+    else:
+        if request.method == 'POST':
+            form = forms.InterestForm(request.POST, instance=interests)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        context = {
+            # 'interests': interests,
+            'form': form,
+        }
+        return render(request, 'account/profile.html', context)
 
 
 @login_required
 def logoutView(request):
     logout(request)
     return HttpResponseRedirect('/accounts/login/')
+
+
+@login_required
+def profileInfoAddView(request):
+    current_user = request.user
+    emails = current_user.emailaddress_set.all
+
+    context = {
+        'emails': emails,
+
+    }
+    return render(request, 'account/profile-info-add.html', context)

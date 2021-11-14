@@ -941,7 +941,7 @@
               <!-- This section will come back later -->
               {% if user.is_authenticated %}
               <li class="menus signin-btn-hover">
-                <a href="{%host_url 'user_profile'%}" class="signin-btn-lg">{{user.first_name}}</a>
+                <a href="{%host_url 'user_profile'%}" class="signin-btn-lg">{{user.full_name}}</a>
                                                                                                                                     <div class="signin-drop">
                                                                                                                                         <a href="{%host_url 'user_profile'%}">Profile</a>
                                                                                                                                         <a href="{% host_url 'account_logout' %}">Log Out</a>
