@@ -154,3 +154,19 @@ class BirthDateGenderForm(forms.ModelForm):
                                                    '0;outline: 0;padding-left: '
                                                    '5px;height: 35px;', 'class': 'form-select'})
         }
+
+
+class ProfileInfoForm(forms.ModelForm):
+    class Meta:
+        model = models.User
+        fields = ['full_name', 'phone_number', 'birth_date', 'gender']
+        widgets = {
+            'birth_date': forms.DateInput(attrs={'type': 'date'}),
+            'gender': forms.Select(attrs={'class': 'form-select'})
+        }
+
+
+class ProfilePictureForm(forms.ModelForm):
+    class Meta:
+        model = models.User
+        fields = ['profile_pic']
