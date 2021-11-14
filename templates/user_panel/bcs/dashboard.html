@@ -3,7 +3,7 @@
 {% load hosts %} {% block title %} Dashboard {% endblock title %} {% block content %}
 <div class="dashboard-container overflow-hidden ps-md-2">
     <section class="dashboard-heading">
-        <h3 class="fw-bold">Hello, {{ user.first_name }}</h3>
+        <h3 class="fw-bold">Hello, {{ user.full_name }}</h3>
         <h4>This is what we got for you today</h4>
     </section>
     <section class="orders mt-4">

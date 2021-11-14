@@ -81,7 +81,7 @@
                                 <tr>
                                     <td>
                                         <a href="{% host_url 'bcs_admin_individual_user_panel' id=admin.user.id %}">
-                                            {{ admin.user.first_name }} {{ admin.user.last_name }}
+                                            {{ admin.user.full_name }}
                                         </a>
                                     </td>
                                     <td>{{ admin.user.email }}</td>

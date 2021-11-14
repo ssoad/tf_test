@@ -123,7 +123,7 @@
                                         <img src="{{ employee.user.profile_pic.url }}" class="card-img-top"
                                              style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover"
                                              alt="...">
-                                        <h5 class="mb-0 fw-bold">{{ employee.user.first_name }} {{ employee.user.last_name }}</h5>
+                                        <h5 class="mb-0 fw-bold">{{ employee.user.full_name }}</h5>
                                         <p class="mb-0">Position: {{ employee.position }}</p>
                                         <p class="mb-0">Joined Date: {{ employee.joined_date|date }}</p>
                                     </div>

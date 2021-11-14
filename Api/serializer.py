@@ -4,7 +4,7 @@ from BusinessSecurity import models as bcsmodels
 
 
 class PostSerializer(serializers.ModelSerializer):
-    author_name = serializers.CharField(source='author.first_name')
+    author_name = serializers.CharField(source='author.full_name')
     category_name = serializers.CharField(source='category.category')
 
     class Meta:
@@ -45,7 +45,7 @@ class FilterSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    author = serializers.CharField(source='user.first_name', read_only=True)
+    author = serializers.CharField(source='user.full_name', read_only=True)
     post_title = serializers.CharField(source='post.title', read_only=True)
 
     class Meta:

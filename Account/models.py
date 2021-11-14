@@ -9,25 +9,25 @@ from django.dispatch import receiver
 # Create your models here.
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, first_name, password=None):
+    def create_user(self, email, full_name, password=None):
 
         if not email:
             raise ValueError('Email should not be empty')
-        if not first_name:
-            raise ValueError('First Name should not be empty')
+        if not full_name:
+            raise ValueError('Name should not be empty')
         if not password:
             raise ValueError('Password should not be empty')
 
         user = self.model(
             email=self.normalize_email(email=email),
-            first_name=first_name
+            full_name=full_name
         )
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, first_name, password=None):
-        user = self.create_user(email=email, first_name=first_name, password=password)
+    def create_superuser(self, email, full_name, password=None):
+        user = self.create_user(email=email, full_name=full_name, password=password)
         user.is_superuser = True
         user.is_staff = True
         user.is_active = True
@@ -37,8 +37,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=100, verbose_name='Email', unique=True, blank=False)
-    first_name = models.CharField(verbose_name='First Name', max_length=100)
-    last_name = models.CharField(verbose_name='Last Name', max_length=100)
+    full_name = models.CharField(verbose_name='Full Name', max_length=100)
     phone_number = PhoneNumberField(verbose_name="Phone Number")
     country = CountryField(verbose_name="Country", max_length=50)
     profile_pic = models.ImageField(upload_to='users/', default='users/default.jpg')
@@ -50,7 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         ('Other', 'Other'),
     )
 
-    gender = models.CharField(verbose_name='Choose Gender', choices=gender_options, default='Male', max_length=20)
+    gender = models.CharField(verbose_name='Choose Gender', choices=gender_options, max_length=20)
 
     is_staff = models.BooleanField(verbose_name='Staff Status', default=False, help_text='Designate if the user has '
                                                                                          'staff status')
@@ -75,12 +74,12 @@ class User(AbstractBaseUser, PermissionsMixin):
                                                                                          'and Notifications')
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', ]
+    REQUIRED_FIELDS = ['full_name', ]
 
     objects = UserManager()
 
     def __str__(self):
-        return self.first_name
+        return self.full_name
 
 
 admin_choices = (

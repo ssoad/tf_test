@@ -118,7 +118,7 @@
                     {% for admin in admin_list %}
                         <tr class="data-row">
                             <td>
-                                <a href="" class="staff-link">{{ admin.user.first_name }} {{ admin.user.last_name }}</a>
+                                <a href="" class="staff-link">{{ admin.user.full_name }}</a>
                             </td>
                             <td>{{ admin.admin_type }}</td>
                             <td>{{ admin.is_superadmin }}</td>
