@@ -105,6 +105,14 @@ def profileView(request):
 
 
 @login_required
+def profileEdit(request):
+    context = {
+            
+        }
+    return render(request, 'account/profile_edit.html', context)
+
+
+@login_required
 def logoutView(request):
     logout(request)
     return HttpResponseRedirect('/accounts/login/')
