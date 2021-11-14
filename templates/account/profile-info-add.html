@@ -1,4 +1,4 @@
-{% extends 'base/pcs_user_base.html' %} {% load static %}
+{% extends 'base/user_info_base.html' %} {% load static %}
 {% load crispy_forms_tags %}
 {% block title %} Settings {% endblock title %}
 {% block headercss %}
@@ -34,7 +34,7 @@
 {% endblock %}
 {% block content %}
 
-    <div class="profile-area pe-md-5 mt-3">
+    <div class="profile-area p-md-5 mt-3">
         <div class="border p-5 border-dark rounded">
             <h3 class="text-center mb-5">{{ message }}</h3>
             <form action="" method="POST" enctype="multipart/form-data">
