@@ -110,13 +110,4 @@ def logoutView(request):
     return HttpResponseRedirect('/accounts/login/')
 
 
-@login_required
-def profileInfoAddView(request):
-    current_user = request.user
-    emails = current_user.emailaddress_set.all
 
-    context = {
-        'emails': emails,
-
-    }
-    return render(request, 'account/profile-info-add.html', context)
