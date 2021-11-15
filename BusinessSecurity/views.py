@@ -322,10 +322,11 @@ def userDashboardView(request):
     elif request.user.is_bcs:
         events = models.Events.objects.filter(status='active')
         registered_event = models.RegisteredEvents.objects.filter(user=request.user).values_list('event', flat=True)
-
+        orders = models.Order.objects.filter(user=request.user)
         context = {
             'events': events,
             'registered_event': registered_event,
+            'orders': orders,
         }
         return render(request, 'user_panel/bcs/dashboard.html', context)
 
