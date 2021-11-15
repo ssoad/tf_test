@@ -16,13 +16,13 @@
                             <div class="row d-flex justify-content-center align-items-center">
                                 <div class="col-md-8">
                                     <h6 class="fw-light">Purchase Date: <span class="fw-bold fs-6">&nbsp;
-                                {{ order.order_date }}</span>
+                                        {{ order.order_date }}</span>
                                     </h6>
                                     <h6 class="fw-light d-flex justify-content-between mb-0">
                                         {% if order.order_status == 'on_progress' %}
-                                        <button class="btn view-btn px-0" data-bs-toggle="modal"
-                                                data-bs-target="#invoiceModal-1">View Invoice
-                                        </button>
+                                            <button class="btn view-btn px-0" data-bs-toggle="modal"
+                                                    data-bs-target="#invoiceModal-1">View Invoice
+                                            </button>
                                         {% endif %}
                                         <div class="d-block d-md-none bg-navy btn-sm text-white px-3 py-2">
                                             {{ order.order_status|capitalize }}
@@ -126,6 +126,7 @@
 
                         <div class="col-6 col-lg-2 d-flex justify-content-center align-items-center">
                             <a href="
+
 
                                     {% host_url reading_list.post.category|replacespace host 'blog' %}{{ reading_list.post.post_url }}"
                                class="btn btn-sm bg-navy text-white px-2 py-2">Read Full</a>

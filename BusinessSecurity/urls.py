@@ -71,7 +71,6 @@ urlpatterns = [
     path('tickets_status_change/', views.ticketOpenCloseView, name='tickets_status_change'),
     path('tickets_status_change/<id>/', views.ticketOpenCloseView, name='tickets_status_change'),
 
-
     # bcs user panel
     path('bcs_user_dashboard/', views.userDashboardView, name='bcs_user_dashboard'),
     path('create_business/', views.createBusinessView, name='create_business'),
@@ -111,7 +110,8 @@ urlpatterns = [
     path('bcs_admin_sub_services_form/', views.bcsSubServiceFormView, name='bcs_admin_sub_services_form'),
     path('bcs_admin_sub_services_form_delete/<id>', views.bcsAdminSubServiceFormDeleteView,
          name='bcs_admin_sub_services_form_delete'),
-    path('bcs_admin_sub_services_form_edit/<id>', views.bcsAdminSubServiceFormEditView, name='bcs_admin_sub_services_form_edit'),
+    path('bcs_admin_sub_services_form_edit/<id>', views.bcsAdminSubServiceFormEditView,
+         name='bcs_admin_sub_services_form_edit'),
 
     # bcs admin panel
     path('bcs_admin_subscription_packages/', views.bcsAdminSubscriptionPack, name='bcs_admin_subscription_packages'),
@@ -159,7 +159,6 @@ urlpatterns = [
     path('bcs_admin_all_tickets/', views.bcsAdminTicketsView, name='bcs_admin_all_tickets'),
     path('bcs_admin_tickets_detail/', views.bcsAdminTicketsDetailView, name='bcs_admin_tickets_detail'),
     path('bcs_admin_tickets_detail/<id>', views.bcsAdminTicketsDetailView, name='bcs_admin_tickets_detail'),
-
 
     # team invidual user panel
     path('team_user_services/', views.teamUserServicesView, name='team_user_services'),

@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from BusinessSecurity import forms, models
 from Academy.forms import CourseCreateForm, SectionCreateForm, ContentCreateForm
 from Account.models import User, Permissions, Interest
-from Account.forms import SelectPermissionForm, SelectBCSPermissionForm, InterestForm
+from Account.forms import SelectBCSPermissionForm, InterestForm
 from Academy.models import Course, Section, Content
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -30,9 +30,7 @@ def main_admin_permission_check(user):
 
 def bcs_admin_permission_check(user):
     try:
-        return user.is_superuser or ((
-                                             user.permission_user.is_superadmin or user.permission_user.is_admin or user.permission_user.is_moderator or user.permission_user.is_editor) and (
-                                             user.permission_user.admin_type == 'bcs_admin' or user.permission_user.admin_type == 'main_admin'))
+        return user.is_staff and user.is_bcs_head or user.is_sales_head or user.is_sales
     except:
         return user.is_superuser
 
@@ -764,25 +762,68 @@ def mainAdminEventDetailView(request, id):
 
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
 def mainAdminSupportView(request):
-    permission_form = SelectPermissionForm()
-    admin_list = Permissions.objects.all()
+    admin_list = User.objects.filter(is_staff=True)
+    user_lists = User.objects.filter(is_staff=False)
 
     if request.method == 'POST':
-        permission_form = SelectPermissionForm(request.POST)
-        if permission_form.is_valid():
-            permission_form.save()
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        user_email = request.POST.get('user_email')
+        user_permission = request.POST.get('user_permission')
+        current_user = User.objects.get(email=user_email)
+        if user_permission == 'sales_head':
+            current_user.is_staff = True
+            current_user.is_sales_head = True
+            current_user.save()
+        elif user_permission == 'sales':
+            current_user.is_staff = True
+            current_user.is_sales = True
+            current_user.save()
+        elif user_permission == 'blogger':
+            current_user.is_staff = True
+            current_user.is_blogger = True
+            current_user.save()
+        elif user_permission == 'bcs_head':
+            current_user.is_staff = True
+            current_user.is_bcs_head = True
+            current_user.save()
+        elif user_permission == 'pcs_head':
+            current_user.is_staff = True
+            current_user.is_pcs_head = True
+            current_user.save()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
     context = {
-        'permission_form': permission_form,
         'admin_list': admin_list,
+        'user_lists': user_lists,
     }
     return render(request, 'admin_panel/mainTF/support.html', context)
 
 
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
 def mainAdminSupportDeleteView(request, id):
-    current_permission = Permissions.objects.get(id=id)
-    current_permission.delete()
+    current_user = User.objects.get(id=id)
+    if current_user.is_superuser:
+        pass
+    elif current_user.is_sales_head:
+        current_user.is_staff = False
+        current_user.is_sales_head = False
+        current_user.save()
+    elif current_user.is_sales:
+        current_user.is_staff = False
+        current_user.is_sales = False
+        current_user.save()
+    elif current_user.is_blogger:
+        current_user.is_staff = False
+        current_user.is_blogger = False
+        current_user.save()
+    elif current_user.is_bcs_head:
+        current_user.is_staff = False
+        current_user.is_bcs_head = False
+        current_user.save()
+    elif current_user.is_pcs_head:
+        current_user.is_staff = False
+        current_user.is_pcs_head = False
+        current_user.save()
+
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
@@ -1467,5 +1508,3 @@ def bcsAdminTicketsDetailView(request, id):
         'commentform': commentform,
     }
     return render(request, 'admin_panel/bcsTF/ticket_detail.html', context)
-
-
