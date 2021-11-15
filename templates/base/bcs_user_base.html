@@ -26,6 +26,7 @@
 
     </div>
 </div>
+
 <div class="w-20 h-100 position-fixed bg-white shadow-sm px-1 pt-2 d-none d-lg-block">
     <a class="my-3" href="/">
         <img class="mx-auto my-3 logo-sm" src="{% static '' %}tfimg/user_panel/Techforing-Icon.png" width="40"
@@ -83,7 +84,6 @@
             </a>
         </li>
     </ul>
-0
 </div>
 <!-- Header Start -->
 <header class="sticky-top">
@@ -141,13 +141,10 @@
     </nav>
 </header>
 
-<main class="w-80 overflow-hidden">
-
-    <div class="bg-main ps-2 ps-lg-3 py-3 pe-2">
+<main class="bg-main w-80 overflow-hidden" style="min-height: 100vh">
+    <div class="ps-2 ps-lg-3 py-3 pe-2">
         {% block content %} {% endblock content %}
-
     </div>
-
 </main>
 
 <footer class="bg-blue p-md-3 ms-auto">
