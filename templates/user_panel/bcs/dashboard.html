@@ -138,7 +138,7 @@
                     <button type="button" id="next-btn" class="btn btn-outline-navy px-3 py-1">Next</button>
                 </div>
             {% else %}
-                <div class='text-center py-4'>Nothing on your reading list. <a
+                <div class='text-center py-4'>Nothing on your reading list. <a class="btn btn-outline-navy"
                         href="{% host_url 'index' host 'blog' %}">Add Now</a></div>
 
             {% endif %}
@@ -177,14 +177,14 @@
             <h3 class="fw-bold border-bottom border-gray pb-3 mb-4">Upcoming Events</h3>
             <div class="row mx-0 gy-3 gy-lg-0 justify-content-between">
                 {% for event in events %}
-                    <div class="col-12 col-lg-6 px-0 px-md-2">
+                    <div class="col-12  px-0 px-md-2">
                         <div class="card shadow rounded-3">
                             <div class="row g-0">
-                                <div class="col-md-4">
-                                    <img src="{% static '' %}tfimg/user_panel/Mask Group 12.png"
+                                <div class="col-md-6">
+                                    <img src="{% static '' %}tfimg/user_panel/webinar.jpg"
                                          class="img-fluid rounded-start h-100" alt="...">
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-6">
                                     <div class="card-body">
                                         <h5 class="card-title fw-bold fs-5x">{{ event.event_name }}
                                         </h5>
