@@ -92,8 +92,6 @@ class LoginForm2(LF):
         fields = '__all__'
 
 
-
-
 class SelectBCSPermissionForm(forms.ModelForm):
     user = forms.ModelChoiceField(queryset=models.User.objects.filter(is_superuser=False, is_staff=False))
 
