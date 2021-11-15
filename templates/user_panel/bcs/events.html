@@ -5,7 +5,7 @@
     <section class="position-relative px-0 px-md-2 overflow-hidden">
         <h4 class="pt-2 fw-bold border-bottom border-gray pb-14p">MY EVENTS & WEBINARS
         </h4>
-
+        {% if events.exists %}
         <div class="events">
             <div class="row d-flex justify-content-between ps-2 pe-5">
                 <div class="col-auto">
@@ -99,8 +99,6 @@
                 </div>
             {% endfor %}
         </div>
-
-
         <div class="px-0 px-md-5 mt-5">
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center justify-content-md-end">
@@ -125,6 +123,10 @@
                 </ul>
             </nav>
         </div>
+            {% else %}
+            <div class='text-center py-5'>No Event Found</div>
+        {% endif %}
+
     </section>
 {% endblock content %} {% block customjs %}
     <script>
