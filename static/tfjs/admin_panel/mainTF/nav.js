@@ -9,14 +9,13 @@ links.forEach(link => {
 
     } else {
         link.classList.remove("active")
-            // link.parentElement.parentElement.classList.remove("show-dropdown-container");
     }
 })
 
 
 const dropdown = document.querySelectorAll(".dropdown-btn");
 for (let i = 0; i < dropdown.length; i++) {
-    dropdown[i].addEventListener("click", function() {
+    dropdown[i].addEventListener("click", function () {
         var dropdownContent = this.nextElementSibling;
         console.log(dropdownContent);
         if (dropdownContent.classList.contains("show-dropdown-container")) {
@@ -26,22 +25,6 @@ for (let i = 0; i < dropdown.length; i++) {
         }
     });
 }
-
-
-$(document).ready(function() {
-    // console.log('data-table');
-    $(window).scroll(function() {
-        if ($(window).scrollTop() + $(window).height() > $(document).height() - 5) {
-            // $(".aside-container").css("bottom", $(".footer").outerHeight() + 2)
-            // $(".aside-container").addClass("small-aside")
-            $(".footer").removeClass("footer-shrink")
-        } else {
-            // $(".aside-container").css("bottom", "0")
-            // $(".aside-container").removeClass("small-aside")
-            $(".footer").addClass("footer-shrink")
-        }
-    });
-});
 
 const deleteBtn = document.querySelectorAll(".trash, .dlt")
 
