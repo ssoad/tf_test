@@ -7,13 +7,13 @@ from django.contrib.auth.admin import UserAdmin
 
 class AdminUser(UserAdmin):
     ordering = ('-date_joined',)
-    search_fields = ('email', 'first_name', 'last_name', 'phone_number',)
+    search_fields = ('email', 'full_name', 'phone_number',)
     list_filter = ('is_active', 'is_staff', 'is_superuser', 'gender', 'is_bcs',)
-    list_display = ('email', 'first_name', 'country', 'gender', 'date_joined', 'is_bcs', 'is_active')
+    list_display = ('email', 'full_name', 'country', 'gender', 'date_joined', 'is_bcs', 'is_active')
     fieldsets = (
         ('Login Info', {'fields': ('email', 'password')}),
         ('User Information',
-         {'fields': ('first_name', 'last_name', 'gender', 'profile_pic', 'birth_date', 'country', 'phone_number',)}),
+         {'fields': ('full_name', 'gender', 'profile_pic', 'birth_date', 'country', 'phone_number',)}),
         ('Permissions', {'fields': ('is_bcs', 'is_active', 'is_staff', 'is_superuser', 'is_sales_head', 'is_sales',
                                     'is_blogger', 'is_bcs_head', 'is_pcs_head', 'newsletter',)}),
 
@@ -21,7 +21,7 @@ class AdminUser(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'first_name', 'password1', 'password2'),
+            'fields': ('email', 'full_name', 'password1', 'password2'),
         }),
     )
 

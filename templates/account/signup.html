@@ -26,9 +26,8 @@
 
     <section class="sign-form">
 
-        <div class="row justify-content-center">
+        <div class="row justify-content-center mx-0">
             <div class="col-md-8">
-
                 <form action="" id="signup-form" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <h2>Login or Sign Up</h2>
@@ -40,7 +39,6 @@
                     <p class="sign-auth">
                         Continue With
                         <a href="{% provider_login_url "google" %}"><i class="fab fa-google sign-google"></i></a>
-                        <a href="{% provider_login_url "facebook" %}"><i class="fab fa-facebook-f sign-fb"></i></a>
                     </p>
                     <div style="display: grid; grid-template-columns: repeat(2, minmax(100px, 1fr)); gap: 20px;">
                         {{ form|crispy }}

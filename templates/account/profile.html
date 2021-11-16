@@ -1,245 +1,155 @@
-{% extends 'base/pcs_user_base.html' %} {% load static %}
-{% load crispy_forms_tags %}
-{% block title %} Settings {% endblock title %} {% block content %}
-
-<div class="profile-area pe-md-5 mt-3">
-{% include 'base/verification_check.html' %}
-    <section class="profile-banner">
-        <h6 class="pt-3 text-green text-end">Your profile is 30% complete now</h6>
-        <div class="row d-flex justify-content-between mx-0 ps-2 py-1 text-white">
-            <div class="col-6 col-md-8 py-3">
-                <div class="row d-flex">
-                    <div class="col-auto me-4">
-                        <form method="post" enctype="multipart/form-data" action="/upload_image/" id="image_form">
-                            <div class="profile-img">
-                                <div class="img-edit">
-                                    <input type="file" class="d-none" name="image" id="imageUpload" accept="image/*" required>
-                                    <label for="imageUpload"></label>
-                                </div>
-                                <div class="img-preview mx-auto">
-                                    <div id="imagePreview" style="background-image: url();">
-                                        <i class="icofont-camera"></i>
+{% extends 'base/pcs_user_base.html' %}{% load hosts %} {% load static %} {% load crispy_forms_tags %} {% block title %} Profile {% endblock title %} {% block content %}
+<style>
+    .profile-area {
+        text-align: left;
+        background-color: #e2e8f0;
+    }
+    
+    .main-body {
+        padding: 15px;
+    }
+    
+    .card {
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
+    }
+    
+    .card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 0 solid rgba(0, 0, 0, .125);
+        border-radius: .25rem;
+    }
+    
+    .card-body {
+        flex: 1 1 auto;
+        min-height: 1px;
+        padding: 1rem;
+    }
+    
+    .gutters-sm {
+        margin-right: -8px;
+        margin-left: -8px;
+    }
+    
+    .gutters-sm>.col,
+    .gutters-sm>[class*=col-] {
+        padding-right: 8px;
+        padding-left: 8px;
+    }
+    
+    .mb-3,
+    .my-3 {
+        margin-bottom: 1rem !important;
+    }
+    
+    .bg-gray-300 {
+        background-color: #e2e8f0;
+    }
+    
+    .h-100 {
+        height: 100% !important;
+    }
+    
+    .shadow-none {
+        box-shadow: none !important;
+    }
+</style>
+<div class="profile-area">
+    {% include 'base/verification_check.html' %}
+    <section class="">
+        <div class="container">
+            <div class="main-body">
+                <div class="row gutters-sm">
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body d-flex align-items-center justify-content-center">
+                                <div class="d-flex flex-column align-items-center text-center">
+                                    <img src="{{ user.profile_pic.url }}" alt="Admin" class="rounded-circle" width="150" height="150" style="object-fit: cover">
+                                    <div class="mt-3">
+                                        <h4>{{ user.full_name }}</h4>
+                                        <p class="text-secondary mb-1">{{ user.email }}</p>
+                                        <p class="text-muted font-size-sm">{{ user.phone_number }}</p>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn mt-3 btn-outline-light btn-sm mt-1">Upload
-                                    your image</button>
                             </div>
-                        </form>
+                        </div>
+
                     </div>
-                    <div class="col-auto mt-3 mt-md-0 d-flex flex-column justify-content-center">
-                        <h5>{{ user.first_name }} {{ user.last_name }}</h5>
-                        <p class="mb-0">{{ user.email }}</p>
+                    <div class="col-md-8">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Full Name</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        {{ user.full_name }}
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Email</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        {{ user.email }}
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Birthdate</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        {{ user.birth_date }}
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Gender</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        {{ user.gender }}
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Registration Date</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        {{ user.date_joined }}
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <a class="btn btn-navy" href="{% host_url 'user_profile_edit' %}">Edit</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-5 col-md-3 d-flex justify-content-end align-items-start">
-                <button class="btn btn-sm edit-btn btn-light">Edit Profile
-                    <i class="ms-1 icofont-edit"></i>
-                </button>
+
             </div>
         </div>
-    </section>
-
-    <section class="profile-info mt-3 shadow bg-whitegreen p-1 p-md-4">
-        <h5 class="ms-0 ms-sm-3">PERSONAL INFORMATION</h5>
-        <div class="row d-flex justify-content-between mt-3">
-            <div class="col-md-6 d-flex">
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>Name:</td>
-                            <td class="info-value">
-                                <input type="text" name="" value="{{ user.first_name }}">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Address:</td>
-                            <td class="info-value">
-                                <input type="text" name="" value="-------">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Country:</td>
-                            <td class="info-value">
-                                <input type="text" name="" value="USA">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Birthdate:{{ user.date_joined }}</td>
-                            <td class="info-value">
-                                <input type="date" name="" value="{{ user.birth_date|date:"d/m/Y" }}">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Gender:</td>
-                            <td class="info-value">
-                                <input type="text" name="" value="-------">
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-6 d-flex">
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>Registration Date:</td>
-                            <td class="info-value">
-                                <input class="text-danger" type="text" name="" value="21th, December 2021">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Phone Number:</td>
-                            <td class="info-value">
-                                <input type="text" name="" value="+88010102255">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Email:</td>
-                            <td class="info-value">
-                                <input type="email" name="" value="yourmail@gmail.com">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Password:</td>
-                            <td class="info-value">
-                                <input type="password" name="" value="-------">
-                            </td>
-                        </tr>
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <button class="d-none btn save-btn bg-navy text-white px-3 py-1 mt-3">Save</button>
-    </section>
-    <hr class="mt-4">
-    <section class="selection-area row d-flex justify-content-center mt-4">
-        <div class="col-lg-6">
-            <h5 class="ms-md-3">Area of Interest</h5>
-            <h6 class="ms-md-3 fw-bold">Select your interested topics</h6>
-            <form action="" method="POST">
-               <div class="row gx-0 mt-4 d-flex justify-content-center">
-                <div class="col-md-5 me-lg-5">
-                    {{ form|crispy }}
-                    {% csrf_token %}
-                </div>
-            </div>
-            <button type="submit" class="ms-md-3 btn bg-navy text-white px-4 py-1 mt-3">Save</button>
-            </form>
-
-
-        </div>
-        <div class="col-lg-6 mt-4 mt-lg-0">
-            <h5 class="ms-md-3">Notification & preference</h5>
-            <h6 class="ms-md-3 fw-bold">Select your preference list</h6>
-            <div class="row gx-0 mt-4 d-flex justify-content-center">
-                <div class="col-md-5 me-lg-5">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                        <label class="form-check-label" for="defaultCheck1">
-                            Newsletter Notification
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                        <label class="form-check-label" for="defaultCheck1">
-                            Email Notification
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                        <label class="form-check-label" for="defaultCheck1">
-                            New Article Notification
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                        <label class="form-check-label" for="defaultCheck1">
-                            Regular Blog Notification
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                        <label class="form-check-label" for="defaultCheck1">
-                            Risk Assessment
-                        </label>
-                    </div>
-                </div>
-                <div class="col-md-5">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                        <label class="form-check-label" for="defaultCheck1">
-                            Push Notification
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                        <label class="form-check-label" for="defaultCheck1">
-                            New Article Notification
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                        <label class="form-check-label" for="defaultCheck1">
-                            Events & Webinar Notification
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                        <label class="form-check-label" for="defaultCheck1">
-                            New Service Notification
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                        <label class="form-check-label" for="defaultCheck1">
-                            General Notification
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <button class="ms-md-3 btn bg-navy text-white px-4 py-1 mt-3">Save</button>
-
-        </div>
-
 
     </section>
 
 </div>
 {% endblock content %} {% block customjs %}
 <script>
+    document.querySelector('main>div').classList.value = ''
     let infoValues = document.querySelectorAll('.profile-info .info-value');
     let profileInputs = document.querySelectorAll('.profile-info input');
 
-    profileInputs.forEach(input => {
-        input.disabled = true;
-    });
-
-    document.querySelector('.edit-btn').addEventListener('click', (e) => {
-        infoValues.forEach(info => {
-            info.classList.toggle('input-as-text');
-        });
-
-        profileInputs.forEach(input => {
-            input.disabled = false;
-        });
-
-        document.querySelector('.save-btn').classList.toggle('d-none');
-        e.target.classList.toggle('d-none');
-    });
-    document.querySelector('.save-btn').addEventListener('click', (e) => {
-        infoValues.forEach(info => {
-            info.classList.toggle('input-as-text');
-        });
-
-        profileInputs.forEach(input => {
-            input.disabled = true;
-        });
-
-        document.querySelector('.edit-btn').classList.toggle('d-none');
-        e.target.classList.toggle('d-none');
-    });
 
 
     document.getElementById("imageUpload").addEventListener("change", function(e) {

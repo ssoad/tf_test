@@ -49,7 +49,6 @@
                             <tr>
                                 <th>#</th>
                                 <th>First Name</th>
-                                <th>Last Name</th>
                                 <th>Email</th>
                                 <th>Phone Number</th>
                                 <th>Gender</th>
@@ -62,8 +61,7 @@
                         {% for register_user in event.registered_event_event.all %}
                             <tr>
                                 <td>{{ forloop.counter }}</td>
-                                <td>{{ register_user.user.first_name }}</td>
-                                <td>{{ register_user.user.last_name }}</td>
+                                <td>{{ register_user.user.full_name }}</td>
                                 <td>{{ register_user.user.email }}</td>
                                 <td>{{ register_user.user.phone_number }}</td>
                                 <td>{{ register_user.user.gender }}</td>

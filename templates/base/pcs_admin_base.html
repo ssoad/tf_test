@@ -33,10 +33,10 @@
         <!-- top bar section starts here -->
         <nav class="navbar fixed-top">
             <div class="container-fluid">
-                <button class="btn mt-2 hamburger"><i class="icofont-navigation-menu"></i></i></button>
+                <button class="btn mt-2 hamburger"><i class="icofont-navigation-menu"></i></button>
                 <!-- page title -->
                 <span class="navbar-text rounded-0 px-2 hide  fw-bold text-primary">
-                    <a href="" class="">Business Cybersecurity</a>
+                    <a href="{% host_url 'bcs_admin_dashboard' %}" class="">Business Cybersecurity</a>
                 </span>
                 <span class="navbar-text rounded-0 px-2 hide  fw-bold text-primary">
                     <a href="" class="">Personal Cybersecurity</a>
@@ -161,7 +161,7 @@
 
     {% block content %} {% endblock content %}
 
-    <footer id="footer-small" class="footer footer-shrink bg-blue py-4">
+    <footer id="footer-small" class="position-absolute bottom-0 footer footer-shrink bg-blue py-4">
         <div class="d-flex justify-content-center">
             <a href="" class="me-5">PRIVACY POLICY</a>
             <a href="">TERMS OF USE</a>

@@ -71,7 +71,6 @@ urlpatterns = [
     path('tickets_status_change/', views.ticketOpenCloseView, name='tickets_status_change'),
     path('tickets_status_change/<id>/', views.ticketOpenCloseView, name='tickets_status_change'),
 
-
     # bcs user panel
     path('bcs_user_dashboard/', views.userDashboardView, name='bcs_user_dashboard'),
     path('create_business/', views.createBusinessView, name='create_business'),
@@ -85,6 +84,8 @@ urlpatterns = [
     path('bcs_user_notifications/', views.userNotificationsView, name='bcs_user_notifications'),
     path('bcs_user_settings/', views.userSettingsView, name='bcs_user_settings'),
     path('bcs_user_my_team/', views.bcsUserMyTeamView, name='bcs_user_my_team'),
+    path('bcs_user_team_member_delete/', views.bcsUserTeamMemberDeleteView, name='bcs_user_team_member_delete'),
+    path('bcs_user_team_member_delete/<id>/', views.bcsUserTeamMemberDeleteView, name='bcs_user_team_member_delete'),
     path('employee_training_program/', views.employeeTrainingProgramView, name='employee_training_program'),
 
     path('bcs_appointment/', views.bcsAppointmentView, name='bcs_appointment'),
@@ -109,7 +110,8 @@ urlpatterns = [
     path('bcs_admin_sub_services_form/', views.bcsSubServiceFormView, name='bcs_admin_sub_services_form'),
     path('bcs_admin_sub_services_form_delete/<id>', views.bcsAdminSubServiceFormDeleteView,
          name='bcs_admin_sub_services_form_delete'),
-    path('bcs_admin_sub_services_form_edit/<id>', views.bcsAdminSubServiceFormEditView, name='bcs_admin_sub_services_form_edit'),
+    path('bcs_admin_sub_services_form_edit/<id>', views.bcsAdminSubServiceFormEditView,
+         name='bcs_admin_sub_services_form_edit'),
 
     # bcs admin panel
     path('bcs_admin_subscription_packages/', views.bcsAdminSubscriptionPack, name='bcs_admin_subscription_packages'),
@@ -157,12 +159,6 @@ urlpatterns = [
     path('bcs_admin_all_tickets/', views.bcsAdminTicketsView, name='bcs_admin_all_tickets'),
     path('bcs_admin_tickets_detail/', views.bcsAdminTicketsDetailView, name='bcs_admin_tickets_detail'),
     path('bcs_admin_tickets_detail/<id>', views.bcsAdminTicketsDetailView, name='bcs_admin_tickets_detail'),
-    # bcs academy user panel
-    path('academy_user_courses/', views.UserCourses, name='academy_user_courses'),
-    path('academy_user_courses/<id>/', views.UserCoursesDetails, name='academy_user_courses_details'),
-    path('academy_my_courses/', views.myCourses, name='academy_my_courses'),
-    path('academy_user_files/', views.UserFiles, name='academy_user_files'),
-    path('academy_user_files/<id>/', views.UserFiles, name='academy_user_files'),
 
     # team invidual user panel
     path('team_user_services/', views.teamUserServicesView, name='team_user_services'),

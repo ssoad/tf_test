@@ -33,7 +33,7 @@ class Service(models.Model):
     service_header = HTMLField(verbose_name='Service Header', blank=True)
     service_body = HTMLField(verbose_name='Service Body', blank=True)
     service_footer = HTMLField(verbose_name='Service Footer', blank=True)
-    has_sub_service = models.BooleanField(default=False, verbose_name='Has Sub Services')
+    has_sub_service = models.BooleanField(default=True, verbose_name='Has Sub Services')
     is_subscription_based = models.BooleanField(default=False, verbose_name='Is Subscription Based')
     total_customer = models.IntegerField(verbose_name='Total Customer', default=0, blank=True)
 
@@ -75,6 +75,9 @@ class SelectChoiceRelation(models.Model):
     input_field = models.ForeignKey(InputFields, on_delete=models.CASCADE,
                                     related_name='selectchoicerelation_inputfield')
     choice_field = models.ManyToManyField(SelectChoice, related_name='selectchoicerelation_selectchoice')
+
+    def __str__(self):
+        return f'{self.input_field.type} - {self.input_field.placeholder}'
 
 
 class SubService(models.Model):
@@ -208,7 +211,7 @@ class UserAllowed(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='allowed_service')
 
     def __str__(self):
-        return f"{self.user.first_name} - {self.service.service_title}"
+        return f"{self.user.full_name} - {self.service.service_title}"
 
     class Meta:
         verbose_name_plural = 'Users Allowed'
@@ -253,9 +256,10 @@ class Business(models.Model):
 
 class UsersBusiness(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='business_user')
-    business = models.OneToOneField(Business, on_delete=models.CASCADE, related_name='business_business')
+    business = models.ForeignKey(Business, on_delete=models.CASCADE, related_name='business_business')
     position = models.CharField(max_length=264)
     privilege = models.CharField(max_length=264, choices=privilege)
+    joined_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'{self.user} - {self.business} - {self.position}'

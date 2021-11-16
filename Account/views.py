@@ -60,16 +60,70 @@ def profileView(request):
     current_user = request.user
     interests = models.Interest.objects.get(user=current_user)
     form = forms.InterestForm(instance=interests)
+    if not current_user.phone_number \
+            or not current_user.country \
+            or not current_user.phone_number \
+            or not current_user.birth_date \
+            or not current_user.gender:
+
+        emails = current_user.emailaddress_set.all
+        if not current_user.phone_number \
+                or not current_user.country:
+            form = forms.CountryPhoneForm(instance=current_user)
+            message = 'Add Country and Phone Number'
+            if request.POST:
+                form = forms.CountryPhoneForm(request.POST, instance=current_user)
+                if form.is_valid():
+                    form.save()
+                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        elif not current_user.birth_date \
+                or not current_user.gender:
+            form = forms.BirthDateGenderForm(instance=current_user)
+            message = 'Add Date of Birth and Gender'
+            if request.POST:
+                form = forms.BirthDateGenderForm(request.POST, instance=current_user)
+                if form.is_valid():
+                    form.save()
+                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        context = {
+            'emails': emails,
+            'form': form,
+            'message': message,
+        }
+        return render(request, 'account/profile-info-add.html', context)
+    else:
+        if request.method == 'POST':
+            form = forms.InterestForm(request.POST, instance=interests)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        context = {
+            # 'interests': interests,
+            'form': form,
+        }
+        return render(request, 'account/profile.html', context)
+
+
+@login_required
+def profileEdit(request):
+    info_forms = forms.ProfileInfoForm(instance=request.user)
+    img_forms = forms.ProfilePictureForm(instance=request.user)
     if request.method == 'POST':
-        form = forms.InterestForm(request.POST, instance=interests)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        if 'info-btn' in request.POST:
+            info_forms = forms.ProfileInfoForm(request.POST, instance=request.user)
+            if info_forms.is_valid():
+                info_forms.save()
+                return redirect('user_profile')
+        elif 'img-btn' in request.POST:
+            img_forms = forms.ProfilePictureForm(request.POST, request.FILES, instance=request.user)
+            if img_forms.is_valid():
+                img_forms.save()
+                return redirect('user_profile')
     context = {
-        # 'interests': interests,
-        'form': form,
+        'info_forms': info_forms,
+        'img_forms': img_forms,
     }
-    return render(request, 'account/profile.html', context)
+    return render(request, 'account/profile_edit.html', context)
 
 
 @login_required
