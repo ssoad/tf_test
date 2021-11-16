@@ -43,6 +43,7 @@ class AddSubServiceForm(forms.ModelForm):
 
 class CreateBusinessForm(forms.ModelForm):
     position = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'CEO'}))
+    website = forms.URLField(widget=forms.URLInput(attrs={'pattern': "^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$", 'value': "https://"}))
 
     class Meta:
         model = models.Business

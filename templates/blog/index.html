@@ -1,6 +1,11 @@
 {% extends 'base/blog_base.html' %} {% load static %} {% load hosts %}{% load my_filter %} {% block title %} Home {% endblock title %} {% block headercss %}
 <link rel="stylesheet" href="{% static 'tfcss/blog/index.css' %}"> {% endblock headercss %} {% block content %}
-
+    <link rel="stylesheet" href="https://npmcdn.com/tootik@1.0.2/css/tootik.min.css">
+    <style>
+      [data-tootik]:after {
+          white-space: initial
+      }
+    </style>
 <section class="row mx-0 banner-1">
     <div class="col-md-7 col-lg-7 col-xl-8 pe-2 banner-bg">
         <div class="d-flex flex-column justify-content-center h-100">
@@ -54,8 +59,7 @@
             </div>
             <div class="d-flex flex-column py-2">
                 <a href="{% host_url 'case_studies' host 'blog' %}{{post.post_url}}">
-                    <h5 class="title">{{post.title}}
-                    </h5>
+                    <h5 class="title">{{post.title}}</h5>
                 </a>
                 <div class="position-relative">
                     <span class=" p-0 me-5 text-green ">
@@ -75,14 +79,14 @@
         </div>
         <div class="col-md-6 pe-md-0">
             {% for post in case_studies %} {% if forloop.counter != 1 %}
-            <div class="row {% if forloop.counter != 2 %}mt-3{% endif %} mx-0 bg-lightnavy ">
-                <div class="col-12 col-md-5 p-2 d-flex align-items-center ">
+            <div class="row {% if forloop.counter != 2 %}mt-3{% endif %} mx-0 bg-lightnavy">
+                <div class="col-12 col-md-5 p-2 d-flex align-items-center" data-tootik="{{post.title}}" data-tootik-conf="top">
                     <img src="{{post.feature_image.url}}" class="img-fluid " alt="... ">
                 </div>
                 <div class="col-12 col-md-7 py-2 ps-md-0 pe-1 d-flex align-items-center">
                     <div>
                         <a href="{% host_url 'case_studies' host 'blog' %}{{post.post_url}}">
-                            <h6 class="fw-bold">{{post.title}}</h6>
+                            <h6 class="fw-bold">{{post.title|truncatechars:68}}</h6>
                         </a>
                         <div class="info-area">
                             <span class="p-0 me-3 text-green">
@@ -138,14 +142,14 @@
         </div>
         <div class="col-md-6 pe-md-0">
             {% for post in articles %} {% if forloop.counter != 1 %}
-            <div class="row {% if forloop.counter != 2 %}mt-3{% endif %} mx-0 bg-lightnavy ">
+            <div class="row {% if forloop.counter != 2 %}mt-3{% endif %} mx-0 bg-lightnavy" data-tootik="{{post.title}}" data-tootik-conf="top">
                 <div class="col-12 col-md-5 p-2 d-flex align-items-center ">
                     <img src="{{post.feature_image.url}}" class="img-fluid " alt="... ">
                 </div>
                 <div class="col-12 col-md-7 py-2 ps-md-0 pe-1 d-flex align-items-center">
                     <div>
                         <a href="{% host_url 'articles' host 'blog' %}{{post.post_url}}">
-                            <h6 class="fw-bold">{{post.title}}</h6>
+                            <h6 class="fw-bold">{{post.title|truncatechars:68}}</h6>
                         </a>
                         <div class="info-area">
                             <span class="p-0 me-3 text-green">
@@ -201,8 +205,9 @@
 </section>
 
 {% endblock content %} {% block customjs %}
-<script src=" https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js "></script>
+<script src=" https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
+
 </script>
 {% endblock customjs %}

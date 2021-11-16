@@ -39,7 +39,6 @@ mainSection.addEventListener("click", ()=>{
   })
   dropdown.forEach(item=>{
     item.classList.remove("clicked");
-
   })
 })
 
