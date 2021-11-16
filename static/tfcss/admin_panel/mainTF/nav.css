@@ -265,6 +265,7 @@ main {
     margin-inline-start: 20%;
     padding-inline: 1rem;
     margin-block-start: 7rem;
+    min-height: 100vh;
 }
 
 
@@ -499,7 +500,7 @@ table.dataTable tbody th.select-checkbox:after {
 
 footer {
     position: relative;
-    z-index: 9999999;
+    z-index: 1030;
     background-color: #182f59;
     padding: 1px 0px 0px 0px;
     color: white;
@@ -519,7 +520,7 @@ footer a i {
 
 .footer-shrink {
     width: calc(100% - 18%);
-    margin-inline-start: 18%;
+    margin-inline-start: 19%;
 }
 
 .footer-box {
