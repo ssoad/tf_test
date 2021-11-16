@@ -1,4 +1,5 @@
-{% extends 'base/bcs_user_base.html' %} {% load static %} {% load my_filter %} {% load crispy_forms_tags %} {% load hosts %} {% block headercss %}
+{% extends 'base/bcs_user_base.html' %} {% load static %} {% load my_filter %} {% load crispy_forms_tags %} {% load hosts %}
+{% block headercss %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
     <style>
@@ -37,7 +38,8 @@
             <div class="pt-3 border-bottom border-gray pb-2 align-items-center">
                 <div class="d-flex justify-content-between align-items-center">
                     <h3 class="fw-bold mb-0">Your Business Profile</h3>
-                    <button class="btn btn-lg bg-navy" data-bs-toggle="modal" data-bs-target="#infoChangeModal" data-tootik="Edit Business" data-tootik-conf="left">
+                    <button class="btn btn-lg bg-navy" data-bs-toggle="modal" data-bs-target="#infoChangeModal"
+                            data-tootik="Edit Business" data-tootik-conf="left">
                         <i class="fa fa-pencil"></i>
                     </button>
                 </div>
@@ -47,7 +49,8 @@
                              style="width: fit-content">
                             <img src="{{ current_business.business.company_logo.url }}"
                                  class="rounded-circle p-1 company-logo" alt="">
-                            <div data-tootik="Change Logo" class="img-change overlay position-absolute top-0 start-0 bottom-0 end-0 w-100 h-100 m-auto d-flex align-items-center justify-content-center rounded-circle"
+                            <div data-tootik="Change Logo"
+                                 class="img-change overlay position-absolute top-0 start-0 bottom-0 end-0 w-100 h-100 m-auto d-flex align-items-center justify-content-center rounded-circle"
                                  data-bs-toggle="modal" data-bs-target="#imageChangeModal"
                                  style="background: #00000033; cursor: pointer"><i class="fa fa-camera"></i></div>
                         </div>
@@ -84,7 +87,7 @@
                 </div>
             </div>
         </div>
-    <!-- Modal -->
+        <!-- Modal -->
         <div class="modal fade" id="infoChangeModal" tabindex="-1" aria-labelledby="infoChangeModalLabel"
              aria-hidden="true">
             <div class="modal-dialog">

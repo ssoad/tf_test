@@ -90,7 +90,7 @@ class OrderPriceForm(forms.ModelForm):
 
 class OrderAssignForm(forms.ModelForm):
     staff = forms.ModelChoiceField(
-        queryset=models.User.objects.filter(Q(is_staff=True, is_sales=True) | Q(is_superuser=True)),
+        queryset=models.User.objects.filter(Q(is_staff=True, is_sales=True) | Q(is_superuser=True) | Q(is_staff=True, is_sales_head=True)),
         widget=forms.Select(attrs={'class': 'js-example-basic-single form-control form-select'}))
 
     class Meta:
