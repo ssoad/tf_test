@@ -144,21 +144,25 @@
                         <h6 class="fw-bold">Share this post to:</h6>
                         <div class="social-share" data-social-share></div>
                     </div>
-                    {% if post.id not in reading_lists %}
+                    {% if user.is_authenticated%}
+{% if post.id in reading_lists %}
+                    <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}" class="me-3">
+                        <button class="btn btn-danger rounded-pill fs-6" title="Add to my reading list">
+                            <i class="bi bi-dash-circle me-1"></i>
+                            Remove
+                        </button>
+                    </a>
+                        
+                        {% else %}
                         <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}" class="add-to-list me-3">
                         <button class="btn fs-6" title="Add to my reading list">
                             <i class="bi bi-plus-circle me-1"></i>
                             Save
                         </button>
                     </a>
-                        {% else %}
-                        <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}" class="me-3">
-                        <button class="btn btn-danger rounded-pill fs-6" title="Add to my reading list">
-                            <i class="bi bi-dash-circle me-1"></i>
-                            Remove
-                        </button>
-                    </a>
                     {% endif %}
+                    {% endif %}
+                    
 
 
                 </div>

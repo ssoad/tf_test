@@ -759,23 +759,37 @@ header.sticky-top {
 
 /* footer  */
 
+footer {
+    /* width: 95%; */
+    margin-left: auto
+}
+
 footer a {
     text-decoration: none;
     color: white;
 }
 
-footer a:hover {
-    color: rgb(211, 209, 209);
-    transition: color 0.5s linear;
+footer {
+    background-color: #182f59;
+    padding: 1px 0px 0px 0px;
+    color: white;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
 }
 
-footer img {
-    width: 40px;
-    height: 40px;
+footer a i {
+    font-size: 22px;
 }
 
-footer#footer-large {
-    z-index: 9;
+.footer-box {
+    margin-top: 20px;
+}
+
+.footer-box h2 {
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    font-size: 20px;
 }
 
 

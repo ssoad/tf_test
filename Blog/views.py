@@ -398,20 +398,36 @@ def postView(request, name):
     posts = models.Post.objects.all()
     post = models.Post.objects.get(post_url=name)
     comments = models.Comment.objects.filter(post=post).order_by('-comment_date')
-    reading_lists = models.ReadingList.objects.filter(user=request.user).values_list('post', flat=True)
-    total = post.total_view
-    category = str(request.path).split('/')[-3]
-    post.total_view = total + 1
-    post.save()
+    try:
+        reading_lists = models.ReadingList.objects.filter(user=request.user).values_list('post', flat=True)
+        total = post.total_view
+        category = str(request.path).split('/')[-3]
+        post.total_view = total + 1
+        post.save()
 
-    context = {
-        'post': post, 'category': category,
-        'related_posts': posts.order_by('date')[:4],
-        'comments': comments[:5],
-        'comments_count': comments.count,
-        'reading_lists': reading_lists,
-    }
-    return render(request, 'blog/post.html', context)
+        context = {
+            'post': post, 'category': category,
+            'related_posts': posts.order_by('date')[:4],
+            'comments': comments[:5],
+            'comments_count': comments.count,
+            'reading_lists': reading_lists,
+        }
+        return render(request, 'blog/post.html', context)
+    except:
+        
+        total = post.total_view
+        category = str(request.path).split('/')[-3]
+        post.total_view = total + 1
+        post.save()
+
+        context = {
+            'post': post, 'category': category,
+            'related_posts': posts.order_by('date')[:4],
+            'comments': comments[:5],
+            'comments_count': comments.count,
+            
+        }
+        return render(request, 'blog/post.html', context)
 
 
 def case_studiesView(request, name):

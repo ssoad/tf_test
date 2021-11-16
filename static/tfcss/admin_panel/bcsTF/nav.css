@@ -20,6 +20,7 @@ body {
     padding: 0;
     overflow-x: hidden;
     font-family: 'Roboto', sans-serif;
+    min-height: 100vh;
 }
 
 ul {
@@ -281,7 +282,6 @@ main {
     padding-inline: 1rem;
     margin-block-start: 6rem;
     transition: all .3s;
-    min-height: 100vh;
 }
 
 

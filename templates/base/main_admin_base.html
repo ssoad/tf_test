@@ -116,25 +116,6 @@
                             </li>
                         </ul>
                     </li>
-                    {% comment %} <li data-tootik="users & admin" data-tootik-conf="right">
-                        <span class="nav-link dropdown-btn dropdown-toggle" id="navbarDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-people-fill"></i>
-                            <span class="nav-text">users & admin</span>
-                        </span>
-                        <ul class="dropdown-container" aria-labelledby="navbarDropdown">
-                            <li>
-                                <a href="{% host_url 'bcs_admin_individual_users' %}" class="dropdown-item nav-link">
-                                    users
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{% host_url 'bcs_admin_list' %}" class="dropdown-item nav-link">
-                                    admin users
-                                </a>
-                            </li>
-                        </ul>
-                    </li> {% endcomment %}
                     <li data-tootik="support" data-tootik-conf="right">
                         <span href="" class="nav-link dropdown-btn dropdown-toggle" id="supportDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
@@ -159,7 +140,7 @@
 
     {% block content %} {% endblock content %}
 
-    <footer id="footer-small" class="footer footer-shrink bg-blue py-4">
+    <footer id="footer-small" class="footer footer-shrink bg-blue py-4 position-sticky top-100">
         <div class="d-flex p-3 p pb-2 justify-content-center">
             <a href="" class="me-5">PRIVACY POLICY</a>
             <a href="">TERMS OF USE</a>
