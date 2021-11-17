@@ -45,6 +45,56 @@
 
 {% block content %}
     <main>
+        <div class="row mb-5">
+                <div class="col-md-4">
+                    <div class="panel-box blue1">
+                        <h2>Total Tickets</h2>
+                        <div class="panel-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24.643" height="34.5"
+                                 viewBox="0 0 24.643 34.5">
+                                <g id="ticket" transform="translate(333.393 105.821) rotate(90)">
+                                    <path id="Path_48" data-name="Path 48"
+                                          d="M35.518,16.607a1.232,1.232,0,0,0,1.232-1.232V9.214A2.464,2.464,0,0,0,34.286,6.75H4.714A2.464,2.464,0,0,0,2.25,9.214v6.161a1.232,1.232,0,0,0,1.232,1.232,2.464,2.464,0,0,1,0,4.929A1.232,1.232,0,0,0,2.25,22.768v6.161a2.464,2.464,0,0,0,2.464,2.464H34.286a2.464,2.464,0,0,0,2.464-2.464V22.768a1.232,1.232,0,0,0-1.232-1.232,2.464,2.464,0,1,1,0-4.929ZM34.286,23.84v5.088H25.661v-3.7H23.2v3.7H4.714V23.84a4.929,4.929,0,0,0,0-9.536V9.214H23.2v3.7h2.464v-3.7h8.625V14.3a4.929,4.929,0,0,0,0,9.536Z"
+                                          transform="translate(-108.071 302)" fill="#fff"/>
+                                </g>
+                            </svg>
+                            <p>{{ tickets.count }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel-box blue3">
+                        <h2>NEW TICKETS</h2>
+                        <div class="panel-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24.643" height="34.5"
+                                 viewBox="0 0 24.643 34.5">
+                                <g id="ticket" transform="translate(333.393 105.821) rotate(90)">
+                                    <path id="Path_48" data-name="Path 48"
+                                          d="M35.518,16.607a1.232,1.232,0,0,0,1.232-1.232V9.214A2.464,2.464,0,0,0,34.286,6.75H4.714A2.464,2.464,0,0,0,2.25,9.214v6.161a1.232,1.232,0,0,0,1.232,1.232,2.464,2.464,0,0,1,0,4.929A1.232,1.232,0,0,0,2.25,22.768v6.161a2.464,2.464,0,0,0,2.464,2.464H34.286a2.464,2.464,0,0,0,2.464-2.464V22.768a1.232,1.232,0,0,0-1.232-1.232,2.464,2.464,0,1,1,0-4.929ZM34.286,23.84v5.088H25.661v-3.7H23.2v3.7H4.714V23.84a4.929,4.929,0,0,0,0-9.536V9.214H23.2v3.7h2.464v-3.7h8.625V14.3a4.929,4.929,0,0,0,0,9.536Z"
+                                          transform="translate(-108.071 302)" fill="#fff"/>
+                                </g>
+                            </svg>
+                            <p>{{ open_tickets.count }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel-box blue4">
+                        <h2>CLOSED TICKETS</h2>
+                        <div class="panel-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24.643" height="34.5"
+                                 viewBox="0 0 24.643 34.5">
+                                <g id="ticket" transform="translate(333.393 105.821) rotate(90)">
+                                    <path id="Path_48" data-name="Path 48"
+                                          d="M35.518,16.607a1.232,1.232,0,0,0,1.232-1.232V9.214A2.464,2.464,0,0,0,34.286,6.75H4.714A2.464,2.464,0,0,0,2.25,9.214v6.161a1.232,1.232,0,0,0,1.232,1.232,2.464,2.464,0,0,1,0,4.929A1.232,1.232,0,0,0,2.25,22.768v6.161a2.464,2.464,0,0,0,2.464,2.464H34.286a2.464,2.464,0,0,0,2.464-2.464V22.768a1.232,1.232,0,0,0-1.232-1.232,2.464,2.464,0,1,1,0-4.929ZM34.286,23.84v5.088H25.661v-3.7H23.2v3.7H4.714V23.84a4.929,4.929,0,0,0,0-9.536V9.214H23.2v3.7h2.464v-3.7h8.625V14.3a4.929,4.929,0,0,0,0,9.536Z"
+                                          transform="translate(-108.071 302)" fill="#fff"/>
+                                </g>
+                            </svg>
+                            <p>{{ close_tickets.count }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         {% if not tickets.exists %}
             <div class="text-center py-5 my-5">
                 <i class="icofont-box fs-4 bg-navy rounded-circle p-1"></i>
