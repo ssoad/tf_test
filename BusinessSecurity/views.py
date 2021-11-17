@@ -25,15 +25,24 @@ def main_admin_permission_check(user):
 
 
 def main_admin_permission_check_order_page(user):
-    return user.is_staff and user.is_superuser or user.is_sales_head
+    try:
+        return user.is_staff and user.is_superuser or user.is_sales_head
+    except:
+        return user.is_staff and user.is_superuser
 
 
 def bcs_admin_permission_check(user):
-    return user.is_staff and user.is_superuser or user.is_bcs_head or user.is_sales_head
+    try:
+        return user.is_staff and user.is_superuser or user.is_bcs_head
+    except:
+        return user.is_staff and user.is_superuser
 
 
 def bcs_admin_permission_check_order(user):
-    return user.is_staff and user.is_superuser or user.is_bcs_head or user.is_sales_head or user.is_sales
+    try:
+        return user.is_staff and user.is_superuser or user.is_bcs_head or user.is_sales_head or user.is_sales
+    except:
+        return user.is_staff and user.is_superuser
 
 
 def indexView(request):
@@ -638,7 +647,7 @@ def ticketDetailView(request, id):
 
 
 # Main Admin Sections
-@user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminDashboardView(request):
     context = {
 
@@ -646,7 +655,7 @@ def mainAdminDashboardView(request):
     return render(request, 'admin_panel/mainTF/dashboard.html', context)
 
 
-@user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminProfileView(request):
     context = {
 
@@ -654,7 +663,7 @@ def mainAdminProfileView(request):
     return render(request, 'admin_panel/mainTF/myProfile.html', context)
 
 
-@user_passes_test(main_admin_permission_check_order_page, login_url='/accounts/login/')
+@user_passes_test(main_admin_permission_check_order_page, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminOrdersView(request):
     orders = models.Order.objects.all()
     context = {
@@ -663,7 +672,7 @@ def mainAdminOrdersView(request):
     return render(request, 'admin_panel/mainTF/orders.html', context)
 
 
-@user_passes_test(main_admin_permission_check_order_page, login_url='/accounts/login/')
+@user_passes_test(main_admin_permission_check_order_page, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminOrdersDetailView(request, id):
     current_order = models.Order.objects.get(id=id)
 
@@ -702,7 +711,7 @@ def mainAdminOrdersDetailView(request, id):
     return render(request, 'admin_panel/mainTF/order_detail.html', context)
 
 
-@user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminNotificationView(request):
     context = {
 
@@ -710,7 +719,7 @@ def mainAdminNotificationView(request):
     return render(request, 'admin_panel/mainTF/notification.html', context)
 
 
-@user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminEventsView(request):
     form = forms.EventCreateForm()
     events = models.Events.objects.all()
@@ -726,14 +735,14 @@ def mainAdminEventsView(request):
     return render(request, 'admin_panel/mainTF/eventWebinar.html', context)
 
 
-@user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminEventsDeleteView(request, id):
     current_event = models.Events.objects.get(id=id)
     current_event.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-@user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminEventsEditView(request, id):
     current_event = models.Events.objects.get(id=id)
     form = forms.EventCreateForm(instance=current_event)
@@ -752,7 +761,7 @@ def mainAdminEventsEditView(request, id):
     return render(request, 'admin_panel/mainTF/editForm.html', context)
 
 
-@user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminEventDetailView(request, id):
     event = models.Events.objects.get(id=id)
     context = {
@@ -761,10 +770,15 @@ def mainAdminEventDetailView(request, id):
     return render(request, 'admin_panel/mainTF/eventDetail.html', context)
 
 
-@user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminSupportView(request):
     admin_list = User.objects.filter(is_staff=True)
     user_lists = User.objects.filter(is_staff=False)
+    sales_head = User.objects.filter(is_sales_head=True)
+    sales = User.objects.filter(is_sales=True)
+    blogger = User.objects.filter(is_blogger=True)
+    bcs_head = User.objects.filter(is_bcs_head=True)
+    pcs_head = User.objects.filter(is_pcs_head=True)
 
     if request.method == 'POST':
         user_email = request.POST.get('user_email')
@@ -794,12 +808,17 @@ def mainAdminSupportView(request):
 
     context = {
         'admin_list': admin_list,
+        'sales_head': sales_head,
+        'sales': sales,
+        'blogger': blogger,
+        'bcs_head': bcs_head,
+        'pcs_head': pcs_head,
         'user_lists': user_lists,
     }
     return render(request, 'admin_panel/mainTF/support.html', context)
 
 
-@user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminSupportDeleteView(request, id):
     current_user = User.objects.get(id=id)
     if current_user.is_superuser:
@@ -828,7 +847,7 @@ def mainAdminSupportDeleteView(request, id):
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-@user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminSupportStuffView(request):
     context = {
 
@@ -836,16 +855,20 @@ def mainAdminSupportStuffView(request):
     return render(request, 'admin_panel/mainTF/supportStuffView.html', context)
 
 
-@user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(main_admin_permission_check_order_page, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminTicketsView(request):
     tickets = models.Ticket.objects.all()
+    open_tickets = models.Ticket.objects.filter(ticket_status='open')
+    close_tickets = models.Ticket.objects.filter(ticket_status='closed')
     context = {
         'tickets': tickets,
+        'open_tickets': open_tickets,
+        'close_tickets': close_tickets,
     }
     return render(request, 'admin_panel/mainTF/allTickets.html', context)
 
 
-@user_passes_test(main_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(main_admin_permission_check_order_page, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminTicketsDetailView(request, id):
     ticket = models.Ticket.objects.get(id=id)
     commentform = forms.TicketCommentForm()
@@ -864,7 +887,7 @@ def mainAdminTicketsDetailView(request, id):
     return render(request, 'admin_panel/mainTF/ticket_detail.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(main_admin_permission_check_order_page, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def ticketOpenCloseView(request, id):
     current_ticket = models.Ticket.objects.get(id=id)
     if current_ticket.ticket_status == 'open':
@@ -878,7 +901,7 @@ def ticketOpenCloseView(request, id):
 
 
 # BCS Admin Section
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminDashboardView(request):
     context = {
 
@@ -886,7 +909,7 @@ def bcsAdminDashboardView(request):
     return render(request, 'admin_panel/bcsTF/dashboard.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminServiceCategoryView(request):
     categories = models.ServiceCategory.objects.all()
     form = forms.AddServiceCategoryForm()
@@ -904,14 +927,14 @@ def bcsAdminServiceCategoryView(request):
     return render(request, 'admin_panel/bcsTF/serviceCategory.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminServiceCategoryDeleteView(request, id):
     current_category = models.ServiceCategory.objects.get(id=id)
     current_category.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminServiceCategoryEditView(request, id):
     current_category = models.ServiceCategory.objects.get(id=id)
     form = forms.AddServiceCategoryForm(instance=current_category)
@@ -929,7 +952,7 @@ def bcsAdminServiceCategoryEditView(request, id):
     return render(request, 'admin_panel/bcsTF/editForm.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminServiceView(request):
     form = forms.AddServiceForm()
     services = models.Service.objects.all()
@@ -945,14 +968,14 @@ def bcsAdminServiceView(request):
     return render(request, 'admin_panel/bcsTF/service.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminServiceDeleteView(request, id):
     current_service = models.Service.objects.get(id=id)
     current_service.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminServiceEditView(request, id):
     current_service = models.Service.objects.get(id=id)
     form = forms.AddServiceForm(instance=current_service)
@@ -970,7 +993,7 @@ def bcsAdminServiceEditView(request, id):
     return render(request, 'admin_panel/bcsTF/editForm.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminSubServiceView(request):
     form = forms.AddSubServiceForm()
     sub_services = models.SubService.objects.all()
@@ -987,14 +1010,14 @@ def bcsAdminSubServiceView(request):
     return render(request, 'admin_panel/bcsTF/subService.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminSubServiceDeleteView(request, id):
     current_sub_service = models.SubService.objects.get(id=id)
     current_sub_service.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminSubServiceEditView(request, id):
     current_sub_service = models.SubService.objects.get(id=id)
     form = forms.AddSubServiceForm(instance=current_sub_service)
@@ -1012,7 +1035,7 @@ def bcsAdminSubServiceEditView(request, id):
     return render(request, 'admin_panel/bcsTF/editForm.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsSubServiceFormView(request):
     form = forms.AddForm()
     form_lists = models.InputFields.objects.all()
@@ -1043,14 +1066,14 @@ def bcsSubServiceFormView(request):
     return render(request, 'admin_panel/bcsTF/subserviceForms.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminSubServiceFormDeleteView(request, id):
     input_field = models.InputFields.objects.get(id=id)
     input_field.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminSubServiceFormEditView(request, id):
     current_input_field = models.InputFields.objects.get(id=id)
     form = forms.AddForm(instance=current_input_field)
@@ -1068,7 +1091,7 @@ def bcsAdminSubServiceFormEditView(request, id):
     return render(request, 'admin_panel/bcsTF/editForm.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminReadingListView(request):
     context = {
 
@@ -1076,7 +1099,7 @@ def bcsAdminReadingListView(request):
     return render(request, 'admin_panel/bcsTF/readingList.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminRevenueView(request):
     context = {
 
@@ -1084,7 +1107,7 @@ def bcsAdminRevenueView(request):
     return render(request, 'admin_panel/bcsTF/revenue.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminSubscriptionListView(request):
     context = {
 
@@ -1092,7 +1115,7 @@ def bcsAdminSubscriptionListView(request):
     return render(request, 'admin_panel/bcsTF/subscriptionList.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminSubscriptionPack(request):
     form = forms.AddPackageForm()
     form2 = forms.AddPackageFeatureForm()
@@ -1113,7 +1136,7 @@ def bcsAdminSubscriptionPack(request):
     return render(request, 'admin_panel/bcsTF/subscriptionPack.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminSubscriptionPackEdit(request, id):
     current_package = models.SubscriptionBasedPackage.objects.get(id=id)
     package_features = models.SubscriptionFeatures.objects.filter(package=current_package)
@@ -1147,21 +1170,21 @@ def bcsAdminSubscriptionPackEdit(request, id):
     return render(request, 'admin_panel/bcsTF/subscriptionPackEdit.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminSubscriptionPackDelete(request, id):
     current_package = models.SubscriptionBasedPackage.objects.get(id=id)
     current_package.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminSubscriptionPackFeatureDelete(request, id):
     current_feature = models.SubscriptionFeatures.objects.get(id=id)
     current_feature.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminIndividualUser(request):
     users = models.User.objects.filter(is_bcs=True)
     context = {
@@ -1170,7 +1193,7 @@ def bcsAdminIndividualUser(request):
     return render(request, 'admin_panel/bcsTF/users.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminIndividualUserPanel(request, id):
     current_user = models.User.objects.get(id=id)
 
@@ -1180,7 +1203,7 @@ def bcsAdminIndividualUserPanel(request, id):
     return render(request, 'admin_panel/bcsTF/userPanel.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminList(request):
     permission_form = SelectBCSPermissionForm()
     admin_list = Permissions.objects.filter(admin_type='bcs_admin')
@@ -1209,7 +1232,7 @@ def bcsAdminList(request):
     return render(request, 'admin_panel/bcsTF/adminUsers.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminEdit(request, id):
     current_admin = Permissions.objects.get(id=id)
     permission_form = SelectBCSPermissionForm(instance=current_admin)
@@ -1224,12 +1247,12 @@ def bcsAdminEdit(request, id):
     return render(request, 'admin_panel/bcsTF/editForm.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminProfile(request):
     return render(request, 'admin_panel/bcsTF/myProfile.html')
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminUserInterest(request):
     users_list = User.objects.all()
     interests = Interest.objects.filter(user__is_bcs=True)
@@ -1240,7 +1263,7 @@ def bcsAdminUserInterest(request):
     return render(request, 'admin_panel/bcsTF/userInterest.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminSingleUserInterest(request, id):
     selected_interest = Interest.objects.get(id=id)
     form = InterestForm(instance=selected_interest)
@@ -1257,7 +1280,7 @@ def bcsAdminSingleUserInterest(request, id):
     return render(request, 'admin_panel/bcsTF/editForm.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminTraining(request):
     form = CourseCreateForm()
     courses = Course.objects.filter(course_type='Business')
@@ -1275,14 +1298,14 @@ def bcsAdminTraining(request):
     return render(request, 'admin_panel/bcsTF/training.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminTrainingDelete(request, id):
     current_course = Course.objects.get(id=id)
     current_course.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminTrainingEdit(request, id):
     current_course = Course.objects.get(id=id)
     form = CourseCreateForm(instance=current_course)
@@ -1303,7 +1326,7 @@ def bcsAdminTrainingEdit(request, id):
     return render(request, 'admin_panel/bcsTF/editForm.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminCourseDetail(request, id):
     course = Course.objects.get(id=id)
     sections = Section.objects.filter(course=course)
@@ -1336,14 +1359,14 @@ def bcsAdminCourseDetail(request, id):
     return render(request, 'admin_panel/bcsTF/courseDetail.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminCourseContentDelete(request, id):
     current_content = Content.objects.get(id=id)
     current_content.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminCourseContentEdit(request, id):
     current_content = Content.objects.get(id=id)
     form = ContentCreateForm(instance=current_content)
@@ -1362,7 +1385,7 @@ def bcsAdminCourseContentEdit(request, id):
     return render(request, 'admin_panel/bcsTF/editForm.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminCourseSectionEdit(request, id):
     current_section = Section.objects.get(id=id)
     form = SectionCreateForm(instance=current_section)
@@ -1381,7 +1404,7 @@ def bcsAdminCourseSectionEdit(request, id):
     return render(request, 'admin_panel/bcsTF/editForm.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminOrdersView(request):
     orders = models.Order.objects.filter(orderstaff_order__staff=request.user)
     context = {
@@ -1390,7 +1413,7 @@ def bcsAdminOrdersView(request):
     return render(request, 'admin_panel/bcsTF/orders.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminOrdersDetailView(request, id):
     try:
         current_order = models.Order.objects.get(id=id, orderstaff_order__staff=request.user)
@@ -1411,7 +1434,7 @@ def bcsAdminOrdersDetailView(request, id):
         return HttpResponse("You don't have permission to view this page!")
 
 
-@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminOrderNewView(request, id):
     print(request.user.is_staff)
     try:
@@ -1440,7 +1463,7 @@ def bcsAdminOrderNewView(request, id):
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminOrderAttendingView(request, id):
     try:
         current_order = models.Order.objects.get(Q(id=id, orderstaff_order__staff=request.user,
@@ -1461,7 +1484,7 @@ def bcsAdminOrderAttendingView(request, id):
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminOrderCompletedView(request, id):
     try:
         current_order = models.Order.objects.get(Q(id=id, orderstaff_order__staff=request.user,
@@ -1482,7 +1505,7 @@ def bcsAdminOrderCompletedView(request, id):
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminOrderCanceledView(request, id):
     try:
         current_order = models.Order.objects.get(Q(id=id, orderstaff_order__staff=request.user,
@@ -1503,7 +1526,7 @@ def bcsAdminOrderCanceledView(request, id):
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminTicketsView(request):
     tickets = models.Ticket.objects.filter(ticket_type='bcs')
     context = {
@@ -1512,7 +1535,7 @@ def bcsAdminTicketsView(request):
     return render(request, 'admin_panel/bcsTF/allTickets.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminTicketsDetailView(request, id):
     ticket = models.Ticket.objects.get(id=id)
     commentform = forms.TicketCommentForm()

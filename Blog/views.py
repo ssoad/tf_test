@@ -9,11 +9,14 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 
 # Create your views here.
 def permission_check(user):
-    return user.is_staff or user.is_superuser and user.is_active
+    try:
+        return user.is_staff and user.is_superuser or user.is_blogger
+    except:
+        return user.is_staff and user.is_superuser
 
 
 # Admin Section Start Here
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def adminDashboardView(request):
     posts = models.Post.objects.all()
     context = {
@@ -23,7 +26,7 @@ def adminDashboardView(request):
     return render(request, 'admin_panel/blog/dashboard.html', context)
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def adminBlogFormView(request):
     form = forms.PostForm()
     tag_list = models.Tags.objects.all()
@@ -103,7 +106,7 @@ def adminBlogFormView(request):
     return render(request, 'admin_panel/blog/blogForm.html', context)
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def adminBlogEditFormView(request, id):
     current_post = models.Post.objects.get(id=id)
     form = forms.PostForm(instance=current_post)
@@ -184,7 +187,7 @@ def adminBlogEditFormView(request, id):
     return render(request, 'admin_panel/blog/blogForm.html', context)
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def adminBlogView(request):
     context = {
 
@@ -192,7 +195,7 @@ def adminBlogView(request):
     return render(request, 'admin_panel/blog/blogView.html')
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def adminCategoryListView(request):
     categories = models.BlogCategory.objects.all()
     sub_categories = models.BlogSubCategory.objects.all()
@@ -227,28 +230,28 @@ def adminCategoryListView(request):
     return render(request, 'admin_panel/blog/categoryList.html', context)
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def categoryDeleteView(request, id):
     current_category = models.BlogCategory.objects.get(id=id)
     current_category.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def subCategoryDeleteView(request, id):
     current_subcategory = models.BlogSubCategory.objects.get(id=id)
     current_subcategory.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def filterDeleteView(request, id):
     current_filter = models.FilterOption.objects.get(id=id)
     current_filter.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def adminCategoryView(request):
     context = {
 
@@ -256,7 +259,7 @@ def adminCategoryView(request):
     return render(request, 'admin_panel/blog/categoryView.html')
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def adminCommentListView(request):
     comments = models.Comment.objects.all()
     context = {
@@ -265,7 +268,7 @@ def adminCommentListView(request):
     return render(request, 'admin_panel/blog/commentList.html', context)
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def adminCommentView(request):
     context = {
 
@@ -273,7 +276,7 @@ def adminCommentView(request):
     return render(request, 'admin_panel/blog/commentView.html')
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def adminFilterOptionListView(request):
     context = {
 
@@ -281,7 +284,7 @@ def adminFilterOptionListView(request):
     return render(request, 'admin_panel/blog/filterOptionList.html')
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def adminFilterOptionView(request):
     context = {
 
@@ -289,7 +292,7 @@ def adminFilterOptionView(request):
     return render(request, 'admin_panel/blog/filterOptionView.html')
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def adminSubCategoryListView(request):
     context = {
 
@@ -297,7 +300,7 @@ def adminSubCategoryListView(request):
     return render(request, 'admin_panel/blog/subCategoryList.html')
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def adminSubCategoryView(request):
     context = {
 
@@ -305,7 +308,7 @@ def adminSubCategoryView(request):
     return render(request, 'admin_panel/blog/subCategoryView.html')
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def adminNewPostView(request):
     form = forms.PostForm()
     tag_list = models.Tags.objects.all()
