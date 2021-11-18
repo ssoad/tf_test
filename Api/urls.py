@@ -10,8 +10,8 @@ urlpatterns = [
     path('blogs/category/<id>/<sub_id>/', views.FilterApi.as_view(), name='sub_filter_api'),
     path('blogs/comment/', views.AllCommentCreateViewApi.as_view(), name='all_comment_create_view_api'),
     path('blogs/comment/<post_id>/', views.CommentCreateViewApi.as_view(), name='comment_create_view_api'),
-    path('blogs/fiter/<category>/<text>/', views.BlogFilterApiView.as_view(), name='blog_filter_view_api'),
-    path('blogs/fiter/date/<category>/<text>/', views.BlogFilterDateApiView.as_view(), name='blog_filter_date_view_api'),
+    path('blogs/filter/<category>/<text>/', views.BlogFilterApiView.as_view(), name='blog_filter_view_api'),
+    path('blogs/filter/date/<category>/<text>/', views.BlogFilterDateApiView.as_view(), name='blog_filter_date_view_api'),
 
     path('bcs/package/<id>/', views.PackageListViewApi.as_view(), name='package_list_api'),
     path('bcs/services/', views.ServiceListApiView.as_view(), name='service_list_api'),
