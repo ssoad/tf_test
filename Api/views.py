@@ -6,6 +6,8 @@ from rest_framework import generics
 from Blog import models
 from BusinessSecurity import models as bcsmodels
 from rest_framework import permissions, pagination, filters
+from datetime import date
+from django.db.models import Q
 
 
 # Create your views here.
@@ -63,6 +65,30 @@ class CommentCreateViewApi(generics.ListCreateAPIView):
     def get_queryset(self):
         post = self.kwargs['post_id']
         return models.Comment.objects.filter(post=post)
+
+
+class BlogFilterApiView(generics.ListAPIView):
+    serializer_class = serializer.BlogFilterSerializer
+
+    def get_queryset(self):
+        category = self.kwargs['category']
+        text = self.kwargs['text']
+        return models.Post.objects.filter(
+            Q(category__category__iexact=category, title__icontains=text) | Q(category__category__iexact=category,
+                                                                              short_description__icontains=text))
+
+
+class BlogFilterDateApiView(generics.ListAPIView):
+    serializer_class = serializer.BlogFilterSerializer
+    today = date.today()
+
+    def get_queryset(self):
+        category = self.kwargs['category']
+        text = self.kwargs['text']
+        if text == 'month':
+            return models.Post.objects.filter(category__category__iexact=category, date__month=self.today.month)
+        elif text == 'year':
+            return models.Post.objects.filter(category__category__iexact=category, date__year=self.today.year)
 
 
 class PackageListViewApi(generics.ListAPIView):

@@ -476,7 +476,7 @@ def categoryView(request, name):
     subcategories = models.BlogSubCategory.objects.filter(category__category__iexact=str(name).replace('_', ' ')).order_by('sub_category')
     reading_lists = models.ReadingList.objects.filter(user=request.user).values_list('post', flat=True)
 
-    print(str(name).replace('_', ' ').title())
+    # print(str(name).replace('_', ' ').title())
     context = {
         'posts': posts.order_by('-date'),
         'path': name,
