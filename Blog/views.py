@@ -474,19 +474,31 @@ def categoryView(request, name):
     posts = models.Post.objects.filter(Q(category__category__iexact=str(name).replace('_', ' ')) | Q(category__category__iexact=str(name)))
     cat_path = str(request.path).split('/')[-2]
     subcategories = models.BlogSubCategory.objects.filter(category__category__iexact=str(name).replace('_', ' ')).order_by('sub_category')
-    reading_lists = models.ReadingList.objects.filter(user=request.user).values_list('post', flat=True)
+    try:
+        reading_lists = models.ReadingList.objects.filter(user=request.user).values_list('post', flat=True)
 
-    # print(str(name).replace('_', ' ').title())
-    context = {
-        'posts': posts.order_by('-date'),
-        'path': name,
-        'cat_path': cat_path,
-        'important_posts': posts.order_by('-total_view')[:5],
-        'subcategories': subcategories,
-        'reading_lists': reading_lists,
-    }
+        # print(str(name).replace('_', ' ').title())
+        context = {
+            'posts': posts.order_by('-date'),
+            'path': name,
+            'cat_path': cat_path,
+            'important_posts': posts.order_by('-total_view')[:5],
+            'subcategories': subcategories,
+            'reading_lists': reading_lists,
+        }
 
-    return render(request, 'blog/category.html', context)
+        return render(request, 'blog/category.html', context)
+    except:
+        context = {
+            'posts': posts.order_by('-date'),
+            'path': name,
+            'cat_path': cat_path,
+            'important_posts': posts.order_by('-total_view')[:5],
+            'subcategories': subcategories,
+        }
+
+        return render(request, 'blog/category.html', context)
+
 
 
 def category_detailView(request, name1, name2):
