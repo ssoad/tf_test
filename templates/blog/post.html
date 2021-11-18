@@ -211,6 +211,7 @@
                 </button>
 
                 <div id="comment-box" class="d-none my-3">
+                {% if user.is_authenticated %}
                     <h6 class="fw-bold">Leave a Comment</h6>
                     <p> We'd love to hear from you! Your comment(s) will appear instantly on the live site. Your email address will not be published.
                     </p>
@@ -250,6 +251,10 @@
                     <section class="my-5 container d-flex justify-content-center">
                         <button id="load-more-btn" class="btn btn-navy rounded-pill">Load More</button>
                     </section>
+                    {% else %}
+                        <a href="{%host_url 'account_login'%}"><h6 class="fw-bold">Please Login First</h6></a>
+                    {% endif %}
+
                 {% endif %}
             </div>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw==" crossorigin="anonymous" />
@@ -264,6 +269,9 @@
                                 <a href="{% host_url category host 'blog' %}{{post.post_url}}">
                                     <h6 class="fw-bold fs-7">{{post.title}}</h6>
                                 </a>
+                                <p class="fs-7 lh-sm">
+                                {{ post.short_description|truncatechars:140 }}
+                            </p>
                             </div>
                         </div>
                     </div>

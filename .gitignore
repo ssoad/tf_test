@@ -4,6 +4,7 @@ venv/
 Academy/__pycache__
 Account/__pycache__
 BusinessSecurity/__pycache__
+BusinessSecurity/migrations
 Blog/__pycache__
 MainTechforing/__pycache__
 PersonalSecurity/__pycache__
@@ -34,3 +35,4 @@ media
 .idea/**/libraries
 *.iws /out/
 db.sqlite3
+migrations/
