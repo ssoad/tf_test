@@ -85,7 +85,7 @@
                 </li>
             </ul>
         </div>
-        {% if filter_options %}
+        {% comment %} {% if filter_options %}
             <div class="dropdown ms-5">
                 <button class="btn border border-secondary text-navy bg-white dropdown-toggle" type="button"
                         id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
@@ -100,9 +100,9 @@
                     {% endfor %}
                 </ul>
             </div>
-        {% endif %}
+        {% endif %} {% endcomment %}
     </div>
-{% comment %}
+
     {% if path|capitalize|upper != 'PODCAST' %}
         <section class="important-posts mt-4  px-md-0">
             <a href="" class="container-heading">MOST IMPORTANT {{ path|capitalize|upper }}</a>
@@ -170,7 +170,7 @@
             </div>
         </section>
     {% endif %}
-    {% endcomment %}
+   
     <!-- recent posts  -->
     <section class="recent-posts mt-4 px-2 px-md-0">
         <a href="" class="container-heading mb-3">RECENT {{ path|capitalize|upper }}</a>
