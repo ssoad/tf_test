@@ -381,12 +381,14 @@ def adminDeleteCommentView(request, id):
 
 
 def indexView(request):
-    articles = models.Post.objects.filter(Q(category__category__iexact='articles') | Q(category__category__iexact='Articles'))
-    case_studies = models.Post.objects.filter(Q(category__category__iexact='case_studies') | Q(category__category__iexact='Case Studies'))
+    articles = models.Post.objects.filter(
+        Q(category__category__iexact='articles') | Q(category__category__iexact='Articles'))
+    case_studies = models.Post.objects.filter(
+        Q(category__category__iexact='case_studies') | Q(category__category__iexact='Case Studies'))
     categories = models.BlogCategory.objects.all()
     subcategories = models.BlogSubCategory.objects.all()
-    print(articles)
-    print(case_studies)
+    # print(articles)
+    # print(case_studies)
     context = {
         'articles': articles.order_by('date')[:4],
         'case_studies': case_studies.order_by('date')[:4],
@@ -417,7 +419,7 @@ def postView(request, name):
         }
         return render(request, 'blog/post.html', context)
     except:
-        
+
         total = post.total_view
         category = str(request.path).split('/')[-3]
         post.total_view = total + 1
@@ -428,7 +430,7 @@ def postView(request, name):
             'related_posts': posts.order_by('date')[:4],
             'comments': comments[:5],
             'comments_count': comments.count,
-            
+
         }
         return render(request, 'blog/post.html', context)
 
@@ -470,10 +472,11 @@ def addToReadingListView(request, id):
 
 # for specific category
 def categoryView(request, name):
-
-    posts = models.Post.objects.filter(Q(category__category__iexact=str(name).replace('_', ' ')) | Q(category__category__iexact=str(name)))
+    posts = models.Post.objects.filter(
+        Q(category__category__iexact=str(name).replace('_', ' ')) | Q(category__category__iexact=str(name)))
     cat_path = str(request.path).split('/')[-2]
-    subcategories = models.BlogSubCategory.objects.filter(category__category__iexact=str(name).replace('_', ' ')).order_by('sub_category')
+    subcategories = models.BlogSubCategory.objects.filter(
+        category__category__iexact=str(name).replace('_', ' ')).order_by('sub_category')
     try:
         reading_lists = models.ReadingList.objects.filter(user=request.user).values_list('post', flat=True)
 
@@ -500,7 +503,6 @@ def categoryView(request, name):
         return render(request, 'blog/category.html', context)
 
 
-
 def category_detailView(request, name1, name2):
     posts = models.Post.objects.filter(category__category__iexact=str(name1).replace('_', ' '),
                                        sub_categories__sub_category__iexact=str(name2).replace('_', ' '))
@@ -508,9 +510,10 @@ def category_detailView(request, name1, name2):
         sub_category__category__category__iexact=str(name1).replace('_', ' '),
         sub_category__sub_category__iexact=str(name2).replace('_', ' '))
     subcategories = models.BlogSubCategory.objects.filter(category__category__iexact=str(name1).replace('_', ' '))
+
     context = {
         'posts': posts.order_by('-date'),
-        'cat_path': name1,
+        'path': name1,
         'path2': name2,
         'important_posts': posts.order_by('-total_view')[:4],
         'subcategories': subcategories,
