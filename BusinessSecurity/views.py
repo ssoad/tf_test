@@ -652,6 +652,7 @@ def mainAdminDashboardView(request):
     total_user = models.User.objects.all()
     context = {
         'total_user': total_user,
+        'total_business_user': total_user.filter(is_bcs=True),
     }
     return render(request, 'admin_panel/mainTF/dashboard.html', context)
 
