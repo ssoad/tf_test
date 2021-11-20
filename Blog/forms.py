@@ -4,7 +4,7 @@ from Blog import models
 
 
 class PostForm(forms.ModelForm):
-    feature_image = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control'}))
+    # feature_image = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control'}))
     comment_option = forms.ChoiceField(choices=models.COMMENT_OPTIONS,
                                        widget=forms.Select(attrs={'class': 'form-select'}))
 
