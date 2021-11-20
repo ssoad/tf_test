@@ -1,26 +1,27 @@
 {% extends 'base/blog_base.html' %} {% load my_filter %} {% load static %}{% load hosts %} {% block title %}
-    {{ cat_path|capitalize }} {% endblock title %} {% block headercss %}
+    {{ path|capitalize }} {% endblock title %} {% block headercss %}
     <link rel="stylesheet" href="{% static 'tfcss/blog/category.css' %}">
     <style>
         .banner-1 .banner-bg {
             color: white;
-            background-image: url("{% static '' %}tfimg/blog/{{cat_path}}.png");
+            background-image: url("{% static '' %}tfimg/blog/{{path}}.png");
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
         }
     </style>
-{% endblock headercss %} {% block content %}
+{% endblock headercss %}
+{% block content %}
     <section class="row mx-0 banner-1">
         <div class="col-md-6 col-lg-7 col-xl-8 pe-2 banner-bg">
             <div class="d-flex flex-column justify-content-center h-100">
-                <h4 class="fw-bold">{{ cat_path|capitalize|upper }}</h4>
+                <h4 class="fw-bold">{{ path|capitalize|upper }}</h4>
                 <h5>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</h5>
             </div>
         </div>
         <div class="col-md-6 col-lg-5 col-xl-4 px-0 px-md-2">
             <div class="bg-gray px-3 py-2 h-100 d-flex flex-column justify-content-center">
-                {% if cat_path|capitalize|upper != 'PODCAST' %}
+                {% if path|capitalize|upper != 'PODCAST' %}
                     <div class="accordion accordion-flush" id="accordionFlush">
                         {% for subcategory in subcategories %}
                             <div class="accordion-item {% if forloop.counter == 2 %}mt-2{% endif %}">
@@ -40,6 +41,8 @@
                                     <div class="accordion-body">
                                         {% for filter_option in subcategory.filter_subcategory.all %}
                                             <a class="fw-bold" href="
+
+
                                                     {% host_url 'category' host 'blog' %}{{ path }}/{{ subcategory|replacespace }}/{{ filter_option|replacespace }}">{{ filter_option }}</a> {% endfor %}
                                     </div>
                                 </div>
@@ -50,7 +53,6 @@
                 {% else %}
                     <h4 class="text-center fw-bold">Upcoming Podcast</h4>
                 {% endif %}
-
             </div>
         </div>
     </section>
@@ -100,10 +102,10 @@
             </div>
         {% endif %}
     </div>
-
-    {% if cat_path|capitalize|upper != 'PODCAST' %}
+{% comment %}
+    {% if path|capitalize|upper != 'PODCAST' %}
         <section class="important-posts mt-4  px-md-0">
-            <a href="" class="container-heading">MOST IMPORTANT {{ cat_path|capitalize|upper }}</a>
+            <a href="" class="container-heading">MOST IMPORTANT {{ path|capitalize|upper }}</a>
             <div class="bg-light">
                 <div class="row mx-0 align-items-stretch post-container">
                     <div class="col-md-4">
@@ -168,13 +170,15 @@
             </div>
         </section>
     {% endif %}
+    {% endcomment %}
     <!-- recent posts  -->
     <section class="recent-posts mt-4 px-2 px-md-0">
-        <a href="" class="container-heading mb-3">RECENT {{ cat_path|capitalize|upper }}</a>
+        <a href="" class="container-heading mb-3">RECENT {{ path|capitalize|upper }}</a>
         <div class="posts row row-cols-1 row-cols-md-3 g-5">
             {% for post in posts %}
                 <div class="post col">
                     <div class="card h-100">
+
                         {% if reading_lists.exists %}
                             {% if post.id not in reading_lists %}
                                 <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}"
@@ -255,7 +259,8 @@
             </div>
     </section>
 
-{% endblock content %} {% block customjs %}
+{% endblock content %}
+{% block customjs %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <script>
@@ -267,7 +272,7 @@
         document.getElementById('keyword-input').addEventListener('keyup', e => {
             if (e.target.value == '') {
                 e.target.parentNode.parentNode.parentNode.parentNode.style.marginBottom = '0px';
-                containerHeading.textContent = 'RECENT {{ cat_path|capitalize|upper }}';
+                containerHeading.textContent = 'RECENT {{ path|capitalize|upper }}';
                 importantPosts.classList.remove('d-none');
                 recentPosts.classList.remove('d-none');
                 filteredPosts.innerHTML = '';
@@ -276,16 +281,16 @@
                 containerHeading.textContent = 'FILTERED POSTS';
                 importantPosts.classList.add('d-none');
                 recentPosts.classList.add('d-none');
-                let url = `${location.origin}/api/blogs/filter/{{ cat_path|capitalize|lower }}/${e.target.value}/`;
+                let url = `${location.origin}/api/blogs/filter/{{ path|capitalize|lower }}/${e.target.value}/`;
                 getPosts(url);
             }
         });
 
         let filterByDate = (range) => {
-            containerHeading.textContent = 'FILTERED {{ cat_path|capitalize|upper }}';
+            containerHeading.textContent = 'FILTERED {{ path|capitalize|upper }}';
             importantPosts.classList.add('d-none');
             recentPosts.classList.add('d-none');
-            let url = `${location.origin}/api/blogs/filter/date/{{ cat_path|capitalize|lower }}/${range}`;
+            let url = `${location.origin}/api/blogs/filter/date/{{ path|capitalize|lower }}/${range}`;
             getPosts(url);
         }
 
@@ -333,7 +338,7 @@
 
                     filteredPosts.innerHTML += newPost;
                 });
- 
+
                 updateAddBtn();
             }).catch(function (err) {
                 console.log(err)
