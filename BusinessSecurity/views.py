@@ -649,8 +649,9 @@ def ticketDetailView(request, id):
 # Main Admin Sections
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminDashboardView(request):
+    total_user = models.User.objects.all()
     context = {
-
+        'total_user': total_user,
     }
     return render(request, 'admin_panel/mainTF/dashboard.html', context)
 
