@@ -141,8 +141,7 @@
     <div class="px-2 ps-lg-3 py-3">
         {% block content %} {% endblock content %}
     </div>
-</main>
- <footer id="footer-small" class="footer bg-blue py-4 position-sticky top-100">
+    <footer id="footer-small" class="footer py-4 position-sticky top-100">
         <div class="d-flex justify-content-center">
             <a href="" class="me-5">PRIVACY POLICY</a>
             <a href="">TERMS OF USE</a>
@@ -150,26 +149,28 @@
         <div class="d-flex justify-content-center align-items-center">
             <a href="https://www.facebook.com/techforing/">
                 <!-- <img src="{% static '' %}tfimg/user_panel/facebook.png" class="me-3" alt=""> -->
-                <i class="icofont-facebook me-3"></i>
+                <i class="icofont-facebook me-3 text-navy"></i>
             </a>
             <a href="https://www.linkedin.com/company/techforingltd./">
                 <!-- <img src="{% static '' %}tfimg/user_panel/linkedin.png" class="me-3" alt=""> -->
-                <i class="icofont-linkedin me-3"></i>
+                <i class="icofont-linkedin me-3 text-navy"></i>
             </a>
             <a href="https://twitter.com/techforingltd?lang=en">
                 <!-- <img src="{% static '' %}tfimg/user_panel/twitter.png" class="me-3" alt=""> -->
-                <i class="icofont-twitter me-3"></i>
+                <i class="icofont-twitter me-3 text-navy"></i>
             </a>
             <a href="https://www.instagram.com/techforingltd/">
                 <!-- <img src="{% static '' %}tfimg/user_panel/Instagram.png" alt=""> -->
-                <i class="icofont-instagram me-3"></i>
+                <i class="icofont-instagram me-3 text-navy"></i>
             </a>
         </div>
-        <div class="p-3 p pb-2 text-center text-white ">
+        <div class="p-3 p pb-2 text-center">
             <p>Copyright © 2021 Techforing Ltd.
             </p>
         </div>
     </footer>
+</main>
+ 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -178,13 +179,20 @@
         crossorigin="anonymous"></script>
 <script src="{% static '' %}tfjs/user_panel/pcs/menubar.js"></script>
 <script>
-    window.onload = function () {
+    document.querySelector('.navbar-toggler').addEventListener('click', e => {
+        document.querySelector('.offcanvas-body').innerHTML = document.querySelector('.w-20 .menubar').outerHTML;
+    })
+    
         let logoSm = document.querySelector('.logo-sm');
         let logoLg = document.querySelector('.logo-lg');
         let expandedBtn = document.querySelector('.menu-expand-btn');
-        let expanded = false;
+        let expanded = localStorage.getItem("sidebar-expanded");
 
         let hideLinkText = () => {
+            menubarSize('5%', '95%');
+            document.querySelector('.w-80').style.marginLeft = '5%';
+            expandedBtn.style.left = '100px';
+
             logoSm.style.display = 'block';
             logoLg.style.display = 'none';
             document.querySelectorAll('.w-20 .menubar li').forEach(li => {
@@ -192,15 +200,18 @@
                 li.children[0].children[1].style.display = 'none';
                 li.children[0].style.justifyContent = 'center';
             });
-           
-document.querySelector('footer').style.width= '95%';
+
             if (document.getElementById('modal-spacing'))
                 document.getElementById('modal-spacing').outerHTML = '';
 
             if (!document.getElementById('tooltip'))
-                document.head.insertAdjacentHTML('beforeend', '<link id="tooltip" rel="stylesheet" href="https://npmcdn.com/tootik@1.0.2/css/tootik.min.css">')
+                document.head.insertAdjacentHTML('beforeend', '<link id="tooltip" rel="stylesheet" href="https://npmcdn.com/tootik@1.0.2/css/tootik.min.css">');
         }
         let showLinkText = () => {
+            menubarSize('18%', '82%');
+            document.querySelector('.w-80').style.marginLeft = '18%';
+            expandedBtn.style.left = '280px';
+
             logoSm.style.display = 'none';
             logoLg.style.display = 'block';
             document.querySelectorAll('.w-20 .menubar li').forEach(li => {
@@ -208,10 +219,12 @@ document.querySelector('footer').style.width= '95%';
                 li.children[0].children[1].style.display = 'initial';
                 li.children[0].style.justifyContent = 'flex-start';
             });
-document.querySelector('footer').style.width= '82%';
+           
             document.head.insertAdjacentHTML('beforeend', `<style id="modal-spacing"> .modal-dialog {
                     padding-left: 18%;
                 }</style>`);
+
+            if (document.getElementById('tooltip'))
             document.getElementById('tooltip').outerHTML = '';
 
         }
@@ -220,63 +233,24 @@ document.querySelector('footer').style.width= '82%';
             document.querySelector('.w-20').style.width = menuWidth;
             document.querySelector('.w-80').style.width = contentWidth;
         }
-        // document.querySelector('.w-20').addEventListener('mouseover', e => {
-        //     if (!expanded) {
-        //         expandedBtn.style.display = 'none';
-        //         menubarSize('18%', '95%');
-        //         showLinkText();
-        //     }
-        // });
 
-        // document.querySelector('.w-20').addEventListener('mouseout', e => {
-        //     if (!expanded) {
-        //         expandedBtn.style.display = 'initial';
-        //         menubarSize('5%', '95%');
-        //         hideLinkText();
-        //     }
-        // });
+        if(expanded == 'true')
+            showLinkText();
+        else 
+            hideLinkText();
 
         expandedBtn.addEventListener('click', e => {
-            expanded = expanded ? false : true;
-            if (expanded) {
-                menubarSize('18%', '82%');
-                document.querySelector('.w-80').style.marginLeft = '18%';
-                expandedBtn.style.left = '280px';
+            expanded = expanded == 'true' ? 'false' : 'true';
+            // Store value to local storage
+            localStorage.setItem("sidebar-expanded", expanded);
+
+            if (expanded == 'true') {
                 showLinkText();
             } else {
-                menubarSize('5%', '95%');
-                document.querySelector('.w-80').style.marginLeft = '5%';
-                expandedBtn.style.left = '100px';
                 hideLinkText();
             }
         });
-
-    }
-
-    function dropdown($bs) {
-        const CLASS_NAME = 'has-child-dropdown-show';
-        $bs.Dropdown.prototype.toggle = function (_orginal) {
-            return function () {
-                document.querySelectorAll('.' + CLASS_NAME).forEach(function (e) {
-                    e.classList.remove(CLASS_NAME);
-                });
-                let dd = this._element.closest('.dropdown').parentNode.closest('.dropdown');
-                for (; dd && dd !== document; dd = dd.parentNode.closest('.dropdown')) {
-                    dd.classList.add(CLASS_NAME);
-                }
-                return _orginal.call(this);
-            }
-        }($bs.Dropdown.prototype.toggle);
-        document.querySelectorAll('.dropdown').forEach(function (dd) {
-            dd.addEventListener('hide.bs.dropdown', function (e) {
-                if (this.classList.contains(CLASS_NAME)) {
-                    this.classList.remove(CLASS_NAME);
-                    e.preventDefault();
-                }
-                e.stopPropagation(); // do not need pop in multi level mode
-            });
-        });
-    };
+    
 </script>
 {% block customjs %} {% endblock customjs %}
 </body>
