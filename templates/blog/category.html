@@ -16,7 +16,15 @@
         <div class="col-md-6 col-lg-7 col-xl-8 pe-2 banner-bg">
             <div class="d-flex flex-column justify-content-center h-100">
                 <h4 class="fw-bold">{{ path|capitalize|upper }}</h4>
-                <h5>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</h5>
+                <h5 class="text-capitalize">
+                {% if path == 'articles' %}
+                Keep yourself updated about latest cybersecurity problems and solutions.
+                {% elif path == 'case_studies' %}
+                Stories and experience of an amazing journey towards cybersecurity.
+                {% else %}
+                Participate live shows with our experts and get clarified about your queries.
+                {% endif %}
+                </h5>
             </div>
         </div>
         <div class="col-md-6 col-lg-5 col-xl-4 px-0 px-md-2">

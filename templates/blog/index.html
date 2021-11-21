@@ -38,7 +38,7 @@
             </div>
             {% else %}
             <div class="accordion-item mt-2">
-                <a class="btn menu-link fw-bold" href="">{{ category }}</a>
+                <a class="btn menu-link fw-bold" href="{% host_url 'category' host 'blog' %}{{ category|lower }}">{{ category }}</a>
             </div>
             {% endif %} {% endfor %}
 

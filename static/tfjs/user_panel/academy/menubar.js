@@ -1,4 +1,4 @@
-let menuItemsName = ['user_courses', 'my_courses', 'exams', 'events', 'notifications', 'settings'];
+let menuItemsName = ['user_courses', 'my_courses', 'exams', 'events'];
 let url = window.location.href;
 
 menuItemsName.forEach((item, index) => {
@@ -6,19 +6,18 @@ menuItemsName.forEach((item, index) => {
         let style = document.createElement('style');
         style.innerHTML = `
         .menubar li:nth-child(${index + 1}) {
-            background-color: #5BBC2E;
+            background-color: #182f59;
                     border-radius: 5px;
                     border-bottom: none;
                     position: relative;
         }
         .menubar li:nth-child(${index + 1}) i {
                     color: white;
-                    border: 1px solid white;
                 }
                 .menubar li:nth-child(${index + 1}) a {
                     color: white;
                 }
-                .menubar li:nth-child(${index + 1})::after {
+                ..menubar li:nth-child(${index + 1})::after {
                     content: '';
                     height: 4px;
                     background-color: white;
