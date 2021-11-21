@@ -7,12 +7,15 @@ from django.db.models import Q
 class AddServiceCategoryForm(forms.ModelForm):
     class Meta:
         model = models.ServiceCategory
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ['category_choice', ]
 
 
 class AddServiceForm(forms.ModelForm):
     category = forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-select'}),
                                       queryset=models.ServiceCategory.objects.all())
+
+    # assign_to = forms.ModelChoiceField(widget=forms.SelectMultiple(attrs={'class': 'form-select js-example-basic-multiple'}), queryset=models.User.objects.filter(is_sales=True))
 
     # service_icon = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control'}))
 
@@ -43,7 +46,9 @@ class AddSubServiceForm(forms.ModelForm):
 
 class CreateBusinessForm(forms.ModelForm):
     position = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'CEO'}))
-    website = forms.URLField(widget=forms.URLInput(attrs={'pattern': "^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$", 'value': "https://"}))
+    website = forms.URLField(widget=forms.URLInput(
+        attrs={'pattern': "^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$",
+               'value': "https://"}))
 
     class Meta:
         model = models.Business
@@ -91,7 +96,8 @@ class OrderPriceForm(forms.ModelForm):
 
 class OrderAssignForm(forms.ModelForm):
     staff = forms.ModelChoiceField(
-        queryset=models.User.objects.filter(Q(is_staff=True, is_sales=True) | Q(is_superuser=True) | Q(is_staff=True, is_sales_head=True)),
+        queryset=models.User.objects.filter(
+            Q(is_staff=True, is_sales=True) | Q(is_superuser=True) | Q(is_staff=True, is_sales_head=True)),
         widget=forms.Select(attrs={'class': 'js-example-basic-single form-control form-select'}))
 
     class Meta:
@@ -127,4 +133,13 @@ class BusinessInfoForm(forms.ModelForm):
         exclude = ['company_logo', 'unique_id']
         widgets = {
             'industry_type': forms.Select(attrs={'class': 'form-select'})
+        }
+
+
+class AssignToServiceForm(forms.ModelForm):
+    class Meta:
+        model = models.ServiceAssigned
+        fields = ['service']
+        widgets = {
+            'service': forms.SelectMultiple(attrs={'class': 'js-example-basic-multiple'})
         }
