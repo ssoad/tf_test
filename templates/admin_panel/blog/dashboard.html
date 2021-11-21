@@ -66,9 +66,9 @@
                                 <td>{{ post.total_view }}</td>
                                 <td>{{ post.date }}</td>
                                 <td>
-                                    <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+                                    <a href="{% host_url 'admin_blog_form_edit' host 'blog' %}{{post.id}}" class="btn">
                                         <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
-                                    </button>
+                                    </a>
                                     <a href="{% host_url 'admin_blog_delete' id=post.id %}" class="btn">
                                         <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
                                     </a>
