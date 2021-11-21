@@ -31,7 +31,8 @@
             
             .menubar {
                 list-style-type: none;
-                padding: 10px 2px;
+                padding: 10px;
+                padding-left: 0;
                 z-index: 9;
             }
             
@@ -1097,12 +1098,6 @@
                     width: 95%;
                     margin-left: 5%;
                 }
-                /* .modal-backdrop.show {
-                    opacity: 0.9;
-                    margin-left: 18%;
-                    margin-top: 5%;
-                }
-                */
                 .modal-dialog {
                     padding-left: 5%;
                     padding-top: 80px;
