@@ -77,12 +77,12 @@ a.nav-link:before {
     transition: all 0.3s ease-in-out;
 }
 
-a.nav-link:hover::before {
+a.nav-link:last-child:hover::before {
     visibility: visible;
     width: 80%;
 }
 
-a.nav-link:hover:after {
+a.nav-link:last-child:hover::after {
     visibility: visible;
     width: 60%;
 }
@@ -97,6 +97,14 @@ a.nav-link:after {
     background-color: black;
     visibility: hidden;
     transition: all 0.3s ease-in-out;
+}
+
+.navbar .nav-item .dropdown-menu {
+    display: none;
+}
+
+.navbar .nav-item:hover .dropdown-menu {
+    display: block;
 }
 
 .btn.menu-link {

@@ -93,7 +93,8 @@ class LoginForm2(LF):
 
 
 class SelectBCSPermissionForm(forms.ModelForm):
-    user = forms.ModelChoiceField(queryset=models.User.objects.filter(is_superuser=False, is_staff=False))
+    user = forms.ModelChoiceField(
+        queryset=models.User.objects.filter(is_superuser=False, is_staff=False))
 
     # user = forms.ModelChoiceField(queryset=models.User.objects.filter(Q(is_superuser=False, is_staff=False) and Q(permission_user__admin_type='bcs_admin')))
 
@@ -114,8 +115,10 @@ class InterestForm(forms.ModelForm):
 
 
 class CountryPhoneForm(forms.ModelForm):
-    phone_number = PhoneNumberField(widget=PhoneNumberPrefixWidget())
-    birth_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    phone_number = PhoneNumberField(
+        widget=PhoneNumberPrefixWidget())
+    birth_date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}))
 
     # country = CountryField().formfield(widget=CountrySelectWidget(attrs={'style': ' border: 1px '
     #                                                                               'solid #000;border-radius: '
@@ -150,7 +153,8 @@ class CountryPhoneForm(forms.ModelForm):
 class ProfileInfoForm(forms.ModelForm):
     class Meta:
         model = models.User
-        fields = ['full_name', 'phone_number', 'country', 'birth_date', 'gender']
+        fields = ['full_name', 'phone_number',
+                  'country', 'birth_date', 'gender']
         widgets = {
             'birth_date': forms.DateInput(attrs={'type': 'date'}),
             'gender': forms.Select(attrs={'class': 'form-select'})
