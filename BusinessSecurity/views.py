@@ -1443,6 +1443,7 @@ def bcsAdminOrdersView(request):
                   redirect_field_name='/account/profile/')
 def bcsAdminNewOrdersView(request):
     service_category = models.ServiceCategory.objects.filter(category_choice='bcs')
+    user_lists = models.User.objects.filter(is_bcs=True)
     services = models.Service.objects.filter(category_choice='bcs')
     if request.method == 'POST':
         data_list = request.POST
@@ -1494,6 +1495,7 @@ def bcsAdminNewOrdersView(request):
     context = {
         'service_category': service_category,
         'services': services,
+        'user_lists': user_lists,
         'services_headings': list(services.values_list('service_title', flat=True)),
     }
     return render(request, 'admin_panel/bcsTF/create_user_services.html', context)

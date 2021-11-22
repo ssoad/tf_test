@@ -1,6 +1,8 @@
 {% extends 'base/bcs_admin_base.html' %} {% load static %} {% load my_filter %} {% load hosts %} {% block title %}
     Services {% endblock title %} {% block content %}
 
+    <main>
+
     <section class="services position-relative">
         <h4 class="main-heading">All Business Cybersecurity Services
         </h4>
@@ -10,6 +12,13 @@
         </button>
 
 
+        <label for="addOrder" >Add a Order for:</label>
+        <select name="user_info" id="addOrder" class="js-example-basic-single form-control">
+            <option disabled selected>----------------</option>
+            {% for user_list in user_lists %}
+            <option value="{{ user_list.id }}">{{ user_list.email }}</option>
+            {% endfor %}
+        </select>
         <div class="services-content">
             <div class="content-detail pe-2 mt-5">
                 {% for category in service_category %}
@@ -559,9 +568,10 @@
 
         </div>
     </section>
-
+</main>
 {% endblock content %} {% block customjs %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
 
     <script>
         let backBtn = document.getElementById('back-btn');
