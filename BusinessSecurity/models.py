@@ -14,9 +14,17 @@ class NewsSubscriber(models.Model):
         return self.email
 
 
+category_choice = (
+    ('bcs', 'BCS'),
+    ('pcs', 'PCS'),
+)
+
+
 class ServiceCategory(models.Model):
+    category_choice = models.CharField(choices=category_choice, max_length=255)
     category_name = models.CharField(max_length=264, verbose_name='Category Name')
-    category_description = models.TextField(max_length=1000, verbose_name='Category Description')
+
+    # category_description = models.TextField(max_length=1000, verbose_name='Category Description')
 
     def __str__(self):
         return self.category_name
@@ -26,6 +34,7 @@ class ServiceCategory(models.Model):
 
 
 class Service(models.Model):
+    category_choice = models.CharField(choices=category_choice, max_length=255)
     category = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE, related_name='service_category')
     service_icon = models.ImageField(upload_to='service_icon/', verbose_name='Service Icon')
     service_title = models.CharField(max_length=264, verbose_name='Service Title')
@@ -38,10 +47,23 @@ class Service(models.Model):
     total_customer = models.IntegerField(verbose_name='Total Customer', default=0, blank=True)
 
     def __str__(self):
-        return self.service_title
+        return self.service_title + '-' + self.category_choice
 
     class Meta:
         verbose_name_plural = 'Services'
+
+
+class ServiceAssigned(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='service_assigned_user')
+    service = models.ManyToManyField(Service, related_name='service_assigned_service')
+
+    class Meta:
+        verbose_name_plural = 'Service Assigned'
+
+
+class Tracking(models.Model):
+    service = models.OneToOneField(Service, on_delete=models.CASCADE, related_name='tracking_service')
+    persons = models.TextField(blank=True)
 
 
 input_type = (
@@ -84,7 +106,7 @@ class SubService(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='subservice_service')
     fields = models.ManyToManyField(InputFields, related_name='subservice_inputfields', through='SubServiceInput')
     title = models.CharField(max_length=264, verbose_name='Title')
-    description = models.TextField(verbose_name='Description')
+    # description = models.TextField(verbose_name='Description')
     total_customer = models.IntegerField(verbose_name='Total Customer', default=0, blank=True)
 
     def __str__(self):
@@ -132,6 +154,12 @@ class Order(models.Model):
     order_status = models.CharField(max_length=250, choices=order_status, default='new')
     order_date = models.DateTimeField(auto_now_add=True)
     price = models.PositiveIntegerField(default=0)
+
+
+#
+# class ServiceSales(models.Model):
+#     service = models.ManyToManyField(Service, related_name='service_sales_service')
+#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='service_sales_user')
 
 
 class OrderStaff(models.Model):
@@ -243,7 +271,7 @@ class Business(models.Model):
     company_name = models.CharField(max_length=264)
     company_logo = models.ImageField(upload_to='company/')
     website = models.URLField(max_length=264, default='https://')
-    business_size = models.IntegerField(default=10)
+    business_size = models.IntegerField(default=10, verbose_name='Number of Employees')
     created_date = models.DateTimeField(auto_now_add=True)
     unique_id = models.UUIDField(unique=True, default=uuid.uuid4)
 

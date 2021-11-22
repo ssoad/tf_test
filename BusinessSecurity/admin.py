@@ -9,6 +9,8 @@ from BusinessSecurity import models
 admin.site.register(models.NewsSubscriber)
 admin.site.register(models.ServiceCategory)
 admin.site.register(models.Service)
+admin.site.register(models.ServiceAssigned)
+admin.site.register(models.Tracking)
 admin.site.register(models.SubService)
 
 admin.site.register(models.InputFields)

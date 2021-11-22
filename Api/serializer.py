@@ -82,7 +82,7 @@ class SubServiceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = bcsmodels.SubService
-        fields = ['id', 'title', 'description', 'total_customer', 'service', 'service_name']
+        fields = ['id', 'title', 'total_customer', 'service', 'service_name']
         # exclude = ['fields']
         # depth = 1
 

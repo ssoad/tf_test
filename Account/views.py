@@ -66,31 +66,21 @@ def profileView(request):
         form = forms.InterestForm(instance=interests)
         if not current_user.phone_number \
                 or not current_user.country \
-                or not current_user.phone_number \
                 or not current_user.birth_date \
                 or not current_user.gender:
 
-            if not current_user.phone_number \
-                    or not current_user.country:
-                form = forms.CountryPhoneForm(instance=current_user)
-                message = 'Add Country and Phone Number'
-                if request.POST:
-                    form = forms.CountryPhoneForm(request.POST, instance=current_user)
-                    if form.is_valid():
-                        form.save()
-                        return HttpResponseRedirect(request.META['HTTP_REFERER'])
-            elif not current_user.birth_date \
-                    or not current_user.gender:
-                form = forms.BirthDateGenderForm(instance=current_user)
-                message = 'Add Date of Birth and Gender'
-                if request.POST:
-                    form = forms.BirthDateGenderForm(request.POST, instance=current_user)
-                    if form.is_valid():
-                        form.save()
-                        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            form = forms.CountryPhoneForm(instance=current_user)
+            message = 'Fill your information below.'
+            success = 'Your Email is verified. Please Provide These Information:'
+            if request.POST:
+                form = forms.CountryPhoneForm(request.POST, instance=current_user)
+                if form.is_valid():
+                    form.save()
+                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
             context = {
                 'form': form,
                 'message': message,
+                'success': success,
             }
             return render(request, 'account/profile-info-add.html', context)
         else:

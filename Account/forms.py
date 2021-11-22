@@ -114,42 +114,43 @@ class InterestForm(forms.ModelForm):
 
 
 class CountryPhoneForm(forms.ModelForm):
-    phone_number = PhoneNumberField(widget=PhoneNumberPrefixWidget(attrs={'style': ' border: 1px '
-                                                                                   'solid #000;border-radius: '
-                                                                                   '0;outline: 0;padding-left: '
-                                                                                   '5px;height: 35px;'}))
+    phone_number = PhoneNumberField(widget=PhoneNumberPrefixWidget())
+    birth_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
 
-    country = CountryField().formfield(widget=CountrySelectWidget(attrs={'style': ' border: 1px '
-                                                                                  'solid #000;border-radius: '
-                                                                                  '0;outline: 0;padding-left: '
-                                                                                  '5px;height: 35px;'}))
+    # country = CountryField().formfield(widget=CountrySelectWidget(attrs={'style': ' border: 1px '
+    #                                                                               'solid #000;border-radius: '
+    #                                                                               '0;outline: 0;padding-left: '
+    #                                                                               '5px;height: 35px;'}))
 
     class Meta:
         model = models.User
-        fields = ['country', 'phone_number']
-
-
-class BirthDateGenderForm(forms.ModelForm):
-    birth_date = forms.DateField(widget=forms.DateInput(attrs={'style': ' border: 1px '
-                                                                        'solid #000;border-radius: '
-                                                                        '0;outline: 0;padding-left: '
-                                                                        '5px;height: 35px;', 'type': 'date'}))
-
-    class Meta:
-        model = models.User
-        fields = ['birth_date', 'gender']
+        fields = ['country', 'phone_number', 'birth_date', 'gender']
         widgets = {
-            'gender': forms.Select(attrs={'style': ' border: 1px '
-                                                   'solid #000;border-radius: '
-                                                   '0;outline: 0;padding-left: '
-                                                   '5px;height: 35px;', 'class': 'form-select'})
+            'gender': forms.Select(attrs={'class': 'form-select'})
         }
+
+
+# class BirthDateGenderForm(forms.ModelForm):
+#     birth_date = forms.DateField(widget=forms.DateInput(attrs={'style': ' border: 1px '
+#                                                                         'solid #000;border-radius: '
+#                                                                         '0;outline: 0;padding-left: '
+#                                                                         '5px;height: 35px;', 'type': 'date'}))
+#
+#     class Meta:
+#         model = models.User
+#         fields = ['birth_date', 'gender']
+#         widgets = {
+#             'gender': forms.Select(attrs={'style': ' border: 1px '
+#                                                    'solid #000;border-radius: '
+#                                                    '0;outline: 0;padding-left: '
+#                                                    '5px;height: 35px;', 'class': 'form-select'})
+#         }
 
 
 class ProfileInfoForm(forms.ModelForm):
     class Meta:
         model = models.User
-        fields = ['full_name', 'phone_number', 'birth_date', 'gender']
+        fields = ['full_name', 'phone_number', 'country', 'birth_date', 'gender']
         widgets = {
             'birth_date': forms.DateInput(attrs={'type': 'date'}),
             'gender': forms.Select(attrs={'class': 'form-select'})

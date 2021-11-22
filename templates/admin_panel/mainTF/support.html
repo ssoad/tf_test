@@ -31,7 +31,7 @@
     <main>
         <div class="container">
             <div class="row mb-5">
-                <div class="col-md-2">
+                <div class="col">
                     <div class="panel-box blue1">
                         <h2>All STAFF</h2>
                         <div class="panel-icon">
@@ -55,32 +55,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-2">
-                    <div class="panel-box blue2">
-                        <h2>sales head</h2>
-                        <div class="panel-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="34.5" height="34.5" viewBox="0 0 34.5 34.5">
-                                <g id="user_icon" data-name="user icon" transform="translate(-853 -223)">
-                                    <path id="Path_8" data-name="Path 8"
-                                          d="M33.75,33.75H31.5V28.125A5.632,5.632,0,0,0,25.875,22.5V20.25a7.884,7.884,0,0,1,7.875,7.875Z"
-                                          transform="translate(853.75 223.75)" fill="#fff"/>
-                                    <path id="Path_9" data-name="Path 9"
-                                          d="M24.75,33.75H22.5V28.125A5.632,5.632,0,0,0,16.875,22.5h-6.75A5.632,5.632,0,0,0,4.5,28.125V33.75H2.25V28.125a7.884,7.884,0,0,1,7.875-7.875h6.75a7.884,7.884,0,0,1,7.875,7.875Z"
-                                          transform="translate(850.75 223.75)" fill="#fff"/>
-                                    <path id="Path_10" data-name="Path 10"
-                                          d="M22.5,2.25V4.5a5.625,5.625,0,0,1,0,11.25V18a7.875,7.875,0,1,0,0-15.75Z"
-                                          transform="translate(853.75 220.75)" fill="#fff"/>
-                                    <path id="Path_11" data-name="Path 11"
-                                          d="M13.5,4.5a5.625,5.625,0,1,1-5.625,5.625A5.625,5.625,0,0,1,13.5,4.5m0-2.25a7.875,7.875,0,1,0,7.875,7.875A7.875,7.875,0,0,0,13.5,2.25Z"
-                                          transform="translate(850.75 220.75)" fill="#fff"/>
-                                </g>
-                            </svg>
-
-                            <p>{{ sales_head.count }}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2">
+                <div class="col">
                     <div class="panel-box blue3">
                         <h2>sales</h2>
                         <div class="panel-icon">
@@ -105,7 +80,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col">
                     <div class="panel-box blue4">
                         <h2>blogger</h2>
                         <div class="panel-icon">
@@ -130,7 +105,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col">
                     <div class="panel-box blue4">
                         <h2>bcs head</h2>
                         <div class="panel-icon">
@@ -155,7 +130,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col">
                     <div class="panel-box blue4">
                         <h2>pcs head</h2>
                         <div class="panel-icon">
@@ -203,9 +178,7 @@
                             <td>
                                 <a href="" class="staff-link">{{ admin.full_name }}</a>
                             </td>
-                            {% if admin.is_sales_head %}
-                                <td>Sales Head</td>
-                            {% elif admin.is_sales %}
+                            {% if admin.is_sales %}
                                 <td>Sales</td>
                             {% elif admin.is_blogger %}
                                 <td>Blogger</td>
@@ -253,6 +226,7 @@
                 </table>
             </div>
         </div>
+
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1"
              aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -263,26 +237,27 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="" method="POST" class="d-flex flex-column gap-3">
-                            <select required name="user_email" id=""
+                        <form action="" id="employeeAddForm" method="POST" class="d-flex flex-column">
+                            <label for="user" style="font-weight: 700; margin-top: 1rem;">User*</label>
+                            <select required name="user_email" id="user"
                                     class="js-example-basic-single form-control form-select">
                                 <option selected disabled>------------</option>
                                 {% for user_list in user_lists %}
                                     <option value="{{ user_list.email }}">{{ user_list.email }}</option>
                                 {% endfor %}
                             </select>
-                            <select required name="user_permission" id=""
+                            <label for="user" style="font-weight: 700; margin-top: 1rem;">Permission*</label>
+                            <select required name="user_permission" id="userType"
                                     class="form-control form-select">
                                 <option selected disabled>------------</option>
-                                <option value="sales_head">Sales Head</option>
                                 <option value="sales">Sales</option>
                                 <option value="blogger">Blogger</option>
                                 <option value="bcs_head">BCS Head</option>
                                 <option value="pcs_head">PCS Head</option>
                             </select>
-                            {#                            {{ permission_form|crispy }}#}
+
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-primary">Add Stuff</button>
+                            <button class="btn btn-primary" type="submit">Add Stuff</button>
                         </form>
                     </div>
                 </div>
@@ -297,9 +272,26 @@
             $('.js-example-basic-single').select2({
                 dropdownParent: $("#exampleModal")
             })
+
         });
+
     </script>
     <script src="{% static '' %}tfjs/admin_panel/mainTF/eventWebinar.js"></script>
     <!-- <script src="https://cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script> -->
+    <script>
+        let services = `{{ form|crispy }}`;
+
+        document.getElementById('userType').addEventListener('change', e => {
+            if (e.target.value == 'sales') {
+                e.target.insertAdjacentHTML('afterend', '<div class="servicesList">' + services + '</div>')
+                $('.js-example-basic-multiple').select2({
+                    dropdownParent: $("#exampleModal")
+                })
+            } else {
+                if (document.querySelector('.servicesList'))
+                    document.querySelector('.servicesList').outerHTML = '';
+            }
+        })
+    </script>
 {% endblock customjs %}
