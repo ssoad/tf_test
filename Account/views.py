@@ -71,6 +71,7 @@ def profileView(request):
 
             form = forms.CountryPhoneForm(instance=current_user)
             message = 'Fill your information below.'
+            success = 'Your Email is verified. Please Provide These Information:'
             if request.POST:
                 form = forms.CountryPhoneForm(request.POST, instance=current_user)
                 if form.is_valid():
@@ -79,6 +80,7 @@ def profileView(request):
             context = {
                 'form': form,
                 'message': message,
+                'success': success,
             }
             return render(request, 'account/profile-info-add.html', context)
         else:
