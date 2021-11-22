@@ -32,7 +32,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
+                    <ul class="navbar-nav mr-auto mb-2 mb-lg-0 align-items-center">
                         <li class="nav-item pe-3">
                             <a class="nav-link" href="{% host_url 'index' host 'blog' %}">HOME</a>
                         </li>
@@ -45,6 +45,35 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{% host_url 'category' host 'blog' %}podcast">PODCAST</a>
                         </li>
+                        
+                        {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                        <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img class="ms-2 rounded-circle" src="{{ user.profile_pic.url }}" width="40" height="40" alt="">
+                        </a>
+                        <ul class="dropdown-menu border-0 shadow end-0" style="left: -50px" aria-labelledby="navbarDropdown">
+                            <li>
+                                <a class="dropdown-item ps-3" href="{% host_url 'user_profile' %}">
+                                    <i class="icofont-ui-user me-2"></i> My Profile</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item ps-3" href="{% host_url 'user_profile' %}">
+                                    <i class="icofont-edit me-2"></i> Edit Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item ps-3" href="{% host_url 'logout' %}">
+                                    <i class="icofont-logout me-2"></i> Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link text-success" href="{% host_url 'account_login' %}">LOGIN</a>
+                        </li>
+                    {% endif %}
+                        
                     </ul>
                 </div>
             </div>

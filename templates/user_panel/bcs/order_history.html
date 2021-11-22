@@ -6,6 +6,9 @@
         <div class="mt-5">&nbsp;</div>
         {% if not orders.exists %}
             <h3 class="text-center text-gray my-5 py-5 h-100">No Order History Found!</h3>
+            <div class="d-flex my-2 justify-content-center">
+                <a href="{% host_url 'bcs_user_services' %}" class="btn btn-outline-navy">Make an Order</a>
+            </div>
         {% else %}
             <table id="order-table" class="table table-bordered">
                 <thead>
