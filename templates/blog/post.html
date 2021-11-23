@@ -12,6 +12,10 @@
 <meta property="og:image:type" content="image/png" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:image" content="https://main.techforing.com/media/{{post.feature_image}}" />
+<!-- Add the slick-theme.css if you want default styling -->
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<!-- Add the slick-theme.css if you want default styling -->
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
 
 <link rel="stylesheet" href="{% static 'tfcss/blog/post.css' %}">
 <style>
@@ -118,6 +122,14 @@
             background-color: #00000057;
         }
     }
+    .slick-prev:before, .slick-next:before {
+        font-size: 40px;
+        color: var(--navy)
+    }
+.slick-prev:before {
+    position: relative;
+    left: -20px
+}
 </style>
 <!-- for social share icons  -->
 
@@ -144,8 +156,8 @@
                         <h6 class="fw-bold">Share this post to:</h6>
                         <div class="social-share" data-social-share></div>
                     </div>
-                    {% if user.is_authenticated%}
-{% if post.id in reading_lists %}
+                    {% if user.is_authenticated %}
+                    {% if post.id in reading_lists %}
                     <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}" class="me-3">
                         <button class="btn btn-danger rounded-pill fs-6" title="Add to my reading list">
                             <i class="bi bi-dash-circle me-1"></i>
@@ -187,7 +199,6 @@
                 <a href="">Business Cybersecurity</a>
                 <a href="">Case Studies</a>
             </div>
-
         </section>
         <div class="row mx-0 pt-3">
             <div class="sticky-top d-none d-md-block col-md-2 post-content">
@@ -440,13 +451,12 @@
         }
         window.onload = function() {
             $('.center').slick({
-                dots: false,
-                infinite: true,
                 slidesToShow: 3,
                 slidesToScroll: 3,
                 centerMode: true,
-                centerPadding: '60px',
-                arrows: false,
+                centerPadding: '30px',
+                dots: true,
+                speed: 300,
                 responsive: [
     {
       breakpoint: 1024,
