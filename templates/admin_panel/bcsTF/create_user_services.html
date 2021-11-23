@@ -1,6 +1,11 @@
 {% extends 'base/bcs_admin_base.html' %} {% load static %} {% load my_filter %} {% load hosts %} {% block title %}
     Services {% endblock title %} {% block content %}
-
+    <style>
+        form label{
+            text-transform: capitalize;
+            margin-top: 8px
+        }
+    </style>
     <main>
 
         <section class="services position-relative">
@@ -12,15 +17,17 @@
             </button>
 
 
-            <label for="addOrder">Add a Order for:</label>
-            <select name="user_info" id="addOrder" class="js-example-basic-single form-control">
+            <div class="invisible customer-email">
+            <label for="addOrder" class="fw-bold">Add a Order for:</label>
+            <select name="user_info" id="addOrder" class="js-example-basic-single w-auto">
                 <option disabled selected>----------------</option>
                 {% for user_list in user_lists %}
                     <option value="{{ user_list.id }}">{{ user_list.email }}</option>
                 {% endfor %}
             </select>
+            </div>
             <div class="services-content">
-                <div class="content-detail pe-2 mt-5">
+                <div class="content-detail pe-2">
                     {% for category in service_category %}
                         {% ifchanged %}
                             <h5 class="mt-2 services-type">{{ category.category_name }}</h5>
@@ -593,25 +600,32 @@
     </main>
 {% endblock content %} {% block customjs %}
 
-
-
     <script>
+        let selected;
         let backBtn = document.getElementById('back-btn');
         let servicesContent = document.querySelector('.services-content');
         let previewServiceInfos = document.querySelectorAll('.preview-service-info');
         let allBtn = document.querySelectorAll('.services-content .content-detail button');
         let quotationBtns = document.querySelectorAll('.get-quotation');
         let previewForm = document.getElementById('preview-form');
-        let formJsAdded = false;
-        let allForms = ['vulnerability', 'penetration', 'hack_recovery', 'malware_removal', 'digital_forensic', 'iso',
-            'pci', 'hippa', 'gdpr', 'managed_security', 'plug_and_play', 'concierge_cybersecurity'
-        ];
+        
         let allServicesInputFrom;
         let allServicesFromContainer;
         let allServices;
         let mainHeading = document.querySelector('.services .main-heading');
         let mainHeadingText = 'All Business Cybersecurity Services';
         let servicesHeading = {{ services_headings | safe }};
+
+        let check_validity = e => {
+
+            if(selected)
+            return true;
+            else{
+                alert('Please Select an User.')
+                return false;
+            }
+        }
+
 
         quotationBtns.forEach((btn, index) => {
             btn.addEventListener('click', e => {
@@ -630,7 +644,9 @@
                         previewForm.removeChild(document.getElementById('progress'));
 
                         let list = '<div class="col-md-4 sub-services shadow"> <h5 class="fw-bold">Choose your services:</h5>';
-                        let form = `<form method="POST" enctype="multipart/form-data">{% csrf_token %}<input type='hidden' id='service_name' value='' name='service_name'/>`
+                        let form = `<form method="POST" onsubmit="return check_validity();" enctype="multipart/form-data">{% csrf_token %}
+                        <input type='hidden' id='service_name' value='' name='service_name'/>
+                        <input type='hidden' id='customer' value='' name='customer'/>`;
                         data.forEach((option, index) => {
                             list += `<div class="form-check">
                     <input class="form-check-input sub-services-check" type="checkbox" name="" id="sub-${option.id}" data-index="${index}" data-title="${option.title}" data-id="${option.id}">
@@ -639,6 +655,16 @@
                             previewForm.innerHTML = '<div class="row mx-0">' + list + '</div>' + '<div class="col-md-8 d-none form-container"><h5 class="fw-bold text-center border-bottom border-gray p-2">Please Provide Necessary Informations:</h5>' + form + '<div class="information-form"></div><button type="submit" class="submit-btn btn btn-navy mt-3">Submit</button></form> </div>';
 
                         });
+
+                        //user selection
+                        document.querySelector('.customer-email').classList.add('py-3');
+                        document.querySelector('.customer-email').classList.remove('invisible');
+                        document.querySelector('.content-detail').classList.add('mt-5');
+
+                        console.log(document.getElementById('customer'));
+                        if(selected)
+                            document.getElementById('customer').value = selected;
+
                         document.getElementById('service_name').value = mainHeading.textContent.trim();
 
                         addHtml()
@@ -672,8 +698,8 @@
                                         if (field.inputfield.type === 'select') {
                                             fetchData(`${location.origin}/api/bcs/choice_field/${field.inputfield.id}`)
                                                 .then(function (data) {
-                                                    inputFields += `<label for="input-${field.inputfield.id}.${optionId}">${field.inputfield.placeholder.toUpperCase()}</label>`;
-                                                    inputFields += `<select id="input-${field.inputfield.id}.${optionId}" name="${field.id}" class="form-select">`;
+                                                    inputFields += `<label for="input-${field.inputfield.id}.${optionId}">${field.inputfield.placeholder}</label>`;
+                                                    inputFields += `<select required id="input-${field.inputfield.id}.${optionId}" name="${field.id}" class="form-select">`;
                                                     data[0].choice_field.forEach(choice => {
                                                         inputFields += ` <option value="${choice.choices}">${choice.choices}</option>`;
                                                     });
@@ -686,10 +712,9 @@
                                                 console.log(err)
                                             });
 
-                                            {#console.log("select ")#}
                                         } else {
-                                            inputFields += `<label for="input-${field.inputfield.id}.${optionId}">${field.inputfield.placeholder.toUpperCase()}</label>`;
-                                            inputFields += `<input class="form-control" type="${field.inputfield.type}"
+                                            inputFields += `<label for="input-${field.inputfield.id}.${optionId}">${field.inputfield.placeholder}</label>`;
+                                            inputFields += `<input class="form-control" type="${field.inputfield.type}" required
                                         id="input-${field.inputfield.id}.${optionId}" name="${field.id}" placeholder="${field.inputfield.placeholder}">`;
                                             inputFields += `</div>`;
                                             div.innerHTML = inputFields;
@@ -712,6 +737,8 @@
                         })
                     });
                 }
+               
+
             })
         });
 
@@ -731,51 +758,9 @@
             });
         }
 
-
-        {% comment %}
-               let servicesInformation = {
-               {% for service in services %}
-                   {{ service|replacespace }}: [
-                   {%for subservice in service.subservice_service.all%}
-                       {{ subservice|replacespace|safe }} = {
-                       title: '{{subservice|upper}}',
-                       description: '{{subservice.description}}'
-                   },
-                   {%endfor%}
-               ],
-               {% endfor %}
-               }
-
-
-               let showPreviewServices = (serviceElement, name) => {
-                   serviceElement.forEach((li, index) => {
-                       li.addEventListener('mouseover', e => {
-                           previewService.children[0].textContent = servicesInformation[name][index].title;
-                           previewService.children[1].textContent = servicesInformation[name][index].description;
-                           previewService.classList.remove('d-none');
-
-                           let positionTop = e.target.parentNode.offsetTop + 50;
-                           previewService.style.top = `${positionTop}px`;
-                           previewService.style.left = `${17 * index}%`;
-
-                       });
-                   });
-               }
-               let previewService = document.querySelector('.preview-service');
-
-               {% for name in sub_services %}
-                   showPreviewServices(document.querySelectorAll('li.{{ name.service|replacespace }}'), '{{ name.service|replacespace }}');
-               {% endfor %}
-
-               document.body.addEventListener('click', e => {
-                   if (!e.target.classList.contains('preview-service') && !e.target.parentNode.classList.contains('preview-service'))
-                       previewService.classList.add('d-none');
-               }); {% endcomment %}
-
-
         allBtn = Array.from(allBtn);
         allBtn.push(document.querySelector('.more-services #pcs-preview-btn'));
-        {#console.log(allBtn)#}
+
         allBtn.forEach((btn, index) => {
             btn.addEventListener('click', () => {
                 servicesContent.classList.add('d-none');
@@ -788,6 +773,9 @@
         });
 
         let backBtnChanges = () => {
+            document.querySelector('.customer-email').classList.add('invisible');
+            document.querySelector('.customer-email').classList.remove('py-3');
+            document.querySelector('.content-detail').classList.remove('mt-5');
             servicesContent.classList.remove('d-none');
             previewServiceInfos.forEach(form => {
                 form.classList.add('d-none');
@@ -817,9 +805,7 @@
         document.getElementById('subscription-package-btn').addEventListener('click', () => {
             conciergeCybersecurity.classList.add('d-none');
             subscriptionPackages.classList.remove('d-none');
-
         });
-
 
         document.querySelectorAll('.preview-service-info .package button').forEach(btn => {
             btn.addEventListener('click', e => {
@@ -849,4 +835,15 @@
             numberInput.focus();
         });
     </script>
+    <script>
+    // In your Javascript (external .js resource or <script> tag)
+    $(document).ready(function () {
+        $('.js-example-basic-single').select2();
+
+         $('.js-example-basic-single').on('select2:select', function (e) {
+                selected = e.params.data.text.trim();
+                document.getElementById('customer').value = selected;
+            });
+    });
+</script>
 {% endblock customjs %}

@@ -1,6 +1,13 @@
 {% extends 'base/bcs_user_base.html' %} {% load static %} {% load my_filter %} {% load hosts %} {% block title %}
     Services {% endblock title %} {% block content %}
 
+  <style>
+        form label{
+            text-transform: capitalize;
+            margin-top: 8px
+        }
+    </style>
+    
     <section class="services position-relative">
         <h4 class="main-heading">All Business Cybersecurity Services
         </h4>
@@ -640,8 +647,8 @@
                                         if (field.inputfield.type === 'select') {
                                             fetchData(`${location.origin}/api/bcs/choice_field/${field.inputfield.id}`)
                                                 .then(function (data) {
-                                                    inputFields += `<label for="input-${field.inputfield.id}.${optionId}">${field.inputfield.placeholder.toUpperCase()}</label>`;
-                                                    inputFields += `<select id="input-${field.inputfield.id}.${optionId}" name="${field.id}" class="form-select">`;
+                                                    inputFields += `<label for="input-${field.inputfield.id}.${optionId}">${field.inputfield.placeholder}</label>`;
+                                                    inputFields += `<select required id="input-${field.inputfield.id}.${optionId}" name="${field.id}" class="form-select">`;
                                                     data[0].choice_field.forEach(choice => {
                                                         inputFields += ` <option value="${choice.choices}">${choice.choices}</option>`;
                                                     });
@@ -656,8 +663,8 @@
 
                                             {#console.log("select ")#}
                                         } else {
-                                            inputFields += `<label for="input-${field.inputfield.id}.${optionId}">${field.inputfield.placeholder.toUpperCase()}</label>`;
-                                            inputFields += `<input class="form-control" type="${field.inputfield.type}"
+                                            inputFields += `<label for="input-${field.inputfield.id}.${optionId}">${field.inputfield.placeholder}</label>`;
+                                            inputFields += `<input class="form-control" type="${field.inputfield.type}" required
                                         id="input-${field.inputfield.id}.${optionId}" name="${field.id}" placeholder="${field.inputfield.placeholder}">`;
                                             inputFields += `</div>`;
                                             div.innerHTML = inputFields;
