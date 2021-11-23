@@ -146,6 +146,7 @@ urlpatterns = [
     path('bcs_admin_course_content_edit/<id>', views.bcsAdminCourseContentEdit,
          name='bcs_admin_course_content_edit'),
     path('bcs_admin_orders/', views.bcsAdminOrdersView, name='bcs_admin_orders'),
+    path('bcs_admin_new_order/', views.bcsAdminNewOrdersView, name='bcs_admin_new_order'),
     path('bcs_admin_order_detail/', views.bcsAdminOrdersDetailView, name='bcs_admin_order_detail'),
     path('bcs_admin_order_detail/<id>/', views.bcsAdminOrdersDetailView, name='bcs_admin_order_detail'),
     path('bcs_admin_order_new/', views.bcsAdminOrderNewView, name='bcs_admin_order_new'),
