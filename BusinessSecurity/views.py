@@ -350,13 +350,6 @@ def userServicesView(request):
             print(file_list)
 
             current_service = get_object_or_404(models.Service, service_title=data_list['service_name'])
-            tracking = models.Tracking.objects.get(service=current_service)
-            persons = tracking.persons
-            persons_list = list(filter(None, persons.split(',')))
-            person = persons_list.pop(0)
-            persons_list.append(person)
-            tracking.persons = ','.join(persons_list)
-            tracking.save()
 
             for data in data_list:
                 if data != 'csrfmiddlewaretoken' and data != 'service_name':
@@ -381,11 +374,22 @@ def userServicesView(request):
                                                            service=current_service)
 
                 order[0].subserviceinput.add(input_data)
-            current_staff = models.User.objects.get(id=person)
+
             order = models.Order.objects.get_or_create(user=request.user, order_status='new',
                                                        service=current_service)
-            order_staff = models.OrderStaff.objects.create(staff=current_staff, order=order[0])
-            order_staff.save()
+
+            if not order[0].orderstaff_order.all().exists():
+                tracking = models.Tracking.objects.get(service=current_service)
+                persons = tracking.persons
+                persons_list = list(filter(None, persons.split(',')))
+                person = persons_list.pop(0)
+                persons_list.append(person)
+                tracking.persons = ','.join(persons_list)
+                tracking.save()
+                current_staff = models.User.objects.get(id=person)
+                order_staff = models.OrderStaff.objects.create(staff=current_staff, order=order[0])
+                order_staff.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
         context = {
             'service_category': service_category,
             'services': services,
@@ -671,7 +675,8 @@ def mainAdminProfileView(request):
     return render(request, 'admin_panel/mainTF/myProfile.html', context)
 
 
-@user_passes_test(main_admin_permission_check_order_page, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+@user_passes_test(main_admin_permission_check_order_page, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
 def mainAdminOrdersView(request):
     orders = models.Order.objects.all()
     context = {
@@ -680,7 +685,8 @@ def mainAdminOrdersView(request):
     return render(request, 'admin_panel/mainTF/orders.html', context)
 
 
-@user_passes_test(main_admin_permission_check_order_page, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+@user_passes_test(main_admin_permission_check_order_page, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
 def mainAdminOrdersDetailView(request, id):
     current_order = models.Order.objects.get(id=id)
 
@@ -843,6 +849,15 @@ def mainAdminSupportDeleteView(request, id):
         current_user.is_staff = False
         current_user.is_sales = False
         current_user.save()
+        assigned = models.ServiceAssigned.objects.get(user=current_user)
+        trackings = models.Tracking.objects.filter(persons__icontains=current_user.id)
+        for tracking in trackings:
+            persons = tracking.persons
+            persons_list = list(filter(None, persons.split(',')))
+            persons_list.remove(str(current_user.id))
+            tracking.persons = ','.join(persons_list)
+            tracking.save()
+        assigned.delete()
     elif current_user.is_blogger:
         current_user.is_staff = False
         current_user.is_blogger = False
@@ -867,7 +882,8 @@ def mainAdminSupportStuffView(request):
     return render(request, 'admin_panel/mainTF/supportStuffView.html', context)
 
 
-@user_passes_test(main_admin_permission_check_order_page, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+@user_passes_test(main_admin_permission_check_order_page, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
 def mainAdminTicketsView(request):
     tickets = models.Ticket.objects.all()
     open_tickets = models.Ticket.objects.filter(ticket_status='open')
@@ -880,7 +896,8 @@ def mainAdminTicketsView(request):
     return render(request, 'admin_panel/mainTF/allTickets.html', context)
 
 
-@user_passes_test(main_admin_permission_check_order_page, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+@user_passes_test(main_admin_permission_check_order_page, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
 def mainAdminTicketsDetailView(request, id):
     ticket = models.Ticket.objects.get(id=id)
     commentform = forms.TicketCommentForm()
@@ -899,7 +916,8 @@ def mainAdminTicketsDetailView(request, id):
     return render(request, 'admin_panel/mainTF/ticket_detail.html', context)
 
 
-@user_passes_test(main_admin_permission_check_order_page, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+@user_passes_test(main_admin_permission_check_order_page, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
 def ticketOpenCloseView(request, id):
     current_ticket = models.Ticket.objects.get(id=id)
     if current_ticket.ticket_status == 'open':
@@ -1420,7 +1438,8 @@ def bcsAdminCourseSectionEdit(request, id):
     return render(request, 'admin_panel/bcsTF/editForm.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
 def bcsAdminOrdersView(request):
     orders = models.Order.objects.filter(orderstaff_order__staff=request.user)
     context = {
@@ -1429,7 +1448,73 @@ def bcsAdminOrdersView(request):
     return render(request, 'admin_panel/bcsTF/orders.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
+def bcsAdminNewOrdersView(request):
+    service_category = models.ServiceCategory.objects.filter(category_choice='bcs', service_category__service_assigned_service__user=request.user)
+    user_lists = models.User.objects.filter(is_bcs=True)
+    services = models.Service.objects.filter(category_choice='bcs', service_assigned_service__user=request.user)
+    # print(request.user)
+    # print(service_category.count())
+    # print(services.count())
+    if request.method == 'POST':
+        data_list = request.POST
+        file_list = request.FILES
+        # print(data_list)
+        # print(file_list)
+
+        current_service = get_object_or_404(models.Service, service_title=data_list['service_name'])
+
+        for data in data_list:
+            if data != 'csrfmiddlewaretoken' and data != 'service_name':
+                current_input = models.SubServiceInput.objects.get(id=data)
+                input_data = models.UserSubserviceInput(user=request.user, inputfield=current_input,
+                                                        inputinfo=data_list[data])
+                input_data.save()
+                order = models.Order.objects.get_or_create(user=request.user, order_status='new',
+                                                           service=current_service)
+
+                order[0].subserviceinput.add(input_data)
+        for files in file_list:
+            current_input = models.SubServiceInput.objects.get(id=files)
+            myfile = file_list[files]
+            fs = FileSystemStorage()
+            filename = fs.save(myfile.name, myfile)
+            uploaded_file_url = fs.url(filename)
+            input_data = models.UserSubserviceInput(user=request.user, inputfield=current_input,
+                                                    inputinfo=uploaded_file_url)
+            input_data.save()
+            order = models.Order.objects.get_or_create(user=request.user, order_status='new',
+                                                       service=current_service)
+
+            order[0].subserviceinput.add(input_data)
+
+        order = models.Order.objects.get_or_create(user=request.user, order_status='new',
+                                                   service=current_service)
+
+        if not order[0].orderstaff_order.all().exists():
+            tracking = models.Tracking.objects.get(service=current_service)
+            persons = tracking.persons
+            persons_list = list(filter(None, persons.split(',')))
+            person = persons_list.pop(0)
+            persons_list.append(person)
+            tracking.persons = ','.join(persons_list)
+            tracking.save()
+            current_staff = models.User.objects.get(id=person)
+            order_staff = models.OrderStaff.objects.create(staff=current_staff, order=order[0])
+            order_staff.save()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    context = {
+        'service_category': service_category,
+        'services': services,
+        'user_lists': user_lists,
+        'services_headings': list(services.values_list('service_title', flat=True)),
+    }
+    return render(request, 'admin_panel/bcsTF/create_user_services.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
 def bcsAdminOrdersDetailView(request, id):
     try:
         current_order = models.Order.objects.get(id=id, orderstaff_order__staff=request.user)
@@ -1450,33 +1535,35 @@ def bcsAdminOrdersDetailView(request, id):
         return HttpResponse("You don't have permission to view this page!")
 
 
-@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
 def bcsAdminOrderNewView(request, id):
-    print(request.user.is_staff)
+    # print(request.user.is_staff)
     try:
         # current_order = models.Order.objects.get(
         #     Q(id=id, orderstaff_order__staff=request.user, orderstaff_order__staff__is_staff=True,
         #       orderstaff_order__staff__is_sales_head=True) | Q(id=id, orderstaff_order__staff__is_superuser=True) | Q(
         #         id=id, orderstaff_order__staff__is_staff=True, orderstaff_order__staff__is_sales_head=True))
         current_order = models.Order.objects.get(Q(id=id, orderstaff_order__staff=request.user,
-                                                 orderstaff_order__staff__is_staff=True,
-                                                 orderstaff_order__staff__is_sales=True) |
+                                                   orderstaff_order__staff__is_staff=True,
+                                                   orderstaff_order__staff__is_sales=True) |
                                                  Q(id=id, orderstaff_order__staff=request.user,
-                                                 orderstaff_order__staff__is_staff=True,
-                                                 orderstaff_order__staff__is_superuser=True))
-        print(request.user.is_superuser)
+                                                   orderstaff_order__staff__is_staff=True,
+                                                   orderstaff_order__staff__is_superuser=True))
+        # print(request.user.is_superuser)
         current_order.order_status = 'new'
         current_order.price = 0
-        if current_order.orderstaff_order.exists():
-            for staff in current_order.orderstaff_order.all():
-                staff.delete()
+        # if current_order.orderstaff_order.exists():
+        #     for staff in current_order.orderstaff_order.all():
+        #         staff.delete()
         current_order.save()
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
     except:
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
 def bcsAdminOrderAttendingView(request, id):
     try:
         current_order = models.Order.objects.get(Q(id=id, orderstaff_order__staff=request.user,
@@ -1494,7 +1581,8 @@ def bcsAdminOrderAttendingView(request, id):
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
 def bcsAdminOrderCompletedView(request, id):
     try:
         current_order = models.Order.objects.get(Q(id=id, orderstaff_order__staff=request.user,
@@ -1512,7 +1600,8 @@ def bcsAdminOrderCompletedView(request, id):
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
 def bcsAdminOrderCanceledView(request, id):
     try:
         current_order = models.Order.objects.get(Q(id=id, orderstaff_order__staff=request.user,
