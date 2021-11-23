@@ -1454,24 +1454,26 @@ def bcsAdminNewOrdersView(request):
     service_category = models.ServiceCategory.objects.filter(category_choice='bcs', service_category__service_assigned_service__user=request.user)
     user_lists = models.User.objects.filter(is_bcs=True)
     services = models.Service.objects.filter(category_choice='bcs', service_assigned_service__user=request.user)
-    # print(request.user)
+
     # print(service_category.count())
     # print(services.count())
     if request.method == 'POST':
         data_list = request.POST
         file_list = request.FILES
+        current_customer = models.User.objects.get(email=data_list.get('customer'))
+        print(current_customer)
         # print(data_list)
         # print(file_list)
 
         current_service = get_object_or_404(models.Service, service_title=data_list['service_name'])
 
         for data in data_list:
-            if data != 'csrfmiddlewaretoken' and data != 'service_name':
+            if data != 'csrfmiddlewaretoken' and data != 'service_name' and data != 'customer':
                 current_input = models.SubServiceInput.objects.get(id=data)
-                input_data = models.UserSubserviceInput(user=request.user, inputfield=current_input,
+                input_data = models.UserSubserviceInput(user=current_customer, inputfield=current_input,
                                                         inputinfo=data_list[data])
                 input_data.save()
-                order = models.Order.objects.get_or_create(user=request.user, order_status='new',
+                order = models.Order.objects.get_or_create(user=current_customer, order_status='new',
                                                            service=current_service)
 
                 order[0].subserviceinput.add(input_data)
@@ -1481,28 +1483,19 @@ def bcsAdminNewOrdersView(request):
             fs = FileSystemStorage()
             filename = fs.save(myfile.name, myfile)
             uploaded_file_url = fs.url(filename)
-            input_data = models.UserSubserviceInput(user=request.user, inputfield=current_input,
+            input_data = models.UserSubserviceInput(user=current_customer, inputfield=current_input,
                                                     inputinfo=uploaded_file_url)
             input_data.save()
-            order = models.Order.objects.get_or_create(user=request.user, order_status='new',
+            order = models.Order.objects.get_or_create(user=current_customer, order_status='new',
                                                        service=current_service)
 
             order[0].subserviceinput.add(input_data)
 
-        order = models.Order.objects.get_or_create(user=request.user, order_status='new',
+        order = models.Order.objects.get_or_create(user=current_customer, order_status='new',
                                                    service=current_service)
 
-        if not order[0].orderstaff_order.all().exists():
-            tracking = models.Tracking.objects.get(service=current_service)
-            persons = tracking.persons
-            persons_list = list(filter(None, persons.split(',')))
-            person = persons_list.pop(0)
-            persons_list.append(person)
-            tracking.persons = ','.join(persons_list)
-            tracking.save()
-            current_staff = models.User.objects.get(id=person)
-            order_staff = models.OrderStaff.objects.create(staff=current_staff, order=order[0])
-            order_staff.save()
+        order_staff = models.OrderStaff.objects.create(staff=request.user, order=order[0])
+        order_staff.save()
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
         'service_category': service_category,
