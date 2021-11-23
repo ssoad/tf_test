@@ -849,6 +849,15 @@ def mainAdminSupportDeleteView(request, id):
         current_user.is_staff = False
         current_user.is_sales = False
         current_user.save()
+        assigned = models.ServiceAssigned.objects.get(user=current_user)
+        trackings = models.Tracking.objects.filter(persons__icontains=current_user.id)
+        for tracking in trackings:
+            persons = tracking.persons
+            persons_list = list(filter(None, persons.split(',')))
+            persons_list.remove(str(current_user.id))
+            tracking.persons = ','.join(persons_list)
+            tracking.save()
+        assigned.delete()
     elif current_user.is_blogger:
         current_user.is_staff = False
         current_user.is_blogger = False
@@ -1442,14 +1451,17 @@ def bcsAdminOrdersView(request):
 @user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
                   redirect_field_name='/account/profile/')
 def bcsAdminNewOrdersView(request):
-    service_category = models.ServiceCategory.objects.filter(category_choice='bcs')
+    service_category = models.ServiceCategory.objects.filter(category_choice='bcs', service_category__service_assigned_service__user=request.user)
     user_lists = models.User.objects.filter(is_bcs=True)
-    services = models.Service.objects.filter(category_choice='bcs')
+    services = models.Service.objects.filter(category_choice='bcs', service_assigned_service__user=request.user)
+    # print(request.user)
+    # print(service_category.count())
+    # print(services.count())
     if request.method == 'POST':
         data_list = request.POST
         file_list = request.FILES
-        print(data_list)
-        print(file_list)
+        # print(data_list)
+        # print(file_list)
 
         current_service = get_object_or_404(models.Service, service_title=data_list['service_name'])
 
