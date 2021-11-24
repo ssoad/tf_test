@@ -36,7 +36,9 @@
                         </div>
                     {% endfor %}
                 {% else %}
-                    <div class='text-center py-4'>No Order Found</div>
+                    <div class='text-center py-4'>No Order Found 
+                    <a class="btn btn-outline-navy btn-sm"
+                        href="{% host_url 'bcs_user_services' %}">Make an Order</a></div>
                 {% endif %}
 
             </div>
@@ -133,13 +135,14 @@
                         </div>
                     </div>
                 {% endfor %}
-
-                <div class="btn-area d-flex justify-content-end">
-                    <button type="button" id="prev-btn" class="btn btn-outline-navy px-3 py-1 me-3">Previous</button>
-                    <button type="button" id="next-btn" class="btn btn-outline-navy px-3 py-1">Next</button>
-                </div>
+                {% if user.reading_list_user.all.count > 2 %}
+                                <div class="btn-area d-flex justify-content-end">
+                                    <button type="button" id="prev-btn" class="btn btn-outline-navy px-3 py-1 me-3">Previous</button>
+                                    <button type="button" id="next-btn" class="btn btn-outline-navy px-3 py-1">Next</button>
+                                </div>
+                {% endif %}
             {% else %}
-                <div class='text-center py-4'>Nothing on your reading list. <a class="btn btn-outline-navy"
+                <div class='text-center py-4'>Nothing on your reading list. <a class="btn btn-outline-navy btn-sm"
                         href="{% host_url 'index' host 'blog' %}">Add Now</a></div>
 
             {% endif %}
@@ -171,7 +174,6 @@
                     </table>
                 </div>
             </div>
-
         </section>
 
         <section class="events mt-5 mb-3">

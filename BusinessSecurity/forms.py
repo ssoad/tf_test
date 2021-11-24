@@ -45,7 +45,8 @@ class AddSubServiceForm(forms.ModelForm):
 
 
 class CreateBusinessForm(forms.ModelForm):
-    position = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'CEO'}))
+    position = forms.CharField(widget=forms.TextInput(
+        attrs={'placeholder': 'Enter Your Designation'}))
     website = forms.URLField(widget=forms.URLInput(
         attrs={'pattern': "^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$",
                'value': "https://"}))
@@ -57,7 +58,8 @@ class CreateBusinessForm(forms.ModelForm):
 
 
 class AddPackageForm(forms.ModelForm):
-    service_id = forms.ModelChoiceField(queryset=models.Service.objects.filter(is_subscription_based=True))
+    service_id = forms.ModelChoiceField(
+        queryset=models.Service.objects.filter(is_subscription_based=True))
 
     class Meta:
         model = models.SubscriptionBasedPackage
@@ -79,7 +81,8 @@ class AddIndividualPackageFeatureForm(forms.ModelForm):
 
 
 class EventCreateForm(forms.ModelForm):
-    date_field = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'date'}))
+    date_field = forms.DateTimeField(
+        widget=forms.DateTimeInput(attrs={'type': 'date'}))
     time_field = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'time'}),
                                      input_formats=['%H:%M', '%I:%M%p', '%I:%M %p'])
 
@@ -106,11 +109,13 @@ class OrderAssignForm(forms.ModelForm):
 
 
 class TicketCreateForm(forms.ModelForm):
-    ticket_category = forms.Field(widget=forms.Select(attrs={'class': 'form-select'}))
+    ticket_category = forms.Field(
+        widget=forms.Select(attrs={'class': 'form-select'}))
 
     class Meta:
         model = models.Ticket
-        fields = ['ticket_title', 'ticket_category', 'ticket_description', 'ticket_attachment']
+        fields = ['ticket_title', 'ticket_category',
+                  'ticket_description', 'ticket_attachment']
         # exclude = ['ticket_type', 'ticket_status']
 
 
