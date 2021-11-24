@@ -53,6 +53,7 @@ urlpatterns = [
 
     path('main_admin_dashboard/', views.mainAdminDashboardView, name='main_admin_dashboard'),
     path('main_admin_profile/', views.mainAdminProfileView, name='main_admin_profile'),
+    path('main_admin_quotations/', views.mainAdminQuotationsView, name='main_admin_quotations'),
     path('main_admin_orders/', views.mainAdminOrdersView, name='main_admin_orders'),
     path('main_admin_order_detail/', views.mainAdminOrdersDetailView, name='main_admin_order_detail'),
     path('main_admin_order_detail/<id>/', views.mainAdminOrdersDetailView, name='main_admin_order_detail'),
@@ -75,6 +76,7 @@ urlpatterns = [
     path('bcs_user_dashboard/', views.userDashboardView, name='bcs_user_dashboard'),
     path('create_business/', views.createBusinessView, name='create_business'),
     path('bcs_user_services/', views.userServicesView, name='bcs_user_services'),
+    path('bcs_user_quotations_history/', views.userQuotationsHistoryView, name='bcs_user_quotations_history'),
     path('bcs_user_order_history/', views.userOrderHistoryView, name='bcs_user_order_history'),
     path('bcs_user_order_details/', views.userOrderDetailsView, name='bcs_user_order_details'),
     path('bcs_user_order_details/<id>/', views.userOrderDetailsView, name='bcs_user_order_details'),
@@ -145,6 +147,7 @@ urlpatterns = [
          name='bcs_admin_course_content_delete'),
     path('bcs_admin_course_content_edit/<id>', views.bcsAdminCourseContentEdit,
          name='bcs_admin_course_content_edit'),
+    path('bcs_admin_quotations/', views.bcsAdminQuotationsView, name='bcs_admin_quotations'),
     path('bcs_admin_orders/', views.bcsAdminOrdersView, name='bcs_admin_orders'),
     path('bcs_admin_new_order/', views.bcsAdminNewOrdersView, name='bcs_admin_new_order'),
     path('bcs_admin_order_detail/', views.bcsAdminOrdersDetailView, name='bcs_admin_order_detail'),

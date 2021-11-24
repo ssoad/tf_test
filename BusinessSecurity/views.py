@@ -327,7 +327,8 @@ def userDashboardView(request):
     elif request.user.is_bcs:
         events = models.Events.objects.filter(status='active')
         registered_event = models.RegisteredEvents.objects.filter(user=request.user).values_list('event', flat=True)
-        orders = models.Order.objects.filter(user=request.user)
+        orders = models.Order.objects.filter(
+            Q(user=request.user) & ~Q(Q(order_status='new') | Q(order_status='attending'))).order_by('-order_date')
         context = {
             'events': events,
             'registered_event': registered_event,
@@ -358,7 +359,7 @@ def userServicesView(request):
                                                             inputinfo=data_list[data])
                     input_data.save()
                     order = models.Order.objects.get_or_create(user=request.user, order_status='new',
-                                                               service=current_service)
+                                                               service=current_service, category_choice='bcs')
 
                     order[0].subserviceinput.add(input_data)
             for files in file_list:
@@ -371,12 +372,12 @@ def userServicesView(request):
                                                         inputinfo=uploaded_file_url)
                 input_data.save()
                 order = models.Order.objects.get_or_create(user=request.user, order_status='new',
-                                                           service=current_service)
+                                                           service=current_service, category_choice='bcs')
 
                 order[0].subserviceinput.add(input_data)
 
             order = models.Order.objects.get_or_create(user=request.user, order_status='new',
-                                                       service=current_service)
+                                                       service=current_service, category_choice='bcs')
 
             if not order[0].orderstaff_order.all().exists():
                 tracking = models.Tracking.objects.get(service=current_service)
@@ -399,14 +400,32 @@ def userServicesView(request):
 
 
 @login_required
+def userQuotationsHistoryView(request):
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+
+    elif request.user.is_bcs:
+        orders = models.Order.objects.filter(
+            Q(user=request.user) & Q(Q(order_status='new') | Q(order_status='attending'))).order_by('-order_date')
+        context = {
+            'orders': orders,
+            'message': 'Quotations',
+        }
+        return render(request, 'user_panel/bcs/order_history.html', context)
+
+
+@login_required
 def userOrderHistoryView(request):
     if not request.user.is_bcs:
         return HttpResponseRedirect(reverse('create_business'))
 
     elif request.user.is_bcs:
-        orders = models.Order.objects.filter(user=request.user)
+        orders = models.Order.objects.filter(
+            Q(user=request.user) & ~Q(Q(order_status='new') | Q(order_status='attending'))).order_by('-order_date')
+        print(orders.query)
         context = {
             'orders': orders,
+            'message': 'Orders',
         }
         return render(request, 'user_panel/bcs/order_history.html', context)
 
@@ -677,10 +696,23 @@ def mainAdminProfileView(request):
 
 @user_passes_test(main_admin_permission_check_order_page, login_url='/accounts/login/',
                   redirect_field_name='/account/profile/')
-def mainAdminOrdersView(request):
-    orders = models.Order.objects.all()
+def mainAdminQuotationsView(request):
+    orders = models.Order.objects.filter(Q(order_status='new') | Q(order_status='attending')).order_by('-order_date')
     context = {
         'orders': orders,
+        'message': 'Quotations',
+    }
+    return render(request, 'admin_panel/mainTF/orders.html', context)
+
+
+@user_passes_test(main_admin_permission_check_order_page, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
+def mainAdminOrdersView(request):
+    orders = models.Order.objects.filter(~Q(Q(order_status='new') | Q(order_status='attending'))).order_by(
+        '-order_date')
+    context = {
+        'orders': orders,
+        'message': 'Orders',
     }
     return render(request, 'admin_panel/mainTF/orders.html', context)
 
@@ -1443,18 +1475,56 @@ def bcsAdminCourseSectionEdit(request, id):
 
 @user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
                   redirect_field_name='/account/profile/')
+def bcsAdminQuotationsView(request):
+    if request.user.is_sales:
+        orders = models.Order.objects.filter(
+            Q(orderstaff_order__staff=request.user) & Q(Q(order_status='new') | Q(order_status='attending'))).order_by(
+            '-order_date')
+        context = {
+            'orders': orders,
+            'message': 'Quotations',
+        }
+        return render(request, 'admin_panel/bcsTF/orders.html', context)
+    else:
+        orders = models.Order.objects.filter(
+            Q(category_choice='bcs') & Q(Q(order_status='new') | Q(order_status='attending'))).order_by(
+            '-order_date')
+        context = {
+            'orders': orders,
+            'message': 'Quotations',
+            'admin': 'admin',
+        }
+        return render(request, 'admin_panel/bcsTF/orders.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
 def bcsAdminOrdersView(request):
-    orders = models.Order.objects.filter(orderstaff_order__staff=request.user)
-    context = {
-        'orders': orders,
-    }
-    return render(request, 'admin_panel/bcsTF/orders.html', context)
+    if request.user.is_sales:
+        orders = models.Order.objects.filter(
+            Q(orderstaff_order__staff=request.user) & ~Q(Q(order_status='new') | Q(order_status='attending'))).order_by(
+            '-order_date')
+        context = {
+            'orders': orders,
+            'message': 'Orders',
+        }
+        return render(request, 'admin_panel/bcsTF/orders.html', context)
+    else:
+        orders = models.Order.objects.filter(
+            Q(category_choice='bcs') & ~Q(Q(order_status='new') | Q(order_status='attending'))).order_by(
+            '-order_date')
+        context = {
+            'orders': orders,
+            'message': 'Orders',
+        }
+        return render(request, 'admin_panel/bcsTF/orders.html', context)
 
 
 @user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
                   redirect_field_name='/account/profile/')
 def bcsAdminNewOrdersView(request):
-    service_category = models.ServiceCategory.objects.filter(category_choice='bcs', service_category__service_assigned_service__user=request.user)
+    service_category = models.ServiceCategory.objects.filter(category_choice='bcs',
+                                                             service_category__service_assigned_service__user=request.user)
     user_lists = models.User.objects.filter(is_bcs=True)
     services = models.Service.objects.filter(category_choice='bcs', service_assigned_service__user=request.user)
 
@@ -1477,7 +1547,7 @@ def bcsAdminNewOrdersView(request):
                                                         inputinfo=data_list[data])
                 input_data.save()
                 order = models.Order.objects.get_or_create(user=current_customer, order_status='new',
-                                                           service=current_service)
+                                                           service=current_service, category_choice='bcs')
 
                 order[0].subserviceinput.add(input_data)
         for files in file_list:
@@ -1490,16 +1560,16 @@ def bcsAdminNewOrdersView(request):
                                                     inputinfo=uploaded_file_url)
             input_data.save()
             order = models.Order.objects.get_or_create(user=current_customer, order_status='new',
-                                                       service=current_service)
+                                                       service=current_service, category_choice='bcs')
 
             order[0].subserviceinput.add(input_data)
 
         order = models.Order.objects.get_or_create(user=current_customer, order_status='new',
-                                                   service=current_service)
-
+                                                   service=current_service, category_choice='bcs')
+        print(order)
         order_staff = models.OrderStaff.objects.get_or_create(staff=request.user, order=order[0])
         order_staff[0].save()
-        return HttpResponseRedirect(reverse('bcs_admin_orders'))
+        return HttpResponseRedirect(reverse('bcs_admin_quotations'))
     context = {
         'service_category': service_category,
         'services': services,
@@ -1512,23 +1582,30 @@ def bcsAdminNewOrdersView(request):
 @user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
                   redirect_field_name='/account/profile/')
 def bcsAdminOrdersDetailView(request, id):
-    try:
-        current_order = models.Order.objects.get(id=id, orderstaff_order__staff=request.user)
-        form = forms.OrderPriceForm(instance=current_order)
-        if request.method == 'POST':
-            form = forms.OrderPriceForm(request.POST, instance=current_order)
-            if form.is_valid():
-                current_order.order_status = 'on_progress'
-                new_staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
-                form.save()
-                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    if request.user.is_superuser or request.user.is_bcs_head:
+        current_order = models.Order.objects.get(id=id)
         context = {
             'current_order': current_order,
-            'form': form,
         }
         return render(request, 'admin_panel/bcsTF/order_detail.html', context)
-    except:
-        return HttpResponse("You don't have permission to view this page!")
+    else:
+        try:
+            current_order = models.Order.objects.get(id=id, orderstaff_order__staff=request.user)
+            form = forms.OrderPriceForm(instance=current_order)
+            if request.method == 'POST':
+                form = forms.OrderPriceForm(request.POST, instance=current_order)
+                if form.is_valid():
+                    current_order.order_status = 'on_progress'
+                    # new_staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
+                    form.save()
+                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            context = {
+                'current_order': current_order,
+                'form': form,
+            }
+            return render(request, 'admin_panel/bcsTF/order_detail.html', context)
+        except:
+            return HttpResponse("You don't have permission to view this page!")
 
 
 @user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
@@ -1540,13 +1617,13 @@ def bcsAdminOrderNewView(request, id):
         #     Q(id=id, orderstaff_order__staff=request.user, orderstaff_order__staff__is_staff=True,
         #       orderstaff_order__staff__is_sales_head=True) | Q(id=id, orderstaff_order__staff__is_superuser=True) | Q(
         #         id=id, orderstaff_order__staff__is_staff=True, orderstaff_order__staff__is_sales_head=True))
-        current_order = models.Order.objects.get(Q(id=id, orderstaff_order__staff=request.user,
-                                                   orderstaff_order__staff__is_staff=True,
-                                                   orderstaff_order__staff__is_sales=True) |
-                                                 Q(id=id, orderstaff_order__staff=request.user,
-                                                   orderstaff_order__staff__is_staff=True,
-                                                   orderstaff_order__staff__is_superuser=True))
-        # print(request.user.is_superuser)
+        if request.user.is_superuser or request.user.is_bcs_head:
+            current_order = models.Order.objects.get(id=id)
+        else:
+            current_order = models.Order.objects.get(id=id, orderstaff_order__staff=request.user,
+                                                     orderstaff_order__staff__is_staff=True,
+                                                     orderstaff_order__staff__is_sales=True)
+        # print(request.user.is_bcs_head)
         current_order.order_status = 'new'
         current_order.price = 0
         # if current_order.orderstaff_order.exists():
@@ -1562,16 +1639,16 @@ def bcsAdminOrderNewView(request, id):
                   redirect_field_name='/account/profile/')
 def bcsAdminOrderAttendingView(request, id):
     try:
-        current_order = models.Order.objects.get(Q(id=id, orderstaff_order__staff=request.user,
-                                                   orderstaff_order__staff__is_staff=True,
-                                                   orderstaff_order__staff__is_sales=True) |
-                                                 Q(id=id, orderstaff_order__staff=request.user,
-                                                   orderstaff_order__staff__is_staff=True,
-                                                   orderstaff_order__staff__is_superuser=True))
+        if request.user.is_superuser or request.user.is_bcs_head:
+            current_order = models.Order.objects.get(id=id)
+        else:
+            current_order = models.Order.objects.get(id=id, orderstaff_order__staff=request.user,
+                                                     orderstaff_order__staff__is_staff=True,
+                                                     orderstaff_order__staff__is_sales=True)
 
         current_order.order_status = 'attending'
         current_order.save()
-        staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
+        # staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
     except:
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
@@ -1581,16 +1658,16 @@ def bcsAdminOrderAttendingView(request, id):
                   redirect_field_name='/account/profile/')
 def bcsAdminOrderCompletedView(request, id):
     try:
-        current_order = models.Order.objects.get(Q(id=id, orderstaff_order__staff=request.user,
-                                                   orderstaff_order__staff__is_staff=True,
-                                                   orderstaff_order__staff__is_sales=True) |
-                                                 Q(id=id, orderstaff_order__staff=request.user,
-                                                   orderstaff_order__staff__is_staff=True,
-                                                   orderstaff_order__staff__is_superuser=True))
+        if request.user.is_superuser or request.user.is_bcs_head:
+            current_order = models.Order.objects.get(id=id)
+        else:
+            current_order = models.Order.objects.get(id=id, orderstaff_order__staff=request.user,
+                                                     orderstaff_order__staff__is_staff=True,
+                                                     orderstaff_order__staff__is_sales=True)
 
         current_order.order_status = 'completed'
         current_order.save()
-        staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
+        # staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
     except:
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
@@ -1600,16 +1677,16 @@ def bcsAdminOrderCompletedView(request, id):
                   redirect_field_name='/account/profile/')
 def bcsAdminOrderCanceledView(request, id):
     try:
-        current_order = models.Order.objects.get(Q(id=id, orderstaff_order__staff=request.user,
-                                                   orderstaff_order__staff__is_staff=True,
-                                                   orderstaff_order__staff__is_sales=True) |
-                                                 Q(id=id, orderstaff_order__staff=request.user,
-                                                   orderstaff_order__staff__is_staff=True,
-                                                   orderstaff_order__staff__is_superuser=True))
+        if request.user.is_superuser or request.user.is_bcs_head:
+            current_order = models.Order.objects.get(id=id)
+        else:
+            current_order = models.Order.objects.get(id=id, orderstaff_order__staff=request.user,
+                                                     orderstaff_order__staff__is_staff=True,
+                                                     orderstaff_order__staff__is_sales=True)
 
         current_order.order_status = 'canceled'
         current_order.save()
-        staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
+        # staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
     except:
         return HttpResponseRedirect(request.META['HTTP_REFERER'])

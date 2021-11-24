@@ -167,6 +167,7 @@ order_status = (
 
 
 class Order(models.Model):
+    category_choice = models.CharField(choices=category_choice, max_length=255)
     subserviceinput = models.ManyToManyField(
         UserSubserviceInput, related_name='order_subservice')
     service = models.ForeignKey(

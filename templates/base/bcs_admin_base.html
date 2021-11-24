@@ -97,6 +97,12 @@
                         </a>
                     </li>
                     <div class="div"></div>
+                    <li data-tootik="Quotations" data-tootik-conf="right">
+                        <a href="{% host_url 'bcs_admin_quotations' %}" class="nav-link">
+                            <i class="icofont-cube"></i> <span class="nav-text">Quotations</span>
+                        </a>
+                    </li>
+                    <div class="div"></div>
                     <li data-tootik="order" data-tootik-conf="right">
                         <a href="{% host_url 'bcs_admin_orders' %}" class="nav-link">
                             <i class="icofont-cube"></i> <span class="nav-text">order</span>
@@ -205,6 +211,12 @@
                         </a>
                     </li>
                 {% elif user.is_sales or user.is_sales_head %}
+                    <li data-tootik="Quotations" data-tootik-conf="right">
+                        <a href="{% host_url 'bcs_admin_quotations' %}" class="nav-link">
+                            <i class="icofont-cube"></i> <span class="nav-text">Quotations</span>
+                        </a>
+                    </li>
+                    <div class="div"></div>
                     <li data-tootik="order" data-tootik-conf="right">
                         <a href="{% host_url 'bcs_admin_orders' %}" class="nav-link">
                             <i class="icofont-cube"></i> <span class="nav-text">order</span>
