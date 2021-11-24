@@ -346,8 +346,8 @@ def userServicesView(request):
         if request.method == 'POST':
             data_list = request.POST
             file_list = request.FILES
-            print(data_list)
-            print(file_list)
+            # print(data_list)
+            # print(file_list)
 
             current_service = get_object_or_404(models.Service, service_title=data_list['service_name'])
 
@@ -389,7 +389,7 @@ def userServicesView(request):
                 current_staff = models.User.objects.get(id=person)
                 order_staff = models.OrderStaff.objects.create(staff=current_staff, order=order[0])
                 order_staff.save()
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            return render(request, 'user_panel/bcs/thanks.html')
         context = {
             'service_category': service_category,
             'services': services,
@@ -688,41 +688,44 @@ def mainAdminOrdersView(request):
 @user_passes_test(main_admin_permission_check_order_page, login_url='/accounts/login/',
                   redirect_field_name='/account/profile/')
 def mainAdminOrdersDetailView(request, id):
-    current_order = models.Order.objects.get(id=id)
-
     try:
-        order_staff = models.OrderStaff.objects.get(order=current_order)
-        form1 = forms.OrderAssignForm(instance=order_staff)
-    except:
-        form1 = forms.OrderAssignForm()
+        current_order = models.Order.objects.get(id=id)
 
-    form2 = forms.OrderPriceForm(instance=current_order)
-    if request.method == 'POST':
-        if 'assign-btn' in request.POST:
-            try:
-                form1 = forms.OrderAssignForm(request.POST, instance=order_staff)
-            except:
-                form1 = forms.OrderAssignForm(request.POST)
-            if form1.is_valid():
-                form = form1.save(commit=False)
-                form.order = current_order
-                form.save()
-                current_order.order_status = 'assigned'
-                current_order.save()
-                return HttpResponseRedirect(request.META['HTTP_REFERER'])
-        elif 'price-btn' in request.POST:
-            form2 = forms.OrderPriceForm(request.POST, instance=current_order)
-            if form2.is_valid():
-                current_order.order_status = 'on_progress'
-                new_staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
-                form2.save()
-                return HttpResponseRedirect(request.META['HTTP_REFERER'])
-    context = {
-        'current_order': current_order,
-        'form1': form1,
-        'form2': form2,
-    }
-    return render(request, 'admin_panel/mainTF/order_detail.html', context)
+        try:
+            order_staff = models.OrderStaff.objects.get(order=current_order)
+            form1 = forms.OrderAssignForm(instance=order_staff)
+        except:
+            form1 = forms.OrderAssignForm()
+
+        form2 = forms.OrderPriceForm(instance=current_order)
+        if request.method == 'POST':
+            if 'assign-btn' in request.POST:
+                try:
+                    form1 = forms.OrderAssignForm(request.POST, instance=order_staff)
+                except:
+                    form1 = forms.OrderAssignForm(request.POST)
+                if form1.is_valid():
+                    form = form1.save(commit=False)
+                    form.order = current_order
+                    form.save()
+                    current_order.order_status = 'assigned'
+                    current_order.save()
+                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            elif 'price-btn' in request.POST:
+                form2 = forms.OrderPriceForm(request.POST, instance=current_order)
+                if form2.is_valid():
+                    current_order.order_status = 'on_progress'
+                    new_staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
+                    form2.save()
+                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        context = {
+            'current_order': current_order,
+            'form1': form1,
+            'form2': form2,
+        }
+        return render(request, 'admin_panel/mainTF/order_detail.html', context)
+    except:
+        return HttpResponse("You don't have permission to view this page")
 
 
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
@@ -1461,7 +1464,7 @@ def bcsAdminNewOrdersView(request):
         data_list = request.POST
         file_list = request.FILES
         current_customer = models.User.objects.get(email=data_list.get('customer'))
-        print(current_customer)
+        # print(current_customer)
         # print(data_list)
         # print(file_list)
 
@@ -1494,9 +1497,9 @@ def bcsAdminNewOrdersView(request):
         order = models.Order.objects.get_or_create(user=current_customer, order_status='new',
                                                    service=current_service)
 
-        order_staff = models.OrderStaff.objects.create(staff=request.user, order=order[0])
-        order_staff.save()
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        order_staff = models.OrderStaff.objects.get_or_create(staff=request.user, order=order[0])
+        order_staff[0].save()
+        return HttpResponseRedirect(reverse('bcs_admin_orders'))
     context = {
         'service_category': service_category,
         'services': services,
