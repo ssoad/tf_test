@@ -127,18 +127,21 @@
                         </div>
 
                         <div class="col-6 col-lg-2 d-flex justify-content-center align-items-center">
-                            <a href="
-
-
-                                    {% host_url reading_list.post.category|replacespace host 'blog' %}{{ reading_list.post.post_url }}"
-                               class="btn btn-sm bg-navy text-white px-2 py-2">Read Full</a>
+                            <a href="{% host_url reading_list.post.category|replacespace host 'blog' %}{{ reading_list.post.post_url }}"
+                              target="_blank" class="btn btn-sm bg-navy text-white px-2 py-2">Read Full</a>
                         </div>
                     </div>
                 {% endfor %}
+                
                 {% if user.reading_list_user.all.count > 2 %}
-                                <div class="btn-area d-flex justify-content-end">
-                                    <button type="button" id="prev-btn" class="btn btn-outline-navy px-3 py-1 me-3">Previous</button>
+                                <div class="btn-area d-flex justify-content-between">
+                                    <span class="fw-light text-secondary">Showing Content (<span id="current-events-no">1-2</span>) out
+                            of {{user.reading_list_user.all.count}}
+                            </span>
+                                    <div>
+                                        <button type="button" id="prev-btn" class="btn btn-outline-navy px-3 py-1 me-3">Previous</button>
                                     <button type="button" id="next-btn" class="btn btn-outline-navy px-3 py-1">Next</button>
+                                    </div>
                                 </div>
                 {% endif %}
             {% else %}
@@ -238,6 +241,7 @@
 {% endblock content %} {% block customjs %}
     <script src="{% static '' %}tfjs/user_panel/html2pdf.bundle.min.js"></script>
     <script>
+    let totalReadings = '{{user.reading_list_user.all.count}}';
         function generatePDF(btn) {
             btn.classList.add('d-none');
             // Choose the element that our invoice is rendered in.
@@ -251,6 +255,7 @@
                 document.querySelectorAll('.orders .invoice-btn')[index].classList.remove('d-none');
             })
         });
+        let currentEventsNo = document.getElementById('current-events-no');
         let updateActiveRow = (slide) => {
             rows.forEach(row => {
                 row.classList.add('d-none');
@@ -262,8 +267,12 @@
             if (activeState >= rows.length || activeState < 0) {
                 activeState = 0;
             }
+            if(activeState < parseInt(totalReadings))
             rows[activeState].classList.remove('d-none');
+            if(activeState+1 < parseInt(totalReadings))
             rows[activeState + 1].classList.remove('d-none');
+
+            currentEventsNo.textContent = (activeState + 1) + '-' + ((activeState + 2) >= totalReadings ? '' : (activeState + 2));
 
             if (slide == 'right') {
                 rows[activeState].classList.add('slide-right');
@@ -278,6 +287,7 @@
         let rows = document.querySelectorAll('.reading-list .row');
         let prev = document.getElementById('prev-btn');
         let next = document.getElementById('next-btn');
+
         let activeState = 0;
 
         updateActiveRow('right');
