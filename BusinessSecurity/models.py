@@ -22,7 +22,8 @@ category_choice = (
 
 class ServiceCategory(models.Model):
     category_choice = models.CharField(choices=category_choice, max_length=255)
-    category_name = models.CharField(max_length=264, verbose_name='Category Name')
+    category_name = models.CharField(
+        max_length=264, verbose_name='Category Name')
 
     # category_description = models.TextField(max_length=1000, verbose_name='Category Description')
 
@@ -35,16 +36,23 @@ class ServiceCategory(models.Model):
 
 class Service(models.Model):
     category_choice = models.CharField(choices=category_choice, max_length=255)
-    category = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE, related_name='service_category')
-    service_icon = models.ImageField(upload_to='service_icon/', verbose_name='Service Icon')
-    service_title = models.CharField(max_length=264, verbose_name='Service Title')
-    short_description = models.TextField(max_length=1000, verbose_name='Short Description')
+    category = models.ForeignKey(
+        ServiceCategory, on_delete=models.CASCADE, related_name='service_category')
+    service_icon = models.ImageField(
+        upload_to='service_icon/', verbose_name='Service Icon')
+    service_title = models.CharField(
+        max_length=264, verbose_name='Service Title')
+    short_description = models.TextField(
+        max_length=1000, verbose_name='Short Description')
     service_header = HTMLField(verbose_name='Service Header', blank=True)
     service_body = HTMLField(verbose_name='Service Body', blank=True)
     service_footer = HTMLField(verbose_name='Service Footer', blank=True)
-    has_sub_service = models.BooleanField(default=True, verbose_name='Has Sub Services')
-    is_subscription_based = models.BooleanField(default=False, verbose_name='Is Subscription Based')
-    total_customer = models.IntegerField(verbose_name='Total Customer', default=0, blank=True)
+    has_sub_service = models.BooleanField(
+        default=True, verbose_name='Has Sub Services')
+    is_subscription_based = models.BooleanField(
+        default=False, verbose_name='Is Subscription Based')
+    total_customer = models.IntegerField(
+        verbose_name='Total Customer', default=0, blank=True)
 
     def __str__(self):
         return self.service_title + '-' + self.category_choice
@@ -54,15 +62,18 @@ class Service(models.Model):
 
 
 class ServiceAssigned(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='service_assigned_user')
-    service = models.ManyToManyField(Service, related_name='service_assigned_service')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='service_assigned_user')
+    service = models.ManyToManyField(
+        Service, related_name='service_assigned_service')
 
     class Meta:
         verbose_name_plural = 'Service Assigned'
 
 
 class Tracking(models.Model):
-    service = models.OneToOneField(Service, on_delete=models.CASCADE, related_name='tracking_service')
+    service = models.OneToOneField(
+        Service, on_delete=models.CASCADE, related_name='tracking_service')
     persons = models.TextField(blank=True)
 
 
@@ -96,18 +107,22 @@ class SelectChoice(models.Model):
 class SelectChoiceRelation(models.Model):
     input_field = models.ForeignKey(InputFields, on_delete=models.CASCADE,
                                     related_name='selectchoicerelation_inputfield')
-    choice_field = models.ManyToManyField(SelectChoice, related_name='selectchoicerelation_selectchoice')
+    choice_field = models.ManyToManyField(
+        SelectChoice, related_name='selectchoicerelation_selectchoice')
 
     def __str__(self):
         return f'{self.input_field.type} - {self.input_field.placeholder}'
 
 
 class SubService(models.Model):
-    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='subservice_service')
-    fields = models.ManyToManyField(InputFields, related_name='subservice_inputfields', through='SubServiceInput')
+    service = models.ForeignKey(
+        Service, on_delete=models.CASCADE, related_name='subservice_service')
+    fields = models.ManyToManyField(
+        InputFields, related_name='subservice_inputfields', through='SubServiceInput')
     title = models.CharField(max_length=264, verbose_name='Title')
     # description = models.TextField(verbose_name='Description')
-    total_customer = models.IntegerField(verbose_name='Total Customer', default=0, blank=True)
+    total_customer = models.IntegerField(
+        verbose_name='Total Customer', default=0, blank=True)
 
     def __str__(self):
         return self.title
@@ -117,8 +132,10 @@ class SubService(models.Model):
 
 
 class SubServiceInput(models.Model):
-    subservice = models.ForeignKey(SubService, on_delete=models.CASCADE, related_name='subserviceinput_subservice')
-    inputfield = models.ForeignKey(InputFields, on_delete=models.CASCADE, related_name='subserviceinput_inputfield')
+    subservice = models.ForeignKey(
+        SubService, on_delete=models.CASCADE, related_name='subserviceinput_subservice')
+    inputfield = models.ForeignKey(
+        InputFields, on_delete=models.CASCADE, related_name='subserviceinput_inputfield')
 
     # input_value = models.CharField(max_length=264, blank=True, null=True)
 
@@ -127,8 +144,10 @@ class SubServiceInput(models.Model):
 
 
 class UserSubserviceInput(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_subservice_input')
-    inputfield = models.ForeignKey(SubServiceInput, on_delete=models.CASCADE, related_name='inputfield_input')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='user_subservice_input')
+    inputfield = models.ForeignKey(
+        SubServiceInput, on_delete=models.CASCADE, related_name='inputfield_input')
     inputinfo = models.CharField(max_length=255)
 
 
@@ -148,10 +167,14 @@ order_status = (
 
 
 class Order(models.Model):
-    subserviceinput = models.ManyToManyField(UserSubserviceInput, related_name='order_subservice')
-    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='order_service')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='order_user')
-    order_status = models.CharField(max_length=250, choices=order_status, default='new')
+    subserviceinput = models.ManyToManyField(
+        UserSubserviceInput, related_name='order_subservice')
+    service = models.ForeignKey(
+        Service, on_delete=models.CASCADE, related_name='order_service')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='order_user')
+    order_status = models.CharField(
+        max_length=250, choices=order_status, default='new')
     order_date = models.DateTimeField(auto_now_add=True)
     price = models.PositiveIntegerField(default=0)
 
@@ -163,8 +186,10 @@ class Order(models.Model):
 
 
 class OrderStaff(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='orderstaff_order')
-    staff = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orderstaff_user')
+    order = models.ForeignKey(
+        Order, on_delete=models.CASCADE, related_name='orderstaff_order')
+    staff = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='orderstaff_user')
 
 
 ticket_type = (
@@ -178,12 +203,14 @@ ticket_status = (
 
 
 class Ticket(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ticket_user')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='ticket_user')
     ticket_type = models.CharField(max_length=255, choices=ticket_type)
     ticket_category = models.CharField(max_length=255, verbose_name='Category')
     ticket_title = models.CharField(max_length=255, verbose_name='Title')
     ticket_description = HTMLField(verbose_name='Description')
-    ticket_attachment = models.ImageField(verbose_name='Attachment', upload_to='ticket/')
+    ticket_attachment = models.ImageField(
+        verbose_name='Attachment', upload_to='ticket/')
     ticket_status = models.CharField(max_length=255, choices=ticket_status)
     ticket_date = models.DateTimeField(auto_now_add=True)
 
@@ -192,13 +219,17 @@ class Ticket(models.Model):
 
 
 class TicketStaff(models.Model):
-    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name='ticketstaff_order')
-    staff = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ticketstaff_user')
+    ticket = models.ForeignKey(
+        Ticket, on_delete=models.CASCADE, related_name='ticketstaff_order')
+    staff = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='ticketstaff_user')
 
 
 class TicketComment(models.Model):
-    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name='ticketcomment_ticket')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ticketcomment_user')
+    ticket = models.ForeignKey(
+        Ticket, on_delete=models.CASCADE, related_name='ticketcomment_ticket')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='ticketcomment_user')
     comment = HTMLField()
     comment_date = models.DateTimeField(auto_now_add=True)
 
@@ -208,12 +239,14 @@ class TicketComment(models.Model):
 
 class SubscriptionBasedPackage(models.Model):
     service_id = models.ForeignKey(Service, on_delete=models.CASCADE)
-    package_name = models.CharField(max_length=264, verbose_name='Package Name')
+    package_name = models.CharField(
+        max_length=264, verbose_name='Package Name')
     servers = models.IntegerField()
     websites = models.IntegerField()
     workstations = models.IntegerField()
     duration = models.IntegerField()
-    duration_type = models.CharField(choices=duration_type, max_length=264, default='month')
+    duration_type = models.CharField(
+        choices=duration_type, max_length=264, default='month')
     price = models.IntegerField()
 
     def __str__(self):
@@ -224,8 +257,10 @@ class SubscriptionBasedPackage(models.Model):
 
 
 class SubscriptionFeatures(models.Model):
-    package = models.ForeignKey(SubscriptionBasedPackage, on_delete=models.CASCADE, related_name='feature_subscription')
-    feature_name = models.CharField(max_length=264, verbose_name='Feature Name')
+    package = models.ForeignKey(
+        SubscriptionBasedPackage, on_delete=models.CASCADE, related_name='feature_subscription')
+    feature_name = models.CharField(
+        max_length=264, verbose_name='Feature Name')
 
     def __str__(self):
         return self.feature_name
@@ -235,8 +270,10 @@ class SubscriptionFeatures(models.Model):
 
 
 class UserAllowed(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='allowed_user')
-    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='allowed_service')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='allowed_user')
+    service = models.ForeignKey(
+        Service, on_delete=models.CASCADE, related_name='allowed_service')
 
     def __str__(self):
         return f"{self.user.full_name} - {self.service.service_title}"
@@ -255,7 +292,7 @@ industry_type = (
     ('educational_institutes', 'Educational Institute'),
     ('isp_companies', 'ISP Companies'),
     ('ecommerce_business', 'Ecommerce Business'),
-    ('law_farm', 'Law Farm'),
+    ('law_firm', 'Law Firm'),
     ('small_and_medium_business', 'Small and Medium Business'),
     ('health_care_institutes', 'Health Care Institutes'),
 )
@@ -271,7 +308,8 @@ class Business(models.Model):
     company_name = models.CharField(max_length=264)
     company_logo = models.ImageField(upload_to='company/')
     website = models.URLField(max_length=264, default='https://')
-    business_size = models.IntegerField(default=10, verbose_name='Number of Employees')
+    business_size = models.IntegerField(
+        default=10, verbose_name='Number of Employees')
     created_date = models.DateTimeField(auto_now_add=True)
     unique_id = models.UUIDField(unique=True, default=uuid.uuid4)
 
@@ -283,8 +321,10 @@ class Business(models.Model):
 
 
 class UsersBusiness(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='business_user')
-    business = models.ForeignKey(Business, on_delete=models.CASCADE, related_name='business_business')
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name='business_user')
+    business = models.ForeignKey(
+        Business, on_delete=models.CASCADE, related_name='business_business')
     position = models.CharField(max_length=264)
     privilege = models.CharField(max_length=264, choices=privilege)
     joined_date = models.DateTimeField(auto_now_add=True)
@@ -330,8 +370,10 @@ class Events(models.Model):
 
 
 class RegisteredEvents(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='registered_event_user')
-    event = models.ForeignKey(Events, on_delete=models.CASCADE, related_name='registered_event_event')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='registered_event_user')
+    event = models.ForeignKey(
+        Events, on_delete=models.CASCADE, related_name='registered_event_event')
 
     def __str__(self):
         return f'{self.user} - {self.event}'
