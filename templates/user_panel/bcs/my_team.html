@@ -58,11 +58,24 @@
                     <div class="col-md-9">
                         <div class="company-detail d-grid align-items-center">
                             <h4>{{ current_business.business.company_name }}</h4>
-                            <p class="mb-1">company type: {{ current_business.business.industry_type|capitalize }}</p>
-                            <p class="mb-1">Website: 
-                            <a href="{{ current_business.business.website }}">{{ current_business.business.website }}</a>
-                            </p>
-                            <p>company size: {{ current_business.business.business_size }}</p>
+                            <div class="row mx-0">
+                                <div class="col ps-0">
+                                    <p class="mb-1">Company
+                                        Type: {{ current_business.business.industry_type|capitalize }}</p>
+                                    <p class="mb-1">Website:
+                                        <a href="{{ current_business.business.website }}"
+                                           target="_blank">{{ current_business.business.website }}</a>
+                                    </p>
+                                    <p class="mb-1">No of Employees: {{ current_business.business.business_size }}</p>
+                                </div>
+                                <div class="col">
+                                    <p class="mb-1">Phone: {{ current_business.business.phone_number }}</p>
+                                    <p class="mb-1">Email: {{ current_business.business.email }}</p>
+                                    <p class="mb-1">Address: {{ current_business.business.address }}</p>
+                                </div>
+                            </div>
+
+
                         </div>
                     </div>
                 </div>
@@ -71,7 +84,7 @@
         <!-- Modal -->
         <div class="modal fade" id="imageChangeModal" tabindex="-1" aria-labelledby="imageChangeModalLabel"
              aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="imageChangeModalLabel">Change Company Logo</h5>
@@ -92,7 +105,7 @@
         <!-- Modal -->
         <div class="modal fade" id="infoChangeModal" tabindex="-1" aria-labelledby="infoChangeModalLabel"
              aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="infoChangeModalLabel">Change Company Information</h5>

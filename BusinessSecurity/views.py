@@ -1160,12 +1160,12 @@ def bcsAdminSubServiceFormEditView(request, id):
     return render(request, 'admin_panel/bcsTF/editForm.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
-def bcsAdminReadingListView(request):
-    context = {
-
-    }
-    return render(request, 'admin_panel/bcsTF/readingList.html', context)
+# @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+# def bcsAdminReadingListView(request):
+#     context = {
+#
+#     }
+#     return render(request, 'admin_panel/bcsTF/readingList.html', context)
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
@@ -1254,7 +1254,7 @@ def bcsAdminSubscriptionPackFeatureDelete(request, id):
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
-def bcsAdminIndividualUser(request):
+def bcsAdminIndividualBusiness(request):
     businesses = models.Business.objects.all()
     context = {
         'businesses': businesses,
@@ -1263,7 +1263,7 @@ def bcsAdminIndividualUser(request):
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
-def bcsAdminIndividualUserPanel(request, id):
+def bcsAdminIndividualBusinessPanel(request, id):
     current_business = models.Business.objects.get(id=id)
     orders = models.Order.objects.filter(user__business_user__business_id=id)
 
@@ -1323,15 +1323,15 @@ def bcsAdminProfile(request):
     return render(request, 'admin_panel/bcsTF/myProfile.html')
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
-def bcsAdminUserInterest(request):
-    users_list = User.objects.all()
-    interests = Interest.objects.filter(user__is_bcs=True)
-    context = {
-        'users_list': users_list,
-        'interests': interests,
-    }
-    return render(request, 'admin_panel/bcsTF/userInterest.html', context)
+# @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+# def bcsAdminUserInterest(request):
+#     users_list = User.objects.all()
+#     interests = Interest.objects.filter(user__is_bcs=True)
+#     context = {
+#         'users_list': users_list,
+#         'interests': interests,
+#     }
+#     return render(request, 'admin_panel/bcsTF/userInterest.html', context)
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')

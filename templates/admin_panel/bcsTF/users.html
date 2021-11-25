@@ -1,7 +1,7 @@
 {% extends 'base/bcs_admin_base.html' %} {% load static %}
 {% load my_filter %}
 {% load hosts %}
-{% block title %} BCS Admin Users
+{% block title %} BCS Admin Business
 {% endblock title %}
 
 {% block headercss %}
@@ -58,7 +58,7 @@
             <div class="row">
                 <div class="col-lg-12" style="margin-top: 5rem;margin-bottom: 10rem; position: relative;">
                     <div class="float-start heading mb-3 position-absolute" style="z-index: 1;">
-                        <h2 class=" text-uppercase d-inline me-5">ALL USERS</h2>
+                        <h2 class=" text-uppercase d-inline me-5">ALL BUSINESS</h2>
                     </div>
                     <table id="all-user-info" class="table table-bordered display service nowrap" style="width:100%">
                         <thead>
@@ -80,7 +80,7 @@
                                 <td>{{ business.business_size }}</td>
                                 <td>{{ business.created_date|date }}</td>
                                 <td>
-                                    <a href="{% host_url 'bcs_admin_individual_user_panel' id=business.id %}"
+                                    <a href="{% host_url 'bcs_admin_individual_business_panel' id=business.id %}"
                                        class="btn view">
                                         <i class="bi bi-eye-fill text-success rounded-circle activites-icon"></i>
                                     </a>
