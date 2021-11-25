@@ -141,12 +141,12 @@
     <div class="px-2 ps-lg-3 py-3">
         {% block content %} {% endblock content %}
     </div>
-    <footer id="footer-small" class="footer py-4 position-sticky top-100">
-        <div class="d-flex justify-content-center">
+    <footer class="footer row mx-0 py-4 position-sticky top-100">
+        <div class="col-md-4 d-flex justify-content-center">
             <a href="{% host_url 'policy' %}" class="me-5">PRIVACY POLICY</a>
             <a href="{% host_url 'terms' %}">TERMS OF USE</a>
         </div>
-        <div class="d-flex justify-content-center align-items-center">
+        <div class="col-md-3 d-flex justify-content-center align-items-center py-2">
             <a href="https://www.facebook.com/techforing/">
                 <!-- <img src="{% static '' %}tfimg/user_panel/facebook.png" class="me-3" alt=""> -->
                 <i class="icofont-facebook me-3 text-navy"></i>
@@ -164,7 +164,7 @@
                 <i class="icofont-instagram me-3 text-navy"></i>
             </a>
         </div>
-        <div class="p-3 p pb-2 text-center">
+        <div class="col-md-4 p-2 pb-2 text-center">
             <p>Copyright © 2021 Techforing Ltd.
             </p>
         </div>
