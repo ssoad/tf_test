@@ -31,7 +31,7 @@
                 <tr>
                     <td>{{ forloop.counter }}</td>
                     <td>{{ order.id }}</td>
-                    <td>{{ order.service }}</td>
+                    <td>{{ order.service.service_title }}</td>
                     <td>{{ order.user }}</td>
                     {% if order.order_status == 'new' %}
                         <td><p class="badge bg-primary">{{ order.order_status|capitalize }}</p></td>

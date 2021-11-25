@@ -309,6 +309,9 @@ class Business(models.Model):
     company_name = models.CharField(max_length=264)
     company_logo = models.ImageField(upload_to='company/')
     website = models.URLField(max_length=264, default='https://')
+    phone_number = models.CharField(max_length=264, default='+')
+    email = models.EmailField(max_length=264, default='email@email.com')
+    address = models.TextField()
     business_size = models.IntegerField(
         default=10, verbose_name='Number of Employees')
     created_date = models.DateTimeField(auto_now_add=True)

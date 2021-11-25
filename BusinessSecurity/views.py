@@ -1255,19 +1255,21 @@ def bcsAdminSubscriptionPackFeatureDelete(request, id):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminIndividualUser(request):
-    users = models.User.objects.filter(is_bcs=True)
+    businesses = models.Business.objects.all()
     context = {
-        'users': users,
+        'businesses': businesses,
     }
     return render(request, 'admin_panel/bcsTF/users.html', context)
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminIndividualUserPanel(request, id):
-    current_user = models.User.objects.get(id=id)
+    current_business = models.Business.objects.get(id=id)
+    orders = models.Order.objects.filter(user__business_user__business_id=id)
 
     context = {
-        'current_user': current_user,
+        'current_business': current_business,
+        'orders': orders,
     }
     return render(request, 'admin_panel/bcsTF/userPanel.html', context)
 
