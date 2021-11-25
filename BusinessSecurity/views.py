@@ -328,7 +328,7 @@ def userDashboardView(request):
         events = models.Events.objects.filter(status='active')
         registered_event = models.RegisteredEvents.objects.filter(user=request.user).values_list('event', flat=True)
         orders = models.Order.objects.filter(
-            Q(user=request.user) & ~Q(Q(order_status='new') | Q(order_status='attending'))).order_by('-order_date')
+            Q(user=request.user) & ~Q(Q(order_status='new') | Q(order_status='attending'))).order_by('-order_date')[:2]
         context = {
             'events': events,
             'registered_event': registered_event,
@@ -1066,7 +1066,7 @@ def bcsAdminServiceEditView(request, id):
 def bcsAdminSubServiceView(request):
     form = forms.AddSubServiceForm()
     sub_services = models.SubService.objects.all()
-    print(request.POST)
+    # print(request.POST)
     if request.method == 'POST':
         form = forms.AddSubServiceForm(request.POST)
         if form.is_valid():
@@ -1274,33 +1274,33 @@ def bcsAdminIndividualBusinessPanel(request, id):
     return render(request, 'admin_panel/bcsTF/userPanel.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
-def bcsAdminList(request):
-    permission_form = SelectBCSPermissionForm()
-    admin_list = Permissions.objects.filter(admin_type='bcs_admin')
-    super_admin_count = Permissions.objects.filter(admin_type='bcs_admin', is_superadmin=True).count()
-    admin_count = Permissions.objects.filter(admin_type='bcs_admin', is_admin=True).count()
-    moderator_count = Permissions.objects.filter(admin_type='bcs_admin', is_moderator=True).count()
-    editor_count = Permissions.objects.filter(admin_type='bcs_admin', is_editor=True).count()
-    if request.method == 'POST':
-        try:
-            permission_form = SelectBCSPermissionForm(request.POST)
-            admin_type = 'bcs_admin'
-            form = permission_form.save(commit=False)
-            form.admin_type = admin_type
-            form.save()
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
-        except:
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
-    context = {
-        'permission_form': permission_form,
-        'admin_list': admin_list,
-        'super_admin_count': super_admin_count,
-        'admin_count': admin_count,
-        'moderator_count': moderator_count,
-        'editor_count': editor_count,
-    }
-    return render(request, 'admin_panel/bcsTF/adminUsers.html', context)
+# @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+# def bcsAdminList(request):
+#     permission_form = SelectBCSPermissionForm()
+#     admin_list = Permissions.objects.filter(admin_type='bcs_admin')
+#     super_admin_count = Permissions.objects.filter(admin_type='bcs_admin', is_superadmin=True).count()
+#     admin_count = Permissions.objects.filter(admin_type='bcs_admin', is_admin=True).count()
+#     moderator_count = Permissions.objects.filter(admin_type='bcs_admin', is_moderator=True).count()
+#     editor_count = Permissions.objects.filter(admin_type='bcs_admin', is_editor=True).count()
+#     if request.method == 'POST':
+#         try:
+#             permission_form = SelectBCSPermissionForm(request.POST)
+#             admin_type = 'bcs_admin'
+#             form = permission_form.save(commit=False)
+#             form.admin_type = admin_type
+#             form.save()
+#             return HttpResponseRedirect(request.META['HTTP_REFERER'])
+#         except:
+#             return HttpResponseRedirect(request.META['HTTP_REFERER'])
+#     context = {
+#         'permission_form': permission_form,
+#         'admin_list': admin_list,
+#         'super_admin_count': super_admin_count,
+#         'admin_count': admin_count,
+#         'moderator_count': moderator_count,
+#         'editor_count': editor_count,
+#     }
+#     return render(request, 'admin_panel/bcsTF/adminUsers.html', context)
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
@@ -1319,7 +1319,7 @@ def bcsAdminEdit(request, id):
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
-def bcsAdminProfile(request):
+def bcsAdminProfile(request, id):
     return render(request, 'admin_panel/bcsTF/myProfile.html')
 
 

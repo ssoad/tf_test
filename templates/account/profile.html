@@ -1,4 +1,6 @@
-{% extends 'base/pcs_user_base.html' %}{% load hosts %} {% load static %} {% load crispy_forms_tags %} {% block title %} Profile {% endblock title %} {% block content %}
+{% extends 'base/pcs_user_base.html' %}{% load hosts %} {% load static %} {% load crispy_forms_tags %}
+{% block title %} Profile {% endblock title %}
+{% block content %}
 <style>
     .profile-area {
         text-align: left;
@@ -144,7 +146,8 @@
     </section>
 
 </div>
-{% endblock content %} {% block customjs %}
+{% endblock content %}
+{% block customjs %}
 <script>
     document.querySelector('main>div').classList.value = ''
     let infoValues = document.querySelectorAll('.profile-info .info-value');

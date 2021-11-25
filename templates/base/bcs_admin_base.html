@@ -139,26 +139,32 @@
                         </ul>
                     </li>
                     <div class="div"></div>
-                    <li data-tootik="users & admin" data-tootik-conf="right">
-                        <span class="nav-link dropdown-btn dropdown-toggle" id="navbarDropdown" role="button"
-                              data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-people-fill"></i>
-                            <span class="nav-text">Business & admin</span>
-                        </span>
-                        <ul class="dropdown-container" aria-labelledby="navbarDropdown">
-                            <li>
-                                <a href="{% host_url 'bcs_admin_individual_business' %}" class="dropdown-item nav-link">
-                                    Business
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{% host_url 'bcs_admin_list' %}" class="dropdown-item nav-link">
-                                    admin users
-                                </a>
-                            </li>
-                        </ul>
+                    <li data-tootik="Businesses" data-tootik-conf="right">
+                        <a href="{% host_url 'bcs_admin_individual_business' %}" class="nav-link">
+                            <i class="icofont-cube"></i> <span class="nav-text">Businesses</span>
+                        </a>
                     </li>
                     <div class="div"></div>
+{#                    <li data-tootik="users & admin" data-tootik-conf="right">#}
+{#                        <span class="nav-link dropdown-btn dropdown-toggle" id="navbarDropdown" role="button"#}
+{#                              data-bs-toggle="dropdown" aria-expanded="false">#}
+{#                            <i class="bi bi-people-fill"></i>#}
+{#                            <span class="nav-text">Business & admin</span>#}
+{#                        </span>#}
+{#                        <ul class="dropdown-container" aria-labelledby="navbarDropdown">#}
+{#                            <li>#}
+{#                                <a href="{% host_url 'bcs_admin_individual_business' %}" class="dropdown-item nav-link">#}
+{#                                    Business#}
+{#                                </a>#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                <a href="{% host_url 'bcs_admin_list' %}" class="dropdown-item nav-link">#}
+{#                                    admin users#}
+{#                                </a>#}
+{#                            </li>#}
+{#                        </ul>#}
+{#                    </li>#}
+{#                    <div class="div"></div>#}
 {#                    <li data-tootik="Reading List" data-tootik-conf="right">#}
 {#                        <a href="{% host_url 'bcs_admin_reading_list' %}" class="nav-link">#}
 {#                            <i class="bi bi-file-earmark-fill"></i>#}

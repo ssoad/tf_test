@@ -165,6 +165,13 @@ order_status = (
     ('canceled', 'Canceled'),
 )
 
+payment_method = (
+    ('paypal', 'Paypal'),
+    ('bank_check', 'Bank Check'),
+    ('card', 'Card'),
+    ('cash', 'Cash'),
+)
+
 
 class Order(models.Model):
     category_choice = models.CharField(choices=category_choice, max_length=255)
@@ -178,6 +185,7 @@ class Order(models.Model):
         max_length=250, choices=order_status, default='new')
     order_date = models.DateTimeField(auto_now_add=True)
     price = models.PositiveIntegerField(default=0)
+    payment_method = models.CharField(choices=payment_method, max_length=255)
 
 
 #

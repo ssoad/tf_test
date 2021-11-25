@@ -63,6 +63,7 @@
                     <table id="all-user-info" class="table table-bordered display service nowrap" style="width:100%">
                         <thead>
                         <tr>
+                            <th>No</th>
                             <th>Company name</th>
                             <th>Company type</th>
                             <th>Website</th>
@@ -74,6 +75,7 @@
                         <tbody>
                         {% for business in businesses %}
                             <tr>
+                                <td>{{ forloop.counter }}</td>
                                 <td>{{ business.company_name }}</td>
                                 <td>{{ business.industry_type|capitalize }}</td>
                                 <td><a href="{{ business.website }}" target="_blank">Website</a></td>
