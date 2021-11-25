@@ -160,7 +160,11 @@ cursor: pointer;
                     filterOption.appendChild(newOption)
                 })
             })
-    })
+    });
+
+        document.getElementById('id_post_url').addEventListener('keyup', (e) => {
+            e.target.value = e.target.value.replace(/([^a-zA-z0-9-_]+)/g, "");
+            });
     </script>
 
 {% endblock customjs %}

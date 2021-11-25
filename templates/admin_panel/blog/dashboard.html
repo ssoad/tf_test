@@ -42,7 +42,7 @@
                         <tbody>
                         {% for post in posts %}
                             <tr>
-                                <td data-tootik="{{post.title}}" data-tootik-conf="top"><a href="{% host_url 'articles' name=post.post_url %}" class="part fw-bold">{{ post.title|truncatechars:40 }}</a></td>
+                                <td data-tootik="{{post.title}}" data-tootik-conf="right"><a href="{% host_url 'articles' name=post.post_url %}" class="part fw-bold">{{ post.title|truncatechars:40 }}</a></td>
                                 <td>{{ post.author }}</td>
                                 <td>{{ post.category }}</td>
                                 <td>{{ post.total_view }}</td>
@@ -57,8 +57,6 @@
                                 </td>
                             </tr>
                         {% endfor %}
-
-
                         </tbody>
                     </table>
                 </div>
@@ -70,5 +68,4 @@
 {% block customjs %}
     <!-- custom scripts -->
     <script src="{% static 'tfjs/admin_panel/blog/dashboard.js' %}"></script>
-
 {% endblock customjs %}
