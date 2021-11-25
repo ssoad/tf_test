@@ -1,6 +1,6 @@
 {% extends 'base/bcs_admin_base.html' %} {% load static %}
 {% load my_filter %}
-{% block title %} BCS Admin-User Panel
+{% block title %} BCS Admin-Business Panel
 {% endblock title %}
 
 {% block headercss %}
@@ -97,10 +97,18 @@
                                 <span>{{ current_business.business_size }}</span>
                             </li>
                         </div>
-                        <li>
+                        <div class="">
+                            <li>
                             <i class="bi bi-building"></i>
                             <span>{{ current_business.industry_type|capitalize }}</span>
                         </li>
+                            <li>
+                            <i class="bi bi-geo-alt-fill"></i>
+                            <span>{{ current_business.address }}</span>
+                        </li>
+                        </div>
+
+
                     </div>
                 </div>
             </div>
