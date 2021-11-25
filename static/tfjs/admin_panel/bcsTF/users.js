@@ -93,15 +93,6 @@ $(document).ready(function () {
     $("#all-user-info").DataTable({
         scrollX: true,
         info: false,
-        columnDefs: [{
-            className: 'select-checkbox',
-            orderable: false,
-            targets: [0]
-        }],
-        select: {
-            style:    'multi+shift',
-            selector: 'td:first-child'
-        },
         sorting: false,
         oLanguage: {
             sLengthMenu: "Sub-service list",
