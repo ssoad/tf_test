@@ -234,10 +234,13 @@
             document.querySelector('.w-80').style.width = contentWidth;
         }
 
-        if(expanded == 'true')
+        let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+        if(width>991){
+            if(expanded == 'true')
             showLinkText();
         else 
             hideLinkText();
+        }
 
         expandedBtn.addEventListener('click', e => {
             expanded = expanded == 'true' ? 'false' : 'true';
