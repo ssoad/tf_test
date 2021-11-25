@@ -1,6 +1,8 @@
 {% extends 'base/blog_base.html' %} {% load my_filter %} {% load static %}{% load hosts %} {% block title %}
     {{ path|capitalize }} {% endblock title %} {% block headercss %}
     <link rel="stylesheet" href="{% static 'tfcss/blog/category.css' %}">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
     <style>
         .banner-1 .banner-bg {
             color: white;
@@ -48,10 +50,8 @@
                                      data-bs-parent="#accordionFlush">
                                     <div class="accordion-body">
                                         {% for filter_option in subcategory.filter_subcategory.all %}
-                                            <a class="fw-bold" href="
-
-
-                                                    {% host_url 'category' host 'blog' %}{{ path }}/{{ subcategory|replacespace }}/{{ filter_option|replacespace }}">{{ filter_option }}</a> {% endfor %}
+                                            <a class="fw-bold" href="{% host_url 'category' host 'blog' %}{{ path }}/{{ subcategory|replacespace }}/{{ filter_option|replacespace }}">{{ filter_option }}</a> 
+                                        {% endfor %}
                                     </div>
                                 </div>
 
@@ -93,30 +93,14 @@
                 </li>
             </ul>
         </div>
-        {% comment %} {% if filter_options %}
-            <div class="dropdown ms-5">
-                <button class="btn border border-secondary text-navy bg-white dropdown-toggle" type="button"
-                        id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
-                    Filter By Sub Category
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                    {% for filter_option in filter_options %}
-                        <li>
-                            <button class="dropdown-item" onclick="location.reload()"
-                                    type="button">{{ filter_option }} </button>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %} {% endcomment %}
     </div>
 
     {% if path|capitalize|upper != 'PODCAST' %}
-        <section class="important-posts mt-4  px-md-0">
+        <section class="important-posts mt-4 px-2 px-md-0">
             <a href="" class="container-heading">MOST IMPORTANT {{ path|capitalize|upper }}</a>
             <div class="bg-light">
                 <div class="row mx-0 align-items-stretch post-container">
-                    <div class="col-md-4">
+                    <div class="col-md-4 ps-md-0">
                         {% for post in important_posts %} {% if forloop.counter == 2 or forloop.counter == 3 %}
                             <a href="{% host_url path host 'blog' %}{{ post.post_url }}"
                                class="url-wrapper {% if forloop.counter == 2 %}mb-30p{% endif %} size gradient">
@@ -129,7 +113,7 @@
                         </span>
                                     <span class="ms-2">
                             <i class="bi bi-stopwatch"></i>
-                            3 min.
+                            {{post.reading_time}}
                         </span>
                                 </div>
                             </a>
@@ -149,13 +133,13 @@
                         </span>
                                     <span class="ms-2">
                             <i class="bi bi-stopwatch"></i>
-                            3 min.
+                            {{post.reading_time}}
                         </span>
                                 </div>
                             </a>
                         {% endfor %}
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 pe-md-0">
                         {% for post in important_posts %} {% if forloop.counter == 4 or forloop.counter == 5 %}
                             <a href="{% host_url path host 'blog' %}{{ post.post_url }}"
                                class="url-wrapper {% if forloop.counter == 4 %}mb-30p{% endif %} size gradient">
@@ -168,7 +152,7 @@
                         </span>
                                     <span class="ms-2">
                             <i class="bi bi-stopwatch"></i>
-                            3 min.
+                            {{post.reading_time}}
                         </span>
                                 </div>
                             </a>
@@ -184,7 +168,7 @@
         <a href="" class="container-heading mb-3">RECENT {{ path|capitalize|upper }}</a>
         <div class="posts row row-cols-1 row-cols-md-3 g-5">
             {% for post in posts %}
-                <div class="post col">
+                <div class="post col" data-aos="fade-up">
                     <div class="card h-100">
 
                         {% if reading_lists.exists %}
@@ -270,8 +254,9 @@
 {% endblock content %}
 {% block customjs %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
+    AOS.init();
         let importantPosts = document.querySelector('.important-posts');
         let recentPosts = document.querySelector('.recent-posts .posts');
         let filteredPosts = document.querySelector('.recent-posts .filtered-posts');

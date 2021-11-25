@@ -58,8 +58,10 @@
                     <div class="col-md-9">
                         <div class="company-detail d-grid align-items-center">
                             <h4>{{ current_business.business.company_name }}</h4>
-                            <p>company type: {{ current_business.business.industry_type|capitalize }}</p>
-                            <p>{{ current_business.business.website }}</p>
+                            <p class="mb-1">company type: {{ current_business.business.industry_type|capitalize }}</p>
+                            <p class="mb-1">Website: 
+                            <a href="{{ current_business.business.website }}">{{ current_business.business.website }}</a>
+                            </p>
                             <p>company size: {{ current_business.business.business_size }}</p>
                         </div>
                     </div>
@@ -162,17 +164,13 @@
                                     aria-label="Close"></button>
                         </div>
                         <div class="modal-body px-5 pb-5">
-                            <h4 class="px-3 fw-bold text-center">INVITE USERS FOR TRAINING PROGRAM
-                            </h4>
+                            <h4 class="px-3 fw-bold text-center">Invite Members for Your Team</h4>
                             <h5 class="text-green text-center">You can invite 15(max.) colleagues as per quotation</h5>
 
                             <h5 class="mt-3">Email(Required):</h5>
                             <form action="/email_invitation/" method="post" onkeydown="return event.key != 'Enter';">
                                 {% csrf_token %}
                                 <div class="email-container d-flex flex-wrap justify-content-start align-items-start align-content-start border border-dark fs-7 p-2 h-200p">
-                                    <div class="email">
-                                        <span>biyogafsana@gmail.com <span class="remove-email">&Cross;</span></span>
-                                    </div>
                                     <div class="email">
                                         <span>salekin.techforing@gmail.com <span
                                                 class="remove-email">&Cross;</span></span>
