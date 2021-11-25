@@ -1,13 +1,13 @@
 {% extends 'base/bcs_user_base.html' %} {% load static %} {% load my_filter %} {% load hosts %} {% block title %}
-    Subscriptions {% endblock title %} {% block content %}
+{{ message }} {% endblock title %} {% block content %}
 
     <section class="orders pb-5">
-        <h4 class="pt-2 fw-bold border-bottom border-gray pb-14p">Your Order History</h4>
+        <h4 class="pt-2 fw-bold border-bottom border-gray pb-14p">Your {{ message }} History</h4>
         <div class="mt-5">&nbsp;</div>
         {% if not orders.exists %}
-            <h3 class="text-center text-gray my-5 py-5 h-100">No Order History Found!</h3>
+            <h3 class="text-center text-gray my-5 py-5 h-100">No {{ message }} History Found!</h3>
             <div class="d-flex my-2 justify-content-center">
-                <a href="{% host_url 'bcs_user_services' %}" class="btn btn-outline-navy">Make an Order</a>
+                <a href="{% host_url 'bcs_user_services' %}" class="btn btn-outline-navy">Get a Quotation</a>
             </div>
         {% else %}
             <table id="order-table" class="table table-bordered">
