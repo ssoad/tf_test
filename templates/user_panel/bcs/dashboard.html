@@ -1,6 +1,14 @@
 {% extends 'base/bcs_user_base.html' %} {% load static %}
 {% load my_filter %}
-{% load hosts %} {% block title %} Dashboard {% endblock title %} {% block content %}
+{% load hosts %} {% block title %} Dashboard {% endblock title %}
+{% block headercss %}
+    <style>
+    tbody, td, tfoot, th, thead, tr {
+        border-style: none !important;
+    }
+    </style>
+ {% endblock headercss %}
+{% block content %}
     <div class="dashboard-container overflow-hidden ps-md-2">
         <section class="dashboard-heading">
             <h3 class="fw-bold">Hello, {{ user.full_name }}</h3>
@@ -251,14 +259,11 @@
                         </div>
                     </div>
                 {% endfor %}
-
-
             </div>
-
         </section>
     </div>
 {% endblock content %} {% block customjs %}
-    <script src="{% static '' %}tfjs/user_panel/html2pdf.bundle.min.js"></script>
+    <script src="{% static 'tfjs/user_panel/html2pdf.bundle.min.js' %}"></script>
     <script>
         let totalReadings = '{{user.reading_list_user.all.count}}';
 
