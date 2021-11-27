@@ -262,7 +262,8 @@
             </div>
         </section>
     </div>
-{% endblock content %} {% block customjs %}
+{% endblock content %}
+{% block customjs %}
     <script src="{% static 'tfjs/user_panel/html2pdf.bundle.min.js' %}"></script>
     <script>
         let totalReadings = '{{user.reading_list_user.all.count}}';
