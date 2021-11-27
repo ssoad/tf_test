@@ -13,7 +13,7 @@ class AddServiceCategoryForm(forms.ModelForm):
 
 class AddServiceForm(forms.ModelForm):
     category = forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-select'}),
-                                      queryset=models.ServiceCategory.objects.all())
+                                      queryset=models.ServiceCategory.objects.filter(category_choice='bcs'))
 
     # assign_to = forms.ModelChoiceField(widget=forms.SelectMultiple(attrs={'class': 'form-select js-example-basic-multiple'}), queryset=models.User.objects.filter(is_sales=True))
 
@@ -32,7 +32,7 @@ class AddForm(forms.ModelForm):
 
 
 class AddSubServiceForm(forms.ModelForm):
-    service = forms.ModelChoiceField(queryset=models.Service.objects.filter(has_sub_service=True),
+    service = forms.ModelChoiceField(queryset=models.Service.objects.filter(has_sub_service=True, category_choice='bcs'),
                                      widget=forms.Select(attrs={'class': 'form-select'}))
 
     class Meta:

@@ -976,7 +976,7 @@ def bcsAdminDashboardView(request):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminServiceCategoryView(request):
-    categories = models.ServiceCategory.objects.all()
+    categories = models.ServiceCategory.objects.filter(category_choice='bcs')
     form = forms.AddServiceCategoryForm()
 
     if request.method == 'POST':
@@ -996,14 +996,14 @@ def bcsAdminServiceCategoryView(request):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminServiceCategoryDeleteView(request, id):
-    current_category = models.ServiceCategory.objects.get(id=id)
+    current_category = models.ServiceCategory.objects.get(id=id, category_choice='bcs')
     current_category.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminServiceCategoryEditView(request, id):
-    current_category = models.ServiceCategory.objects.get(id=id)
+    current_category = models.ServiceCategory.objects.get(id=id, category_choice='bcs')
     form = forms.AddServiceCategoryForm(instance=current_category)
 
     if request.method == 'POST':
@@ -1022,7 +1022,7 @@ def bcsAdminServiceCategoryEditView(request, id):
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminServiceView(request):
     form = forms.AddServiceForm()
-    services = models.Service.objects.all()
+    services = models.Service.objects.filter(category_choice='bcs')
     if request.method == 'POST':
         form = forms.AddServiceForm(request.POST, request.FILES)
         if form.is_valid():
@@ -1065,8 +1065,7 @@ def bcsAdminServiceEditView(request, id):
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminSubServiceView(request):
     form = forms.AddSubServiceForm()
-    sub_services = models.SubService.objects.all()
-    # print(request.POST)
+    sub_services = models.SubService.objects.filter(service__category_choice='bcs')
     if request.method == 'POST':
         form = forms.AddSubServiceForm(request.POST)
         if form.is_valid():

@@ -3,7 +3,8 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from Academy.models import Course, Section, Content
 from Academy.forms import CourseCreateForm, SectionCreateForm, ContentCreateForm
 from django.core.paginator import Paginator
-from BusinessSecurity.models import Events, RegisteredEvents
+from BusinessSecurity import models, forms
+from PersonalSecurity import forms as pcsforms
 
 
 # Create your views here.
@@ -13,11 +14,9 @@ def superuser_permission_check(user):
 
 def pcs_admin_permission_check(user):
     try:
-        return user.is_superuser or ((
-                                             user.permission_user.is_superadmin or user.permission_user.is_admin or user.permission_user.is_moderator or user.permission_user.is_editor) and (
-                                             user.permission_user.admin_type == 'pcs_admin' or user.permission_user.admin_type == 'main_admin'))
+        return user.is_staff and user.is_superuser or user.is_pcs_head
     except:
-        return user.is_superuser
+        return user.is_staff and user.is_superuser
 
 
 def personalSecurityView(request):
@@ -145,16 +144,18 @@ def openTicketView(request):
     }
     return render(request, 'user_panel/pcs/ticket.html', context)
 
+
 def ticketDetailView(request):
     context = {
 
     }
     return render(request, 'user_panel/pcs/ticket_detail.html', context)
 
+
 @login_required
 def userDashboardView(request):
-    events = Events.objects.filter(status='active')
-    registered_event = RegisteredEvents.objects.filter(user=request.user).values_list('event', flat=True)
+    events = models.Events.objects.filter(status='active')
+    registered_event = models.RegisteredEvents.objects.filter(user=request.user).values_list('event', flat=True)
 
     context = {
         'events': events,
@@ -288,8 +289,184 @@ def pcsAdminDashboard(request):
     return render(request, 'admin_panel/pcsTF/dashboard.html')
 
 
-def pcsAdminService(request):
-    return render(request, 'admin_panel/pcsTF/service.html')
+@user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def pcsAdminServiceCategoryView(request):
+    categories = models.ServiceCategory.objects.filter(category_choice='pcs')
+    form = forms.AddServiceCategoryForm()
+    if request.method == 'POST':
+        form = forms.AddServiceCategoryForm(request.POST)
+        if form.is_valid():
+            category = form.save(commit=False)
+            category.category_choice = 'pcs'
+            category.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+    context = {
+        'form': form,
+        'categories': categories,
+    }
+    return render(request, 'admin_panel/pcsTF/serviceCategory.html', context)
+
+
+@user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def pcsAdminServiceCategoryDeleteView(request, id):
+    current_category = models.ServiceCategory.objects.get(id=id, category_choice='pcs')
+    current_category.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def pcsAdminServiceCategoryEditView(request, id):
+    current_category = models.ServiceCategory.objects.get(id=id, category_choice='pcs')
+    form = forms.AddServiceCategoryForm(instance=current_category)
+
+    if request.method == 'POST':
+        form = forms.AddServiceCategoryForm(request.POST, instance=current_category)
+        if form.is_valid():
+            form.save()
+
+            return HttpResponseRedirect(reverse('pcs_admin_services_category'))
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'admin_panel/pcsTF/editForm.html', context)
+
+
+@user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def pcsAdminServiceView(request):
+    form = pcsforms.AddServiceForm()
+    services = models.Service.objects.filter(category_choice='pcs')
+    if request.method == 'POST':
+        form = pcsforms.AddServiceForm(request.POST, request.FILES)
+        if form.is_valid():
+            service = form.save(commit=False)
+            service.category_choice = 'pcs'
+            service.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    context = {
+        'form': form,
+        'services': services,
+    }
+    return render(request, 'admin_panel/pcsTF/service.html', context)
+
+
+@user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def pcsAdminServiceDeleteView(request, id):
+    current_service = models.Service.objects.get(id=id)
+    current_service.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def pcsAdminServiceEditView(request, id):
+    current_service = models.Service.objects.get(id=id)
+    form = pcsforms.AddServiceForm(instance=current_service)
+
+    if request.method == 'POST':
+        form = pcsforms.AddServiceForm(request.POST, request.FILES, instance=current_service)
+        if form.is_valid():
+            form.save()
+
+            return HttpResponseRedirect(reverse('pcs_admin_services'))
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'admin_panel/pcsTF/editForm.html', context)
+
+
+@user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def pcsSubServiceFormView(request):
+    form = forms.AddForm()
+    form_lists = models.InputFields.objects.all()
+    select_choices = list(models.SelectChoice.objects.all().values('id', 'choices'))
+
+    if request.method == 'POST':
+        form = forms.AddForm(request.POST)
+        if form.is_valid():
+            current_input = form.save()
+            current_input_field = models.InputFields.objects.get(id=current_input.id)
+            if request.POST.getlist('options'):
+                for i in request.POST.getlist('options'):
+                    field = models.SelectChoice.objects.get(id=i)
+                    new_choices = models.SelectChoiceRelation.objects.get_or_create(input_field=current_input_field)
+                    new_choices[0].choice_field.add(field)
+                    new_choices[0].save()
+
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    context = {
+        'form': form,
+        'form_lists': form_lists,
+        'select_choices': select_choices,
+    }
+    return render(request, 'admin_panel/pcsTF/subserviceForms.html', context)
+
+
+@user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def pcsAdminSubServiceFormDeleteView(request, id):
+    input_field = models.InputFields.objects.get(id=id)
+    input_field.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def pcsAdminSubServiceFormEditView(request, id):
+    current_input_field = models.InputFields.objects.get(id=id)
+    form = forms.AddForm(instance=current_input_field)
+
+    if request.method == 'POST':
+        form = forms.AddForm(request.POST, instance=current_input_field)
+        if form.is_valid():
+            form.save()
+
+            return HttpResponseRedirect(reverse('pcs_admin_sub_services_form'))
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'admin_panel/pcsTF/editForm.html', context)
+
+
+# Not worked from here
+@user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def pcsAdminSubServiceView(request):
+    form = pcsforms.AddSubServiceForm()
+    sub_services = models.SubService.objects.filter(service__category_choice='pcs')
+    if request.method == 'POST':
+        form = pcsforms.AddSubServiceForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    context = {
+        'form': form,
+        'sub_services': sub_services,
+    }
+    return render(request, 'admin_panel/pcsTF/subService.html', context)
+
+
+@user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def pcsAdminSubServiceDeleteView(request, id):
+    current_sub_service = models.SubService.objects.get(id=id)
+    current_sub_service.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def pcsAdminSubServiceEditView(request, id):
+    current_sub_service = models.SubService.objects.get(id=id)
+    form = pcsforms.AddSubServiceForm(instance=current_sub_service)
+
+    if request.method == 'POST':
+        form = pcsforms.AddSubServiceForm(request.POST, instance=current_sub_service)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('pcs_admin_sub_services'))
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'admin_panel/pcsTF/editForm.html', context)
 
 
 def pcsAdminSubService(request):
