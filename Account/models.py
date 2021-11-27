@@ -39,7 +39,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=100, verbose_name='Email', unique=True, blank=False)
     full_name = models.CharField(verbose_name='Full Name', max_length=100)
     phone_number = PhoneNumberField(verbose_name="Phone Number")
-    country = CountryField(verbose_name="Country", max_length=50)
+    country = models.CharField(verbose_name="Country", max_length=50, blank=True)
     profile_pic = models.ImageField(upload_to='users/', default='users/default.jpg')
     birth_date = models.DateField(verbose_name='Birth Date', blank=True, null=True)
     date_joined = models.DateTimeField(verbose_name='Date Joined', auto_now_add=True)

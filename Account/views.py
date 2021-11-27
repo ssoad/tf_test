@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, HttpResponseRedirect, reverse
+from django.shortcuts import render, redirect, HttpResponseRedirect, reverse, HttpResponse
 from Account import models, forms
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
@@ -59,49 +59,112 @@ def login_executed(redirect_to):
 def profileView(request):
     current_user = request.user
     interests = models.Interest.objects.get(user=current_user)
-    form = forms.InterestForm(instance=interests)
-    if not current_user.phone_number \
-            or not current_user.country \
-            or not current_user.phone_number \
-            or not current_user.birth_date \
-            or not current_user.gender:
 
-        emails = current_user.emailaddress_set.all
+    email_verify = request.user.emailaddress_set.all()
+
+    def userFunc():
+        form = forms.InterestForm(instance=interests)
         if not current_user.phone_number \
-                or not current_user.country:
+                or not current_user.country \
+                or not current_user.birth_date \
+                or not current_user.gender:
+
             form = forms.CountryPhoneForm(instance=current_user)
-            message = 'Add Country and Phone Number'
+            message = 'Fill your information below.'
+            success = 'Your Email is verified. Please Provide These Information:'
             if request.POST:
                 form = forms.CountryPhoneForm(request.POST, instance=current_user)
                 if form.is_valid():
                     form.save()
                     return HttpResponseRedirect(request.META['HTTP_REFERER'])
-        elif not current_user.birth_date \
-                or not current_user.gender:
-            form = forms.BirthDateGenderForm(instance=current_user)
-            message = 'Add Date of Birth and Gender'
-            if request.POST:
-                form = forms.BirthDateGenderForm(request.POST, instance=current_user)
+            context = {
+                'form': form,
+                'message': message,
+                'success': success,
+            }
+            return render(request, 'account/profile-info-add.html', context)
+        else:
+            if request.method == 'POST':
+                form = forms.InterestForm(request.POST, instance=interests)
                 if form.is_valid():
                     form.save()
                     return HttpResponseRedirect(request.META['HTTP_REFERER'])
-        context = {
-            'emails': emails,
-            'form': form,
-            'message': message,
-        }
-        return render(request, 'account/profile-info-add.html', context)
+            context = {
+                # 'interests': interests,
+                'form': form,
+            }
+            return render(request, 'account/profile.html', context)
+
+    if email_verify.exists():
+        for email in email_verify:
+            if not email.verified:
+                message = 'Email Unverified. Please Check your Email Inbox/Spam Folder for Verification Link'
+                context = {
+                    'message': message,
+                }
+                return render(request, 'account/profile-info-add.html', context)
+            else:
+                return userFunc()
     else:
-        if request.method == 'POST':
-            form = forms.InterestForm(request.POST, instance=interests)
-            if form.is_valid():
-                form.save()
-                return HttpResponseRedirect(request.META['HTTP_REFERER'])
-        context = {
-            # 'interests': interests,
-            'form': form,
-        }
-        return render(request, 'account/profile.html', context)
+        return userFunc()
+
+
+# @login_required
+# def profileView(request):
+#     current_user = request.user
+#     interests = models.Interest.objects.get(user=current_user)
+#     form = forms.InterestForm(instance=interests)
+#     email_verify = request.user.emailaddress_set.all()
+#     for email in email_verify:
+#         if not email.verified:
+#             message = 'Email Unverified. Please Check your Email Inbox/Spam Folder for Verification Link'
+#             context = {
+#                 'message': message,
+#             }
+#             return render(request, 'account/profile-info-add.html', context)
+#         else:
+#             if not current_user.phone_number \
+#                     or not current_user.country \
+#                     or not current_user.phone_number \
+#                     or not current_user.birth_date \
+#                     or not current_user.gender:
+#
+#                 emails = current_user.emailaddress_set.all
+#                 if not current_user.phone_number \
+#                         or not current_user.country:
+#                     form = forms.CountryPhoneForm(instance=current_user)
+#                     message = 'Add Country and Phone Number'
+#                     if request.POST:
+#                         form = forms.CountryPhoneForm(request.POST, instance=current_user)
+#                         if form.is_valid():
+#                             form.save()
+#                             return HttpResponseRedirect(request.META['HTTP_REFERER'])
+#                 elif not current_user.birth_date \
+#                         or not current_user.gender:
+#                     form = forms.BirthDateGenderForm(instance=current_user)
+#                     message = 'Add Date of Birth and Gender'
+#                     if request.POST:
+#                         form = forms.BirthDateGenderForm(request.POST, instance=current_user)
+#                         if form.is_valid():
+#                             form.save()
+#                             return HttpResponseRedirect(request.META['HTTP_REFERER'])
+#                 context = {
+#                     'emails': emails,
+#                     'form': form,
+#                     'message': message,
+#                 }
+#                 return render(request, 'account/profile-info-add.html', context)
+#             else:
+#                 if request.method == 'POST':
+#                     form = forms.InterestForm(request.POST, instance=interests)
+#                     if form.is_valid():
+#                         form.save()
+#                         return HttpResponseRedirect(request.META['HTTP_REFERER'])
+#                 context = {
+#                     # 'interests': interests,
+#                     'form': form,
+#                 }
+#                 return render(request, 'account/profile.html', context)
 
 
 @login_required

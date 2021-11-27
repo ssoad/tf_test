@@ -31,7 +31,8 @@
             
             .menubar {
                 list-style-type: none;
-                padding: 10px 2px;
+                padding: 10px;
+                padding-left: 0;
                 z-index: 9;
             }
             
@@ -1013,22 +1014,23 @@
             /* footer  */
             
             footer {
-                width: 95%;
-                margin-left: auto
+                /* width: 95%; */
+                margin-left: auto;
             }
             
             footer a {
                 text-decoration: none;
-                color: white;
+                color: rgb(0, 0, 0);
             }
             
             footer {
-                background-color: #182f59;
+                background-color: #ffffff;
                 padding: 1px 0px 0px 0px;
-                color: white;
+                color: rgb(0, 0, 0);
                 display: grid;
                 grid-template-columns: 1fr 1fr 1fr;
                 align-items: center;
+                box-shadow: 1px 1px 5px 1px grey;
             }
             
             footer a i {
@@ -1097,12 +1099,6 @@
                     width: 95%;
                     margin-left: 5%;
                 }
-                /* .modal-backdrop.show {
-                    opacity: 0.9;
-                    margin-left: 18%;
-                    margin-top: 5%;
-                }
-                */
                 .modal-dialog {
                     padding-left: 5%;
                     padding-top: 80px;

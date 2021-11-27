@@ -1,23 +1,23 @@
-let menuItemsName = ['dashboard', 'services', 'order', 'subscriptions', 'events', 'notifications', 'settings'];
+let menuItemsName = ['dashboard', 'services', 'order', 'subscriptions', 'events', 'notifications', 'ticket'];
 let url = window.location.href;
 menuItemsName.forEach((item, index) => {
 
     if (url.includes(item)) {
         let style = document.createElement('style');
         style.innerHTML = `
-        .menubar li:nth-child(${index + 1}):not(:last-child) {
+        .menubar li:nth-child(${index + 1}) {
             background-color: #151331;
                     border-radius: 5px;
                     border-bottom: none;
                     position: relative;
         }
-        .menubar li:nth-child(${index + 1}):not(:last-child) i {
+        .menubar li:nth-child(${index + 1}) i {
                     color: white;
                 }
-                .menubar li:nth-child(${index + 1}):not(:last-child) a {
+                .menubar li:nth-child(${index + 1}) a {
                     color: white;
                 }
-                ..menubar li:nth-child(${index + 1}):not(:last-child)::after {
+                ..menubar li:nth-child(${index + 1})::after {
                     content: '';
                     height: 4px;
                     background-color: white;

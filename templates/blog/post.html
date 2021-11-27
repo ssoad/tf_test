@@ -12,6 +12,10 @@
 <meta property="og:image:type" content="image/png" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:image" content="https://main.techforing.com/media/{{post.feature_image}}" />
+<!-- Add the slick-theme.css if you want default styling -->
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<!-- Add the slick-theme.css if you want default styling -->
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
 
 <link rel="stylesheet" href="{% static 'tfcss/blog/post.css' %}">
 <style>
@@ -118,6 +122,14 @@
             background-color: #00000057;
         }
     }
+    .slick-prev:before, .slick-next:before {
+        font-size: 40px;
+        color: var(--navy)
+    }
+.slick-prev:before {
+    position: relative;
+    left: -20px
+}
 </style>
 <!-- for social share icons  -->
 
@@ -133,7 +145,7 @@
             <div>
                 <div class="mt-4 align-items-center">
                     <span class="me-3">{{post.date|date}}</span>
-                    <span class="me-3">3min. read</span>
+                    <span class="me-3">{{post.reading_time}} read</span>
                 </div>
                 <br>
                 <div class="d-flex position-relative">
@@ -144,21 +156,25 @@
                         <h6 class="fw-bold">Share this post to:</h6>
                         <div class="social-share" data-social-share></div>
                     </div>
-                    {% if post.id not in reading_lists %}
+                    {% if user.is_authenticated %}
+                    {% if post.id in reading_lists %}
+                    <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}" class="me-3">
+                        <button class="btn btn-danger rounded-pill fs-6" title="Add to my reading list">
+                            <i class="bi bi-dash-circle me-1"></i>
+                            Remove
+                        </button>
+                    </a>
+                        
+                        {% else %}
                         <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}" class="add-to-list me-3">
                         <button class="btn fs-6" title="Add to my reading list">
                             <i class="bi bi-plus-circle me-1"></i>
                             Save
                         </button>
                     </a>
-                        {% else %}
-                        <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}" class="me-3">
-                        <button class="btn btn-danger rounded-pill fs-6" title="Add to my reading list">
-                            <i class="bi bi-dash-circle me-1"></i>
-                            Remove
-                        </button>
-                    </a>
                     {% endif %}
+                    {% endif %}
+                    
 
 
                 </div>
@@ -183,7 +199,6 @@
                 <a href="">Business Cybersecurity</a>
                 <a href="">Case Studies</a>
             </div>
-
         </section>
         <div class="row mx-0 pt-3">
             <div class="sticky-top d-none d-md-block col-md-2 post-content">
@@ -207,6 +222,7 @@
                 </button>
 
                 <div id="comment-box" class="d-none my-3">
+                {% if user.is_authenticated %}
                     <h6 class="fw-bold">Leave a Comment</h6>
                     <p> We'd love to hear from you! Your comment(s) will appear instantly on the live site. Your email address will not be published.
                     </p>
@@ -246,6 +262,10 @@
                     <section class="my-5 container d-flex justify-content-center">
                         <button id="load-more-btn" class="btn btn-navy rounded-pill">Load More</button>
                     </section>
+                    {% else %}
+                        <a href="{%host_url 'account_login'%}"><h6 class="fw-bold">Please Login First</h6></a>
+                    {% endif %}
+
                 {% endif %}
             </div>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw==" crossorigin="anonymous" />
@@ -260,6 +280,9 @@
                                 <a href="{% host_url category host 'blog' %}{{post.post_url}}">
                                     <h6 class="fw-bold fs-7">{{post.title}}</h6>
                                 </a>
+                                <p class="fs-7 lh-sm">
+                                {{ post.short_description|truncatechars:140 }}
+                            </p>
                             </div>
                         </div>
                     </div>
@@ -428,13 +451,12 @@
         }
         window.onload = function() {
             $('.center').slick({
-                dots: false,
-                infinite: true,
                 slidesToShow: 3,
                 slidesToScroll: 3,
                 centerMode: true,
-                centerPadding: '60px',
-                arrows: false,
+                centerPadding: '30px',
+                dots: true,
+                speed: 300,
                 responsive: [
     {
       breakpoint: 1024,

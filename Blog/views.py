@@ -9,11 +9,14 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 
 # Create your views here.
 def permission_check(user):
-    return user.is_staff or user.is_superuser and user.is_active
+    try:
+        return user.is_staff and user.is_superuser or user.is_blogger
+    except:
+        return user.is_staff and user.is_superuser
 
 
 # Admin Section Start Here
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def adminDashboardView(request):
     posts = models.Post.objects.all()
     context = {
@@ -23,7 +26,7 @@ def adminDashboardView(request):
     return render(request, 'admin_panel/blog/dashboard.html', context)
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def adminBlogFormView(request):
     form = forms.PostForm()
     tag_list = models.Tags.objects.all()
@@ -103,7 +106,7 @@ def adminBlogFormView(request):
     return render(request, 'admin_panel/blog/blogForm.html', context)
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def adminBlogEditFormView(request, id):
     current_post = models.Post.objects.get(id=id)
     form = forms.PostForm(instance=current_post)
@@ -184,7 +187,7 @@ def adminBlogEditFormView(request, id):
     return render(request, 'admin_panel/blog/blogForm.html', context)
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def adminBlogView(request):
     context = {
 
@@ -192,7 +195,7 @@ def adminBlogView(request):
     return render(request, 'admin_panel/blog/blogView.html')
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def adminCategoryListView(request):
     categories = models.BlogCategory.objects.all()
     sub_categories = models.BlogSubCategory.objects.all()
@@ -227,28 +230,28 @@ def adminCategoryListView(request):
     return render(request, 'admin_panel/blog/categoryList.html', context)
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def categoryDeleteView(request, id):
     current_category = models.BlogCategory.objects.get(id=id)
     current_category.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def subCategoryDeleteView(request, id):
     current_subcategory = models.BlogSubCategory.objects.get(id=id)
     current_subcategory.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def filterDeleteView(request, id):
     current_filter = models.FilterOption.objects.get(id=id)
     current_filter.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def adminCategoryView(request):
     context = {
 
@@ -256,7 +259,7 @@ def adminCategoryView(request):
     return render(request, 'admin_panel/blog/categoryView.html')
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def adminCommentListView(request):
     comments = models.Comment.objects.all()
     context = {
@@ -265,7 +268,7 @@ def adminCommentListView(request):
     return render(request, 'admin_panel/blog/commentList.html', context)
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def adminCommentView(request):
     context = {
 
@@ -273,7 +276,7 @@ def adminCommentView(request):
     return render(request, 'admin_panel/blog/commentView.html')
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def adminFilterOptionListView(request):
     context = {
 
@@ -281,7 +284,7 @@ def adminFilterOptionListView(request):
     return render(request, 'admin_panel/blog/filterOptionList.html')
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def adminFilterOptionView(request):
     context = {
 
@@ -289,7 +292,7 @@ def adminFilterOptionView(request):
     return render(request, 'admin_panel/blog/filterOptionView.html')
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def adminSubCategoryListView(request):
     context = {
 
@@ -297,7 +300,7 @@ def adminSubCategoryListView(request):
     return render(request, 'admin_panel/blog/subCategoryList.html')
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def adminSubCategoryView(request):
     context = {
 
@@ -305,7 +308,7 @@ def adminSubCategoryView(request):
     return render(request, 'admin_panel/blog/subCategoryView.html')
 
 
-@user_passes_test(permission_check, login_url='/accounts/login/')
+@user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def adminNewPostView(request):
     form = forms.PostForm()
     tag_list = models.Tags.objects.all()
@@ -378,12 +381,14 @@ def adminDeleteCommentView(request, id):
 
 
 def indexView(request):
-    articles = models.Post.objects.filter(Q(category__category__iexact='articles') | Q(category__category__iexact='Articles'))
-    case_studies = models.Post.objects.filter(Q(category__category__iexact='case_studies') | Q(category__category__iexact='Case Studies'))
+    articles = models.Post.objects.filter(
+        Q(category__category__iexact='articles') | Q(category__category__iexact='Articles'))
+    case_studies = models.Post.objects.filter(
+        Q(category__category__iexact='case_studies') | Q(category__category__iexact='Case Studies'))
     categories = models.BlogCategory.objects.all()
     subcategories = models.BlogSubCategory.objects.all()
-    print(articles)
-    print(case_studies)
+    # print(articles)
+    # print(case_studies)
     context = {
         'articles': articles.order_by('date')[:4],
         'case_studies': case_studies.order_by('date')[:4],
@@ -398,20 +403,36 @@ def postView(request, name):
     posts = models.Post.objects.all()
     post = models.Post.objects.get(post_url=name)
     comments = models.Comment.objects.filter(post=post).order_by('-comment_date')
-    reading_lists = models.ReadingList.objects.filter(user=request.user).values_list('post', flat=True)
-    total = post.total_view
-    category = str(request.path).split('/')[-3]
-    post.total_view = total + 1
-    post.save()
+    try:
+        reading_lists = models.ReadingList.objects.filter(user=request.user).values_list('post', flat=True)
+        total = post.total_view
+        category = str(request.path).split('/')[-3]
+        post.total_view = total + 1
+        post.save()
 
-    context = {
-        'post': post, 'category': category,
-        'related_posts': posts.order_by('date')[:4],
-        'comments': comments[:5],
-        'comments_count': comments.count,
-        'reading_lists': reading_lists,
-    }
-    return render(request, 'blog/post.html', context)
+        context = {
+            'post': post, 'category': category,
+            'related_posts': posts.order_by('date')[:4],
+            'comments': comments[:5],
+            'comments_count': comments.count,
+            'reading_lists': reading_lists,
+        }
+        return render(request, 'blog/post.html', context)
+    except:
+
+        total = post.total_view
+        category = str(request.path).split('/')[-3]
+        post.total_view = total + 1
+        post.save()
+
+        context = {
+            'post': post, 'category': category,
+            'related_posts': posts.order_by('date')[:4],
+            'comments': comments[:5],
+            'comments_count': comments.count,
+
+        }
+        return render(request, 'blog/post.html', context)
 
 
 def case_studiesView(request, name):
@@ -451,23 +472,35 @@ def addToReadingListView(request, id):
 
 # for specific category
 def categoryView(request, name):
-
-    posts = models.Post.objects.filter(Q(category__category__iexact=str(name).replace('_', ' ')) | Q(category__category__iexact=str(name)))
+    posts = models.Post.objects.filter(
+        Q(category__category__iexact=str(name).replace('_', ' ')) | Q(category__category__iexact=str(name)))
     cat_path = str(request.path).split('/')[-2]
-    subcategories = models.BlogSubCategory.objects.filter(category__category__iexact=str(name).replace('_', ' ')).order_by('sub_category')
-    reading_lists = models.ReadingList.objects.filter(user=request.user).values_list('post', flat=True)
+    subcategories = models.BlogSubCategory.objects.filter(
+        category__category__iexact=str(name).replace('_', ' ')).order_by('sub_category')
+    try:
+        reading_lists = models.ReadingList.objects.filter(user=request.user).values_list('post', flat=True)
 
-    print(str(name).replace('_', ' ').title())
-    context = {
-        'posts': posts.order_by('-date'),
-        'path': name,
-        'cat_path': cat_path,
-        'important_posts': posts.order_by('-total_view')[:5],
-        'subcategories': subcategories,
-        'reading_lists': reading_lists,
-    }
+        # print(str(name).replace('_', ' ').title())
+        context = {
+            'posts': posts.order_by('-date'),
+            'path': name,
+            'cat_path': cat_path,
+            'important_posts': posts.order_by('-total_view')[:5],
+            'subcategories': subcategories,
+            'reading_lists': reading_lists,
+        }
 
-    return render(request, 'blog/category.html', context)
+        return render(request, 'blog/category.html', context)
+    except:
+        context = {
+            'posts': posts.order_by('-date'),
+            'path': name,
+            'cat_path': cat_path,
+            'important_posts': posts.order_by('-total_view')[:5],
+            'subcategories': subcategories,
+        }
+
+        return render(request, 'blog/category.html', context)
 
 
 def category_detailView(request, name1, name2):
@@ -477,9 +510,10 @@ def category_detailView(request, name1, name2):
         sub_category__category__category__iexact=str(name1).replace('_', ' '),
         sub_category__sub_category__iexact=str(name2).replace('_', ' '))
     subcategories = models.BlogSubCategory.objects.filter(category__category__iexact=str(name1).replace('_', ' '))
+
     context = {
         'posts': posts.order_by('-date'),
-        'cat_path': name1,
+        'path': name1,
         'path2': name2,
         'important_posts': posts.order_by('-total_view')[:4],
         'subcategories': subcategories,

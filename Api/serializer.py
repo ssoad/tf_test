@@ -53,6 +53,12 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = ['id', 'comment', 'comment_date', 'user', 'post', 'author', 'post_title']
 
 
+class BlogFilterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Post
+        fields = '__all__'
+
+
 class PackageListSerializer(serializers.ModelSerializer):
     feature_subscription = serializers.StringRelatedField(many=True)
     service_name = serializers.CharField(source='service_id.service_title')
@@ -76,7 +82,7 @@ class SubServiceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = bcsmodels.SubService
-        fields = ['id', 'title', 'description', 'total_customer', 'service', 'service_name']
+        fields = ['id', 'title', 'total_customer', 'service', 'service_name']
         # exclude = ['fields']
         # depth = 1
 
@@ -90,7 +96,6 @@ class ChoiceSerializer(serializers.ModelSerializer):
 
 
 class SubServiceInputSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = bcsmodels.SubServiceInput
         # fields = ('id', 'inputfield', 'choices')

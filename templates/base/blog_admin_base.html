@@ -18,52 +18,54 @@
       <!-- data table css -->
       <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css" />
       <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css" />
+      <link rel="stylesheet" href="https://npmcdn.com/tootik@1.0.2/css/tootik.min.css">
       <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" />
     <link rel="stylesheet" href="{%static ''%}tfcss/admin_panel/bcsTF/nav.css" /> {% block headercss %} {% endblock headercss %}
 
     <title>
         {% block title %} {% endblock title %}
     </title>
+    <style>
+    thead{
+        text-transform: capitalize
+    }
+    table tbody td, table thead th {
+     text-align: left !important; 
+}
+.dataTables_scrollHeadInner,.dataTables_scrollHeadInner table{
+    width: 100% !important;
+}
+    </style>
     <link rel="icon" href="{%static ''%}tfimg/user_panel/Techforing-Icon.png" type="image/x-icon" />
 </head>
 
 <body>
     <!-- Header Start -->
     <header>
-        <!-- top bar section starts here -->
-        <nav class="navbar fixed-top">
-            <div class="container-fluid">
-                <button class="btn mt-2 hamburger"><i class="icofont-navigation-menu"></i></button>
-                
-                <span class="navbar-text rounded-0 px-2  fw-bold text-primary">
-                    <a href="" class="">Sign out</a>
+         <!-- top bar section starts here -->
+    <nav class="navbar fixed-top">
+        <div class="container-fluid">
+            <button class="btn mt-2 shrink-btn"><i class="icofont-navigation-menu"></i></button>
+            <button class="btn mt-2 hamburger"><i class="icofont-navigation-menu"></i></button>
+
+             <span class="navbar-text hide rounded-0 px-2  fw-bold text-primary">
+                        <a href="{% host_url 'logout' %}" class="">Logout</a>
                 </span>
-                <!-- <span class="navbar-text rounded-0 px-2 fw-bold text-primary">
-                    <a href="" class="">Personal Cybersecurity</a>
-                </span> -->
-                <!-- <span class="dropdown">
-                    <a class="nav-link btn-primary dropdown text-white" href="#" id="navbarDropdown" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        Admin
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{% host_url 'main_admin_profile' %}">My profile</a></li>
-                        <li><a class="dropdown-item" href="{% host_url 'logout' %}">Sgn out</a></li>
-                    </ul>
-                </span> -->
-            </div>
-        </nav>
+        </div>
+    </nav>
         <!-- top bar section ends here -->
         <!-- sidebar section starts here -->
         <aside>
-            <div class="aside-container position-fixed bg-white px-1 pt-2 d-none d-lg-block">
-                <a class="navbar-brand" href="#">
-                    <button class="btn btn-close sideBarClose"></button>
-                    <img src="{% static 'tfimg/admin_panel/TechForingLogo.png' %}" alt="Tech Foring" />
-                </a>
+             <div class="aside-container position-fixed px-1 pt-2 d-none d-lg-block">
+            <!-- Brand/logo-->
+            <a class="navbar-brand" href="#">
+                <button class="btn btn-close sideBarClose"></button>
+                <img src="{% static '' %}tfimg/user_panel/Techforing-Icon.png" class="icon-logo" alt="">
+                <img src="{% static 'tfimg/admin_panel/TechForingLogo.png' %}" alt="Tech Foring" class="logo"/>
+            </a>
                 <!-- Nav links starts here -->
                 <ul class="menubar">
-                    <li>
+                    <li data-tootik="blogs" data-tootik-conf="right">
                         <a href="{% host_url 'admin_dashboard' %}" class="nav-link active">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="29.273" height="23"
                                 viewBox="0 0 29.273 23">
@@ -71,84 +73,19 @@
                                     d="M6.273,17.25V18.3a.53.53,0,0,1-.523.523H4.7a.529.529,0,0,1-.522-.523V17.25a.53.53,0,0,1,.523-.523H5.751a.53.53,0,0,1,.523.523Zm0-4.182v1.046a.53.53,0,0,1-.523.523H4.7a.529.529,0,0,1-.522-.523V13.068a.529.529,0,0,1,.523-.522H5.751a.529.529,0,0,1,.522.522Zm0-4.182V9.932a.53.53,0,0,1-.523.523H4.7a.529.529,0,0,1-.522-.523V8.886A.529.529,0,0,1,4.7,8.364H5.751a.529.529,0,0,1,.522.523ZM25.092,17.25V18.3a.53.53,0,0,1-.523.523H8.887a.53.53,0,0,1-.523-.523V17.25a.53.53,0,0,1,.523-.523H24.569a.53.53,0,0,1,.523.523Zm0-4.182v1.046a.53.53,0,0,1-.523.523H8.887a.53.53,0,0,1-.523-.523V13.068a.529.529,0,0,1,.523-.522H24.569a.53.53,0,0,1,.523.523Zm0-4.182V9.932a.53.53,0,0,1-.523.523H8.887a.53.53,0,0,1-.523-.523V8.886a.529.529,0,0,1,.523-.522H24.569a.53.53,0,0,1,.523.523Zm2.091,11.5V6.8a.53.53,0,0,0-.522-.523H2.613a.53.53,0,0,0-.523.523V20.387a.53.53,0,0,0,.523.523H26.659a.53.53,0,0,0,.523-.523ZM29.273,2.613V20.387A2.621,2.621,0,0,1,26.659,23H2.613a2.517,2.517,0,0,1-1.846-.768A2.517,2.517,0,0,1,0,20.387V2.613A2.517,2.517,0,0,1,.768.768,2.517,2.517,0,0,1,2.613,0H26.659a2.517,2.517,0,0,1,1.846.768,2.517,2.517,0,0,1,.768,1.846Z"
                                     fill="#111125" />
                             </svg>
-                            blogs
+                            <span class="nav-text">blogs</span>
                         </a>
                     </li>
-                    <!-- <li>
-                        <a href="{% host_url 'bcs_admin_reading_list' %}" class="nav-link">
-                            <i class="bi bi-file-earmark-fill"></i> Blogs
-                        </a>
-                    </li> -->
-                    <li>
+                    <li data-tootik="Comments" data-tootik-conf="right">
                         <a href="{% host_url 'admin_comment_list' %}" class="nav-link">
-                            <i class="bi bi-file-earmark-fill"></i> Comments
+                            <i class="bi bi-file-earmark-fill"></i> <span class="nav-text">Comments</span>
                         </a>
                     </li>
-                    <li>
+                    <li data-tootik="Category" data-tootik-conf="right">
                         <a class="nav-link" href="{% host_url 'admin_category_list' %}">
-                            <i class="bi bi-gear-wide-connected"></i> Category
+                            <i class="bi bi-gear-wide-connected"></i> <span class="nav-text">Category</span>
                         </a>
                     </li>
-                    <!-- <li>
-                        <span class="nav-link dropdown-btn dropdown-toggle" id="navbarDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-collection-fill"></i>
-                            services
-                        </span>
-                        <ul class="dropdown-container" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item nav-link" href="{% host_url 'bcs_admin_services' %}"><i
-                                        class="bi bi-collection-fill"></i>Main Service</a></li>
-                            <li><a class="dropdown-item nav-link" href="{% host_url 'bcs_admin_sub_services' %}"><i
-                                        class="bi bi-collection-fill"></i>Sub Service</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <span class="nav-link dropdown-btn dropdown-toggle" id="navbarDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-people-fill"></i>
-                            users
-                        </span>
-                        <ul class="dropdown-container" aria-labelledby="navbarDropdown">
-                            <li>
-                                <a href="#" class="nav-link">
-                                    <i class="bi bi-people-fill"></i> users
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="nav-link">
-                                    <i class="bi bi-people-fill"></i> admin users
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="{% host_url 'bcs_admin_reading_list' %}" class="nav-link">
-                            <i class="bi bi-file-earmark-fill"></i> Reading List
-                        </a>
-                    </li>
-                    <li>
-                        <span class="nav-link dropdown-btn dropdown-toggle" id="navbarDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-tag-fill"></i>
-                            Subscription
-                        </span>
-                        <ul class="dropdown-container" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item nav-link" href="{% host_url 'bcs_admin_subscriptions' %}"><i
-                                        class="bi bi-tag-fill"></i>Subscription List</a></li>
-                            <li><a class="dropdown-item nav-link" href="#"><i
-                                        class="bi bi-collection-fill"></i>Subscription package</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="{% host_url 'bcs_admin_revenue' %}" class="nav-link">
-                            <i class="bi bi-currency-dollar"></i> revenue
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link">
-                            <i class="bi bi-hand-index-fill"></i> user interest
-                        </a>
-                    </li> -->
                 </ul>
                 <!-- nav links ends here -->
             </div>

@@ -7,12 +7,15 @@ from django.db.models import Q
 class AddServiceCategoryForm(forms.ModelForm):
     class Meta:
         model = models.ServiceCategory
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ['category_choice', ]
 
 
 class AddServiceForm(forms.ModelForm):
     category = forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-select'}),
                                       queryset=models.ServiceCategory.objects.all())
+
+    # assign_to = forms.ModelChoiceField(widget=forms.SelectMultiple(attrs={'class': 'form-select js-example-basic-multiple'}), queryset=models.User.objects.filter(is_sales=True))
 
     # service_icon = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control'}))
 
@@ -42,7 +45,11 @@ class AddSubServiceForm(forms.ModelForm):
 
 
 class CreateBusinessForm(forms.ModelForm):
-    position = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'CEO'}))
+    position = forms.CharField(widget=forms.TextInput(
+        attrs={'placeholder': 'Enter Your Designation'}))
+    website = forms.URLField(widget=forms.URLInput(
+        attrs={'pattern': "^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$",
+               'value': "https://"}))
 
     class Meta:
         model = models.Business
@@ -51,7 +58,8 @@ class CreateBusinessForm(forms.ModelForm):
 
 
 class AddPackageForm(forms.ModelForm):
-    service_id = forms.ModelChoiceField(queryset=models.Service.objects.filter(is_subscription_based=True))
+    service_id = forms.ModelChoiceField(
+        queryset=models.Service.objects.filter(is_subscription_based=True))
 
     class Meta:
         model = models.SubscriptionBasedPackage
@@ -73,7 +81,8 @@ class AddIndividualPackageFeatureForm(forms.ModelForm):
 
 
 class EventCreateForm(forms.ModelForm):
-    date_field = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'date'}))
+    date_field = forms.DateTimeField(
+        widget=forms.DateTimeInput(attrs={'type': 'date'}))
     time_field = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'time'}),
                                      input_formats=['%H:%M', '%I:%M%p', '%I:%M %p'])
 
@@ -85,12 +94,16 @@ class EventCreateForm(forms.ModelForm):
 class OrderPriceForm(forms.ModelForm):
     class Meta:
         model = models.Order
-        fields = ['price', ]
+        fields = ['price', 'payment_method']
+        widgets = {
+            'payment_method': forms.Select(attrs={'class': 'form-select'})
+        }
 
 
 class OrderAssignForm(forms.ModelForm):
     staff = forms.ModelChoiceField(
-        queryset=models.User.objects.filter(Q(is_staff=True, is_sales=True) | Q(is_superuser=True) | Q(is_staff=True, is_sales_head=True)),
+        queryset=models.User.objects.filter(
+            Q(is_staff=True, is_sales=True) | Q(is_superuser=True) | Q(is_staff=True, is_sales_head=True)),
         widget=forms.Select(attrs={'class': 'js-example-basic-single form-control form-select'}))
 
     class Meta:
@@ -99,11 +112,13 @@ class OrderAssignForm(forms.ModelForm):
 
 
 class TicketCreateForm(forms.ModelForm):
-    ticket_category = forms.Field(widget=forms.Select(attrs={'class': 'form-select'}))
+    ticket_category = forms.Field(
+        widget=forms.Select(attrs={'class': 'form-select'}))
 
     class Meta:
         model = models.Ticket
-        fields = ['ticket_title', 'ticket_category', 'ticket_description', 'ticket_attachment']
+        fields = ['ticket_title', 'ticket_category',
+                  'ticket_description', 'ticket_attachment']
         # exclude = ['ticket_type', 'ticket_status']
 
 
@@ -126,4 +141,13 @@ class BusinessInfoForm(forms.ModelForm):
         exclude = ['company_logo', 'unique_id']
         widgets = {
             'industry_type': forms.Select(attrs={'class': 'form-select'})
+        }
+
+
+class AssignToServiceForm(forms.ModelForm):
+    class Meta:
+        model = models.ServiceAssigned
+        fields = ['service']
+        widgets = {
+            'service': forms.SelectMultiple(attrs={'class': 'js-example-basic-multiple'})
         }
