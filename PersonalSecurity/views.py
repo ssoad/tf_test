@@ -5,6 +5,7 @@ from Academy.forms import CourseCreateForm, SectionCreateForm, ContentCreateForm
 from django.core.paginator import Paginator
 from BusinessSecurity import models, forms
 from PersonalSecurity import forms as pcsforms
+from django.db.models import Q
 
 
 # Create your views here.
@@ -154,12 +155,14 @@ def ticketDetailView(request):
 
 @login_required
 def userDashboardView(request):
-    events = models.Events.objects.filter(status='active')
+    events = models.Events.objects.filter(status='active', category='for_personal_security')
     registered_event = models.RegisteredEvents.objects.filter(user=request.user).values_list('event', flat=True)
-
+    orders = models.Order.objects.filter(
+        Q(user=request.user, category_choice='pcs') & ~Q(Q(order_status='new') | Q(order_status='attending'))).order_by('-order_date')[:2]
     context = {
         'events': events,
         'registered_event': registered_event,
+        'orders': orders,
     }
     return render(request, 'user_panel/pcs/dashboard.html', context)
 
@@ -191,8 +194,12 @@ def userSubscriptionsView(request):
 
 @login_required
 def userEventsView(request):
+    registered_event = models.RegisteredEvents.objects.filter(user=request.user).values_list('event', flat=True)
+    events = models.Events.objects.filter(category='for_personal_security',
+                                          registered_event_event__user=request.user)
     context = {
-
+        'events': events,
+        'registered_event': registered_event,
     }
     return render(request, 'user_panel/pcs/events.html', context)
 
