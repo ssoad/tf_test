@@ -18,7 +18,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
     <!-- bootstrap icon -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-<link rel="stylesheet" href="https://npmcdn.com/tootik@1.0.2/css/tootik.min.css">
+    <link rel="stylesheet" href="https://npmcdn.com/tootik@1.0.2/css/tootik.min.css">
     <link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/bcsTF/nav.css"/>
     {% block headercss %} {% endblock headercss %}
 
@@ -59,7 +59,7 @@
                 <span class="dropdown hide">
                         <a class="nav-link btn-primary dropdown text-white" href="#" id="navbarDropdown" role="button"
                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Admin
+                            {{ user.full_name }}
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="{% host_url 'user_profile' %}">My profile</a></li>
@@ -142,7 +142,7 @@
                 </li>
                 <li data-tootik="dashboard" data-tootik-conf="right">
                     <a href="{% host_url 'pcs_admin_reading_list' %}" class="nav-link">
-                        <i class="bi bi-file-earmark-fill"></i>  <span class="nav-text">Reading List</span>
+                        <i class="bi bi-file-earmark-fill"></i> <span class="nav-text">Reading List</span>
                     </a>
                 </li>
                 <li data-tootik="dashboard" data-tootik-conf="right">
