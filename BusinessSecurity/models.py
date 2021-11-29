@@ -21,7 +21,7 @@ category_choice = (
 
 
 class ServiceCategory(models.Model):
-    category_choice = models.CharField(choices=category_choice, default='bcs', max_length=255)
+    category_choice = models.CharField(choices=category_choice, max_length=255)
     category_name = models.CharField(
         max_length=264, verbose_name='Category Name')
 
@@ -35,7 +35,7 @@ class ServiceCategory(models.Model):
 
 
 class Service(models.Model):
-    category_choice = models.CharField(choices=category_choice, default='bcs', max_length=255)
+    category_choice = models.CharField(choices=category_choice, max_length=255)
     category = models.ForeignKey(
         ServiceCategory, on_delete=models.CASCADE, related_name='service_category')
     service_icon = models.ImageField(
@@ -174,7 +174,7 @@ payment_method = (
 
 
 class Order(models.Model):
-    category_choice = models.CharField(choices=category_choice, default='bcs', max_length=255)
+    category_choice = models.CharField(choices=category_choice,  max_length=255)
     subserviceinput = models.ManyToManyField(
         UserSubserviceInput, related_name='order_subservice')
     service = models.ForeignKey(
