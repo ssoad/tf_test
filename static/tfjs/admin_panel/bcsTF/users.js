@@ -1,61 +1,63 @@
-let userInfo = document.getElementById("user-info-chart").getContext("2d");
-let userInfoLineChart = new Chart(userInfo, {
-    type: "line",
-    data: {
-        labels: ["text", "text", "text", "text", "text"],
-        datasets: [{
-            label: "Subscribed client",
-            backgroundColor: "#182F59",
-            borderColor: "#182F59",
-            data: [5, 45, 41, 50, 42],
-            fill: false,
-        }, {
-            label: "non- subscribed client",
-            backgroundColor: "#5BBC2E",
-            borderColor: "#5BBC2E",
-            data: [75, 35, 45, 55, 15],
-            fill: false,
-        },  ],
-    },
-    options: {
-        responsive: true,
-        legend: {
-            display: true,
-            labels: {
-                fontColor: "black",
-                boxWidth: 20,
-                boxHeight: 20,
+if (document.getElementById("user-info-chart")) {
+    let userInfo = document.getElementById("user-info-chart").getContext("2d");
+    let userInfoLineChart = new Chart(userInfo, {
+        type: "line",
+        data: {
+            labels: ["text", "text", "text", "text", "text"],
+            datasets: [{
+                label: "Subscribed client",
+                backgroundColor: "#182F59",
+                borderColor: "#182F59",
+                data: [5, 45, 41, 50, 42],
+                fill: false,
+            }, {
+                label: "non- subscribed client",
+                backgroundColor: "#5BBC2E",
+                borderColor: "#5BBC2E",
+                data: [75, 35, 45, 55, 15],
+                fill: false,
+            },],
+        },
+        options: {
+            responsive: true,
+            legend: {
+                display: true,
+                labels: {
+                    fontColor: "black",
+                    boxWidth: 20,
+                    boxHeight: 20,
+                },
+                position: "top",
             },
-            position: "top",
+            title: {
+                display: false,
+                position: "top",
+                align: 'start',
+                text: "all users",
+            },
+            tooltips: {
+                mode: "index",
+                intersect: false,
+            },
+            hover: {
+                mode: "nearest",
+                intersect: true,
+            },
+            scales: {
+                xAxes: [{
+                    gridLines: {
+                        display: false
+                    }
+                }],
+                yAxes: [{
+                    gridLines: {
+                        display: false
+                    }
+                }]
+            },
         },
-        title: {
-            display: false,
-            position: "top",
-            align: 'start',
-            text: "all users",
-        },
-        tooltips: {
-            mode: "index",
-            intersect: false,
-        },
-        hover: {
-            mode: "nearest",
-            intersect: true,
-        },
-        scales: {
-            xAxes: [{
-                gridLines: {
-                    display: false
-                }
-            }],
-            yAxes: [{
-                gridLines: {
-                    display: false
-                }
-            }]
-        },
-    },
-});
+    });
+}
 
 
 $(function () {
@@ -71,8 +73,8 @@ $(function () {
         function (ev, picker) {
             $(this).val(
                 picker.startDate.format("MM/DD/YYYY") +
-                    " - " +
-                    picker.endDate.format("MM/DD/YYYY")
+                " - " +
+                picker.endDate.format("MM/DD/YYYY")
             );
         }
     );
@@ -81,8 +83,8 @@ $(function () {
 const userInfoFilterContaner = document.querySelector(".filter-options")
 const userInfoFilters = document.querySelectorAll(".filter-options .btn")
 
-userInfoFilters.forEach(btn =>{
-    btn.addEventListener("click", ()=>{
+userInfoFilters.forEach(btn => {
+    btn.addEventListener("click", () => {
         const currentOption = userInfoFilterContaner.querySelector(".active")
         currentOption.classList.remove("active")
         btn.classList.add("active")
@@ -105,11 +107,11 @@ $(document).ready(function () {
         "paging": false,
     });
 
-    $(".selectAll").on( "click", function(e) {
-        if ($(this).is( ":checked" )) {
-            $("#all-user-info").DataTable().rows(  ).select();        
+    $(".selectAll").on("click", function (e) {
+        if ($(this).is(":checked")) {
+            $("#all-user-info").DataTable().rows().select();
         } else {
-            $("#all-user-info").DataTable().rows(  ).deselect(); 
+            $("#all-user-info").DataTable().rows().deselect();
         }
     });
 
@@ -122,7 +124,7 @@ $(document).ready(function () {
             targets: [-1]
         }],
         select: {
-            style:    'multi+shift',
+            style: 'multi+shift',
             selector: 'td:first-child'
         },
         sorting: false,

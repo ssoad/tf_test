@@ -61,7 +61,7 @@
                 <span class="dropdown hide">
                         <a class="nav-link btn-primary dropdown text-white" href="#" id="navbarDropdown" role="button"
                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Admin
+                            {{ user.full_name }}
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="{% host_url 'user_profile' %}">My profile</a></li>
@@ -145,33 +145,33 @@
                         </a>
                     </li>
                     <div class="div"></div>
-{#                    <li data-tootik="users & admin" data-tootik-conf="right">#}
-{#                        <span class="nav-link dropdown-btn dropdown-toggle" id="navbarDropdown" role="button"#}
-{#                              data-bs-toggle="dropdown" aria-expanded="false">#}
-{#                            <i class="bi bi-people-fill"></i>#}
-{#                            <span class="nav-text">Business & admin</span>#}
-{#                        </span>#}
-{#                        <ul class="dropdown-container" aria-labelledby="navbarDropdown">#}
-{#                            <li>#}
-{#                                <a href="{% host_url 'bcs_admin_individual_business' %}" class="dropdown-item nav-link">#}
-{#                                    Business#}
-{#                                </a>#}
-{#                            </li>#}
-{#                            <li>#}
-{#                                <a href="{% host_url 'bcs_admin_list' %}" class="dropdown-item nav-link">#}
-{#                                    admin users#}
-{#                                </a>#}
-{#                            </li>#}
-{#                        </ul>#}
-{#                    </li>#}
-{#                    <div class="div"></div>#}
-{#                    <li data-tootik="Reading List" data-tootik-conf="right">#}
-{#                        <a href="{% host_url 'bcs_admin_reading_list' %}" class="nav-link">#}
-{#                            <i class="bi bi-file-earmark-fill"></i>#}
-{#                            <span class="nav-text">Reading List</span>#}
-{#                        </a>#}
-{#                    </li>#}
-{#                    <div class="div"></div>#}
+                    {#                    <li data-tootik="users & admin" data-tootik-conf="right">#}
+                    {#                        <span class="nav-link dropdown-btn dropdown-toggle" id="navbarDropdown" role="button"#}
+                    {#                              data-bs-toggle="dropdown" aria-expanded="false">#}
+                    {#                            <i class="bi bi-people-fill"></i>#}
+                    {#                            <span class="nav-text">Business & admin</span>#}
+                    {#                        </span>#}
+                    {#                        <ul class="dropdown-container" aria-labelledby="navbarDropdown">#}
+                    {#                            <li>#}
+                    {#                                <a href="{% host_url 'bcs_admin_individual_business' %}" class="dropdown-item nav-link">#}
+                    {#                                    Business#}
+                    {#                                </a>#}
+                    {#                            </li>#}
+                    {#                            <li>#}
+                    {#                                <a href="{% host_url 'bcs_admin_list' %}" class="dropdown-item nav-link">#}
+                    {#                                    admin users#}
+                    {#                                </a>#}
+                    {#                            </li>#}
+                    {#                        </ul>#}
+                    {#                    </li>#}
+                    {#                    <div class="div"></div>#}
+                    {#                    <li data-tootik="Reading List" data-tootik-conf="right">#}
+                    {#                        <a href="{% host_url 'bcs_admin_reading_list' %}" class="nav-link">#}
+                    {#                            <i class="bi bi-file-earmark-fill"></i>#}
+                    {#                            <span class="nav-text">Reading List</span>#}
+                    {#                        </a>#}
+                    {#                    </li>#}
+                    {#                    <div class="div"></div>#}
                     <li data-tootik="Subscription" data-tootik-conf="right">
                         <span class="nav-link dropdown-btn dropdown-toggle" id="navbarDropdown" role="button"
                               data-bs-toggle="dropdown" aria-expanded="false">
@@ -199,12 +199,12 @@
                         </a>
                     </li>
                     <div class="div"></div>
-{#                    <li data-tootik="user interest" data-tootik-conf="right">#}
-{#                        <a href="{% host_url 'bcs_admin_user_interest' %}" class="nav-link">#}
-{#                            <i class="icofont-tick-mark"></i> <span class="nav-text">user interest</span>#}
-{#                        </a>#}
-{#                    </li>#}
-{#                    <div class="div"></div>#}
+                    {#                    <li data-tootik="user interest" data-tootik-conf="right">#}
+                    {#                        <a href="{% host_url 'bcs_admin_user_interest' %}" class="nav-link">#}
+                    {#                            <i class="icofont-tick-mark"></i> <span class="nav-text">user interest</span>#}
+                    {#                        </a>#}
+                    {#                    </li>#}
+                    {#                    <div class="div"></div>#}
                     <li data-tootik="Training" data-tootik-conf="right">
                         <a href="{% host_url 'bcs_admin_training' %}" class="nav-link">
                             <i class="bi bi-award-fill"></i> <span class="nav-text">Training</span>

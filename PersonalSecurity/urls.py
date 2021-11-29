@@ -1,8 +1,6 @@
 from django.urls import path
 from PersonalSecurity import views
 
-
-
 urlpatterns = [
     path('', views.personalSecurityView, name='my_security_home'),
 
@@ -26,7 +24,6 @@ urlpatterns = [
     path('open_ticket/', views.openTicketView, name='open_ticket'),
     path('ticket_detail/', views.ticketDetailView, name='ticket_detail'),
 
-
     # user panel
     path('pcs_user_dashboard/', views.userDashboardView, name='pcs_user_dashboard'),
     path('pcs_user_services/', views.userServicesView, name='pcs_user_services'),
@@ -44,29 +41,46 @@ urlpatterns = [
     path('academy_user_files/', views.UserFiles, name='academy_user_files'),
     path('academy_user_files/<id>/', views.UserFiles, name='academy_user_files'),
 
-# pcs admin panel
-    path('pcs_admin_dashboard/',views.pcsAdminDashboard, name='pcs_admin_dashboard'),
-    path('pcs_admin_services/',views.pcsAdminService, name='pcs_admin_services'),
-    path('pcs_admin_revenue/',views.pcsAdminRevenue, name='pcs_admin_revenue'),
-    path('pcs_admin_subscriptions/',views.pcsAdminSubscriptionList, name='pcs_admin_subscriptions'),
-    path('pcs_admin_subscription_packages/',views.pcsAdminSubscriptionPack, name='pcs_admin_subscription_packages'),
-    path('pcs_admin_reading_list/',views.pcsAdminReadingList, name='pcs_admin_reading_list'),
-    path('pcs_admin_sub_services/',views.pcsAdminSubService, name='pcs_admin_sub_services'),
-    path('pcs_admin_individual_users/',views.pcsAdminIndividualUser, name='pcs_admin_individual_users'),
-    path('pcs_admin_individual_user_panel/',views.pcsAdminIndividualUserPanel, name='pcs_admin_individual_user_panel'),
-    path('pcs_admin_list/',views.pcsAdminList, name='pcs_admin_list'),
-    path('pcs_admin_profile/',views.pcsAdminProfile, name='pcs_admin_profile'),
-    path('pcs_admin_user_interest/',views.pcsAdminUserInterest, name='pcs_admin_user_interest'),
-    path('pcs_admin_training/',views.pcsAdminTraining, name='pcs_admin_training'),
-    path('pcs_admin_course_detail/',views.pcsAdminCourseDetail, name='pcs_admin_course_detail'),
+    # pcs admin panel
+    path('pcs_admin_dashboard/', views.pcsAdminDashboard, name='pcs_admin_dashboard'),
+    path('pcs_admin_services_category/', views.pcsAdminServiceCategoryView, name='pcs_admin_services_category'),
+    path('pcs_admin_services_category_delete/<id>/', views.pcsAdminServiceCategoryDeleteView,
+         name='pcs_admin_services_category_delete'),
+    path('pcs_admin_services_category_edit/<id>/', views.pcsAdminServiceCategoryEditView,
+         name='pcs_admin_services_category_edit'),
+    path('pcs_admin_services/', views.pcsAdminServiceView, name='pcs_admin_services'),
+    path('pcs_admin_services_delete/<id>/', views.pcsAdminServiceDeleteView, name='pcs_admin_services_delete'),
+    path('pcs_admin_services_edit/<id>/', views.pcsAdminServiceEditView, name='pcs_admin_services_edit'),
+    path('pcs_admin_sub_services/', views.pcsAdminSubServiceView, name='pcs_admin_sub_services'),
+    path('pcs_admin_sub_services_delete/<id>/', views.pcsAdminSubServiceDeleteView,
+         name='pcs_admin_sub_services_delete'),
+    path('pcs_admin_sub_services_edit/<id>/', views.pcsAdminSubServiceEditView, name='pcs_admin_sub_services_edit'),
+    path('pcs_admin_sub_services_form/', views.pcsSubServiceFormView, name='pcs_admin_sub_services_form'),
+    path('pcs_admin_sub_services_form_delete/<id>/', views.pcsAdminSubServiceFormDeleteView,
+         name='pcs_admin_sub_services_form_delete'),
+    path('pcs_admin_sub_services_form_edit/<id>/', views.pcsAdminSubServiceFormEditView,
+         name='pcs_admin_sub_services_form_edit'),
+
+    path('pcs_admin_revenue/', views.pcsAdminRevenue, name='pcs_admin_revenue'),
+    path('pcs_admin_subscriptions/', views.pcsAdminSubscriptionList, name='pcs_admin_subscriptions'),
+    path('pcs_admin_subscription_packages/', views.pcsAdminSubscriptionPack, name='pcs_admin_subscription_packages'),
+    path('pcs_admin_reading_list/', views.pcsAdminReadingList, name='pcs_admin_reading_list'),
+    path('pcs_admin_sub_services/', views.pcsAdminSubService, name='pcs_admin_sub_services'),
+    path('pcs_admin_individual_users/', views.pcsAdminIndividualUser, name='pcs_admin_individual_users'),
+    path('pcs_admin_individual_user_panel/', views.pcsAdminIndividualUserPanel, name='pcs_admin_individual_user_panel'),
+    path('pcs_admin_list/', views.pcsAdminList, name='pcs_admin_list'),
+    path('pcs_admin_profile/', views.pcsAdminProfile, name='pcs_admin_profile'),
+    path('pcs_admin_user_interest/', views.pcsAdminUserInterest, name='pcs_admin_user_interest'),
+    path('pcs_admin_training/', views.pcsAdminTraining, name='pcs_admin_training'),
+    path('pcs_admin_course_detail/', views.pcsAdminCourseDetail, name='pcs_admin_course_detail'),
 
     path('pcs_admin_training/', views.pcsAdminTraining, name='pcs_admin_training'),
-    path('pcs_admin_training_delete/<id>', views.pcsAdminTrainingDelete, name='pcs_admin_training_delete'),
-    path('pcs_admin_training_edit/<id>', views.pcsAdminTrainingEdit, name='pcs_admin_training_edit'),
-    path('pcs_admin_course_detail/<id>', views.pcsAdminCourseDetail, name='pcs_admin_course_detail'),
-    path('pcs_admin_course_section_edit/<id>', views.pcsAdminCourseSectionEdit, name='pcs_admin_course_section_edit'),
-    path('pcs_admin_course_content_delete/<id>', views.pcsAdminCourseContentDelete,
+    path('pcs_admin_training_delete/<id>/', views.pcsAdminTrainingDelete, name='pcs_admin_training_delete'),
+    path('pcs_admin_training_edit/<id>/', views.pcsAdminTrainingEdit, name='pcs_admin_training_edit'),
+    path('pcs_admin_course_detail/<id>/', views.pcsAdminCourseDetail, name='pcs_admin_course_detail'),
+    path('pcs_admin_course_section_edit/<id>/', views.pcsAdminCourseSectionEdit, name='pcs_admin_course_section_edit'),
+    path('pcs_admin_course_content_delete/<id>/', views.pcsAdminCourseContentDelete,
          name='pcs_admin_course_content_delete'),
-    path('pcs_admin_course_content_edit/<id>', views.pcsAdminCourseContentEdit,
+    path('pcs_admin_course_content_edit/<id>/', views.pcsAdminCourseContentEdit,
          name='pcs_admin_course_content_edit'),
 ]

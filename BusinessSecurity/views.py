@@ -325,10 +325,13 @@ def userDashboardView(request):
         return HttpResponseRedirect(reverse('create_business'))
 
     elif request.user.is_bcs:
-        events = models.Events.objects.filter(status='active')
+        current_business = request.user.business_user.business
+
+        events = models.Events.objects.filter(status='active', category='for_business_security')
         registered_event = models.RegisteredEvents.objects.filter(user=request.user).values_list('event', flat=True)
         orders = models.Order.objects.filter(
-            Q(user=request.user) & ~Q(Q(order_status='new') | Q(order_status='attending'))).order_by('-order_date')[:2]
+            Q(user__business_user__business=current_business, category_choice='bcs') & ~Q(
+                Q(order_status='new') | Q(order_status='attending'))).order_by('-order_date')[:2]
         context = {
             'events': events,
             'registered_event': registered_event,
@@ -406,7 +409,9 @@ def userQuotationsHistoryView(request):
 
     elif request.user.is_bcs:
         orders = models.Order.objects.filter(
-            Q(user=request.user) & Q(Q(order_status='new') | Q(order_status='attending'))).order_by('-order_date')
+            Q(user=request.user) & Q(
+                Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
+            '-order_date')
         context = {
             'orders': orders,
             'message': 'Quotations',
@@ -421,7 +426,9 @@ def userOrderHistoryView(request):
 
     elif request.user.is_bcs:
         orders = models.Order.objects.filter(
-            Q(user=request.user) & ~Q(Q(order_status='new') | Q(order_status='attending'))).order_by('-order_date')
+            Q(user=request.user) & ~Q(
+                Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
+            '-order_date')
         print(orders.query)
         context = {
             'orders': orders,
@@ -697,7 +704,8 @@ def mainAdminProfileView(request):
 @user_passes_test(main_admin_permission_check_order_page, login_url='/accounts/login/',
                   redirect_field_name='/account/profile/')
 def mainAdminQuotationsView(request):
-    orders = models.Order.objects.filter(Q(order_status='new') | Q(order_status='attending')).order_by('-order_date')
+    orders = models.Order.objects.filter(
+        Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned')).order_by('-order_date')
     context = {
         'orders': orders,
         'message': 'Quotations',
@@ -708,7 +716,8 @@ def mainAdminQuotationsView(request):
 @user_passes_test(main_admin_permission_check_order_page, login_url='/accounts/login/',
                   redirect_field_name='/account/profile/')
 def mainAdminOrdersView(request):
-    orders = models.Order.objects.filter(~Q(Q(order_status='new') | Q(order_status='attending'))).order_by(
+    orders = models.Order.objects.filter(
+        ~Q(Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
         '-order_date')
     context = {
         'orders': orders,
@@ -976,7 +985,7 @@ def bcsAdminDashboardView(request):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminServiceCategoryView(request):
-    categories = models.ServiceCategory.objects.all()
+    categories = models.ServiceCategory.objects.filter(category_choice='bcs')
     form = forms.AddServiceCategoryForm()
 
     if request.method == 'POST':
@@ -996,14 +1005,14 @@ def bcsAdminServiceCategoryView(request):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminServiceCategoryDeleteView(request, id):
-    current_category = models.ServiceCategory.objects.get(id=id)
+    current_category = models.ServiceCategory.objects.get(id=id, category_choice='bcs')
     current_category.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminServiceCategoryEditView(request, id):
-    current_category = models.ServiceCategory.objects.get(id=id)
+    current_category = models.ServiceCategory.objects.get(id=id, category_choice='bcs')
     form = forms.AddServiceCategoryForm(instance=current_category)
 
     if request.method == 'POST':
@@ -1022,7 +1031,7 @@ def bcsAdminServiceCategoryEditView(request, id):
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminServiceView(request):
     form = forms.AddServiceForm()
-    services = models.Service.objects.all()
+    services = models.Service.objects.filter(category_choice='bcs')
     if request.method == 'POST':
         form = forms.AddServiceForm(request.POST, request.FILES)
         if form.is_valid():
@@ -1065,8 +1074,7 @@ def bcsAdminServiceEditView(request, id):
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminSubServiceView(request):
     form = forms.AddSubServiceForm()
-    sub_services = models.SubService.objects.all()
-    # print(request.POST)
+    sub_services = models.SubService.objects.filter(service__category_choice='bcs')
     if request.method == 'POST':
         form = forms.AddSubServiceForm(request.POST)
         if form.is_valid():
@@ -1480,8 +1488,8 @@ def bcsAdminCourseSectionEdit(request, id):
 def bcsAdminQuotationsView(request):
     if request.user.is_sales:
         orders = models.Order.objects.filter(
-            Q(orderstaff_order__staff=request.user) & Q(Q(order_status='new') | Q(order_status='attending'))).order_by(
-            '-order_date')
+            Q(orderstaff_order__staff=request.user) & Q(Q(order_status='new') | Q(order_status='attending')
+                                                        | Q(order_status='assigned'))).order_by('-order_date')
         context = {
             'orders': orders,
             'message': 'Quotations',
@@ -1489,8 +1497,8 @@ def bcsAdminQuotationsView(request):
         return render(request, 'admin_panel/bcsTF/orders.html', context)
     else:
         orders = models.Order.objects.filter(
-            Q(category_choice='bcs') & Q(Q(order_status='new') | Q(order_status='attending'))).order_by(
-            '-order_date')
+            Q(category_choice='bcs') & Q(Q(order_status='new') | Q(order_status='attending')
+                                         | Q(order_status='assigned'))).order_by('-order_date')
         context = {
             'orders': orders,
             'message': 'Quotations',
@@ -1504,7 +1512,8 @@ def bcsAdminQuotationsView(request):
 def bcsAdminOrdersView(request):
     if request.user.is_sales:
         orders = models.Order.objects.filter(
-            Q(orderstaff_order__staff=request.user) & ~Q(Q(order_status='new') | Q(order_status='attending'))).order_by(
+            Q(orderstaff_order__staff=request.user) & ~Q(
+                Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
             '-order_date')
         context = {
             'orders': orders,
@@ -1513,7 +1522,8 @@ def bcsAdminOrdersView(request):
         return render(request, 'admin_panel/bcsTF/orders.html', context)
     else:
         orders = models.Order.objects.filter(
-            Q(category_choice='bcs') & ~Q(Q(order_status='new') | Q(order_status='attending'))).order_by(
+            Q(category_choice='bcs') & ~Q(
+                Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
             '-order_date')
         context = {
             'orders': orders,
@@ -1586,8 +1596,17 @@ def bcsAdminNewOrdersView(request):
 def bcsAdminOrdersDetailView(request, id):
     if request.user.is_superuser or request.user.is_bcs_head:
         current_order = models.Order.objects.get(id=id)
+        form = forms.OrderPriceForm(instance=current_order)
+        if request.method == 'POST':
+            form = forms.OrderPriceForm(request.POST, instance=current_order)
+            if form.is_valid():
+                current_order.order_status = 'on_progress'
+                # new_staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
+                form.save()
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
         context = {
             'current_order': current_order,
+            'form': form,
         }
         return render(request, 'admin_panel/bcsTF/order_detail.html', context)
     else:
