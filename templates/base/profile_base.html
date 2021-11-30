@@ -137,29 +137,31 @@
         </footer>
     </main>
 
-    <footer id="footer-large" class="position-sticky d-none bg-blue p-2 pt-4 p-md-5 pb-md-2">
-        <div class="d-flex justify-content-center mb-4">
-            <a href="" class="me-5">PRIVACY POLICY</a>
-            <a href="">TERMS OF USE</a>
+    <footer class="footer row mx-0 py-4 position-sticky top-100">
+        <div class="col-md-4 d-flex justify-content-center">
+            <a href="{% host_url 'policy' %}" class="me-5">PRIVACY POLICY</a>
+            <a href="{% host_url 'terms' %}">TERMS OF USE</a>
         </div>
-
-        <div class="d-flex justify-content-center align-items-center">
+        <div class="col-md-3 d-flex justify-content-center align-items-center py-2">
             <a href="https://www.facebook.com/techforing/">
-                <img src="{% static '' %}tfimg/user_panel/facebook.png" class="me-3" alt="">
+                <!-- <img src="{% static '' %}tfimg/user_panel/facebook.png" class="me-3" alt=""> -->
+                <i class="icofont-facebook me-3 text-navy"></i>
             </a>
             <a href="https://www.linkedin.com/company/techforingltd./">
-                <img src="{% static '' %}tfimg/user_panel/linkedin.png" class="me-3" alt="">
+                <!-- <img src="{% static '' %}tfimg/user_panel/linkedin.png" class="me-3" alt=""> -->
+                <i class="icofont-linkedin me-3 text-navy"></i>
             </a>
             <a href="https://twitter.com/techforingltd?lang=en">
-                <img src="{% static '' %}tfimg/user_panel/twitter.png" class="me-3" alt="">
+                <!-- <img src="{% static '' %}tfimg/user_panel/twitter.png" class="me-3" alt=""> -->
+                <i class="icofont-twitter me-3 text-navy"></i>
             </a>
             <a href="https://www.instagram.com/techforingltd/">
-                <img src="{% static '' %}tfimg/user_panel/Instagram.png" alt="">
+                <!-- <img src="{% static '' %}tfimg/user_panel/Instagram.png" alt=""> -->
+                <i class="icofont-instagram me-3 text-navy"></i>
             </a>
         </div>
-
-        <div class="p-3 p-md-4 pb-2 text-center text-white ">
-            <p class="pt-4 border-top border-light">Copyright &copy; 2021 Techforing Ltd.
+        <div class="col-md-4 p-2 pb-2 text-center">
+            <p>Copyright © 2021 Techforing Ltd.
             </p>
         </div>
     </footer>
