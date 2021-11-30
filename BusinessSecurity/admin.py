@@ -32,3 +32,5 @@ admin.site.register(models.RegisteredEvents)
 admin.site.register(models.Ticket)
 admin.site.register(models.TicketStaff)
 admin.site.register(models.TicketComment)
+
+admin.site.register(models.Notification)
