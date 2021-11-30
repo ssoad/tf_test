@@ -387,6 +387,7 @@ def indexView(request):
         Q(category__category__iexact='case_studies') | Q(category__category__iexact='Case Studies'))
     categories = models.BlogCategory.objects.all()
     subcategories = models.BlogSubCategory.objects.all()
+    reading_lists = models.ReadingList.objects.filter(user=request.user).values_list('post', flat=True)
     # print(articles)
     # print(case_studies)
     context = {
@@ -394,6 +395,7 @@ def indexView(request):
         'case_studies': case_studies.order_by('date')[:4],
         'categories': categories,
         'subcategories': subcategories,
+        'reading_lists': reading_lists,
     }
     return render(request, 'blog/index.html', context)
 
