@@ -71,7 +71,7 @@ def profileView(request):
 
             form = forms.CountryPhoneForm(instance=current_user)
             message = 'Fill your information below.'
-            success = 'Your Email is verified. Please Provide These Information:'
+            success = 'Email verification successful. Please provide these information:'
             if request.POST:
                 form = forms.CountryPhoneForm(request.POST, instance=current_user)
                 if form.is_valid():
