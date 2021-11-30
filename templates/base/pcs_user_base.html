@@ -29,14 +29,14 @@
 </div>
 
 
-<div class="w-20 h-100 position-fixed bg-white shadow-sm px-1 pt-2 d-none d-lg-block">
+<div class="w-20 h-100 position-fixed bg-white px-1 pt-2 d-none d-lg-block">
     <a class="my-3" href="/">
-        <img class="mx-auto my-3 logo-sm" src="{% static '' %}tfimg/user_panel/Techforing-Icon.png" width="40"
+        <img class="mx-auto my-1 logo-sm" src="{% static '' %}tfimg/user_panel/Techforing-Icon.png" width="40"
              height="40" alt="Logo">
         <img class="mx-auto my-1 logo-lg" src="{% static '' %}tfimg/user_panel/logo.png" width="125" height="60"
              alt="Logo">
     </a>
-    <ul class="menubar pt-3">
+    <ul class="menubar pt-4">
         <li data-tootik="Dashboard" data-tootik-conf="right">
             <a href="{% host_url 'pcs_user_dashboard' host 'mysecurity' %}">
                 <i class="icofont-home"></i>
@@ -79,6 +79,11 @@
                 <span>Support</span>
             </a>
         </li>
+        
+            <button class="btn menu-shrink-btn btn-outline-navy mt-3 mx-auto d-block d-none">
+                <i class="icofont-long-arrow-left"></i> Close
+            </button>
+        
     </ul>
 </div>
 
@@ -86,7 +91,7 @@
 <header class="sticky-top">
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div class="container-fluid d-flex justify-content-lg-around px-1 px-md-5">
-            <button class="btn menu-expand-btn d-none d-lg-block"><i class="icofont-navigation-menu"></i></button>
+            <button class="btn menu-expand-btn d-none"><i class="icofont-navigation-menu"></i></button>
             <a class="navbar-brand pt-2 d-lg-none" href="/">
                 <img src="{% static '' %}tfimg/user_panel/logo.png" width="125" height="60" alt="Logo">
             </a>
@@ -137,7 +142,7 @@
     </nav>
 </header>
 
-<main class="w-80 overflow-hidden">
+<main class="w-80 overflow-hidden bg-main" style="min-height: 100vh">
     <div class="px-2 ps-lg-3 py-3">
         {% block content %} {% endblock content %}
     </div>
@@ -185,13 +190,13 @@
     
         let logoSm = document.querySelector('.logo-sm');
         let logoLg = document.querySelector('.logo-lg');
-        let expandedBtn = document.querySelector('.menu-expand-btn');
+        let expandBtn = document.querySelector('.menu-expand-btn');
+        let shrinkBtn = document.querySelector('.menu-shrink-btn');
         let expanded = localStorage.getItem("sidebar-expanded");
 
         let hideLinkText = () => {
             menubarSize('5%', '95%');
             document.querySelector('.w-80').style.marginLeft = '5%';
-            expandedBtn.style.left = '100px';
 
             logoSm.style.display = 'block';
             logoLg.style.display = 'none';
@@ -210,7 +215,6 @@
         let showLinkText = () => {
             menubarSize('18%', '82%');
             document.querySelector('.w-80').style.marginLeft = '18%';
-            expandedBtn.style.left = '280px';
 
             logoSm.style.display = 'none';
             logoLg.style.display = 'block';
@@ -226,7 +230,6 @@
 
             if (document.getElementById('tooltip'))
             document.getElementById('tooltip').outerHTML = '';
-
         }
 
         let menubarSize = (menuWidth, contentWidth) => {
@@ -234,25 +237,35 @@
             document.querySelector('.w-80').style.width = contentWidth;
         }
 
-        let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-        if(width>991){
+        const updateUI = () => {
             if(expanded == 'true')
-            showLinkText();
-        else 
-            hideLinkText();
+            {
+                showLinkText();
+                shrinkBtn.classList.remove('d-none');
+                expandBtn.classList.add('d-none');
+            }
+            else 
+            {
+                hideLinkText();
+                shrinkBtn.classList.add('d-none');
+                expandBtn.classList.remove('d-none');
+            }
         }
-
-        expandedBtn.addEventListener('click', e => {
+        const updatePreference = () => {
             expanded = expanded == 'true' ? 'false' : 'true';
             // Store value to local storage
             localStorage.setItem("sidebar-expanded", expanded);
+            updateUI();
+        }
 
-            if (expanded == 'true') {
-                showLinkText();
-            } else {
-                hideLinkText();
-            }
-        });
+        
+        let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+        if(width>991){
+           updateUI()
+        }
+
+        expandBtn.addEventListener('click', updatePreference);
+        shrinkBtn.addEventListener('click', updatePreference);
     
 </script>
 {% block customjs %} {% endblock customjs %}
