@@ -72,7 +72,7 @@ def profileView(request):
 
             form = forms.CountryPhoneForm(instance=current_user)
             message = 'Fill your information below.'
-            success = 'Email verification successful. Please provide these information:'
+            success = 'Please provide these information:'
             if request.POST:
                 form = forms.CountryPhoneForm(request.POST, instance=current_user)
                 if form.is_valid():
@@ -82,6 +82,7 @@ def profileView(request):
                 'form': form,
                 'message': message,
                 'success': success,
+                'title': 'Basic Info',
             }
             return render(request, 'account/profile-info-add.html', context)
         else:
@@ -102,6 +103,7 @@ def profileView(request):
                 message = 'Email Unverified. Please Check your Email Inbox/Spam Folder for Verification Link'
                 context = {
                     'message': message,
+                    'title': 'Confirm Email',
                 }
                 return render(request, 'account/profile-info-add.html', context)
             else:
