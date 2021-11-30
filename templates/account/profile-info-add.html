@@ -8,52 +8,59 @@
             font-weight: bold;
         }
 
- #id_phone_number_0 {
+        #id_phone_number_0 {
             width: 30%;
             border-radius: 0
         }
-    
-    #id_phone_number_1 {
-        width: 70%;
-        padding: 0.375rem 0.75rem;
-        font-size: 1rem;
-        font-weight: 400;
-        line-height: 1.5;
-        color: #212529;
-        background-color: #fff;
-        background-clip: padding-box;
-        border: 1px solid #ced4da;
-        border-left: 0;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        top: 1px;
-        position: relative;
-        border-radius: 0 4px 4px 0
-    }
-            .select2-container--default .select2-selection--single .select2-selection__arrow{
+
+        #id_phone_number_1 {
+            width: 70%;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #212529;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-left: 0;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            top: 1px;
+            position: relative;
+            border-radius: 0 4px 4px 0
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
             top: 6px !important;
-           
+
         }
-        .select2-container--default .select2-selection--single{
-        border-color: #d8dde2;
-        border-radius: 4px 0 0 4px;
+
+        .select2-container--default .select2-selection--single {
+            border-color: #d8dde2;
+            border-radius: 4px 0 0 4px;
         }
-        #div_id_country{
+
+        #div_id_country {
             display: none;
         }
-        input,select,.select2-selection,.select2{
-            height: 40px !important 
+
+        input, select, .select2-selection, .select2 {
+            height: 40px !important
         }
-        .select2-selection{
+
+        .select2-selection {
             display: flex !important;
             align-items: center !important
         }
-        form>div {
+
+        form > div {
             width: 50%;
             margin: 0 auto
         }
-        form>div div{
+
+        form > div div {
             margin-bottom: 5px
         }
     </style>
@@ -88,13 +95,13 @@
     </div>
 {% endblock content %} {% block customjs %}
     <script>
-    let selected;
-    let country = document.getElementById('id_country');
+        let selected;
+        let country = document.getElementById('id_country');
         $(document).ready(function () {
             $('.countryselectwidget').select2();
             $('.phoneprefixselect').select2();
 
-           $('.phoneprefixselect').on('select2:select', function (e) {
+            $('.phoneprefixselect').on('select2:select', function (e) {
                 selected = e.params.data.text;
                 country.value = selected.slice(0, selected.indexOf('+')).trim();
             });
