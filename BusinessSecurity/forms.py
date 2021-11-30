@@ -2,6 +2,8 @@ from django import forms
 from BusinessSecurity import models
 from Academy.models import Course, duration, Section, Content
 from django.db.models import Q
+from phonenumber_field.formfields import PhoneNumberField
+from phonenumber_field.widgets import PhoneNumberPrefixWidget
 
 
 class AddServiceCategoryForm(forms.ModelForm):
@@ -50,11 +52,13 @@ class CreateBusinessForm(forms.ModelForm):
     website = forms.URLField(widget=forms.URLInput(
         attrs={'pattern': "^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$",
                'value': "https://"}))
+    phone_number = PhoneNumberField(
+        widget=PhoneNumberPrefixWidget())
 
     class Meta:
         model = models.Business
         fields = '__all__'
-        exclude = ['unique_id', ]
+        exclude = ['unique_id', 'company_logo']
 
 
 class AddPackageForm(forms.ModelForm):

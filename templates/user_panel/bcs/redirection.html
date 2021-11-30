@@ -1,4 +1,53 @@
-{% extends 'base/pcs_user_base.html' %} {% load static %} {% load crispy_forms_tags %} {% block title %} Redirect {% endblock title %} {% block content %}
+{% extends 'base/pcs_user_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %} Redirect {% endblock title %}
+{% block headercss %}
+    <style>
+    #id_phone_number_0 {
+            width: 30%;
+            border-radius: 0
+        }
+
+        #id_phone_number_1 {
+            width: 70%;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #212529;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-left: 0;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            top: 1px;
+            position: relative;
+            border-radius: 0 4px 4px 0
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            top: 6px !important;
+
+        }
+
+        .select2-container--default .select2-selection--single {
+            border-color: #d8dde2;
+            border-radius: 4px 0 0 4px;
+        }
+        input, select, .select2-selection, .select2 {
+            height: 40px !important
+        }
+
+        .select2-selection {
+            display: flex !important;
+            align-items: center !important
+        }
+    </style>
+{% endblock %}
+{% block content %}
 
 <section class="mb-5 orders pb-5">
     <h4 class="pt-2 fw-bold border-bottom border-gray pb-14p">Choose where you want to go</h4>
@@ -54,6 +103,10 @@
 </section>
 
 {% endblock content %} {% block customjs %}
-<script>
-</script>
+
+{#<script>#}
+{#        $(document).ready(function () {#}
+{#            $('.phoneprefixselect').select2();#}
+{#        });#}
+{#</script>#}
 {% endblock customjs %}

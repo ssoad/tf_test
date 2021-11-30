@@ -2,6 +2,7 @@ from django.db import models
 from tinymce.models import HTMLField
 from Account.models import User
 import uuid
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 # Create your models here.
@@ -315,11 +316,14 @@ privilege = (
 class Business(models.Model):
     industry_type = models.CharField(max_length=264, choices=industry_type)
     company_name = models.CharField(max_length=264)
-    company_logo = models.ImageField(upload_to='company/')
+    company_logo = models.ImageField(upload_to='company/', default='company/default.jpg')
     website = models.URLField(max_length=264, default='https://')
-    phone_number = models.CharField(max_length=264, default='+')
-    email = models.EmailField(max_length=264, default='email@email.com')
-    address = models.TextField()
+    phone_number = PhoneNumberField(verbose_name='Company Phone Number')
+    email = models.EmailField(max_length=264, verbose_name='Company Email')
+    road = models.CharField(max_length=255)
+    city = models.CharField(max_length=255)
+    zipcode = models.IntegerField()
+    country = models.CharField(max_length=255)
     business_size = models.IntegerField(
         default=10, verbose_name='Number of Employees')
     created_date = models.DateTimeField(auto_now_add=True)
@@ -327,6 +331,9 @@ class Business(models.Model):
 
     def __str__(self):
         return self.company_name
+
+    def address(self):
+        return f'{self.road}, {self.city}, {self.zipcode}, {self.country}'
 
     class Meta:
         verbose_name_plural = 'Businesses'
