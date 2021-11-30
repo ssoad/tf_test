@@ -1,4 +1,5 @@
 <!DOCTYPE html> {% load static %}
+{% load hosts %}
 <html lang="en">
 
 <head>
@@ -42,12 +43,12 @@
                             </a>
                             <ul class="dropdown-menu border-0 shadow" aria-labelledby="navbarDropdown">
                                 <li>
-                                    <a class="dropdown-item text-center" href="{% url 'pcs_app:pcs_user_settings' %}">
+                                    <a class="dropdown-item text-center" href="{% host_url 'user_profile' %}">
                                         <i class="icofont-ui-user me-2"></i> My Profile</a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item text-center" href="{% url 'pcs_app:pcs_user_settings' %}">
-                                        <i class="icofont-edit me-2"></i> Edit Profile
+                                    <a class="dropdown-item text-center" href="{% host_url 'change_password' %}">
+                                        <i class="icofont-edit me-2"></i> Change Password
                                     </a>
                                 </li>
                                 <li>
