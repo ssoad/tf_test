@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, HttpResponseRedirect, reverse, Ht
 from Account import models, forms
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
 
 
 # Create your views here.
@@ -187,6 +188,21 @@ def profileEdit(request):
         'img_forms': img_forms,
     }
     return render(request, 'account/profile_edit.html', context)
+
+
+@login_required
+def passwordChangeView(request):
+    form = PasswordChangeForm(user=request.user)
+    if request.method == 'POST':
+        form = PasswordChangeForm(data=request.POST, user=request.user)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('user_profile'))
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'account/change_password.html', context)
 
 
 @login_required
