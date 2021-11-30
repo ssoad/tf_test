@@ -175,7 +175,7 @@ payment_method = (
 
 
 class Order(models.Model):
-    category_choice = models.CharField(choices=category_choice,  max_length=255)
+    category_choice = models.CharField(choices=category_choice, max_length=255)
     subserviceinput = models.ManyToManyField(
         UserSubserviceInput, related_name='order_subservice')
     service = models.ForeignKey(
@@ -399,3 +399,9 @@ class RegisteredEvents(models.Model):
 
     class Meta:
         verbose_name_plural = 'Registered Events'
+
+
+class Notification(models.Model):
+    category_choice = models.CharField(choices=category_choice, max_length=255)
+    notification = models.TextField()
+    date_time = models.DateTimeField()

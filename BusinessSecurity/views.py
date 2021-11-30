@@ -771,6 +771,9 @@ def mainAdminOrdersDetailView(request, id):
 
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminNotificationView(request):
+    print(request.POST)
+    if 'instant-btn' in request.POST:
+        pass
     context = {
 
     }

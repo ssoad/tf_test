@@ -1,81 +1,80 @@
-{% extends 'base/main_admin_base.html' %} {% load static %} {% block title %} Notifications
-{% endblock title %} {% block headercss %}
-<link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/mainTF/notification.css" /> {% endblock headercss %}
+{% extends 'base/main_admin_base.html' %}
+{% load static %}
+{% block title %} Notifications
+{% endblock title %}
+{% block headercss %}
+    <link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/mainTF/notification.css"/>
+{% endblock headercss %}
 {% block content %}
 
-<main class="mb-5">
-    <div class="container">
-        <div class="row my-3">
-            <h3 class="text-uppercase">send Notification</h3>
-            <textarea name="send-notification w-95" id="" cols="10" rows="10" placeholder="write here"
-                style="height:60px; width:95%; margin-inline-start: 1rem;" class="sendNotification"></textarea>
-                <span class="d-none text-danger fw-bolder sendError">Notification cannot be empty!</span>
+    <main class="mb-5">
+        <div class="container">
             <div class="row my-3">
-                <div class="col-md-3">
-                    <select class="form-select" aria-label="Default select">
-                        <option>Select target users</option>
-                        <option value="">New User</option>
-                        <option value="">New Subscribe User</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <select class="form-select" aria-label="Default select">
-                        <option>
-                            Select target users by interest list
-                        </option>
-                        <option value="">Concierge Cybersecurity</option>
-                        <option value="">Security Compliance</option>
-                        <option value="">Training Program</option>
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    <button class="btn btn-primary fw-bolder text-uppercase float-end sendBtn">
-                        send
-                    </button>
-                </div>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <h3 class="text-uppercase">send Notification</h3>
+                    <textarea required name="notification" id="" cols="10" rows="10" placeholder="write here"
+                              style="height:60px; width:95%; margin-inline-start: 1rem;"
+                              class="sendNotification"></textarea>
+                    <span class="d-none text-danger fw-bolder sendError">Notification cannot be empty!</span>
+                    <div class="row my-3">
+                        <div class="col-md-3">
+                            <select name="target" class="form-select" aria-label="Default select" required>
+                                <option disabled>Select target users</option>
+                                <option value="bcs">Business User</option>
+                                <option value="pcs">Personal User</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-9">
+                            <button name="instant-btn" class="btn btn-primary fw-bolder text-uppercase float-end sendBtn" type="submit">
+                                send
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
-        </div>
-        <div class="row my-3">
-            <h3 class="text-uppercase">auto Notification</h3>
-            <hr class="my-4" />
-            <h5 class="text-uppercase mb-3">create notification</h5>
-            <textarea name="send-notification" id="" cols="30" rows="10" placeholder="write here"
-                style="height:60px; width:95%; margin-inline-start: 1rem;" class="addNotification"></textarea>
+            <div class="row my-3">
+                <h3 class="text-uppercase">auto Notification</h3>
+                <hr class="my-4"/>
+                <h5 class="text-uppercase mb-3">create notification</h5>
+                <textarea name="send-notification" id="" cols="30" rows="10" placeholder="write here"
+                          style="height:60px; width:95%; margin-inline-start: 1rem;" class="addNotification"></textarea>
                 <span class="d-none text-danger addError fw-bolder">Notification cannot be empty!</span>
-            <div class="row my-3">
-                <div class="col-md-3">
-                    <select class="form-select" aria-label="Default select">
-                        <option>Select target users</option>
-                        <option value="">New User</option>
-                        <option value="">New Subscribe User</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <select class="form-select" aria-label="Default select">
-                        <option>
-                            Select target users by interest list
-                        </option>
-                        <option value="">Concierge Cybersecurity</option>
-                        <option value="">Security Compliance</option>
-                        <option value="">Training Program</option>
-                    </select>
-                </div>
-                <div class="col-md-5 d-flex align-center">
-                    <label for="notificationRange" class="notificationRange">Select Date & time: </label>
-                    <input type="datetime-local" class="form-control" placeholder="Select a Date and Time"
-                        id="notificationRange" />
-                </div>
-                <div class="col-md-1">
-                    <button class="btn btn-primary text-uppercase float-end addBtn">
-                        add
-                    </button>
+                <div class="row my-3">
+                    <div class="col-md-3">
+                        <select class="form-select" aria-label="Default select">
+                            <option>Select target users</option>
+                            <option value="">New User</option>
+                            <option value="">New Subscribe User</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" aria-label="Default select">
+                            <option>
+                                Select target users by interest list
+                            </option>
+                            <option value="">Concierge Cybersecurity</option>
+                            <option value="">Security Compliance</option>
+                            <option value="">Training Program</option>
+                        </select>
+                    </div>
+                    <div class="col-md-5 d-flex align-center">
+                        <label for="notificationRange" class="notificationRange">Select Date & time: </label>
+                        <input type="datetime-local" class="form-control" placeholder="Select a Date and Time"
+                               id="notificationRange"/>
+                    </div>
+                    <div class="col-md-1">
+                        <button class="btn btn-primary text-uppercase float-end addBtn">
+                            add
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <table class="table notification-table" id="notification-table">
-                    <thead class="text-center text-uppercase">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table notification-table" id="notification-table">
+                        <thead class="text-center text-uppercase">
                         <tr>
                             <th>notification text</th>
                             <th>target user</th>
@@ -83,8 +82,8 @@
                             <th>notification type</th>
                             <th>action</th>
                         </tr>
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td>5 users hav signed up</td>
                             <td>5 users hav signed up</td>
@@ -241,65 +240,67 @@
                                 </button>
                             </td>
                         </tr>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-    <!-- Modal -->
-    <div class="edit-notification modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog  modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title w-85 text-center" id="exampleModalLabel">
-                        Edit Notification
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body px-4">
-                    <div class="cotainer">
-                        <form action="">
-                            <div class="row my-3">
-                                <h5>Notification Text</h5>
-                                <textarea name="send-notification" id="" cols="50" rows="5"
-                                    placeholder="write here"></textarea>
+        <!-- Modal -->
+        <div class="edit-notification modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog  modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title w-85 text-center" id="exampleModalLabel">
+                            Edit Notification
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body px-4">
+                        <div class="cotainer">
+                            <form action="">
                                 <div class="row my-3">
-                                    <div class="col-md-3">
-                                        <select class="form-select" aria-label="Default select">
-                                            <option>Select target users</option>
-                                            <option value="">New User</option>
-                                            <option value="">New Subscribe User</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <select class="form-select" aria-label="Default select">
-                                            <option>
-                                                Select target users by interest list
-                                            </option>
-                                            <option value="">Concierge Cybersecurity</option>
-                                            <option value="">Security Compliance</option>
-                                            <option value="">Training Program</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6 d-flex align-center">
-                                        <label for="notificationRange" class="notificationRange">Select Date & time: </label>
-                                        <input type="datetime-local" class="form-control" placeholder="Select a Date and Time"
-                                            id="notificationRange" />
+                                    <h5>Notification Text</h5>
+                                    <textarea name="send-notification" id="" cols="50" rows="5"
+                                              placeholder="write here"></textarea>
+                                    <div class="row my-3">
+                                        <div class="col-md-3">
+                                            <select class="form-select" aria-label="Default select">
+                                                <option>Select target users</option>
+                                                <option value="">New User</option>
+                                                <option value="">New Subscribe User</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-select" aria-label="Default select">
+                                                <option>
+                                                    Select target users by interest list
+                                                </option>
+                                                <option value="">Concierge Cybersecurity</option>
+                                                <option value="">Security Compliance</option>
+                                                <option value="">Training Program</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 d-flex align-center">
+                                            <label for="notificationRange" class="notificationRange">Select Date &
+                                                time: </label>
+                                            <input type="datetime-local" class="form-control"
+                                                   placeholder="Select a Date and Time"
+                                                   id="notificationRange"/>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
+                        <button type="button" class="btn btn-primary">
+                            Update
+                        </button>
                     </div>
-                    <button type="button" class="btn btn-primary">
-                        Update
-                    </button>
                 </div>
             </div>
         </div>
-    </div>
-</main>
+    </main>
 {% endblock content %} {% block customjs %}
-<script src="{% static '' %}tfjs/admin_panel/mainTF/notification.js"></script>
+    <script src="{% static '' %}tfjs/admin_panel/mainTF/notification.js"></script>
 
 {% endblock customjs %}
