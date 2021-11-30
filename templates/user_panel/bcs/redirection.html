@@ -3,11 +3,18 @@
 {% load crispy_forms_tags %}
 {% block title %} Redirect {% endblock title %}
 {% block headercss %}
+<link rel="stylesheet" href="{% static 'css/telephone.css' %}" />
     <style>
+        .iti__selected-flag {
+            border-right: none;
+            margin-top: 5px !important;
+        }
+        
     label{
         text-transform: capitalize;
+        margin-top: 5px
     }
-        #id_phone_number_0 {
+    .select2-container.select2-container--default {
             width: 30% !important;
             border-radius: 0 !important
         }
@@ -48,6 +55,9 @@
         .select2-selection {
             display: flex !important;
             align-items: center !important
+        }
+        .select2-dropdown.select2-dropdown--above{
+            width: 200px !important
         }
     </style>
 {% endblock %}
@@ -91,7 +101,7 @@
         <!-- Creation Modal -->
         <div class="modal fade" id="createNew" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
              aria-labelledby="createNewLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-dialog modal-dialog-centered ">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="createNewLabel">Register a New Business</h5>
@@ -113,14 +123,23 @@
     </section>
 
 {% endblock content %} {% block customjs %}
-
+<script src="{% static 'js/telephone.js' %}"></script>
     <script>
-        $(document).ready(function () {
-            $('.phoneprefixselect').select2(
-                {
-                    dropdownParent: $("#createNew")
-                }
-            );
+    var input = document.querySelector("#id_phone_number");
+    input.value="+1";
+      intlTelInput(input, {
+        
+      });
+
+      let dialList = document.querySelectorAll('.iti__country');
+      for(let i = 0; i<dialList.length;i++){
+        dialList[i].addEventListener('click', function(){
+          input.value = dialList[i].children[2].innerHTML;
         });
+      }
+
+      input.addEventListener('keyup', (e) => {
+        e.target.value = e.target.value.replace(/[^0-9-+]/gi, "");
+    });
     </script>
 {% endblock customjs %}
