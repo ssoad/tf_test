@@ -1,5 +1,6 @@
 {% extends 'base/main_admin_base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% block title %} Notifications
 {% endblock title %}
 {% block headercss %}
@@ -11,9 +12,10 @@
         <div class="container">
             <div class="row my-3">
                 <form action="" method="POST">
+
                     {% csrf_token %}
                     <h3 class="text-uppercase">send Notification</h3>
-                    <textarea required name="notification" id="" cols="10" rows="10" placeholder="write here"
+                    {% comment %}<textarea required name="notification" id="" cols="10" rows="10" placeholder="write here"
                               style="height:60px; width:95%; margin-inline-start: 1rem;"
                               class="sendNotification"></textarea>
                     <span class="d-none text-danger fw-bolder sendError">Notification cannot be empty!</span>
@@ -24,9 +26,11 @@
                                 <option value="bcs">Business User</option>
                                 <option value="pcs">Personal User</option>
                             </select>
-                        </div>
+                        </div>{% endcomment %}
 
-                        <div class="col-md-9">
+                    {{ form|crispy }}
+
+                        <div class="">
                             <button name="instant-btn" class="btn btn-primary fw-bolder text-uppercase float-end sendBtn" type="submit">
                                 send
                             </button>

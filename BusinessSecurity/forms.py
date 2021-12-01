@@ -34,8 +34,9 @@ class AddForm(forms.ModelForm):
 
 
 class AddSubServiceForm(forms.ModelForm):
-    service = forms.ModelChoiceField(queryset=models.Service.objects.filter(has_sub_service=True, category_choice='bcs'),
-                                     widget=forms.Select(attrs={'class': 'form-select'}))
+    service = forms.ModelChoiceField(
+        queryset=models.Service.objects.filter(has_sub_service=True, category_choice='bcs'),
+        widget=forms.Select(attrs={'class': 'form-select'}))
 
     class Meta:
         model = models.SubService
@@ -155,3 +156,12 @@ class AssignToServiceForm(forms.ModelForm):
         widgets = {
             'service': forms.SelectMultiple(attrs={'class': 'js-example-basic-multiple'})
         }
+
+
+class NotificationForm(forms.ModelForm):
+    category_choice = forms.ChoiceField(label='Select Target Users', choices=models.category_choice)
+    notification = forms.Field(widget=forms.Textarea(attrs={'cols': '10', 'rows': '5'}))
+
+    class Meta:
+        model = models.Notification
+        fields = '__all__'
