@@ -1,5 +1,6 @@
 {% extends 'base/main_admin_base.html' %}
 {% load static %}
+{% load hosts %}
 {% load crispy_forms_tags %}
 {% block title %} Notifications
 {% endblock title %}
@@ -12,7 +13,6 @@
         <div class="container">
             <div class="row my-3">
                 <form action="" method="POST">
-
                     {% csrf_token %}
                     <h3 class="text-uppercase">send Notification</h3>
                     {% comment %}<textarea required name="notification" id="" cols="10" rows="10" placeholder="write here"
@@ -30,14 +30,15 @@
 
                     {{ form|crispy }}
 
-                        <div class="">
-                            <button name="instant-btn" class="btn btn-primary fw-bolder text-uppercase float-end sendBtn" type="submit">
-                                send
-                            </button>
-                        </div>
+                    <div class="">
+                        <button name="instant-btn" class="btn btn-primary fw-bolder text-uppercase float-end sendBtn"
+                                type="submit">
+                            send
+                        </button>
                     </div>
                 </form>
             </div>
+            {% comment %}
             <div class="row my-3">
                 <h3 class="text-uppercase">auto Notification</h3>
                 <hr class="my-4"/>
@@ -75,6 +76,7 @@
                     </div>
                 </div>
             </div>
+            {% endcomment %}
             <div class="row">
                 <div class="col-md-12">
                     <table class="table notification-table" id="notification-table">
@@ -83,167 +85,27 @@
                             <th>notification text</th>
                             <th>target user</th>
                             <th>time</th>
-                            <th>notification type</th>
                             <th>action</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>5 users hav signed up</td>
-                            <td>5 users hav signed up</td>
-                            <td class="text-center">3 minutes ago</td>
-                            <td class="text-center">push</td>
-                            <td>
-                                <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                    <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
-                                    Edit
-                                </button>
-                                <button class="btn dlt">
-                                    <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2 users have subscribed</td>
-                            <td>5 users hav signed up</td>
-                            <td class="text-center">3 minutes ago</td>
-                            <td class="text-center">push</td>
-                            <td>
-                                <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                    <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
-                                    Edit
-                                </button>
-                                <button class="btn dlt">
-                                    <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3 users have renewed their account</td>
-                            <td>5 users hav signed up</td>
-                            <td class="text-center">3 minutes ago</td>
-                            <td class="text-center">push</td>
-                            <td>
-                                <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                    <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
-                                    Edit
-                                </button>
-                                <button class="btn dlt">
-                                    <i class=" bi bi-trash-fill text-danger rounded-circle activites-icon "></i>
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>1 user have registered CCSP webinar</td>
-                            <td>5 users hav signed up</td>
-                            <td class="text-center">3 minutes ago</td>
-                            <td class="text-center">push</td>
-                            <td>
-                                <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                    <i class="
-                                                    icofont-edit
-                                                    text-primary
-                                                    rounded-circle
-                                                    activites-icon
-                                                "></i>
-                                    Edit
-                                </button>
-                                <button class="btn dlt">
-                                    <i class="
-                                                    bi bi-trash-fill
-                                                    text-danger
-                                                    rounded-circle
-                                                    activites-icon
-                                                "></i>
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                1 user have updated their interest list
-                            </td>
-                            <td>5 users hav signed up</td>
-                            <td class="text-center">3 minutes ago</td>
-                            <td class="text-center">push</td>
-                            <td>
-                                <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                    <i class="
-                                                    icofont-edit
-                                                    text-primary
-                                                    rounded-circle
-                                                    activites-icon
-                                                "></i>
-                                    Edit
-                                </button>
-                                <button class="btn dlt">
-                                    <i class="
-                                                    bi bi-trash-fill
-                                                    text-danger
-                                                    rounded-circle
-                                                    activites-icon
-                                                "></i>
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>1 user updated their interest list</td>
-                            <td>5 users hav signed up</td>
-                            <td class="text-center">3 minutes ago</td>
-                            <td class="text-center">push</td>
-                            <td>
-                                <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                    <i class="
-                                                    icofont-edit
-                                                    text-primary
-                                                    rounded-circle
-                                                    activites-icon
-                                                "></i>
-                                    Edit
-                                </button>
-                                <button class="btn dlt">
-                                    <i class="
-                                                    bi bi-trash-fill
-                                                    text-danger
-                                                    rounded-circle
-                                                    activites-icon
-                                                "></i>
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                1 PCS user recently subscribed to BCS service
-                            </td>
-                            <td>5 users hav signed up</td>
-                            <td class="text-center">3 minutes ago</td>
-                            <td class="text-center">push</td>
-                            <td>
-                                <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                    <i class="
-                                                    icofont-edit
-                                                    text-primary
-                                                    rounded-circle
-                                                    activites-icon
-                                                "></i>
-                                    Edit
-                                </button>
-                                <button class="btn dlt">
-                                    <i class="
-                                                    bi bi-trash-fill
-                                                    text-danger
-                                                    rounded-circle
-                                                    activites-icon
-                                                "></i>
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
+                        {% for notification in notifications %}
+                            <tr class="">
+                                <td>{{ notification.notification }}</td>
+                                <td>{{ notification.category_choice|upper }}</td>
+                                <td class="text-center">{{ notification.notification_time }}</td>
+                                <td>
+                                    <a href="" class="btn">
+                                        <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
+                                        Edit
+                                    </a>
+                                    <a href="{% host_url 'main_admin_notification_delete' %}{{ notification.id }}" class="btn dlt">
+                                        <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
+                                        Delete
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
