@@ -27,6 +27,7 @@ urlpatterns = [
     # user panel
     path('pcs_user_dashboard/', views.userDashboardView, name='pcs_user_dashboard'),
     path('pcs_user_services/', views.userServicesView, name='pcs_user_services'),
+    path('pcs_user_reading_list/', views.userReadingListView, name='pcs_user_reading_list'),
     path('pcs_user_order_history/', views.userOrderHistoryView, name='pcs_user_order_history'),
     path('pcs_user_subscriptions/', views.userSubscriptionsView, name='pcs_user_subscriptions'),
     path('pcs_user_events/', views.userEventsView, name='pcs_user_events'),

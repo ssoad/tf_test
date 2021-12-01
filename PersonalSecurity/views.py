@@ -167,6 +167,15 @@ def userDashboardView(request):
     }
     return render(request, 'user_panel/pcs/dashboard.html', context)
 
+@login_required
+def userReadingListView(request):
+    # readingList = 
+   
+    context = {
+        
+    }
+    return render(request, 'user_panel/pcs/reading_list.html', context)
+
 
 @login_required
 def userServicesView(request):

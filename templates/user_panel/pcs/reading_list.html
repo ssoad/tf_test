@@ -1,0 +1,52 @@
+{% extends 'base/pcs_user_base.html' %} {% load static %} {% load hosts %} {% block title %} Reading List {% endblock title %} {% block content %}
+
+<section class="reading-list">
+    <h4 class="pt-3 fw-bold border-bottom border-gray pb-14p">Your Reading List</h4>
+
+    <table id="order-table" class="mt-5 table table-bordered">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Title</th>
+                <th>Link</th>
+                <th>Added On</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Blog title</td>
+                <td><a href="{% host_url 'ticket_detail' %}">Penetration dsad</a></td>
+                <td>20-12-21</td>
+                <td>
+                    <a class="text-danger" href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}">
+                        <i class="icofont-trash"></i>
+                        <span>Remove</span>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</section>
+
+{% endblock content %} {% block customjs %}
+
+<script>
+    $(document).ready(function() {
+        // console.log('data-table');
+        $("#order-table").DataTable({
+            scrollx: true,
+            scrollCollapse: true,
+            paging: false,
+            oLanguage: {
+                sSearch: `_INPUT_ <i class="icofont-search-2"></i>`,
+                sSearchPlaceholder: "Search...",
+            },
+            info: false,
+            sorting: false,
+        });;
+    });
+</script>
+{% endblock customjs %}
