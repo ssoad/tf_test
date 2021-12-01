@@ -7,6 +7,7 @@ from BusinessSecurity import models, forms
 from PersonalSecurity import forms as pcsforms
 from django.db.models import Q
 from django.core.files.storage import FileSystemStorage
+from Blog.models import ReadingList
 
 
 # Create your views here.
@@ -159,7 +160,8 @@ def userDashboardView(request):
     events = models.Events.objects.filter(status='active', category='for_personal_security')
     registered_event = models.RegisteredEvents.objects.filter(user=request.user).values_list('event', flat=True)
     orders = models.Order.objects.filter(
-        Q(user=request.user, category_choice='pcs') & ~Q(Q(order_status='new') | Q(order_status='attending'))).order_by('-order_date')[:2]
+        Q(user=request.user, category_choice='pcs') & ~Q(Q(order_status='new') | Q(order_status='attending'))).order_by(
+        '-order_date')[:2]
     context = {
         'events': events,
         'registered_event': registered_event,
@@ -167,12 +169,13 @@ def userDashboardView(request):
     }
     return render(request, 'user_panel/pcs/dashboard.html', context)
 
+
 @login_required
 def userReadingListView(request):
-    # readingList = 
-   
+    readinglists = ReadingList.objects.filter(user=request.user)
+
     context = {
-        
+        'readinglists': readinglists
     }
     return render(request, 'user_panel/pcs/reading_list.html', context)
 

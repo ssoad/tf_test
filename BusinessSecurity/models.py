@@ -345,8 +345,8 @@ class UsersBusiness(models.Model):
         User, on_delete=models.CASCADE, related_name='business_user')
     business = models.ForeignKey(
         Business, on_delete=models.CASCADE, related_name='business_business')
-    position = models.CharField(max_length=264)
-    privilege = models.CharField(max_length=264, choices=privilege)
+    position = models.CharField(max_length=264, default='staff')
+    privilege = models.CharField(max_length=264, choices=privilege, default='general_staff')
     joined_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
