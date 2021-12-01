@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static '' %}tfcss/user_panel/bcs/style.css"/>
+    <link rel="stylesheet" href="{% static 'tfcss/user_panel/bcs/style.css' %}"/>
     <link id="tooltip" rel="stylesheet" href="https://npmcdn.com/tootik@1.0.2/css/tootik.min.css">
     {% block headercss %} {% endblock headercss %}
     <title>
@@ -49,7 +49,7 @@
         </li>
         <li>
             <a href="{% host_url 'bcs_user_quotations_history' %}" data-tootik="Quotations History" data-tootik-conf="right">
-                <i class="icofont-cart-alt"></i>
+                <i class="icofont-info-circle"></i>
                 <span>Quotations History</span>
             </a>
         </li>
