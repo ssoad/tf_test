@@ -318,7 +318,7 @@ class Business(models.Model):
     company_name = models.CharField(max_length=264)
     company_logo = models.ImageField(upload_to='company/', default='company/default.jpg')
     website = models.URLField(max_length=264, default='https://')
-    phone_number = PhoneNumberField(verbose_name='Company Phone Number')
+    phone_number = models.CharField(max_length=24,verbose_name='Company Phone Number')
     email = models.EmailField(max_length=264, verbose_name='Company Email')
     road = models.CharField(max_length=255)
     city = models.CharField(max_length=255)

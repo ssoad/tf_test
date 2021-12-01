@@ -53,9 +53,6 @@ class CreateBusinessForm(forms.ModelForm):
     website = forms.URLField(widget=forms.URLInput(
         attrs={'pattern': "^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$",
                'value': "https://"}))
-    phone_number = PhoneNumberField(
-        widget=PhoneNumberPrefixWidget())
-
     class Meta:
         model = models.Business
         fields = '__all__'

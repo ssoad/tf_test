@@ -62,14 +62,28 @@
                     <h5 class="title">{{post.title}}</h5>
                 </a>
                 <div class="position-relative">
-                    <span class=" p-0 me-5 text-green ">
+                    <span class=" p-0 me-3 text-green ">
                         <i class=" bi bi-calendar "></i>
                         {{post.date|date}}
                     </span>
-                    <span class="p-0 me-5 text-green" title="Reading Time">
+                    <span class="p-0 me-3 text-green" title="Reading Time">
                         <i class="bi bi-stopwatch"></i>
                         {{post.reading_time}}
                     </span>
+                    
+                            {% if post.id not in reading_lists %}
+                            <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}"
+                                class="p-0 me-3 text-green" title="Add Reading List">
+                                <i class="bi bi-plus-circle"></i>
+                                Add
+                            </a>
+                        {% else %}
+                        <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}"
+                            class="p-0 me-3 text-green" title="Remove From Reading List">
+                            <i class="bi bi-dash-circle"></i>
+                            Remove
+                        </a>
+                        {% endif %}
                 </div>
                 <p class="mt-2">{{post.short_description}}</p>
             </div>
@@ -95,7 +109,20 @@
                                 <i class="bi bi-stopwatch"></i>
                                 {{post.reading_time}}
                             </span>
-                            
+                                            
+                                {% if post.id not in reading_lists %}
+                                <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}"
+                                    class="p-0 me-3 text-green" title="Add Reading List">
+                                    <i class="bi bi-plus-circle"></i>
+                                    Add
+                                </a>
+                            {% else %}
+                            <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}"
+                                class="p-0 me-3 text-green" title="Remove From Reading List">
+                                <i class="bi bi-dash-circle"></i>
+                                Remove
+                            </a>
+                            {% endif %}
                         <p class="mt-1 mb-0 fs-7 lh-sm">{{post.short_description|truncatechars:92}}</p>
                     </div>
                 </div>
@@ -129,6 +156,20 @@
                         <i class="bi bi-stopwatch"></i>
                         {{post.reading_time}}
                     </span>
+
+                {% if post.id not in reading_lists %}
+                    <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}"
+                        class="p-0 me-3 text-green" title="Add Reading List">
+                        <i class="bi bi-plus-circle"></i>
+                        Add
+                    </a>
+                {% else %}
+                <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}"
+                    class="p-0 me-3 text-green" title="Remove From Reading List">
+                    <i class="bi bi-dash-circle"></i>
+                    Remove
+                </a>
+                {% endif %}
                     
                 </div>
                 <p class="mt-2">{{post.short_description}}</p>
@@ -155,6 +196,20 @@
                                 <i class="bi bi-stopwatch"></i>
                                 {{post.reading_time}}
                             </span>
+                                            
+                                {% if post.id not in reading_lists %}
+                                <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}"
+                                    class="p-0 me-3 text-green" title="Add Reading List">
+                                    <i class="bi bi-plus-circle"></i>
+                                    Add
+                                </a>
+                            {% else %}
+                            <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}"
+                                class="p-0 me-3 text-green" title="Remove From Reading List">
+                                <i class="bi bi-dash-circle"></i>
+                                Remove
+                            </a>
+                            {% endif %}
                             
                         </div>
                         <p class="mt-1 mb-0 fs-7 lh-sm">{{post.short_description|truncatechars:92}}
