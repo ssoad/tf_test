@@ -2,23 +2,22 @@
 
 <section class="reading-list">
     <h4 class="pt-3 fw-bold border-bottom border-gray pb-14p">Your Reading List</h4>
-
-    <table id="order-table" class="mt-5 table table-bordered">
+{% if readinglists.exists %}
+<table id="order-table" class="mt-5 table table-bordered">
         <thead>
             <tr>
                 <th>No.</th>
                 <th>Title</th>
-                <th>Link</th>
                 <th>Added On</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
+        {% for readinglist in readinglists %}
             <tr>
-                <td>1</td>
-                <td>Blog title</td>
-                <td><a href="{% host_url 'ticket_detail' %}">Penetration dsad</a></td>
-                <td>20-12-21</td>
+                <td>{{ forloop.counter }}</td>
+                <td><a href="{% host_url 'articles' host 'blog' %}{{ readinglist.post.post_url }}">{{ readinglist.post.title }}</a></td>
+                <td>{{ readinglist.added_on }}</td>
                 <td>
                     <a class="text-danger" href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}">
                         <i class="icofont-trash"></i>
@@ -26,8 +25,13 @@
                     </a>
                 </td>
             </tr>
+        {% endfor %}
         </tbody>
     </table>
+    {% else %}
+    <h3 class="text-center text-gray my-5 py-5 h-100">Nothing on your reading list. <a target="_blank" class="btn btn-outline-navy btn-sm" href="{% host_url 'index' host 'blog' %}">Add Now</a></h3>
+{% endif %} 
+
 
 </section>
 
