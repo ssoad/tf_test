@@ -2,6 +2,7 @@
 {% block headercss %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+    {% comment %} <link rel="stylesheet" href="https://npmcdn.com/tootik@1.0.2/css/tootik.min.css"> {% endcomment %}
     <style>
         .profile-details {
             margin-block: 1rem;
@@ -29,6 +30,44 @@
         .img-change:hover {
             visibility: visible;
         }
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            opacity: 1
+          }
+          
+          .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 140px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 150%;
+            left: 50%;
+            margin-left: -75px;
+            opacity: 0;
+            transition: opacity 0.3s;
+          }
+          
+          .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #555 transparent transparent transparent;
+          }
+          
+          .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+          }
     </style>
 
 {% endblock headercss %}
@@ -62,13 +101,18 @@
                     </div>
                     <div class="col-md-9">
                         <div class="company-detail d-grid align-items-center">
-                            <h4>{{ current_business.business.company_name }} <input type="text" class="d-none key"
-                                                                                    value="{{ current_business.business.unique_id }}"
-                                                                                    disabled> <span onclick="copyFun()"
-                                                                                                    class="copy"
-                                                                                                    data-tootik="Copy Invite Key"
-                                                                                                    style="cursor:pointer;"><i
-                                    class="fa fa-copy text-primary"></i></span></h4>
+                            <h4>{{ current_business.business.company_name }} 
+                                
+                                <input type="text" class="d-none key" id="myInput"
+                                                value="{{ current_business.business.unique_id }}"
+                                                disabled /> 
+                                    <div class="tooltip">
+                                    <span onclick="myFunction()" onmouseout="outFunc()" style="cursor: pointer">
+                                      <span class="tooltiptext" id="myTooltip">Copy Business Key</span>
+                                      <i class="fa fa-copy text-primary fs-5"></i>
+                                    </span>
+                                    </div>
+                                            </h4>
                             <div class="row mx-0">
                                 <div class="col ps-0">
                                     <p class="mb-1">Company
@@ -300,17 +344,20 @@
         });
     </script>
     <script>
-        function copyFun() {
-            /* Get the text field */
-            var copyText = document.querySelector(".key");
-
-            /* Select the text field */
+        function myFunction() {
+            var copyText = document.getElementById("myInput");
             copyText.select();
-            copyText.setSelectionRange(0, 99999); /* For mobile devices */
-
-            /* Copy the text inside the text field */
+            copyText.setSelectionRange(0, 99999);
             navigator.clipboard.writeText(copyText.value);
-        }
+            
+            var tooltip = document.getElementById("myTooltip");
+            tooltip.innerHTML = "Copied";
+          }
+          
+          function outFunc() {
+            var tooltip = document.getElementById("myTooltip");
+            tooltip.innerHTML = "Copy Business Key";
+          }
     </script>
     <script>
         var alertPlaceholder = document.getElementById('liveAlertPlaceholder')

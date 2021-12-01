@@ -61,6 +61,9 @@
         .select2-dropdown.select2-dropdown--above {
             width: 200px !important
         }
+        .alert-dismissible .btn-close{
+            top: -7px
+        }
     </style>
 {% endblock %}
 {% block content %}
@@ -83,7 +86,7 @@
         <!-- Joining Modal -->
         <div class="modal fade" id="joinExisting" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
              aria-labelledby="joinExistingLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="joinExistingLabel">Enter Your Business KEY</h5>
@@ -106,7 +109,7 @@
         <!-- Creation Modal -->
         <div class="modal fade" id="createNew" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
              aria-labelledby="createNewLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered ">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="createNewLabel">Register a New Business</h5>
