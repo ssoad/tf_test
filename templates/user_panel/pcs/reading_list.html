@@ -2,8 +2,8 @@
 
 <section class="reading-list">
     <h4 class="pt-3 fw-bold border-bottom border-gray pb-14p">Your Reading List</h4>
-{% if readinglists.exists %}
-<table id="order-table" class="mt-5 table table-bordered">
+    {% if readinglists.exists %}
+    <table id="order-table" class="mt-5 table table-bordered">
         <thead>
             <tr>
                 <th>No.</th>
@@ -13,24 +13,25 @@
             </tr>
         </thead>
         <tbody>
-        {% for readinglist in readinglists %}
+            {% for readinglist in readinglists %}
             <tr>
                 <td>{{ forloop.counter }}</td>
-                <td><a href="{% host_url 'articles' host 'blog' %}{{ readinglist.post.post_url }}">{{ readinglist.post.title }}</a></td>
+                <td><a target="_blank" href="{% host_url 'articles' host 'blog' %}{{ readinglist.post.post_url }}">
+                        {{readinglist.post.title|truncatechars:50 }}</a></td>
                 <td>{{ readinglist.added_on }}</td>
                 <td>
-                    <a class="text-danger" href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}">
+                    <a class="text-danger" href="{% host_url 'add_to_reading_list' host 'blog' %}{{  readinglist.id }}">
                         <i class="icofont-trash"></i>
                         <span>Remove</span>
                     </a>
                 </td>
             </tr>
-        {% endfor %}
+            {% endfor %}
         </tbody>
     </table>
     {% else %}
     <h3 class="text-center text-gray my-5 py-5 h-100">Nothing on your reading list. <a target="_blank" class="btn btn-outline-navy btn-sm" href="{% host_url 'index' host 'blog' %}">Add Now</a></h3>
-{% endif %} 
+    {% endif %}
 
 
 </section>
