@@ -493,6 +493,20 @@ def bcsUserMyTeamView(request):
                     if info_form.is_valid():
                         info_form.save()
                     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                elif 'inv-btn' in request.POST:
+                    try:
+                        added_user = models.User.objects.get(email=request.POST.get('email'))
+                        user_business = models.UsersBusiness.objects.get_or_create(user=added_user, business=current_business.business)
+                        user_business[0].save()
+                        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                    except:
+                        context = {
+                            'current_business': current_business,
+                            'image_form': image_form,
+                            'info_form': info_form,
+                            'message': 'User with given email not found'
+                        }
+                        return render(request, 'user_panel/bcs/my_team.html', context)
             context = {
                 'current_business': current_business,
                 'image_form': image_form,
@@ -508,7 +522,7 @@ def bcsUserTeamMemberDeleteView(request, id):
     current_employee = models.UsersBusiness.objects.get(id=id)
     current_user = models.User.objects.get(id=current_employee.user.id)
     if current_user == request.user \
-            or current_user.business_user.privilege == 'general_staff' \
+            or current_user.business_user.privilege == 'general_admin' \
             or current_employee.privilege == 'admin':
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
     else:
