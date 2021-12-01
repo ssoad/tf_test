@@ -125,6 +125,12 @@
                             </div>
                         </div>
                     </div>
+                    <p>Interest List</p>
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        {{ int_forms|crispy }}
+                        <button type="submit" class="btn-navy btn" name="int-btn">Save</button>
+                    </form>
                     <!-- Modal -->
                     <div class="modal fade" id="imageChangeModal" tabindex="-1" aria-labelledby="imageChangeModalLabel"
                          aria-hidden="true">
