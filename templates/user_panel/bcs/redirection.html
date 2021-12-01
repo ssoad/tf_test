@@ -3,18 +3,19 @@
 {% load crispy_forms_tags %}
 {% block title %} Redirect {% endblock title %}
 {% block headercss %}
-<link rel="stylesheet" href="{% static 'css/telephone.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/telephone.css' %}"/>
     <style>
         .iti__selected-flag {
             border-right: none;
             margin-top: 5px !important;
         }
-        
-    label{
-        text-transform: capitalize;
-        margin-top: 5px
-    }
-    .select2-container.select2-container--default {
+
+        label {
+            text-transform: capitalize;
+            margin-top: 5px
+        }
+
+        .select2-container.select2-container--default {
             width: 30% !important;
             border-radius: 0 !important
         }
@@ -56,7 +57,8 @@
             display: flex !important;
             align-items: center !important
         }
-        .select2-dropdown.select2-dropdown--above{
+
+        .select2-dropdown.select2-dropdown--above {
             width: 200px !important
         }
     </style>
@@ -66,7 +68,9 @@
     <section class="mb-5 orders pb-5">
         <h4 class="pt-2 fw-bold border-bottom border-gray pb-14p">Choose where you want to go</h4>
         <div class="mt-5">&nbsp;</div>
-
+        {% if message %}
+            <div id="liveAlertPlaceholder"></div>
+        {% endif %}
         <div class="d-flex justify-content-md-center">
             <button data-bs-toggle="modal" data-bs-target="#joinExisting" class="btn btn-outline-navy me-3">Join an
                 Existing Business
@@ -87,7 +91,8 @@
                     </div>
                     <form action="" method="POST">
                         <div class="modal-body">
-                            <input type="text" placeholder="Enter the KEY" class="form-control" required>
+                            <input type="text" name="joining_key" placeholder="Enter the KEY" class="form-control"
+                                   required>
                             {% csrf_token %}
                         </div>
                         <div class="modal-footer">
@@ -122,24 +127,36 @@
         <div class="my-5">&nbsp;</div>
     </section>
 
-{% endblock content %} {% block customjs %}
-<script src="{% static 'js/telephone.js' %}"></script>
+{% endblock content %}
+
+{% block customjs %}
+    <script src="{% static 'js/telephone.js' %}"></script>
     <script>
-    var input = document.querySelector("#id_phone_number");
-    input.value="+1";
-      intlTelInput(input, {
-        
-      });
+        var input = document.querySelector("#id_phone_number");
+        input.value = "+1";
+        intlTelInput(input, {});
 
-      let dialList = document.querySelectorAll('.iti__country');
-      for(let i = 0; i<dialList.length;i++){
-        dialList[i].addEventListener('click', function(){
-          input.value = dialList[i].children[2].innerHTML;
+        let dialList = document.querySelectorAll('.iti__country');
+        for (let i = 0; i < dialList.length; i++) {
+            dialList[i].addEventListener('click', function () {
+                input.value = dialList[i].children[2].innerHTML;
+            });
+        }
+
+        input.addEventListener('keyup', (e) => {
+            e.target.value = e.target.value.replace(/[^0-9-+]/gi, "");
         });
-      }
+    </script>
+    <script>
+        var alertPlaceholder = document.getElementById('liveAlertPlaceholder')
 
-      input.addEventListener('keyup', (e) => {
-        e.target.value = e.target.value.replace(/[^0-9-+]/gi, "");
-    });
+        function alert(message, type) {
+            var wrapper = document.createElement('div')
+            wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+
+            alertPlaceholder.append(wrapper)
+        }
+
+        alert('{{ message }}', 'danger')
     </script>
 {% endblock customjs %}

@@ -310,6 +310,23 @@ def createBusinessView(request):
                                                                     position=position, privilege='admin')
                 user_business.save()
                 return HttpResponseRedirect(reverse('bcs_user_dashboard'))
+            elif 'join' in request.POST:
+                joining_key = request.POST.get('joining_key')
+                try:
+                    business = models.Business.objects.get(unique_id=joining_key)
+                    current_user.is_bcs = True
+                    current_user.save()
+                    user_business = models.UsersBusiness.objects.create(user=current_user, business=business,
+                                                                        position='staff', privilege='general_staff')
+                    user_business.save()
+                    return HttpResponseRedirect(reverse('bcs_user_dashboard'))
+                except:
+                    message = 'Wrong Business Key'
+                    context = {
+                        'form': form,
+                        'message': message,
+                    }
+                    return render(request, 'user_panel/bcs/redirection.html', context)
 
         context = {
             'form': form,
@@ -326,6 +343,7 @@ def userDashboardView(request):
 
     elif request.user.is_bcs:
         current_business = request.user.business_user.business
+        notifications = models.Notification.objects.filter(category_choice='bcs').order_by('-notification_time')[:2]
 
         events = models.Events.objects.filter(status='active', category='for_business_security')
         registered_event = models.RegisteredEvents.objects.filter(user=request.user).values_list('event', flat=True)
@@ -336,6 +354,7 @@ def userDashboardView(request):
             'events': events,
             'registered_event': registered_event,
             'orders': orders,
+            'notifications': notifications,
         }
         return render(request, 'user_panel/bcs/dashboard.html', context)
 
@@ -488,7 +507,9 @@ def bcsUserMyTeamView(request):
 def bcsUserTeamMemberDeleteView(request, id):
     current_employee = models.UsersBusiness.objects.get(id=id)
     current_user = models.User.objects.get(id=current_employee.user.id)
-    if current_user == request.user:
+    if current_user == request.user \
+            or current_user.business_user.privilege == 'general_staff' \
+            or current_employee.privilege == 'admin':
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
     else:
         current_user.is_bcs = False
@@ -544,8 +565,9 @@ def userNotificationsView(request):
         return HttpResponseRedirect(reverse('create_business'))
 
     elif request.user.is_bcs:
+        notifications = models.Notification.objects.filter(category_choice='bcs').order_by('-notification_time')
         context = {
-
+            'notifications': notifications
         }
         return render(request, 'user_panel/bcs/notifications.html', context)
 
@@ -771,14 +793,25 @@ def mainAdminOrdersDetailView(request, id):
 
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminNotificationView(request):
-    print(request.POST)
+    form = forms.NotificationForm()
+    notifications = models.Notification.objects.all().order_by('-notification_time')
     if 'instant-btn' in request.POST:
-        pass
+        form = forms.NotificationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
-
+        'form': form,
+        'notifications': notifications
     }
     return render(request, 'admin_panel/mainTF/notification.html', context)
 
+
+@user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def mainAdminNotificationDeleteView(request, id):
+    current_notification = models.Notification.objects.get(id=id)
+    current_notification.delete()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminEventsView(request):

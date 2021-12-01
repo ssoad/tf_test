@@ -309,7 +309,8 @@ industry_type = (
 
 privilege = (
     ('admin', 'Admin'),
-    ('member', 'Member'),
+    ('general_admin', 'General Admin'),
+    ('general_staff', 'General Staff'),
 )
 
 
@@ -318,7 +319,7 @@ class Business(models.Model):
     company_name = models.CharField(max_length=264)
     company_logo = models.ImageField(upload_to='company/', default='company/default.jpg')
     website = models.URLField(max_length=264, default='https://')
-    phone_number = models.CharField(max_length=24,verbose_name='Company Phone Number')
+    phone_number = models.CharField(max_length=24, verbose_name='Company Phone Number')
     email = models.EmailField(max_length=264, verbose_name='Company Email')
     road = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
@@ -404,4 +405,5 @@ class RegisteredEvents(models.Model):
 class Notification(models.Model):
     category_choice = models.CharField(choices=category_choice, max_length=255)
     notification = models.TextField()
-    date_time = models.DateTimeField()
+    notification_time = models.DateTimeField(auto_now_add=True)
+    # date_time = models.DateTimeField()

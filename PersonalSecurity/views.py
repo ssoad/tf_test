@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse, HttpResponseRedirect, reverse
+from django.shortcuts import render, HttpResponse, HttpResponseRedirect, reverse, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from Academy.models import Course, Section, Content
 from Academy.forms import CourseCreateForm, SectionCreateForm, ContentCreateForm
@@ -6,6 +6,7 @@ from django.core.paginator import Paginator
 from BusinessSecurity import models, forms
 from PersonalSecurity import forms as pcsforms
 from django.db.models import Q
+from django.core.files.storage import FileSystemStorage
 
 
 # Create your views here.
@@ -170,7 +171,59 @@ def userDashboardView(request):
 @login_required
 def userServicesView(request):
     courses = Course.objects.filter(course_type='Personal')
+    service_category = models.ServiceCategory.objects.filter(category_choice='pcs')
+    services = models.Service.objects.filter(category_choice='pcs')
+    if request.method == 'POST':
+        data_list = request.POST
+        file_list = request.FILES
+        # print(data_list)
+        # print(file_list)
+
+        current_service = get_object_or_404(models.Service, service_title=data_list['service_name'])
+
+        for data in data_list:
+            if data != 'csrfmiddlewaretoken' and data != 'service_name':
+                current_input = models.SubServiceInput.objects.get(id=data)
+                input_data = models.UserSubserviceInput(user=request.user, inputfield=current_input,
+                                                        inputinfo=data_list[data])
+                input_data.save()
+                order = models.Order.objects.get_or_create(user=request.user, order_status='new',
+                                                           service=current_service, category_choice='pcs')
+
+                order[0].subserviceinput.add(input_data)
+        for files in file_list:
+            current_input = models.SubServiceInput.objects.get(id=files)
+            myfile = file_list[files]
+            fs = FileSystemStorage()
+            filename = fs.save(myfile.name, myfile)
+            uploaded_file_url = fs.url(filename)
+            input_data = models.UserSubserviceInput(user=request.user, inputfield=current_input,
+                                                    inputinfo=uploaded_file_url)
+            input_data.save()
+            order = models.Order.objects.get_or_create(user=request.user, order_status='new',
+                                                       service=current_service, category_choice='pcs')
+
+            order[0].subserviceinput.add(input_data)
+
+        order = models.Order.objects.get_or_create(user=request.user, order_status='new',
+                                                   service=current_service, category_choice='pcs')
+
+        if not order[0].orderstaff_order.all().exists():
+            tracking = models.Tracking.objects.get(service=current_service)
+            persons = tracking.persons
+            persons_list = list(filter(None, persons.split(',')))
+            person = persons_list.pop(0)
+            persons_list.append(person)
+            tracking.persons = ','.join(persons_list)
+            tracking.save()
+            current_staff = models.User.objects.get(id=person)
+            order_staff = models.OrderStaff.objects.create(staff=current_staff, order=order[0])
+            order_staff.save()
+        return render(request, 'user_panel/pcs/thanks.html')
     context = {
+        'service_category': service_category,
+        'services': services,
+        'services_headings': list(services.values_list('service_title', flat=True)),
         'courses': courses,
     }
     return render(request, 'user_panel/pcs/services.html', context)

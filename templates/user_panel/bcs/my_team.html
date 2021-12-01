@@ -31,17 +31,20 @@
         }
     </style>
 
-{% endblock headercss %} {% block title %} My Team {% endblock title %} {% block content %}
-
+{% endblock headercss %}
+{% block title %} My Team {% endblock title %}
+{% block content %}
     <div class="team-container">
         <div class="company-profile">
             <div class="pt-3 border-bottom border-gray pb-2 align-items-center">
                 <div class="d-flex justify-content-between align-items-center">
                     <h3 class="fw-bold mb-0">Your Business Profile</h3>
+                    {% if request.user.business_user.privilege != 'general_staff' %}
                     <button class="btn btn-lg bg-navy" data-bs-toggle="modal" data-bs-target="#infoChangeModal"
                             data-tootik="Edit Business" data-tootik-conf="left">
                         <i class="fa fa-pencil"></i>
                     </button>
+                    {% endif %}
                 </div>
                 <div class="profile-details row">
                     <div class="col-md-3 align-items-center justify-content-center d-flex">
@@ -49,15 +52,23 @@
                              style="width: fit-content">
                             <img src="{{ current_business.business.company_logo.url }}"
                                  class="rounded-circle p-1 company-logo" alt="">
+                            {% if request.user.business_user.privilege != 'general_staff' %}
                             <div data-tootik="Change Logo"
                                  class="img-change overlay position-absolute top-0 start-0 bottom-0 end-0 w-100 h-100 m-auto d-flex align-items-center justify-content-center rounded-circle"
                                  data-bs-toggle="modal" data-bs-target="#imageChangeModal"
                                  style="background: #00000033; cursor: pointer"><i class="fa fa-camera"></i></div>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="col-md-9">
                         <div class="company-detail d-grid align-items-center">
-                            <h4>{{ current_business.business.company_name }}</h4>
+                            <h4>{{ current_business.business.company_name }} <input type="text" class="d-none key"
+                                                                                    value="{{ current_business.business.unique_id }}"
+                                                                                    disabled> <span onclick="copyFun()"
+                                                                                                    class="copy"
+                                                                                                    data-tootik="Copy Invite Key"
+                                                                                                    style="cursor:pointer;"><i
+                                    class="fa fa-copy text-primary"></i></span></h4>
                             <div class="row mx-0">
                                 <div class="col ps-0">
                                     <p class="mb-1">Company
@@ -74,13 +85,12 @@
                                     <p class="mb-1">Address: {{ current_business.business.address }}</p>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    {% if request.user.business_user.privilege != 'general_staff' %}
         <!-- Modal -->
         <div class="modal fade" id="imageChangeModal" tabindex="-1" aria-labelledby="imageChangeModalLabel"
              aria-hidden="true">
@@ -123,6 +133,7 @@
                 </div>
             </div>
         </div>
+    {% endif %}
         <section class="team-statistics mb-5">
             <div class="pt-3 border-bottom border-gray pb-2 d-flex justify-content-between align-items-center">
                 <h4 class="fw-bold mb-0">Your team</h4>
@@ -153,13 +164,15 @@
                                             <a href="#" class="btn btn-navy" data-tootik="View Profile"><i
                                                     class="fa fa-user-o"></i></a>
                                             {% if current_business.business.business_business.count > 1 %}
-                                                <a href="#" class="btn btn-navy" data-tootik="Edit Position"><i
-                                                        class="fa fa-pencil"></i></a>
-                                                <a href="{% host_url 'bcs_user_team_member_delete' %}{{ employee.id }}"
-                                                   class="btn btn-navy" data-tootik="Remove Employee"><i
-                                                        class="fa fa-trash-o"></i></a>
+                                                {% if request.user.business_user.privilege != 'general_staff' %}
+                                                    <a href="#" class="btn btn-navy" data-tootik="Edit Position"><i
+                                                            class="fa fa-pencil"></i></a>
+                                                    <a href="
+                                                            {% host_url 'bcs_user_team_member_delete' %}{{ employee.id }}"
+                                                       class="btn btn-navy" data-tootik="Remove Employee"><i
+                                                            class="fa fa-trash-o"></i></a>
+                                                {% endif %}
                                             {% endif %}
-
                                         </div>
                                     </div>
 
@@ -224,9 +237,10 @@
             </div>
         </section>
     </div>
-{% endblock content %} {% block customjs %}
+{% endblock content %}
 
-    <script src="{% static '' %}tfjs/user_panel/team/chart.js"></script>
+{% block customjs %}
+    <script src="{% static 'tfjs/user_panel/team/chart.js' %}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
             integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
@@ -308,5 +322,18 @@
                 "order": []
             });
         });
+    </script>
+    <script>
+        function copyFun() {
+            /* Get the text field */
+            var copyText = document.querySelector(".key");
+
+            /* Select the text field */
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+            /* Copy the text inside the text field */
+            navigator.clipboard.writeText(copyText.value);
+        }
     </script>
 {% endblock customjs %}
