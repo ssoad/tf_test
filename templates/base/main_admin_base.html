@@ -108,6 +108,7 @@
                             <span class="nav-text">Events and webinars</span>
                         </a>
                     </li>
+                    {% comment %}
                     <li data-tootik="My profile" data-tootik-conf="right">
                         <span class="nav-link dropdown-btn dropdown-toggle" id="navbarDropdown" role="button"
                               data-bs-toggle="dropdown" aria-expanded="false">
@@ -122,6 +123,7 @@
                             </li>
                         </ul>
                     </li>
+                    {% endcomment %}
                     <li data-tootik="support" data-tootik-conf="right">
                         <span href="" class="nav-link dropdown-btn dropdown-toggle" id="supportDropdown" role="button"
                               data-bs-toggle="dropdown" aria-expanded="false">
@@ -131,8 +133,8 @@
                         <ul class="dropdown-container " aria-labelledby="supportDropdown">
                             <li><a class="dropdown-item nav-link" href="{% host_url 'main_admin_support_view' %}">My
                                 Staff(Admin View)</a></li>
-                            <li><a class="dropdown-item nav-link" href="{% host_url 'main_admin_stuff_view' %}">My
-                                Staff(Stuff View)</a></li>
+                            {% comment %}<li><a class="dropdown-item nav-link" href="{% host_url 'main_admin_stuff_view' %}">My
+                                Staff(Stuff View)</a></li>{% endcomment %}
                             <li><a class="dropdown-item nav-link" href="{% host_url 'main_admin_all_tickets' %}">All
                                 Tickets</a></li>
                         </ul>
