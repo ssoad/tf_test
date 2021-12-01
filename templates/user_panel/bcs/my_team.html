@@ -158,13 +158,14 @@
                                             <a href="#" class="btn btn-navy" data-tootik="View Profile"><i
                                                     class="fa fa-user-o"></i></a>
                                             {% if current_business.business.business_business.count > 1 %}
+                                                {% if request.user.business_user.privilege != 'general_staff' %}
                                                 <a href="#" class="btn btn-navy" data-tootik="Edit Position"><i
                                                         class="fa fa-pencil"></i></a>
                                                 <a href="{% host_url 'bcs_user_team_member_delete' %}{{ employee.id }}"
                                                    class="btn btn-navy" data-tootik="Remove Employee"><i
                                                         class="fa fa-trash-o"></i></a>
+                                                {% endif %}
                                             {% endif %}
-
                                         </div>
                                     </div>
 

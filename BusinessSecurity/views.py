@@ -505,7 +505,9 @@ def bcsUserMyTeamView(request):
 def bcsUserTeamMemberDeleteView(request, id):
     current_employee = models.UsersBusiness.objects.get(id=id)
     current_user = models.User.objects.get(id=current_employee.user.id)
-    if current_user == request.user:
+    if current_user == request.user \
+            or current_user.business_user.privilege == 'general_staff' \
+            or current_employee.privilege == 'admin':
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
     else:
         current_user.is_bcs = False
