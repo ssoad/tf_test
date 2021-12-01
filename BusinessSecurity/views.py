@@ -310,6 +310,23 @@ def createBusinessView(request):
                                                                     position=position, privilege='admin')
                 user_business.save()
                 return HttpResponseRedirect(reverse('bcs_user_dashboard'))
+            elif 'join' in request.POST:
+                joining_key = request.POST.get('joining_key')
+                try:
+                    business = models.Business.objects.get(unique_id=joining_key)
+                    current_user.is_bcs = True
+                    current_user.save()
+                    user_business = models.UsersBusiness.objects.create(user=current_user, business=business,
+                                                                        position='staff', privilege='general_staff')
+                    user_business.save()
+                    return HttpResponseRedirect(reverse('bcs_user_dashboard'))
+                except:
+                    message = 'Wrong Business Key'
+                    context = {
+                        'form': form,
+                        'message': message,
+                    }
+                    return render(request, 'user_panel/bcs/redirection.html', context)
 
         context = {
             'form': form,
