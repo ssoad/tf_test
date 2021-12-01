@@ -174,6 +174,8 @@ def profileView(request):
 def profileEdit(request):
     info_forms = forms.ProfileInfoForm(instance=request.user)
     img_forms = forms.ProfilePictureForm(instance=request.user)
+    interests = models.Interest.objects.get(user=request.user)
+    int_forms = forms.InterestForm(instance=interests)
     if request.method == 'POST':
         if 'info-btn' in request.POST:
             info_forms = forms.ProfileInfoForm(request.POST, instance=request.user)
@@ -185,9 +187,15 @@ def profileEdit(request):
             if img_forms.is_valid():
                 img_forms.save()
                 return redirect('user_profile')
+        elif 'int-btn' in request.POST:
+            int_forms = forms.InterestForm(request.POST, instance=interests)
+            if int_forms.is_valid():
+                int_forms.save()
+                return redirect('user_profile')
     context = {
         'info_forms': info_forms,
         'img_forms': img_forms,
+        'int_forms': int_forms,
     }
     return render(request, 'account/profile_edit.html', context)
 
