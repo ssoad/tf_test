@@ -184,17 +184,19 @@
         <section class="notification mt-5">
             <h4 class="fw-bold border-bottom border-gray pb-3 mb-4">Latest Notifications</h4>
             {% if notifications.exists %}
-                <div class="notification-list p-2 rounded-3 shadow bg-white">
+                <div class="notifications-container p-2">
                 {% for notification in notifications %}
-                    <div class="row">
-                        <div class="col-12 col-lg-7">
-                            <h5 class="fw-bold">{{ notification.notification }}</h5>
+                <div class="row notification mt-2">
+                    <div class="row py-2 align-items-center">
+                        <div class="col-2 icon icon-bg-blue">
+                            <i class="icofont-bell-alt"></i>
                         </div>
-                        <div class="col-6 col-lg-3 d-flex justify-content-center align-items-center flex-column">
-                            <h6 class="fw-bold">Publish Date:</h6>
-                            <h6>{{ notification.notification_time }}</h6>
+                        <div class="col-10">
+                            <h6>{{ notification.notification }} </h6>
+                            <i class="icofont-clock-time"></i> {{ notification.notification_time }}
                         </div>
                     </div>
+            </div>
                 {% endfor %}
             {% else %}
                 <div class='text-center py-4'>No Notification Found.</div>

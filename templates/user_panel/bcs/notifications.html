@@ -15,8 +15,7 @@
             <div class="new">
                 {% for notification in notifications %}
                     <div class="row notification mt-2">
-                        <div class="col-12">
-                            <div class="row">
+                            <div class="row py-2 align-items-center">
                                 <div class="col-2 icon icon-bg-blue">
                                     <i class="icofont-bell-alt"></i>
                                 </div>
@@ -25,7 +24,6 @@
                                     <i class="icofont-clock-time"></i> {{ notification.notification_time }}
                                 </div>
                             </div>
-                        </div>
                     </div>
                 {% endfor %}
             </div>
