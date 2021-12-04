@@ -250,10 +250,21 @@
                         <div class="modal-body px-5 pb-5">
                             <h4 class="px-3 fw-bold text-center">Invite Members for Your Team</h4>
 
-                            <form action="" method="POST" onkeydown="return event.key != 'Enter';">
+                            {% comment %} <form action="" method="POST" onkeydown="return event.key != 'Enter';">
                                 {% csrf_token %}
                                 <input type="email" name="email" class="form-control" placeholder="User Email">
                                 <button type="submit" class="mt-4 btn bg-navy p-1 px-3" name="inv-btn">INVITE</button>
+                            </form> {% endcomment %}
+                            <form onsubmit="submitForm(event)" id="invite-form" method="POST" onkeydown="return event.key != 'Enter';">
+                                {% csrf_token %}
+                                <div class="email-container d-flex flex-wrap justify-content-start align-items-start align-content-start border border-dark fs-7 p-2 h-200p">
+                                    <div class="h-25p">
+                                        <input autocomplete="off" class="email-input" maxlength="30" type="email" placeholder="Type an email">
+                                        <button type="button" class="add-email btn p-0"><i class="icofont-plus-circle"></i></button>
+                                    </div>
+                                </div>
+                                <input type="email" name="email" class="form-control all-emails" hidden>
+                                <button type="submit" class="mt-4 btn bg-navy p-1 px-3">INVITE</button>
                             </form>
                         </div>
                     </div>
@@ -269,6 +280,18 @@
             integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <script>
+
+        const submitForm = e =>{
+            e.preventDefault();
+            let allEmails='';
+            document.querySelectorAll('#invite-form .email-container .email').forEach(email=>{
+                console.log(email.children[0].textContent.split(' ')[0]);
+                allEmails+= ' ' + email.children[0].textContent.split(' ')[0];
+            })
+            document.querySelector('.all-emails').value = allEmails;
+            console.log(document.querySelector('.all-emails').value);
+            e.target.submit()
+        }
         let emailInput = document.querySelector('.team-statistics .email-input');
         document.querySelector('.team-statistics .email-container').addEventListener('click', () => {
             emailInput.focus();
