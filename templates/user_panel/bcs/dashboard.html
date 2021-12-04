@@ -347,12 +347,13 @@
 
         let activeState = 0;
 
-        updateActiveRow('right');
-        next.addEventListener('click', () => {
+        if(document.querySelectorAll('.reading-list .row').length > 0)
+            updateActiveRow('right');
+        next?.addEventListener('click', () => {
             activeState += 2;
             updateActiveRow('right');
         });
-        prev.addEventListener('click', () => {
+        prev?.addEventListener('click', () => {
             activeState -= 2;
             updateActiveRow('left');
         });
