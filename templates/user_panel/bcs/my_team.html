@@ -240,6 +240,133 @@
                     </div>
                 {% endfor %}
             </div>
+
+        {% comment %} magic table {% endcomment %}
+        <section class="mt-5">
+            <table id="myTable" class="display mt-5 table text-center border border-gray">
+                <thead class="border border-gray">
+                    <tr class="fw-bold text-navy border border-gray">
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Invited In</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Mr. Islam</td>
+                        <td>islam@gmail.com</td>
+                        <td>Active</td>
+                        <td>Training Program (CCSP)
+                        </td>
+                        <td><button class="del-btn btn btn-outline-danger btn-sm">
+                            <i class="bi bi-trash"></i>  Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Neruz Afreen</td>
+                        <td>neruz@gmail.com</td>
+                        <td>Active</td>
+                        <td>Training Program</td>
+                        <td><button class="del-btn btn btn-outline-danger btn-sm">
+                            <i class="bi bi-trash"></i>  Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Afsana Khan</td>
+                        <td>afsana@gmail.com</td>
+                        <td class="text-green">Invited</td>
+                        <td>Personal CyberSecurity (Concierge Cybersecurity)</td>
+                        <td><button class="del-btn btn btn-outline-danger btn-sm">
+                            <i class="bi bi-trash"></i>  Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Foyjul Islam</td>
+                        <td>foyjul@gmail.com</td>
+                        <td class="text-green">Invited</td>
+                        <td>Training Program</td>
+                        <td><button class="del-btn btn btn-outline-danger btn-sm">
+                            <i class="bi bi-trash"></i>  Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Serajus Salekin</td>
+                        <td>salekin@gmail.com</td>
+                        <td class="text-green">Invited</td>
+                        <td>Training Program</td>
+                        <td><button class="del-btn btn btn-outline-danger btn-sm">
+                            <i class="bi bi-trash"></i>  Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Mr. Araf</td>
+                        <td>araf@gmail.com</td>
+                        <td>Active</td>
+                        <td>Training Program</td>
+                        <td><button class="del-btn btn btn-outline-danger btn-sm">
+                            <i class="bi bi-trash"></i>  Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Mr. Islam</td>
+                        <td>islam@gmail.com</td>
+                        <td class="text-green">Invited</td>
+                        <td>Training Program</td>
+                        <td><button class="del-btn btn btn-outline-danger btn-sm">
+                            <i class="bi bi-trash"></i>  Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Neruz Afreen</td>
+                        <td>neruz@gmail.com</td>
+                        <td>Active</td>
+                        <td>Training Program</td>
+                        <td><button class="del-btn btn btn-outline-danger btn-sm">
+                            <i class="bi bi-trash"></i>  Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Afsana Khan</td>
+                        <td>afsana@gmail.com</td>
+                        <td class="text-green">Invited</td>
+                        <td>Training Program</td>
+                        <td><button class="del-btn btn btn-outline-danger btn-sm">
+                            <i class="bi bi-trash"></i>  Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Foyjul Islam</td>
+                        <td>foyjul@gmail.com</td>
+                        <td class="text-green">Invited</td>
+                        <td>Training Program</td>
+                        <td><button class="del-btn btn btn-outline-danger btn-sm">
+                            <i class="bi bi-trash"></i>  Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Serajus Salekin</td>
+                        <td>salekin@gmail.com</td>
+                        <td class="text-green">Invited</td>
+                        <td>Training Program</td>
+                        <td><button class="del-btn btn btn-outline-danger btn-sm">
+                            <i class="bi bi-trash"></i>  Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Mr. Araf</td>
+                        <td>araf@gmail.com</td>
+                        <td>Active</td>
+                        <td>Training Program</td>
+                        <td><button class="del-btn btn btn-outline-danger btn-sm">
+                            <i class="bi bi-trash"></i>  Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
             <div class="modal fade" id="addNew" tabindex="-1" aria-labelledby="trainingModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content border-0 bg-main">
@@ -280,16 +407,13 @@
             integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <script>
-
-        const submitForm = e =>{
+        const submitForm = e => {
             e.preventDefault();
             let allEmails='';
-            document.querySelectorAll('#invite-form .email-container .email').forEach(email=>{
-                console.log(email.children[0].textContent.split(' ')[0]);
+            document.querySelectorAll('#invite-form .email-container .email').forEach(email => {
                 allEmails+= ' ' + email.children[0].textContent.split(' ')[0];
             })
             document.querySelector('.all-emails').value = allEmails;
-            console.log(document.querySelector('.all-emails').value);
             e.target.submit()
         }
         let emailInput = document.querySelector('.team-statistics .email-input');
