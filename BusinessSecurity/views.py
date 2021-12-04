@@ -495,15 +495,15 @@ def bcsUserMyTeamView(request):
                     return HttpResponseRedirect(request.META['HTTP_REFERER'])
                 elif 'inv-btn' in request.POST:
                     emails = request.POST['email'].split()
-                    print(emails)
+                    # print(emails)
                     err_mail = []
                     suc_mail = []
                     for mail in emails:
                         try:
                             added_user = models.User.objects.get(email=mail)
-                            # user_business = models.UsersBusiness.objects.get_or_create(user=added_user,
-                            #                                                            business=current_business.business)
-                            # user_business[0].save()
+                            user_business = models.UsersBusiness.objects.get_or_create(user=added_user,
+                                                                                       business=current_business.business)
+                            user_business[0].save()
                             suc_mail.append(mail)
                             context = {
                                 'success': f'User with given email {err_mail} added'

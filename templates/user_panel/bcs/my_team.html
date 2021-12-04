@@ -185,6 +185,9 @@
 
         <section class="team-statistics mb-5">
             {% if request.user.business_user.privilege != 'general_staff' %}
+                {% if success %}
+                    <div id="liveAlertPlaceholderSuccess"></div>
+                {% endif %}
                 {% if message %}
                     <div id="liveAlertPlaceholder"></div>
                 {% endif %}
@@ -442,5 +445,17 @@
         }
 
         alert('{{ message }}', 'danger')
+    </script>
+    <script>
+        var alertPlaceholder = document.getElementById('liveAlertPlaceholderSuccess')
+
+        function alert(message, type) {
+            var wrapper = document.createElement('div')
+            wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+
+            alertPlaceholder.append(wrapper)
+        }
+
+        alert('{{ success }}', 'success')
     </script>
 {% endblock customjs %}
