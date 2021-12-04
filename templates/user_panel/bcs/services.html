@@ -748,8 +748,10 @@
 
 
         allBtn = Array.from(allBtn);
-        allBtn.push(document.querySelector('.more-services #pcs-preview-btn'));
-        {#console.log(allBtn)#}
+        if(document.querySelector('.more-services #pcs-preview-btn'))
+            allBtn.push(document.querySelector('.more-services #pcs-preview-btn'));
+        console.log(allBtn)
+
         allBtn.forEach((btn, index) => {
             btn.addEventListener('click', () => {
                 servicesContent.classList.add('d-none');
