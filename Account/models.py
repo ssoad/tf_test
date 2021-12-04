@@ -27,7 +27,8 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, full_name, password=None):
-        user = self.create_user(email=email, full_name=full_name, password=password)
+        user = self.create_user(
+            email=email, full_name=full_name, password=password)
         user.is_superuser = True
         user.is_staff = True
         user.is_active = True
@@ -36,20 +37,26 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(max_length=100, verbose_name='Email', unique=True, blank=False)
+    email = models.EmailField(
+        max_length=100, verbose_name='Email', unique=True, blank=False)
     full_name = models.CharField(verbose_name='Full Name', max_length=100)
     phone_number = PhoneNumberField(verbose_name="Phone Number")
-    country = models.CharField(verbose_name="Country", max_length=50, blank=True)
-    profile_pic = models.ImageField(upload_to='users/', default='users/default.jpg')
-    birth_date = models.DateField(verbose_name='Birth Date', blank=True, null=True)
-    date_joined = models.DateTimeField(verbose_name='Date Joined', auto_now_add=True)
+    country = models.CharField(
+        verbose_name="Country", max_length=50, blank=True)
+    profile_pic = models.ImageField(
+        upload_to='users/', default='users/default.jpg')
+    birth_date = models.DateField(
+        verbose_name='Birth Date', blank=True, null=True)
+    date_joined = models.DateTimeField(
+        verbose_name='Date Joined', auto_now_add=True)
     gender_options = (
         ('Male', 'Male'),
         ('Female', 'Female'),
         ('Other', 'Other'),
     )
 
-    gender = models.CharField(verbose_name='Choose Gender', choices=gender_options, max_length=20)
+    gender = models.CharField(
+        verbose_name='Choose Gender', choices=gender_options, max_length=20)
 
     is_staff = models.BooleanField(verbose_name='Staff Status', default=False, help_text='Designate if the user has '
                                                                                          'staff status')
@@ -92,9 +99,11 @@ admin_choices = (
 
 
 class Permissions(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='permission_user')
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name='permission_user')
     admin_type = models.CharField(choices=admin_choices, max_length=264)
-    is_superadmin = models.BooleanField(default=False, verbose_name='Super Admin')
+    is_superadmin = models.BooleanField(
+        default=False, verbose_name='Super Admin')
     is_admin = models.BooleanField(default=False, verbose_name='Admin')
     is_moderator = models.BooleanField(default=False, verbose_name='Moderator')
     is_editor = models.BooleanField(default=False, verbose_name='Editor')
@@ -104,7 +113,8 @@ class Permissions(models.Model):
 
 
 class Interest(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='interest_user')
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name='interest_user')
     risk_assessment = models.BooleanField(default=True)
     incident_response = models.BooleanField(default=True)
     cyber_crime_investigation = models.BooleanField(default=True)
