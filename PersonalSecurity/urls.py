@@ -65,6 +65,10 @@ urlpatterns = [
     path('pcs_admin_sub_services_form_edit/<id>/', views.pcsAdminSubServiceFormEditView,
          name='pcs_admin_sub_services_form_edit'),
 
+    path('pcs_admin_all_tickets/', views.pcsAdminTicketsView, name='pcs_admin_all_tickets'),
+    path('pcs_admin_tickets_detail/', views.pcsAdminTicketsDetailView, name='pcs_admin_tickets_detail'),
+    path('pcs_admin_tickets_detail/<id>', views.pcsAdminTicketsDetailView, name='pcs_admin_tickets_detail'),
+
     path('pcs_admin_revenue/', views.pcsAdminRevenue, name='pcs_admin_revenue'),
     path('pcs_admin_subscriptions/', views.pcsAdminSubscriptionList, name='pcs_admin_subscriptions'),
     path('pcs_admin_subscription_packages/', views.pcsAdminSubscriptionPack, name='pcs_admin_subscription_packages'),

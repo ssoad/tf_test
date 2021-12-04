@@ -202,10 +202,6 @@ class OrderStaff(models.Model):
         User, on_delete=models.CASCADE, related_name='orderstaff_user')
 
 
-ticket_type = (
-    ('bcs', 'BCS'),
-    ('pcs', 'PCS'),
-)
 ticket_status = (
     ('open', 'Open'),
     ('closed', 'Closed'),
@@ -213,9 +209,9 @@ ticket_status = (
 
 
 class Ticket(models.Model):
+    category_choice = models.CharField(choices=category_choice, max_length=255)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='ticket_user')
-    ticket_type = models.CharField(max_length=255, choices=ticket_type)
     ticket_category = models.CharField(max_length=255, verbose_name='Category')
     ticket_title = models.CharField(max_length=255, verbose_name='Title')
     ticket_description = HTMLField(verbose_name='Description')

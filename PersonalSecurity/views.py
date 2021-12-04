@@ -142,8 +142,21 @@ def siteMapView(request):
 
 
 def openTicketView(request):
+    form = forms.TicketCreateForm()
+    tickets = models.Ticket.objects.filter(user=request.user, category_choice='pcs').order_by('-ticket_date')
+    if request.method == 'POST':
+        form = forms.TicketCreateForm(request.POST, request.FILES)
+        if form.is_valid():
+            ticket = form.save(commit=False)
+            ticket.user = request.user
+            ticket.category_choice = 'pcs'
+            ticket.ticket_status = 'open'
+            ticket.ticket_category = request.POST.get('ticket_category')
+            ticket.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
-
+        'form': form,
+        'tickets': tickets,
     }
     return render(request, 'user_panel/pcs/ticket.html', context)
 
@@ -742,3 +755,31 @@ def pcsAdminCourseSectionEdit(request, id):
         'form': form,
     }
     return render(request, 'admin_panel/pcsTF/editForm.html', context)
+
+
+@user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def pcsAdminTicketsView(request):
+    tickets = models.Ticket.objects.filter(category_choice='pcs')
+    context = {
+        'tickets': tickets,
+    }
+    return render(request, 'admin_panel/pcsTF/allTickets.html', context)
+
+
+@user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def pcsAdminTicketsDetailView(request, id):
+    ticket = models.Ticket.objects.get(id=id)
+    commentform = forms.TicketCommentForm()
+    if request.method == 'POST':
+        commentform = forms.TicketCommentForm(request.POST)
+        if commentform.is_valid():
+            comment = commentform.save(commit=False)
+            comment.user = request.user
+            comment.ticket = ticket
+            comment.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    context = {
+        'ticket': ticket,
+        'commentform': commentform,
+    }
+    return render(request, 'admin_panel/pcsTF/ticket_detail.html', context)

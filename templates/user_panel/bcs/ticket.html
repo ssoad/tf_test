@@ -42,7 +42,9 @@
             text-align: center;
         }
     </style>
-{% endblock headercss %} {% block content %}
+{% endblock headercss %}
+
+{% block content %}
 
     <section class="container" id="ticket-list">
         <div id="liveAlertPlaceholder"></div>
@@ -99,7 +101,9 @@
                 </div>
             </form>
         </div>
-{% endblock content %} {% block customjs %}
+{% endblock content %}
+
+{% block customjs %}
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <!-- data table library -->
     <script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
@@ -157,9 +161,10 @@
             ticketList.classList.add('d-none');
             ticketForm.classList.remove('d-none');
 
-            fetch(location.origin+"/api/bcs/services/")
+            fetch(location.origin+"/api/bcs/services/bcs/")
                 .then(res => res.json())
                 .then(data => {
+                    ticketService.innerHTML='';
                     data.map(item => {
                         const option = document.createElement("option")
                         option.setAttribute("value", item.service_title)

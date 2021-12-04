@@ -682,13 +682,13 @@ def emailInvitationView(request):
 @login_required
 def openTicketView(request):
     form = forms.TicketCreateForm()
-    tickets = models.Ticket.objects.filter(user=request.user).order_by('-ticket_date')
+    tickets = models.Ticket.objects.filter(user=request.user, category_choice='bcs').order_by('-ticket_date')
     if request.method == 'POST':
         form = forms.TicketCreateForm(request.POST, request.FILES)
         if form.is_valid():
             ticket = form.save(commit=False)
             ticket.user = request.user
-            ticket.ticket_type = 'bcs'
+            ticket.category_choice = 'bcs'
             ticket.ticket_status = 'open'
             ticket.ticket_category = request.POST.get('ticket_category')
             ticket.save()
@@ -1765,7 +1765,7 @@ def bcsAdminOrderCanceledView(request, id):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminTicketsView(request):
-    tickets = models.Ticket.objects.filter(ticket_type='bcs')
+    tickets = models.Ticket.objects.filter(category_choice='bcs')
     context = {
         'tickets': tickets,
     }

@@ -153,30 +153,35 @@
                         </span>
                     <ul class="dropdown-container" aria-labelledby="navbarDropdown">
                         <li>
-                            <a class="dropdown-item nav-link" href="{% host_url 'pcs_admin_subscriptions' %}">
+                            <a class="dropdown-item nav-link" href="{% host_url 'pcs_admin_subscriptions' host 'mysecurity' %}">
                                 Subscription List
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item nav-link" href="{% host_url 'pcs_admin_subscription_packages' %}">
+                            <a class="dropdown-item nav-link" href="{% host_url 'pcs_admin_subscription_packages' host 'mysecurity' %}">
                                 Subscription package
                             </a>
                         </li>
                     </ul>
                 </li>
                 <li data-tootik="dashboard" data-tootik-conf="right">
-                    <a href="{% host_url 'pcs_admin_revenue' %}" class="nav-link">
+                    <a href="{% host_url 'pcs_admin_revenue' host 'mysecurity' %}" class="nav-link">
                         <i class="bi bi-currency-dollar"></i> <span class="nav-text"> revenue</span>
                     </a>
                 </li>
                 <li data-tootik="dashboard" data-tootik-conf="right">
-                    <a href="{% host_url 'pcs_admin_user_interest' %}" class="nav-link">
+                    <a href="{% host_url 'pcs_admin_user_interest' host 'mysecurity' %}" class="nav-link">
                         <i class="bi bi-check-square"></i> <span class="nav-text"> user interest</span>
                     </a>
                 </li>
                 <li data-tootik="dashboard" data-tootik-conf="right">
-                    <a href="{% host_url 'pcs_admin_training' %}" class="nav-link">
+                    <a href="{% host_url 'pcs_admin_training' host 'mysecurity' %}" class="nav-link">
                         <i class="bi bi-award-fill"></i> <span class="nav-text"> Training</span>
+                    </a>
+                </li>
+                <li data-tootik="Tickets" data-tootik-conf="right">
+                    <a href="{% host_url 'pcs_admin_all_tickets' host 'mysecurity' %}" class="nav-link">
+                        <i class="icofont-life-buoy"></i> <span class="nav-text">Tickets</span>
                     </a>
                 </li>
             </ul>
