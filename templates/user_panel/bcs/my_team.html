@@ -248,7 +248,7 @@
                     <tr class="fw-bold text-navy border border-gray">
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Status</th>
+                        <th>Position</th>
                         <th>Invited In</th>
                         <th>Action</th>
                     </tr>
@@ -389,9 +389,12 @@
                                         <input autocomplete="off" class="email-input" maxlength="30" type="email" placeholder="Type an email">
                                         <button type="button" class="add-email btn p-0"><i class="icofont-plus-circle"></i></button>
                                     </div>
+                                    <div id="validationEmail" class="invalid-feedback">
+                                        Please choose a valid email.
+                                      </div>
                                 </div>
-                                <input type="email" name="email" class="form-control all-emails" hidden>
-                                <button type="submit" class="mt-4 btn bg-navy p-1 px-3">INVITE</button>
+                                <input type="text" name="email" class="form-control all-emails" hidden>
+                                <button type="submit" class="mt-4 btn bg-navy p-1 px-3" name="inv-btn">INVITE</button>
                             </form>
                         </div>
                     </div>
@@ -407,14 +410,24 @@
             integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <script>
+        let validateEmail = document.getElementById('validationEmail');
         const submitForm = e => {
             e.preventDefault();
-            let allEmails='';
-            document.querySelectorAll('#invite-form .email-container .email').forEach(email => {
-                allEmails+= ' ' + email.children[0].textContent.split(' ')[0];
-            })
-            document.querySelector('.all-emails').value = allEmails;
-            e.target.submit()
+
+            if(document.querySelectorAll('#invite-form .email-container .email').length > 0){
+                let allEmails='';
+                document.querySelectorAll('#invite-form .email-container .email').forEach(email => {
+                    allEmails+= ' ' + email.children[0].textContent.split(' ')[0];
+                })
+                document.querySelector('.all-emails').value = allEmails;
+                e.target.submit()
+            }
+            else{
+                console.log(validateEmail)
+                validateEmail.style.display = 'block';
+            }
+
+           
         }
         let emailInput = document.querySelector('.team-statistics .email-input');
         document.querySelector('.team-statistics .email-container').addEventListener('click', () => {
@@ -422,7 +435,7 @@
         });
 
         function ValidateEmail(email) {
-            let validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+            let validRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return email.match(validRegex) ? true : false;
         }
 
@@ -460,6 +473,7 @@
             }
         });
         emailInput.addEventListener('keyup', (e) => {
+            validateEmail.style.display = 'none';
             if (e.key != 'Enter') {
                 if (ValidateEmail(e.target.value)) {
                     e.target.style.backgroundColor = '#28a745';
