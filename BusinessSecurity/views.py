@@ -494,19 +494,52 @@ def bcsUserMyTeamView(request):
                         info_form.save()
                     return HttpResponseRedirect(request.META['HTTP_REFERER'])
                 elif 'inv-btn' in request.POST:
-                    try:
-                        added_user = models.User.objects.get(email=request.POST.get('email'))
-                        user_business = models.UsersBusiness.objects.get_or_create(user=added_user, business=current_business.business)
-                        user_business[0].save()
-                        return HttpResponseRedirect(request.META['HTTP_REFERER'])
-                    except:
-                        context = {
-                            'current_business': current_business,
-                            'image_form': image_form,
-                            'info_form': info_form,
-                            'message': 'User with given email not found'
-                        }
-                        return render(request, 'user_panel/bcs/my_team.html', context)
+                    emails = request.POST['email'].split()
+                    print(emails)
+                    err_mail = []
+                    suc_mail = []
+                    for mail in emails:
+                        try:
+                            added_user = models.User.objects.get(email=mail)
+                            # user_business = models.UsersBusiness.objects.get_or_create(user=added_user,
+                            #                                                            business=current_business.business)
+                            # user_business[0].save()
+                            suc_mail.append(mail)
+                            context = {
+                                'success': f'User with given email {err_mail} added'
+                            }
+
+                        except:
+                            err_mail.append(mail)
+                            context = {
+                                'current_business': current_business,
+                                'image_form': image_form,
+                                'info_form': info_form,
+                                'message': f'User with given email {err_mail} not found'
+                            }
+                    return render(request, 'user_panel/bcs/my_team.html', context)
+
+                    # if added_user is not None:
+                    #     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                    # else:
+                    #     return render(request, 'user_panel/bcs/my_team.html', context)
+                    # return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                    # user_business = models.UsersBusiness.objects.get_or_create(user=added_user, business=current_business.business)
+                    # user_business[0].save()
+                    # return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                    # try:
+                    #     added_user = models.User.objects.get(email=request.POST.get('email'))
+                    #     user_business = models.UsersBusiness.objects.get_or_create(user=added_user, business=current_business.business)
+                    #     user_business[0].save()
+                    #     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                    # except:
+                    #     context = {
+                    #         'current_business': current_business,
+                    #         'image_form': image_form,
+                    #         'info_form': info_form,
+                    #         'message': 'User with given email not found'
+                    #     }
+                    #     return render(request, 'user_panel/bcs/my_team.html', context)
             context = {
                 'current_business': current_business,
                 'image_form': image_form,
@@ -826,6 +859,7 @@ def mainAdminNotificationDeleteView(request, id):
     current_notification = models.Notification.objects.get(id=id)
     current_notification.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
 
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminEventsView(request):
