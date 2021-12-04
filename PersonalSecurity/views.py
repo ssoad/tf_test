@@ -242,11 +242,41 @@ def userServicesView(request):
 
 
 @login_required
-def userOrderHistoryView(request):
+def userQuotationsHistoryView(request):
+    orders = models.Order.objects.filter(
+        Q(user=request.user, category_choice='pcs') & Q(
+            Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
+        '-order_date')
     context = {
-
+        'orders': orders,
+        'message': 'Quotations',
     }
     return render(request, 'user_panel/pcs/order_history.html', context)
+
+
+@login_required
+def userOrderHistoryView(request):
+    orders = models.Order.objects.filter(
+        Q(user=request.user, category_choice='pcs') & ~Q(
+            Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
+        '-order_date')
+    context = {
+        'orders': orders,
+        'message': 'Orders',
+    }
+    return render(request, 'user_panel/pcs/order_history.html', context)
+
+
+@login_required
+def userOrderDetailsView(request, id):
+    try:
+        current_order = models.Order.objects.get(user=request.user, id=id, category_choice='pcs')
+        context = {
+            'current_order': current_order,
+        }
+        return render(request, 'user_panel/pcs/order_detail.html', context)
+    except:
+        return HttpResponse("You don't have permission to view this page")
 
 
 @login_required
@@ -271,8 +301,9 @@ def userEventsView(request):
 
 @login_required
 def userNotificationsView(request):
+    notifications = models.Notification.objects.filter(category_choice='pcs').order_by('-notification_time')
     context = {
-
+        'notifications': notifications
     }
     return render(request, 'user_panel/pcs/notifications.html', context)
 

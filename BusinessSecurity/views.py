@@ -428,7 +428,7 @@ def userQuotationsHistoryView(request):
 
     elif request.user.is_bcs:
         orders = models.Order.objects.filter(
-            Q(user=request.user) & Q(
+            Q(user=request.user, category_choice='bcs') & Q(
                 Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
             '-order_date')
         context = {
@@ -445,7 +445,7 @@ def userOrderHistoryView(request):
 
     elif request.user.is_bcs:
         orders = models.Order.objects.filter(
-            Q(user=request.user) & ~Q(
+            Q(user=request.user, category_choice='bcs') & ~Q(
                 Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
             '-order_date')
         print(orders.query)
@@ -463,7 +463,7 @@ def userOrderDetailsView(request, id):
 
     elif request.user.is_bcs:
         try:
-            current_order = models.Order.objects.get(user=request.user, id=id)
+            current_order = models.Order.objects.get(user=request.user, id=id, category_choice='bcs')
             context = {
                 'current_order': current_order,
             }

@@ -10,11 +10,11 @@
                 <h6 class="fw-light bg-navy py-2 px-4 rounded today">24 Aug</h6>
             </div>
         </div>
-{% if notifications.exists %}
-<div class="notifications-container px-md-4 mt-4">
-            <div class="new">
-                {% for notification in notifications %}
-                    <div class="row notification mt-2">
+        {% if notifications.exists %}
+            <div class="notifications-container px-md-4 mt-4">
+                <div class="new">
+                    {% for notification in notifications %}
+                        <div class="row notification mt-2">
                             <div class="row py-2 align-items-center">
                                 <div class="col-2 icon icon-bg-blue">
                                     <i class="icofont-bell-alt"></i>
@@ -24,14 +24,14 @@
                                     <i class="icofont-clock-time"></i> {{ notification.notification_time }}
                                 </div>
                             </div>
-                    </div>
-                {% endfor %}
-            </div>
+                        </div>
+                    {% endfor %}
+                </div>
 
-        </div>
-    {% else %}
-    <h3 class="text-center text-gray my-5 py-5 h-100">No Notification Found!</h3>
-{% endif %}
+            </div>
+        {% else %}
+            <h3 class="text-center text-gray my-5 py-5 h-100">No Notification Found!</h3>
+        {% endif %}
 
     </section>
 {% endblock content %} {% block customjs %}
