@@ -773,7 +773,7 @@
                                 <a href="{% host_url 'bcs_admin_quotations' %}" class="menu-link">BCS Sales</a>
                             </li>
                             <li class="menus menus-sm">
-                                <a href="{% host_url 'bcs_admin_quotations' %}" class="menu-link">PCS Sales</a>
+                                <a href="{% host_url 'pcs_admin_quotations' %}" class="menu-link">PCS Sales</a>
                             </li>
                         {% endif %}
                         <li class="menus menus-sm">
@@ -808,7 +808,7 @@
                                 {% endif %}
                                 {% if user.is_superuser or user.is_sales %}
                                     <a href="{% host_url 'bcs_admin_quotations' %}">BCS Sales</a>
-                                    <a href="{% host_url 'bcs_admin_quotations' %}">PCS Sales</a>
+                                    <a href="{% host_url 'pcs_admin_quotations' %}">PCS Sales</a>
                                 {% endif %}
                                 <a href="{% host_url 'logout' %}">Log Out</a>
                             </div>

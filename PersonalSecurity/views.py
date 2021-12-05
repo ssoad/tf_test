@@ -22,6 +22,13 @@ def pcs_admin_permission_check(user):
         return user.is_staff and user.is_superuser
 
 
+def pcs_admin_permission_check_order(user):
+    try:
+        return user.is_staff and user.is_superuser or user.is_pcs_head or user.is_sales
+    except:
+        return user.is_staff and user.is_superuser
+
+
 def personalSecurityView(request):
     context = {
 
@@ -337,7 +344,7 @@ def pcsAppoinmentView(request):
     return render(request, 'user_panel/pcs/appoinment.html', context)
 
 
-# bcs academy user panel
+# pcs academy user panel
 @login_required
 def UserCourses(request):
     courses = Course.objects.filter(course_type='Personal')
@@ -606,11 +613,22 @@ def pcsAdminRevenue(request):
 
 
 def pcsAdminIndividualUser(request):
-    return render(request, 'admin_panel/pcsTF/users.html')
+    all_users = models.User.objects.filter(Q(is_superuser=False))
+    context = {
+        'all_users': all_users,
+    }
+    return render(request, 'admin_panel/pcsTF/users.html', context)
 
 
-def pcsAdminIndividualUserPanel(request):
-    return render(request, 'admin_panel/pcsTF/userPanel.html')
+def pcsAdminIndividualUserPanel(request, id):
+    current_user = models.User.objects.get(id=id)
+    orders = models.Order.objects.filter(user=current_user, category_choice='pcs')
+
+    context = {
+        'current_user': current_user,
+        'orders': orders,
+    }
+    return render(request, 'admin_panel/pcsTF/userPanel.html', context)
 
 
 def pcsAdminList(request):
@@ -755,6 +773,237 @@ def pcsAdminCourseSectionEdit(request, id):
         'form': form,
     }
     return render(request, 'admin_panel/pcsTF/editForm.html', context)
+
+
+@user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
+def pcsAdminQuotationsView(request):
+    if request.user.is_sales:
+        orders = models.Order.objects.filter(
+            Q(orderstaff_order__staff=request.user) & Q(Q(order_status='new') | Q(order_status='attending')
+                                                        | Q(order_status='assigned'))).order_by('-order_date')
+        context = {
+            'orders': orders,
+            'message': 'Quotations',
+        }
+        return render(request, 'admin_panel/pcsTF/orders.html', context)
+    else:
+        orders = models.Order.objects.filter(
+            Q(category_choice='pcs') & Q(Q(order_status='new') | Q(order_status='attending')
+                                         | Q(order_status='assigned'))).order_by('-order_date')
+        print(orders)
+        context = {
+            'orders': orders,
+            'message': 'Quotations',
+            'admin': 'admin',
+        }
+        return render(request, 'admin_panel/pcsTF/orders.html', context)
+
+
+@user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
+def pcsAdminOrdersView(request):
+    if request.user.is_sales:
+        orders = models.Order.objects.filter(
+            Q(orderstaff_order__staff=request.user) & ~Q(
+                Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
+            '-order_date')
+        context = {
+            'orders': orders,
+            'message': 'Orders',
+        }
+        return render(request, 'admin_panel/pcsTF/orders.html', context)
+    else:
+        orders = models.Order.objects.filter(
+            Q(category_choice='pcs') & ~Q(
+                Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
+            '-order_date')
+        context = {
+            'orders': orders,
+            'message': 'Orders',
+        }
+        return render(request, 'admin_panel/pcsTF/orders.html', context)
+
+
+@user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
+def pcsAdminNewOrdersView(request):
+    service_category = models.ServiceCategory.objects.filter(category_choice='pcs',
+                                                             service_category__service_assigned_service__user=request.user)
+    user_lists = models.User.objects.all()
+    services = models.Service.objects.filter(category_choice='pcs', service_assigned_service__user=request.user)
+
+    # print(service_category.count())
+    # print(services.count())
+    if request.method == 'POST':
+        data_list = request.POST
+        file_list = request.FILES
+        current_customer = models.User.objects.get(email=data_list.get('customer'))
+        # print(current_customer)
+        # print(data_list)
+        # print(file_list)
+
+        current_service = get_object_or_404(models.Service, service_title=data_list['service_name'])
+
+        for data in data_list:
+            if data != 'csrfmiddlewaretoken' and data != 'service_name' and data != 'customer':
+                current_input = models.SubServiceInput.objects.get(id=data)
+                input_data = models.UserSubserviceInput(user=current_customer, inputfield=current_input,
+                                                        inputinfo=data_list[data])
+                input_data.save()
+                order = models.Order.objects.get_or_create(user=current_customer, order_status='new',
+                                                           service=current_service, category_choice='pcs')
+
+                order[0].subserviceinput.add(input_data)
+        for files in file_list:
+            current_input = models.SubServiceInput.objects.get(id=files)
+            myfile = file_list[files]
+            fs = FileSystemStorage()
+            filename = fs.save(myfile.name, myfile)
+            uploaded_file_url = fs.url(filename)
+            input_data = models.UserSubserviceInput(user=current_customer, inputfield=current_input,
+                                                    inputinfo=uploaded_file_url)
+            input_data.save()
+            order = models.Order.objects.get_or_create(user=current_customer, order_status='new',
+                                                       service=current_service, category_choice='pcs')
+
+            order[0].subserviceinput.add(input_data)
+
+        order = models.Order.objects.get_or_create(user=current_customer, order_status='new',
+                                                   service=current_service, category_choice='pcs')
+        print(order)
+        order_staff = models.OrderStaff.objects.get_or_create(staff=request.user, order=order[0])
+        order_staff[0].save()
+        return HttpResponseRedirect(reverse('pcs_admin_quotations'))
+    context = {
+        'service_category': service_category,
+        'services': services,
+        'user_lists': user_lists,
+        'services_headings': list(services.values_list('service_title', flat=True)),
+    }
+    return render(request, 'admin_panel/pcsTF/create_user_services.html', context)
+
+
+@user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
+def pcsAdminOrdersDetailView(request, id):
+    if request.user.is_superuser or request.user.is_pcs_head:
+        current_order = models.Order.objects.get(id=id)
+        form = forms.OrderPriceForm(instance=current_order)
+        if request.method == 'POST':
+            form = forms.OrderPriceForm(request.POST, instance=current_order)
+            if form.is_valid():
+                current_order.order_status = 'on_progress'
+                # new_staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
+                form.save()
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        context = {
+            'current_order': current_order,
+            'form': form,
+        }
+        return render(request, 'admin_panel/pcsTF/order_detail.html', context)
+    else:
+        try:
+            current_order = models.Order.objects.get(id=id, orderstaff_order__staff=request.user)
+            form = forms.OrderPriceForm(instance=current_order)
+            if request.method == 'POST':
+                form = forms.OrderPriceForm(request.POST, instance=current_order)
+                if form.is_valid():
+                    current_order.order_status = 'on_progress'
+                    # new_staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
+                    form.save()
+                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            context = {
+                'current_order': current_order,
+                'form': form,
+            }
+            return render(request, 'admin_panel/pcsTF/order_detail.html', context)
+        except:
+            return HttpResponse("You don't have permission to view this page!")
+
+
+@user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
+def pcsAdminOrderNewView(request, id):
+    # print(request.user.is_staff)
+    try:
+        # current_order = models.Order.objects.get(
+        #     Q(id=id, orderstaff_order__staff=request.user, orderstaff_order__staff__is_staff=True,
+        #       orderstaff_order__staff__is_sales_head=True) | Q(id=id, orderstaff_order__staff__is_superuser=True) | Q(
+        #         id=id, orderstaff_order__staff__is_staff=True, orderstaff_order__staff__is_sales_head=True))
+        if request.user.is_superuser or request.user.is_pcs_head:
+            current_order = models.Order.objects.get(id=id)
+        else:
+            current_order = models.Order.objects.get(id=id, orderstaff_order__staff=request.user,
+                                                     orderstaff_order__staff__is_staff=True,
+                                                     orderstaff_order__staff__is_sales=True)
+        # print(request.user.is_pcs_head)
+        current_order.order_status = 'new'
+        current_order.price = 0
+        # if current_order.orderstaff_order.exists():
+        #     for staff in current_order.orderstaff_order.all():
+        #         staff.delete()
+        current_order.save()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    except:
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
+def pcsAdminOrderAttendingView(request, id):
+    try:
+        if request.user.is_superuser or request.user.is_pcs_head:
+            current_order = models.Order.objects.get(id=id)
+        else:
+            current_order = models.Order.objects.get(id=id, orderstaff_order__staff=request.user,
+                                                     orderstaff_order__staff__is_staff=True,
+                                                     orderstaff_order__staff__is_sales=True)
+
+        current_order.order_status = 'attending'
+        current_order.save()
+        # staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    except:
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
+def pcsAdminOrderCompletedView(request, id):
+    try:
+        if request.user.is_superuser or request.user.is_pcs_head:
+            current_order = models.Order.objects.get(id=id)
+        else:
+            current_order = models.Order.objects.get(id=id, orderstaff_order__staff=request.user,
+                                                     orderstaff_order__staff__is_staff=True,
+                                                     orderstaff_order__staff__is_sales=True)
+
+        current_order.order_status = 'completed'
+        current_order.save()
+        # staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    except:
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
+def pcsAdminOrderCanceledView(request, id):
+    try:
+        if request.user.is_superuser or request.user.is_pcs_head:
+            current_order = models.Order.objects.get(id=id)
+        else:
+            current_order = models.Order.objects.get(id=id, orderstaff_order__staff=request.user,
+                                                     orderstaff_order__staff__is_staff=True,
+                                                     orderstaff_order__staff__is_sales=True)
+
+        current_order.order_status = 'canceled'
+        current_order.save()
+        # staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    except:
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
