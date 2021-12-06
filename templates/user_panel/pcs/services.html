@@ -1,4 +1,6 @@
-{% extends 'base/pcs_user_base.html' %} {% load static %} {% load hosts %} {% block title %}
+{% extends 'base/pcs_user_base.html' %} {% load static %}
+{% load my_filter %}
+{% load hosts %} {% block title %}
     Services {% endblock title %} {% block content %}
 
     <section class="services position-relative">
@@ -9,6 +11,126 @@
             <i class="icofont-long-arrow-left fw-bold"></i> Back to list
         </button>
 
+        <div class="services-content">
+            <div class="content-detail pe-2 mt-5">
+                {% for category in service_category %}
+                    <h5 class="mt-2 services-type">{{ category.category_name }}</h5>
+                    <div class="row mx-0 mb-4 gy-4 pt-4 justify-content-center">
+                        {% for service in category.service_category.all %}
+                            <div class="col-md-4 px-0 pe-md-5">
+                                <div class="bg-lightgreen p-2 rounded shadow-md">
+                                    <div class="text-center">
+                                        <img class="service-icon" src="{{ service.service_icon.url }}">
+                                    </div>
+                                    <div class="ps-2 mt-2 text-center">
+                                        <h6 class="service-title">{{ service.service_title }}</h6>
+                                        <p class="lh-1 fs-14">
+                                            {{ service.short_description }}
+                                        </p>
+                                    </div>
+                                    <div class="view-btn">
+                                        <button class="{{ service.service_title|replacespace }}-bcs btn btn-sm">View
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+
+            </div>
+{% comment %}
+            <h5 class="mt-5 services-type">Program For Your Employees</h5>
+            <!-- more services -->
+            <div class="row mx-0 g-3 more-services">
+                <div class="col-md-6 ps-md-0">
+                    <div class="mt-4 bg-lightgreen px-2 py-3 rounded shadow-md">
+                        <h6 class="mb-3 fw-bold text-uppercase">Personal Cybersecurity for Your Employees</h6>
+                        <div class="d-flex">
+                            <img class="service-icon" src="{% static '' %}tfimg/user_panel/services/user.png" alt="">
+                            <div class="ps-2">
+                                <h6 class="fw-bold">Concierge Cybersecurity</h6>
+                                <p class="lh-1 fs-6">Our personal cybersecurity services will protect your employee and
+                                    employees family in cyberspace always.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button id="pcs-preview-btn" class="bg-navy btn btn-sm px-5 text-white">View</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 pe-md-0">
+                    <div class="mt-4 bg-lightgreen px-2 py-3 rounded shadow-md">
+                        <h6 class="mb-3 fw-bold text-uppercase">Training Program for Your Employees</h6>
+                        <div class="d-flex">
+                            <img class="service-icon" src="{% static '' %}tfimg/user_panel/services/online-course.png"
+                                 alt="">
+                            <div class="ps-2">
+                                <h6 class="fw-bold">Leading Ethical Hacking Course</h6>
+                                <p class="lh-1 fs-6">Our personal cybersecurity services will protect your employee and
+                                    employees family in cyberspace always.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button data-bs-toggle="modal" data-bs-target="#trainingModal"
+                                    class="bg-navy btn btn-sm px-5 text-white">View
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>{% endcomment %}
+        </div>
+        <!-- services start  -->
+        {% for service in services %}
+            <div class="{{ service | replacespace }} preview-service-info pt-3 pb-5 d-none">
+                <div class='d-none'>
+                    {{ service }}
+                </div>
+                <div class="row mx-0 bg-lightgreen shadow-md">
+
+                    <div class="col-md-12 ">
+                        <div class="py-2">
+                            <p class="mt-3 mb-0">{{ service.service_header|safe }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="my-3 py-4 px-3 bg-lightgreen shadow-md">
+                    <div class="mt-3">
+                        <h6 class="lh-base">
+                            {{ service.service_body|safe }}
+                        </h6>
+                    </div>
+                </div>
+                <div class="whom-we-serve my-3 py-4 px-3 bg-lightgreen shadow-md">
+                    <p class="mt-3">
+                        {{ service.service_footer|safe }}
+                    </p>
+                    <div class="mt-3">
+                        <ol class="row mx-0">
+                            {% for subservice in service.subservice_service.all %}
+                                <li class="{{ subservice.service|replacespace }} short-info-li col-auto me-3 lh-base fw-bold">{{ subservice.title }}</li>
+                            {% endfor %}
+                        </ol>
+
+                    </div>
+                </div>
+                <div class="my-4 pt-5 px-3">
+                    <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
+                        <button id="{{ service.id }}" type="button"
+                                class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">Provide information
+                            to
+                            get a quotation
+                        </button>
+                        <a href="{% host_url 'bcs_appointment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
+                            representatives</a>
+
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
 
         <div class="services-content">
             <div class="content-detail pe-2 mt-5">

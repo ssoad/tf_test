@@ -211,7 +211,7 @@ def userServicesView(request):
         # print(data_list)
         # print(file_list)
 
-        current_service = get_object_or_404(models.Service, service_title=data_list['service_name'])
+        current_service = get_object_or_404(models.Service, service_title=data_list['service_name'], category_choice='pcs')
 
         for data in data_list:
             if data != 'csrfmiddlewaretoken' and data != 'service_name':
