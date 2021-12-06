@@ -200,7 +200,7 @@
                 </div>
             {% endif %}
 
-            <div class="py-5 gap-4 row px-4">
+            {% comment %} <div class="py-5 gap-4 row px-4">
                 {% for employee in current_business.business.business_business.all %}
                     <div class="col-md-3">
                         <div class="card rounded-5 shadow" style="background: #182a5915;">
@@ -227,8 +227,6 @@
                                                             class="fa fa-pencil"></i></a>
                                                     <a href="
 
-
-
                                                             {% host_url 'bcs_user_team_member_delete' %}{{ employee.id }}"
                                                        class="btn btn-navy" data-tootik="Remove Employee"><i
                                                             class="fa fa-trash-o"></i></a>
@@ -242,7 +240,7 @@
                         </div>
                     </div>
                 {% endfor %}
-            </div>
+            </div> {% endcomment %}
 
         {% comment %} magic table {% endcomment %}
         <section class="mt-5">
@@ -252,26 +250,29 @@
                         <th>Name</th>
                         <th>Email</th>
                         <th>Position</th>
-                        <th>Invited In</th>
+                        <th>Permissions</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
+                    {% for employee in current_business.business.business_business.all %}
                     <tr>
-                        <td>Mr. Islam</td>
-                        <td>islam@gmail.com</td>
-                        <td>Active</td>
-                        <td>Training Program (CCSP)
-                        </td>
+                        <td>{{ employee.user.full_name }}</td>
+                        <td>{{ employee.user.email }}</td>
+                        <td>{{ employee.position }}</td>
+                        <td>View, Edit</td>
                         <td>
+                            <a href="#" class="btn btn-outline-navy btn-sm" data-tootik="View Profile"><i
+                                class="fa fa-user-o"></i></a>
                             <button class="del-btn btn btn-outline-primary btn-sm">
-                                <i class="bi bi-eye-fill"></i>
+                                <i class="bi bi-pencil"></i>
                             </button>
                             <button class="del-btn btn btn-outline-danger btn-sm">
                                 <i class="bi bi-trash"></i>
                             </button>
                         </td>
                     </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </section>
