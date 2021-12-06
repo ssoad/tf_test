@@ -43,7 +43,7 @@
                             <td><p class="badge bg-danger">{{ order.order_status|capitalize }}</p></td>
                         {% endif %}
 
-                        <td><a href="{% host_url 'bcs_user_order_details' %}{{ order.id }}"><i
+                        <td><a href="{% host_url 'pcs_user_order_details' host 'mysecurity' %}{{ order.id }}"><i
                                 class="bi bi-eye-fill"></i></a></td>
                     </tr>
                 {% endfor %}

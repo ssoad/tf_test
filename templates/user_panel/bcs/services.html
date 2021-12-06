@@ -577,12 +577,8 @@
         let allBtn = document.querySelectorAll('.services-content .content-detail button');
         let quotationBtns = document.querySelectorAll('.get-quotation');
         let previewForm = document.getElementById('preview-form');
-        let formJsAdded = false;
-        let allForms = ['vulnerability', 'penetration', 'hack_recovery', 'malware_removal', 'digital_forensic', 'iso',
-            'pci', 'hippa', 'gdpr', 'managed_security', 'plug_and_play', 'concierge_cybersecurity'
-        ];
-        let allServicesInputFrom;
-        let allServicesFromContainer;
+
+
         let allServices;
         let mainHeading = document.querySelector('.services .main-heading');
         let mainHeadingText = 'All Business Cybersecurity Services';
@@ -626,7 +622,6 @@
                     const formContainer = document.querySelector('.form-container');
                     const formC = document.querySelector('.form-container form');
                     const informationForm = document.querySelector('.information-form');
-                    const informationFormBtn = document.querySelector('.information-form .submit-btn');
                     allServices.forEach((check, index) => {
                         check.addEventListener('change', e => {
                             if (check.checked) {
@@ -643,7 +638,7 @@
                                     formContainer.removeChild(document.getElementById("progress"))
                                     inputFields += `<div class="mt-5"data-position="${optionIndex}">  <h6 class="heading">${optionTitle}</h6>`;
                                     fields.forEach(field => {
-                                        {#console.log("label ")#}
+
                                         if (field.inputfield.type === 'select') {
                                             fetchData(`${location.origin}/api/bcs/choice_field/${field.inputfield.id}`)
                                                 .then(function (data) {
@@ -652,7 +647,7 @@
                                                     data[0].choice_field.forEach(choice => {
                                                         inputFields += ` <option value="${choice.choices}">${choice.choices}</option>`;
                                                     });
-                                                    {#console.log("option ")#}
+
                                                     inputFields += '</select>';
                                                     inputFields += `</div>`;
                                                     div.innerHTML = inputFields;
@@ -704,48 +699,6 @@
                 });
             });
         }
-
-    
- {% comment %}
-        let servicesInformation = {
-        {% for service in services %}
-            {{ service|replacespace }}: [
-            {%for subservice in service.subservice_service.all%}
-                {{ subservice|replacespace|safe }} = {
-                title: '{{subservice|upper}}',
-                description: '{{subservice.description}}'
-            },
-            {%endfor%}
-        ],
-        {% endfor %}
-        }
-
-
-        let showPreviewServices = (serviceElement, name) => {
-            serviceElement.forEach((li, index) => {
-                li.addEventListener('mouseover', e => {
-                    previewService.children[0].textContent = servicesInformation[name][index].title;
-                    previewService.children[1].textContent = servicesInformation[name][index].description;
-                    previewService.classList.remove('d-none');
-
-                    let positionTop = e.target.parentNode.offsetTop + 50;
-                    previewService.style.top = `${positionTop}px`;
-                    previewService.style.left = `${17 * index}%`;
-
-                });
-            });
-        }
-        let previewService = document.querySelector('.preview-service');
-
-        {% for name in sub_services %}
-            showPreviewServices(document.querySelectorAll('li.{{ name.service|replacespace }}'), '{{ name.service|replacespace }}');
-        {% endfor %}
-
-        document.body.addEventListener('click', e => {
-            if (!e.target.classList.contains('preview-service') && !e.target.parentNode.classList.contains('preview-service'))
-                previewService.classList.add('d-none');
-        }); {% endcomment %}
-
 
         allBtn = Array.from(allBtn);
         if(document.querySelector('.more-services #pcs-preview-btn'))

@@ -28,7 +28,7 @@ urlpatterns = [
     path('pcs_user_dashboard/', views.userDashboardView, name='pcs_user_dashboard'),
     path('pcs_user_services/', views.userServicesView, name='pcs_user_services'),
     path('pcs_user_reading_list/', views.userReadingListView, name='pcs_user_reading_list'),
-    path('pcs_user_quotations_history/', views.userOrderHistoryView, name='pcs_user_quotations_history'),
+    path('pcs_user_quotations_history/', views.userQuotationsHistoryView, name='pcs_user_quotations_history'),
     path('pcs_user_order_history/', views.userOrderHistoryView, name='pcs_user_order_history'),
     path('pcs_user_order_details/', views.userOrderDetailsView, name='pcs_user_order_details'),
     path('pcs_user_order_details/<id>/', views.userOrderDetailsView, name='pcs_user_order_details'),
@@ -36,7 +36,7 @@ urlpatterns = [
     path('pcs_user_events/', views.userEventsView, name='pcs_user_events'),
     path('pcs_user_notifications/', views.userNotificationsView, name='pcs_user_notifications'),
     path('pcs_user_settings/', views.userSettingsView, name='pcs_user_settings'),
-    path('pcs_appoinment/', views.pcsAppoinmentView, name='pcs_appoinment'),
+    path('pcs_appointment/', views.pcsAppointmentView, name='pcs_appointment'),
 
     # pcs academy user panel
     path('academy_user_courses/', views.UserCourses, name='academy_user_courses'),
