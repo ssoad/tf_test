@@ -55,6 +55,12 @@
                 <span>My Reading List</span>
             </a>
         </li>
+        <li>
+            <a href="{% host_url 'pcs_user_quotations_history' host 'mysecurity' %}" data-tootik="Quotations History" data-tootik-conf="right">
+                <i class="icofont-info-circle"></i>
+                <span>Quotations History</span>
+            </a>
+        </li>
         <li data-tootik="Order History" data-tootik-conf="right">
             <a href="{% host_url 'pcs_user_order_history' host 'mysecurity' %}">
                 <i class="icofont-cart-alt"></i>
@@ -188,7 +194,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
         crossorigin="anonymous"></script>
-<script src="{% static '' %}tfjs/user_panel/pcs/menubar.js"></script>
+<script src="{% static 'tfjs/user_panel/pcs/menubar.js' %}"></script>
 <script>
     document.querySelector('.navbar-toggler').addEventListener('click', e => {
         document.querySelector('.offcanvas-body').innerHTML = document.querySelector('.w-20 .menubar').outerHTML;

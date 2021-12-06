@@ -103,11 +103,11 @@ class PackageListViewApi(generics.ListAPIView):
 
 class ServiceListApiView(generics.ListAPIView):
     serializer_class = serializer.ServiceSerializer
-    queryset = bcsmodels.Service.objects.all()
+    # queryset = bcsmodels.Service.objects.all()
 
-    # def get_queryset(self):
-    #     service_id = self.kwargs['id']
-    #     return bcsmodels.Service.objects.all()
+    def get_queryset(self):
+        cat_type = self.kwargs['cat']
+        return bcsmodels.Service.objects.filter(category_choice=cat_type)
 
 
 class SubServiceApiView(generics.ListAPIView):

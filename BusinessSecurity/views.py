@@ -428,7 +428,7 @@ def userQuotationsHistoryView(request):
 
     elif request.user.is_bcs:
         orders = models.Order.objects.filter(
-            Q(user=request.user) & Q(
+            Q(user=request.user, category_choice='bcs') & Q(
                 Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
             '-order_date')
         context = {
@@ -445,7 +445,7 @@ def userOrderHistoryView(request):
 
     elif request.user.is_bcs:
         orders = models.Order.objects.filter(
-            Q(user=request.user) & ~Q(
+            Q(user=request.user, category_choice='bcs') & ~Q(
                 Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
             '-order_date')
         print(orders.query)
@@ -463,7 +463,7 @@ def userOrderDetailsView(request, id):
 
     elif request.user.is_bcs:
         try:
-            current_order = models.Order.objects.get(user=request.user, id=id)
+            current_order = models.Order.objects.get(user=request.user, id=id, category_choice='bcs')
             context = {
                 'current_order': current_order,
             }
@@ -494,19 +494,52 @@ def bcsUserMyTeamView(request):
                         info_form.save()
                     return HttpResponseRedirect(request.META['HTTP_REFERER'])
                 elif 'inv-btn' in request.POST:
-                    try:
-                        added_user = models.User.objects.get(email=request.POST.get('email'))
-                        user_business = models.UsersBusiness.objects.get_or_create(user=added_user, business=current_business.business)
-                        user_business[0].save()
-                        return HttpResponseRedirect(request.META['HTTP_REFERER'])
-                    except:
-                        context = {
-                            'current_business': current_business,
-                            'image_form': image_form,
-                            'info_form': info_form,
-                            'message': 'User with given email not found'
-                        }
-                        return render(request, 'user_panel/bcs/my_team.html', context)
+                    emails = request.POST['email'].split()
+                    # print(emails)
+                    err_mail = []
+                    suc_mail = []
+                    for mail in emails:
+                        try:
+                            added_user = models.User.objects.get(email=mail)
+                            user_business = models.UsersBusiness.objects.get_or_create(user=added_user,
+                                                                                       business=current_business.business)
+                            user_business[0].save()
+                            suc_mail.append(mail)
+                            context = {
+                                'success': f'User with given email {err_mail} added'
+                            }
+
+                        except:
+                            err_mail.append(mail)
+                            context = {
+                                'current_business': current_business,
+                                'image_form': image_form,
+                                'info_form': info_form,
+                                'message': f'User with given email {err_mail} not found'
+                            }
+                    return render(request, 'user_panel/bcs/my_team.html', context)
+
+                    # if added_user is not None:
+                    #     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                    # else:
+                    #     return render(request, 'user_panel/bcs/my_team.html', context)
+                    # return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                    # user_business = models.UsersBusiness.objects.get_or_create(user=added_user, business=current_business.business)
+                    # user_business[0].save()
+                    # return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                    # try:
+                    #     added_user = models.User.objects.get(email=request.POST.get('email'))
+                    #     user_business = models.UsersBusiness.objects.get_or_create(user=added_user, business=current_business.business)
+                    #     user_business[0].save()
+                    #     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                    # except:
+                    #     context = {
+                    #         'current_business': current_business,
+                    #         'image_form': image_form,
+                    #         'info_form': info_form,
+                    #         'message': 'User with given email not found'
+                    #     }
+                    #     return render(request, 'user_panel/bcs/my_team.html', context)
             context = {
                 'current_business': current_business,
                 'image_form': image_form,
@@ -682,13 +715,13 @@ def emailInvitationView(request):
 @login_required
 def openTicketView(request):
     form = forms.TicketCreateForm()
-    tickets = models.Ticket.objects.filter(user=request.user).order_by('-ticket_date')
+    tickets = models.Ticket.objects.filter(user=request.user, category_choice='bcs').order_by('-ticket_date')
     if request.method == 'POST':
         form = forms.TicketCreateForm(request.POST, request.FILES)
         if form.is_valid():
             ticket = form.save(commit=False)
             ticket.user = request.user
-            ticket.ticket_type = 'bcs'
+            ticket.category_choice = 'bcs'
             ticket.ticket_status = 'open'
             ticket.ticket_category = request.POST.get('ticket_category')
             ticket.save()
@@ -826,6 +859,7 @@ def mainAdminNotificationDeleteView(request, id):
     current_notification = models.Notification.objects.get(id=id)
     current_notification.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
 
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminEventsView(request):
@@ -1765,7 +1799,7 @@ def bcsAdminOrderCanceledView(request, id):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminTicketsView(request):
-    tickets = models.Ticket.objects.filter(ticket_type='bcs')
+    tickets = models.Ticket.objects.filter(category_choice='bcs')
     context = {
         'tickets': tickets,
     }

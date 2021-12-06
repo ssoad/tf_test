@@ -50,10 +50,10 @@
                     </span>
                 {% elif user.is_sales or user.is_sales_head %}
                     <span class="navbar-text hide rounded-0 px-2  fw-bold text-primary">
-                        <a href="{% host_url 'bcs_admin_orders' %}" class="">Business Order</a>
+                        <a href="{% host_url 'bcs_admin_quotations' %}" class="">Business Order</a>
                     </span>
                     <span class="navbar-text hide rounded-0 px-2 fw-bold text-primary">
-                        <a href="{% host_url 'pcs_admin_dashboard' host 'mysecurity' %}" class="">Personal
+                        <a href="{% host_url 'pcs_admin_quotations' host 'mysecurity' %}" class="">Personal
                             Order</a>
                     </span>
                 {% endif %}
@@ -232,7 +232,6 @@
                     </li>
                     <div class="div"></div>
                 {% endif %}
-
             </ul>
             <!-- nav links ends here -->
         </div>
