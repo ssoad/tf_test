@@ -6,7 +6,7 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/> {% block meta %} {% endblock meta %}
     <!-- CSS -->
-    <link rel="stylesheet" href="{% static '' %}tfcss/icofont/icofont.min.css">
+    <link rel="stylesheet" href="{% static 'tfcss/icofont/icofont.min.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
@@ -19,7 +19,8 @@
     <!-- bootstrap icon -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://npmcdn.com/tootik@1.0.2/css/tootik.min.css">
-    <link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/bcsTF/nav.css"/>
+    <link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/services.css' %}"/>
+    <link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/nav.css' %}"/>
     {% block headercss %} {% endblock headercss %}
 
     <title>
@@ -213,7 +214,7 @@
 
 {% block content %} {% endblock content %}
 
-<footer id="footer-small" class="bottom-0 footer footer-shrink bg-blue py-4  position-sticky top-100">
+<footer id="footer-small" class="bottom-0 footer footer-shrink text-center py-4 position-sticky top-100">
     <div class="d-flex justify-content-center">
         <a href="" class="me-5">PRIVACY POLICY</a>
         <a href="">TERMS OF USE</a>
@@ -236,7 +237,7 @@
             <i class="bi bi-instagram me-3"></i>
         </a>
     </div>
-    <div class="p-3 p pb-2 text-center text-white ">
+    <div class="p-3 p pb-2 text-center">
         <p>Copyright © 2021 Techforing Ltd.
         </p>
     </div>
@@ -258,7 +259,7 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
-<script src="{% static '' %}tfjs/admin_panel/bcsTF/nav.js"></script>
+<script src="{% static 'tfjs/admin_panel/bcsTF/nav.js' %}"></script>
 {% block customjs %} {% endblock customjs %}
 </body>
 
