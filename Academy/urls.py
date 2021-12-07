@@ -1,9 +1,10 @@
-from django.urls import path
+from django.urls import path, include
 from Academy import views
 
 urlpatterns = [
     path('', views.academyHomeView, name='academy_home'),
 
+    path('tinymce/', include('tinymce.urls')),
     path('ccsp/', views.ccspView, name='ccsp'),
 
     path('academy_faq/', views.academyFAQView, name='academy_faq'),

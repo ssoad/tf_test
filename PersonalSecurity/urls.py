@@ -1,9 +1,9 @@
-from django.urls import path
+from django.urls import path,include
 from PersonalSecurity import views
 
 urlpatterns = [
     path('', views.personalSecurityView, name='my_security_home'),
-
+    path('tinymce/', include('tinymce.urls')),
     path('concierge_cybersecurity/', views.conciergeCybersecurityView, name='concierge_cybersecurity'),
     path('cyber_investigation/', views.cyberInvestigationView, name='cyber_investigation'),
     path('osint_investigations/', views.OSIntInvestigationsView, name='osint_investigations'),
