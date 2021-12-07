@@ -387,7 +387,10 @@ def indexView(request):
         Q(category__category__iexact='case_studies') | Q(category__category__iexact='Case Studies'))
     categories = models.BlogCategory.objects.all()
     subcategories = models.BlogSubCategory.objects.all()
-    reading_lists = models.ReadingList.objects.filter(user=request.user).values_list('post', flat=True)
+    if request.user.is_authenticated:
+        reading_lists = models.ReadingList.objects.filter(user=request.user).values_list('post', flat=True)
+    else:
+        reading_lists = []
     # print(articles)
     # print(case_studies)
     context = {
