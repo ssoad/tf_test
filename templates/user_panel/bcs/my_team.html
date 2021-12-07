@@ -264,18 +264,52 @@
                         <td>
                             <a href="#" class="btn btn-outline-navy btn-sm" data-tootik="View Profile"><i
                                 class="fa fa-user-o"></i></a>
-                            <button class="del-btn btn btn-outline-primary btn-sm">
+                            <button class="detail-btn btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#empoyeeDetail">
                                 <i class="bi bi-pencil"></i>
                             </button>
                             <button class="del-btn btn btn-outline-danger btn-sm">
                                 <i class="bi bi-trash"></i>
                             </button>
                         </td>
+                    
                     </tr>
+                   
                     {% endfor %}
                 </tbody>
             </table>
         </section>
+     
+                    <!-- Modal -->
+                    <div class="modal fade" id="empoyeeDetail" tabindex="-1" aria-labelledby="empoyeeDetail-Label" aria-hidden="true">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="empoyeeDetail-Label">Change Employee Access & Permissions</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <form action="" method="POST">
+                                <div class="mb-3">
+                                    <label for="designation" class="form-label">Designation</label>
+                                    <input type="text" class="form-control" id="designation">
+                                  </div>
+                                <div class="mb-3">
+                                    <label for="designation" class="form-label">Privileges</label>
+                                    <select class="form-select" aria-label="Default select example">
+                                        <option value="1">Admin</option>
+                                        <option value="2">General Admin</option>
+                                        <option value="3">General Staff</option>
+                                      </select>
+                                  </div>
+                              </form>
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
 
             <div class="modal fade" id="addNew" tabindex="-1" aria-labelledby="trainingModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -321,6 +355,17 @@
             integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <script>
+
+        document.querySelector('#empoyeeDetail .modal-body');
+        document.querySelectorAll('.detail-btn').forEach(btn=>{
+            btn.addEventListener('click', e => {
+
+                document.querySelector('#empoyeeDetail .modal-body form').insertAdjacentHTML('afterbegin',
+                `<input type="hidden" value="${btn.parentNode.parentNode.children[1].textContent}">`)
+                console.log(btn.parentNode.parentNode.children[1].textContent)
+            })
+        })
+
         let validateEmail = document.getElementById('validationEmail');
         const submitForm = e => {
             e.preventDefault();
