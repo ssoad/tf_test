@@ -185,20 +185,7 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS')
 DEFAULT_FROM_EMAIL = 'Techforing <testtechforing@gmail.com>'
 
-# Cors Settings
-CORS_ALLOWED_ORIGINS = [
-    "https://techforing.com",
-    "https://www.techforing.com",
-    "https://main.techforing.com",
-    "https://bcs.techforing.com",
-    "https://pcs.techforing.com",
-    "https://academy.techforing.com",
-    "https://training.techforing.com",
-    "http://localhost:8080",
-    "http://127.0.0.1:8000",
-    "http://44.242.38.198",
-    "http://0.0.0.0",
-]
+
 
 MIDDLEWARE = [
     'django_hosts.middleware.HostsRequestMiddleware', #for django-host
@@ -306,6 +293,21 @@ STATICFILES_DIRS = [STATIC_DIR, ]
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Cors Settings
+CORS_ALLOWED_ORIGINS = [
+    "https://techforing.com",
+    "https://www.techforing.com",
+    "https://main.techforing.com",
+    "https://bcs.techforing.com",
+    "https://pcs.techforing.com",
+    "https://academy.techforing.com",
+    "https://training.techforing.com",
+    "http://localhost:8080",
+    "http://127.0.0.1:8000",
+    "http://44.242.38.198",
+    "http://0.0.0.0",
+]
 
 # Media
 MEDIA_URL = '/media/'
