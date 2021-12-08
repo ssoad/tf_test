@@ -506,7 +506,10 @@ def bcsUserMyTeamView(request):
                             user_business[0].save()
                             suc_mail.append(mail)
                             context = {
-                                'success': f'User with given email {err_mail} added'
+                                'current_business': current_business,
+                                'image_form': image_form,
+                                'info_form': info_form,
+                                'success': f'User with given email {suc_mail} added'
                             }
 
                         except:

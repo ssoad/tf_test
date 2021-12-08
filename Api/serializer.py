@@ -108,3 +108,9 @@ class UserSubServiceOrderSerializer(serializers.ModelSerializer):
         model = bcsmodels.Order
         fields = '__all__'
         # depth = 2
+
+
+class TeamPermissionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = bcsmodels.UsersBusiness
+        fields = ['position', 'privilege']

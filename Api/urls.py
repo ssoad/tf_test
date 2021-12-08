@@ -19,4 +19,5 @@ urlpatterns = [
     path('bcs/sub_service_input/<id>/', views.SubServiceInputApiView.as_view(), name='subservice_input_list_api'),
     path('bcs/choice_field/<id>/', views.ChoiceApiView.as_view(), name='choice_field'),
     path('bcs/user_order/<id>/', views.UserSubServiceOrderApiView.as_view(), name='user_order'),
+    path('bcs/team_permission/<id>/', views.TeamPermissionApiView.as_view(), name='team_permission'),
 ]

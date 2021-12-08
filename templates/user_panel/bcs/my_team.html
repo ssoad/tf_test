@@ -267,9 +267,9 @@
                             <button class="detail-btn btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#empoyeeDetail">
                                 <i class="bi bi-pencil"></i>
                             </button>
-                            <button class="del-btn btn btn-outline-danger btn-sm">
+                            <a href="{% host_url 'bcs_user_team_member_delete' %}{{ employee.id }}" class="del-btn btn btn-outline-danger btn-sm">
                                 <i class="bi bi-trash"></i>
-                            </button>
+                            </a>
                         </td>
                     
                     </tr>
