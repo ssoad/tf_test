@@ -1157,8 +1157,8 @@
                     background-color: #182f59;
                 }
                 .modal {
-                    top: 12%;
-                    padding-bottom: 20%;
+                    top: 20%;
+                    padding-bottom: 50%;
                 }
                 .modal-open {
                     padding-right: 0 !important;
