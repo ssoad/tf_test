@@ -342,21 +342,24 @@ def userDashboardView(request):
         return HttpResponseRedirect(reverse('create_business'))
 
     elif request.user.is_bcs:
-        current_business = request.user.business_user.business
-        notifications = models.Notification.objects.filter(category_choice='bcs').order_by('-notification_time')[:2]
+        if request.user.business_user.privilege == 'general_staff':
+            return HttpResponse("You don't have permission to view this page")
+        else:
+            current_business = request.user.business_user.business
+            notifications = models.Notification.objects.filter(category_choice='bcs').order_by('-notification_time')[:2]
 
-        events = models.Events.objects.filter(status='active', category='for_business_security')
-        registered_event = models.RegisteredEvents.objects.filter(user=request.user).values_list('event', flat=True)
-        orders = models.Order.objects.filter(
-            Q(user__business_user__business=current_business, category_choice='bcs') & ~Q(
-                Q(order_status='new') | Q(order_status='attending'))).order_by('-order_date')[:2]
-        context = {
-            'events': events,
-            'registered_event': registered_event,
-            'orders': orders,
-            'notifications': notifications,
-        }
-        return render(request, 'user_panel/bcs/dashboard.html', context)
+            events = models.Events.objects.filter(status='active', category='for_business_security')
+            registered_event = models.RegisteredEvents.objects.filter(user=request.user).values_list('event', flat=True)
+            orders = models.Order.objects.filter(
+                Q(user__business_user__business=current_business, category_choice='bcs') & ~Q(
+                    Q(order_status='new') | Q(order_status='attending'))).order_by('-order_date')[:2]
+            context = {
+                'events': events,
+                'registered_event': registered_event,
+                'orders': orders,
+                'notifications': notifications,
+            }
+            return render(request, 'user_panel/bcs/dashboard.html', context)
 
 
 @login_required
@@ -364,61 +367,64 @@ def userServicesView(request):
     if not request.user.is_bcs:
         return HttpResponseRedirect(reverse('create_business'))
     elif request.user.is_bcs:
-        service_category = models.ServiceCategory.objects.filter(category_choice='bcs')
-        services = models.Service.objects.filter(category_choice='bcs')
-        if request.method == 'POST':
-            data_list = request.POST
-            file_list = request.FILES
-            # print(data_list)
-            # print(file_list)
+        if request.user.business_user.privilege == 'general_staff':
+            return HttpResponse("You don't have permission to view this page")
+        else:
+            service_category = models.ServiceCategory.objects.filter(category_choice='bcs')
+            services = models.Service.objects.filter(category_choice='bcs')
+            if request.method == 'POST':
+                data_list = request.POST
+                file_list = request.FILES
+                # print(data_list)
+                # print(file_list)
 
-            current_service = get_object_or_404(models.Service, service_title=data_list['service_name'], category_choice='bcs')
+                current_service = get_object_or_404(models.Service, service_title=data_list['service_name'], category_choice='bcs')
 
-            for data in data_list:
-                if data != 'csrfmiddlewaretoken' and data != 'service_name':
-                    current_input = models.SubServiceInput.objects.get(id=data)
+                for data in data_list:
+                    if data != 'csrfmiddlewaretoken' and data != 'service_name':
+                        current_input = models.SubServiceInput.objects.get(id=data)
+                        input_data = models.UserSubserviceInput(user=request.user, inputfield=current_input,
+                                                                inputinfo=data_list[data])
+                        input_data.save()
+                        order = models.Order.objects.get_or_create(user=request.user, order_status='new',
+                                                                   service=current_service, category_choice='bcs')
+
+                        order[0].subserviceinput.add(input_data)
+                for files in file_list:
+                    current_input = models.SubServiceInput.objects.get(id=files)
+                    myfile = file_list[files]
+                    fs = FileSystemStorage()
+                    filename = fs.save(myfile.name, myfile)
+                    uploaded_file_url = fs.url(filename)
                     input_data = models.UserSubserviceInput(user=request.user, inputfield=current_input,
-                                                            inputinfo=data_list[data])
+                                                            inputinfo=uploaded_file_url)
                     input_data.save()
                     order = models.Order.objects.get_or_create(user=request.user, order_status='new',
                                                                service=current_service, category_choice='bcs')
 
                     order[0].subserviceinput.add(input_data)
-            for files in file_list:
-                current_input = models.SubServiceInput.objects.get(id=files)
-                myfile = file_list[files]
-                fs = FileSystemStorage()
-                filename = fs.save(myfile.name, myfile)
-                uploaded_file_url = fs.url(filename)
-                input_data = models.UserSubserviceInput(user=request.user, inputfield=current_input,
-                                                        inputinfo=uploaded_file_url)
-                input_data.save()
+
                 order = models.Order.objects.get_or_create(user=request.user, order_status='new',
                                                            service=current_service, category_choice='bcs')
 
-                order[0].subserviceinput.add(input_data)
-
-            order = models.Order.objects.get_or_create(user=request.user, order_status='new',
-                                                       service=current_service, category_choice='bcs')
-
-            if not order[0].orderstaff_order.all().exists():
-                tracking = models.Tracking.objects.get(service=current_service)
-                persons = tracking.persons
-                persons_list = list(filter(None, persons.split(',')))
-                person = persons_list.pop(0)
-                persons_list.append(person)
-                tracking.persons = ','.join(persons_list)
-                tracking.save()
-                current_staff = models.User.objects.get(id=person)
-                order_staff = models.OrderStaff.objects.create(staff=current_staff, order=order[0])
-                order_staff.save()
-            return render(request, 'user_panel/bcs/thanks.html')
-        context = {
-            'service_category': service_category,
-            'services': services,
-            'services_headings': list(services.values_list('service_title', flat=True)),
-        }
-        return render(request, 'user_panel/bcs/services.html', context)
+                if not order[0].orderstaff_order.all().exists():
+                    tracking = models.Tracking.objects.get(service=current_service)
+                    persons = tracking.persons
+                    persons_list = list(filter(None, persons.split(',')))
+                    person = persons_list.pop(0)
+                    persons_list.append(person)
+                    tracking.persons = ','.join(persons_list)
+                    tracking.save()
+                    current_staff = models.User.objects.get(id=person)
+                    order_staff = models.OrderStaff.objects.create(staff=current_staff, order=order[0])
+                    order_staff.save()
+                return render(request, 'user_panel/bcs/thanks.html')
+            context = {
+                'service_category': service_category,
+                'services': services,
+                'services_headings': list(services.values_list('service_title', flat=True)),
+            }
+            return render(request, 'user_panel/bcs/services.html', context)
 
 
 @login_required
@@ -427,15 +433,18 @@ def userQuotationsHistoryView(request):
         return HttpResponseRedirect(reverse('create_business'))
 
     elif request.user.is_bcs:
-        orders = models.Order.objects.filter(
-            Q(user=request.user, category_choice='bcs') & Q(
-                Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
-            '-order_date')
-        context = {
-            'orders': orders,
-            'message': 'Quotations',
-        }
-        return render(request, 'user_panel/bcs/order_history.html', context)
+        if request.user.business_user.privilege == 'general_staff':
+            return HttpResponse("You don't have permission to view this page")
+        else:
+            orders = models.Order.objects.filter(
+                Q(user=request.user, category_choice='bcs') & Q(
+                    Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
+                '-order_date')
+            context = {
+                'orders': orders,
+                'message': 'Quotations',
+            }
+            return render(request, 'user_panel/bcs/order_history.html', context)
 
 
 @login_required
@@ -444,16 +453,19 @@ def userOrderHistoryView(request):
         return HttpResponseRedirect(reverse('create_business'))
 
     elif request.user.is_bcs:
-        orders = models.Order.objects.filter(
-            Q(user=request.user, category_choice='bcs') & ~Q(
-                Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
-            '-order_date')
-        print(orders.query)
-        context = {
-            'orders': orders,
-            'message': 'Orders',
-        }
-        return render(request, 'user_panel/bcs/order_history.html', context)
+        if request.user.business_user.privilege == 'general_staff':
+            return HttpResponse("You don't have permission to view this page")
+        else:
+            orders = models.Order.objects.filter(
+                Q(user=request.user, category_choice='bcs') & ~Q(
+                    Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
+                '-order_date')
+            print(orders.query)
+            context = {
+                'orders': orders,
+                'message': 'Orders',
+            }
+            return render(request, 'user_panel/bcs/order_history.html', context)
 
 
 @login_required
@@ -462,14 +474,17 @@ def userOrderDetailsView(request, id):
         return HttpResponseRedirect(reverse('create_business'))
 
     elif request.user.is_bcs:
-        try:
-            current_order = models.Order.objects.get(user=request.user, id=id, category_choice='bcs')
-            context = {
-                'current_order': current_order,
-            }
-            return render(request, 'user_panel/bcs/order_detail.html', context)
-        except:
+        if request.user.business_user.privilege == 'general_staff':
             return HttpResponse("You don't have permission to view this page")
+        else:
+            try:
+                current_order = models.Order.objects.get(user=request.user, id=id, category_choice='bcs')
+                context = {
+                    'current_order': current_order,
+                }
+                return render(request, 'user_panel/bcs/order_detail.html', context)
+            except:
+                return HttpResponse("You don't have permission to view this page")
 
 
 @login_required
@@ -480,6 +495,9 @@ def bcsUserMyTeamView(request):
     elif request.user.is_bcs:
         try:
             current_business = models.UsersBusiness.objects.get(user=request.user)
+
+            business = current_business.business
+            admins = business.business_business.filter(privilege='admin').count()
 
             image_form = forms.BusinessLogoForm(instance=current_business.business)
             info_form = forms.BusinessInfoForm(instance=current_business.business)
@@ -501,6 +519,8 @@ def bcsUserMyTeamView(request):
                     for mail in emails:
                         try:
                             added_user = models.User.objects.get(email=mail)
+                            added_user.is_bcs = True
+                            added_user.save()
                             user_business = models.UsersBusiness.objects.get_or_create(user=added_user,
                                                                                        business=current_business.business)
                             user_business[0].save()
@@ -509,6 +529,7 @@ def bcsUserMyTeamView(request):
                                 'current_business': current_business,
                                 'image_form': image_form,
                                 'info_form': info_form,
+                                'admins': admins,
                                 'success': f'User with given email {suc_mail} added'
                             }
 
@@ -518,6 +539,7 @@ def bcsUserMyTeamView(request):
                                 'current_business': current_business,
                                 'image_form': image_form,
                                 'info_form': info_form,
+                                'admins': admins,
                                 'message': f'User with given email {err_mail} not found'
                             }
                     return render(request, 'user_panel/bcs/my_team.html', context)
@@ -547,6 +569,7 @@ def bcsUserMyTeamView(request):
                 'current_business': current_business,
                 'image_form': image_form,
                 'info_form': info_form,
+                'admins': admins,
             }
             return render(request, 'user_panel/bcs/my_team.html', context)
         except:
@@ -555,18 +578,33 @@ def bcsUserMyTeamView(request):
 
 @login_required
 def bcsUserTeamMemberDeleteView(request, id):
-    current_employee = models.UsersBusiness.objects.get(id=id)
-    current_user = models.User.objects.get(id=current_employee.user.id)
-    if current_user == request.user \
-            or current_user.business_user.privilege == 'general_admin' \
-            or current_employee.privilege == 'admin':
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    if request.user.business_user.privilege == 'general_staff':
+        return HttpResponse("You don't have permission to view this page")
     else:
-        current_user.is_bcs = False
-        current_user.save()
-        current_employee.delete()
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        current_employee = models.UsersBusiness.objects.get(id=id)
+        current_user = models.User.objects.get(id=current_employee.user.id)
+        if current_user == request.user \
+                or current_user.business_user.privilege == 'general_admin' \
+                or current_employee.privilege == 'admin':
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        else:
+            current_user.is_bcs = False
+            current_user.save()
+            current_employee.delete()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
+
+@login_required
+def bcsUserMyTeamProfileView(request, id):
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+
+    elif request.user.is_bcs:
+        current_user = models.User.objects.get(business_user__id=id)
+        context = {
+            'current_user': current_user,
+        }
+        return render(request, 'user_panel/bcs/profile.html', context)
 
 @login_required
 def userSubscriptionsView(request):
@@ -574,10 +612,13 @@ def userSubscriptionsView(request):
         return HttpResponseRedirect(reverse('create_business'))
 
     elif request.user.is_bcs:
-        context = {
+        if request.user.business_user.privilege == 'general_staff':
+            return HttpResponse("You don't have permission to view this page")
+        else:
+            context = {
 
-        }
-        return render(request, 'user_panel/bcs/subscriptions.html', context)
+            }
+            return render(request, 'user_panel/bcs/subscriptions.html', context)
 
 
 @login_required
@@ -600,13 +641,16 @@ def userEventRegisterView(request, id):
     if not request.user.is_bcs:
         return HttpResponseRedirect(reverse('create_business'))
     elif request.user.is_bcs:
-        current_event = models.Events.objects.get(id=id)
-        is_register = models.RegisteredEvents.objects.filter(user=request.user, event=current_event)
-        if not is_register:
-            models.RegisteredEvents.objects.get_or_create(user=request.user, event=current_event)
+        if request.user.business_user.privilege == 'general_staff':
+            return HttpResponse("You don't have permission to view this page")
         else:
-            is_register.delete()
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            current_event = models.Events.objects.get(id=id)
+            is_register = models.RegisteredEvents.objects.filter(user=request.user, event=current_event)
+            if not is_register:
+                models.RegisteredEvents.objects.get_or_create(user=request.user, event=current_event)
+            else:
+                is_register.delete()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
 @login_required
@@ -615,11 +659,14 @@ def userNotificationsView(request):
         return HttpResponseRedirect(reverse('create_business'))
 
     elif request.user.is_bcs:
-        notifications = models.Notification.objects.filter(category_choice='bcs').order_by('-notification_time')
-        context = {
-            'notifications': notifications
-        }
-        return render(request, 'user_panel/bcs/notifications.html', context)
+        if request.user.business_user.privilege == 'general_staff':
+            return HttpResponse("You don't have permission to view this page")
+        else:
+            notifications = models.Notification.objects.filter(category_choice='bcs').order_by('-notification_time')
+            context = {
+                'notifications': notifications
+            }
+            return render(request, 'user_panel/bcs/notifications.html', context)
 
 
 @login_required
@@ -628,10 +675,13 @@ def userSettingsView(request):
         return HttpResponseRedirect(reverse('create_business'))
 
     elif request.user.is_bcs:
-        context = {
+        if request.user.business_user.privilege == 'general_staff':
+            return HttpResponse("You don't have permission to view this page")
+        else:
+            context = {
 
-        }
-        return render(request, 'user_panel/bcs/settings.html', context)
+            }
+            return render(request, 'user_panel/bcs/settings.html', context)
 
 
 @login_required
@@ -717,41 +767,55 @@ def emailInvitationView(request):
 
 @login_required
 def openTicketView(request):
-    form = forms.TicketCreateForm()
-    tickets = models.Ticket.objects.filter(user=request.user, category_choice='bcs').order_by('-ticket_date')
-    if request.method == 'POST':
-        form = forms.TicketCreateForm(request.POST, request.FILES)
-        if form.is_valid():
-            ticket = form.save(commit=False)
-            ticket.user = request.user
-            ticket.category_choice = 'bcs'
-            ticket.ticket_status = 'open'
-            ticket.ticket_category = request.POST.get('ticket_category')
-            ticket.save()
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
-    context = {
-        'form': form,
-        'tickets': tickets,
-    }
-    return render(request, 'user_panel/bcs/ticket.html', context)
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+
+    elif request.user.is_bcs:
+        if request.user.business_user.privilege == 'general_staff':
+            return HttpResponse("You don't have permission to view this page")
+        else:
+            form = forms.TicketCreateForm()
+            tickets = models.Ticket.objects.filter(user=request.user, category_choice='bcs').order_by('-ticket_date')
+            if request.method == 'POST':
+                form = forms.TicketCreateForm(request.POST, request.FILES)
+                if form.is_valid():
+                    ticket = form.save(commit=False)
+                    ticket.user = request.user
+                    ticket.category_choice = 'bcs'
+                    ticket.ticket_status = 'open'
+                    ticket.ticket_category = request.POST.get('ticket_category')
+                    ticket.save()
+                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            context = {
+                'form': form,
+                'tickets': tickets,
+            }
+            return render(request, 'user_panel/bcs/ticket.html', context)
 
 
 def ticketDetailView(request, id):
-    ticket = models.Ticket.objects.get(id=id)
-    commentform = forms.TicketCommentForm()
-    if request.method == 'POST':
-        commentform = forms.TicketCommentForm(request.POST)
-        if commentform.is_valid():
-            comment = commentform.save(commit=False)
-            comment.user = request.user
-            comment.ticket = ticket
-            comment.save()
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
-    context = {
-        'ticket': ticket,
-        'commentform': commentform,
-    }
-    return render(request, 'user_panel/bcs/ticket_detail.html', context)
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+
+    elif request.user.is_bcs:
+        if request.user.business_user.privilege == 'general_staff':
+            return HttpResponse("You don't have permission to view this page")
+        else:
+            ticket = models.Ticket.objects.get(id=id)
+            commentform = forms.TicketCommentForm()
+            if request.method == 'POST':
+                commentform = forms.TicketCommentForm(request.POST)
+                if commentform.is_valid():
+                    comment = commentform.save(commit=False)
+                    comment.user = request.user
+                    comment.ticket = ticket
+                    comment.save()
+                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            context = {
+                'ticket': ticket,
+                'commentform': commentform,
+            }
+            return render(request, 'user_panel/bcs/ticket_detail.html', context)
 
 
 # Main Admin Sections
