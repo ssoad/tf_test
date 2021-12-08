@@ -30,14 +30,15 @@
         .img-change:hover {
             visibility: visible;
         }
+
         .tooltip {
             position: relative;
             display: inline-block;
             opacity: 1;
             z-index: 0;
-          }
-          
-          .tooltip .tooltiptext {
+        }
+
+        .tooltip .tooltiptext {
             visibility: hidden;
             width: 140px;
             background-color: #555;
@@ -52,9 +53,9 @@
             margin-left: -75px;
             opacity: 0;
             transition: opacity 0.3s;
-          }
-          
-          .tooltip .tooltiptext::after {
+        }
+
+        .tooltip .tooltiptext::after {
             content: "";
             position: absolute;
             top: 100%;
@@ -63,13 +64,14 @@
             border-width: 5px;
             border-style: solid;
             border-color: #555 transparent transparent transparent;
-          }
-          
-          .tooltip:hover .tooltiptext {
+        }
+
+        .tooltip:hover .tooltiptext {
             visibility: visible;
             opacity: 1;
-          }
-          .alert-dismissible .btn-close{
+        }
+
+        .alert-dismissible .btn-close {
             top: -7px
         }
     </style>
@@ -105,18 +107,18 @@
                     </div>
                     <div class="col-md-9">
                         <div class="company-detail d-grid align-items-center">
-                            <h4>{{ current_business.business.company_name }} 
-                                
+                            <h4>{{ current_business.business.company_name }}
+
                                 <input type="text" class="d-none key" id="myInput"
-                                                value="{{ current_business.business.unique_id }}"
-                                                disabled /> 
-                                    <div class="tooltip">
+                                       value="{{ current_business.business.unique_id }}"
+                                       disabled/>
+                                <div class="tooltip">
                                     <span onclick="myFunction()" onmouseout="outFunc()" style="cursor: pointer">
                                       <span class="tooltiptext" id="myTooltip">Copy Business Key</span>
                                       <i class="fa fa-copy text-primary fs-5"></i>
                                     </span>
-                                    </div>
-                                            </h4>
+                                </div>
+                            </h4>
                             <div class="row mx-0">
                                 <div class="col ps-0">
                                     <p class="mb-1">Company
@@ -200,7 +202,7 @@
                 </div>
             {% endif %}
 
-            {% comment %} <div class="py-5 gap-4 row px-4">
+            {% comment %}<div class="py-5 gap-4 row px-4">
                 {% for employee in current_business.business.business_business.all %}
                     <div class="col-md-3">
                         <div class="card rounded-5 shadow" style="background: #182a5915;">
@@ -227,6 +229,7 @@
                                                             class="fa fa-pencil"></i></a>
                                                     <a href="
 
+
                                                             {% host_url 'bcs_user_team_member_delete' %}{{ employee.id }}"
                                                        class="btn btn-navy" data-tootik="Remove Employee"><i
                                                             class="fa fa-trash-o"></i></a>
@@ -240,12 +243,11 @@
                         </div>
                     </div>
                 {% endfor %}
-            </div> {% endcomment %}
+            </div>{% endcomment %}
 
-        {% comment %} magic table {% endcomment %}
-        <section class="mt-5">
-            <table id="myTable" class="display mt-5 table text-center border border-gray">
-                <thead class="border border-gray">
+            <section class="mt-5">
+                <table id="myTable" class="display mt-5 table text-center border border-gray">
+                    <thead class="border border-gray">
                     <tr class="fw-bold text-navy border border-gray">
                         <th>Name</th>
                         <th>Email</th>
@@ -253,65 +255,92 @@
                         <th>Permissions</th>
                         <th>Action</th>
                     </tr>
-                </thead>
-                <tbody>
+                    </thead>
+                    <tbody>
                     {% for employee in current_business.business.business_business.all %}
-                    <tr>
-                        <td>{{ employee.user.full_name }}</td>
-                        <td>{{ employee.user.email }}</td>
-                        <td>{{ employee.position }}</td>
-                        <td>View, Edit</td>
-                        <td>
-                            <a href="#" class="btn btn-outline-navy btn-sm" data-tootik="View Profile"><i
-                                class="fa fa-user-o"></i></a>
-                            <button id="{{ employee.id }}" class="detail-btn btn btn-outline-navy btn-sm" data-bs-toggle="modal" data-bs-target="#empoyeeDetail">
-                                <i class="bi bi-pencil"></i>
-                            </button>
-                            <a href="{% host_url 'bcs_user_team_member_delete' %}{{ employee.id }}" class="del-btn btn btn-outline-danger btn-sm">
-                                <i class="bi bi-trash"></i>
-                            </a>
-                        </td>
-                    
-                    </tr>
-                   
+                        <tr>
+                            <td>{{ employee.user.full_name }}</td>
+                            <td>{{ employee.user.email }}</td>
+                            <td>{{ employee.position }}</td>
+                            <td>{{ employee.privilege|capitalize }}</td>
+                            <td>
+                                <a href="{% host_url 'bcs_user_my_team_user' %}{{ employee.id }}"
+                                   class="btn btn-outline-navy btn-sm" data-tootik="View Profile"><i
+                                        class="fa fa-user-o"></i></a>
+
+                                {% if current_business.business.business_business.count > 1 %}
+                                    {% if request.user.business_user.privilege != 'general_staff' %}
+                                        {% if employee.privilege == 'admin' %}
+                                            {% if admins > 1 %}
+                                                <button data-tootik="Edit" id="{{ employee.id }}"
+                                                        class="detail-btn btn btn-outline-navy btn-sm"
+                                                        data-bs-toggle="modal" data-bs-target="#employeeDetail">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+                                                <a data-tootik="Delete" href="{% host_url 'bcs_user_team_member_delete' %}{{ employee.id }}"
+                                                   class="del-btn btn btn-outline-danger btn-sm">
+                                                    <i class="bi bi-trash"></i>
+                                                </a>
+                                            {% endif %}
+                                        {% else %}
+                                            <button data-tootik="Edit" id="{{ employee.id }}"
+                                                    class="detail-btn btn btn-outline-navy btn-sm"
+                                                    data-bs-toggle="modal" data-bs-target="#employeeDetail">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                            <a data-tootik="Delete" href="{% host_url 'bcs_user_team_member_delete' %}{{ employee.id }}"
+                                               class="del-btn btn btn-outline-danger btn-sm">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        {% endif %}
+
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+
+                        </tr>
+
                     {% endfor %}
-                </tbody>
-            </table>
-        </section>
-     
-                    <!-- Modal -->
-                    <div class="modal fade" id="empoyeeDetail" tabindex="-1" aria-labelledby="empoyeeDetail-Label" aria-hidden="true">
-                        <div class="modal-dialog">
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Modal -->
+            {% if request.user.business_user.privilege != 'general_staff' %}
+                <div class="modal fade" id="employeeDetail" tabindex="-1" aria-labelledby="employeeDetail-Label"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                            <h5 class="modal-title" id="empoyeeDetail-Label">Change Employee Privilege</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <h5 class="modal-title" id="employeeDetail-Label">Change Employee Privilege</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                             </div>
-                        <form onsubmit="updatePrivilege(event)" action="" method="POST">
-                            <div class="modal-body">
-                                  {% csrf_token %}
-                                <div class="mb-3">
-                                    <label for="designation" class="form-label">Designation</label>
-                                    <input type="text" class="form-control" id="designation">
+                            <form onsubmit="updatePrivilege(event)" action="" method="POST">
+                                <div class="modal-body">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="designation" class="form-label">Designation</label>
+                                        <input type="text" class="form-control" id="designation">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="privilege" class="form-label">Privilege</label>
+                                        <select id="privilege" class="form-select" aria-label="Default select example">
+                                            <option value="admin">Admin</option>
+                                            <option value="general_admin">General Admin</option>
+                                            <option value="general_staff">General Staff</option>
+                                        </select>
+                                    </div>
+
                                 </div>
-                                <div class="mb-3">
-                                    <label for="privilege" class="form-label">Privileges</label>
-                                    <select id="privilege" class="form-select" aria-label="Default select example">
-                                        <option value="admin">Admin</option>
-                                        <option value="general_admin">General Admin</option>
-                                        <option value="general_staff">General Staff</option>
-                                      </select>
-                                  </div>
-                             
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-navy">Update</button>
-                            </div>
-                        </form>
-                        </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-navy">Update</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
-
+                </div>
+            {% endif %}
             <div class="modal fade" id="addNew" tabindex="-1" aria-labelledby="trainingModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content border-0 bg-main">
@@ -327,12 +356,15 @@
                                 <input type="email" name="email" class="form-control" placeholder="User Email">
                                 <button type="submit" class="mt-4 btn bg-navy p-1 px-3" name="inv-btn">INVITE</button>
                             </form> {% endcomment %}
-                            <form onsubmit="submitForm(event)" id="invite-form" method="POST" onkeydown="return event.key != 'Enter';">
+                            <form onsubmit="submitForm(event)" id="invite-form" method="POST"
+                                  onkeydown="return event.key != 'Enter';">
                                 {% csrf_token %}
                                 <div class="email-container d-flex flex-wrap justify-content-start align-items-start align-content-start border border-dark fs-7 p-2 h-200p">
                                     <div class="h-25p">
-                                        <input autocomplete="off" class="email-input" maxlength="30" type="email" placeholder="Type an email">
-                                        <button type="button" class="add-email btn p-0"><i class="icofont-plus-circle"></i></button>
+                                        <input autocomplete="off" class="email-input" maxlength="30" type="email"
+                                               placeholder="Type an email">
+                                        <button type="button" class="add-email btn p-0"><i
+                                                class="icofont-plus-circle"></i></button>
                                     </div>
                                     <div id="validationEmail" class="invalid-feedback">
                                         Please choose a valid email.
@@ -356,42 +388,39 @@
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <script>
 
-        document.querySelector('#empoyeeDetail .modal-body');
-        document.querySelectorAll('.detail-btn').forEach(btn=>{
+        document.querySelector('#employeeDetail .modal-body');
+        document.querySelectorAll('.detail-btn').forEach(btn => {
             btn.addEventListener('click', e => {
-                
-                {% comment %} document.querySelector('#empoyeeDetail  form .modal-body').insertAdjacentHTML('beforebegin',
+
+                {% comment %} document.querySelector('#employeeDetail  form .modal-body').insertAdjacentHTML('beforebegin',
                 `<input type="hidden" value="${btn.parentNode.parentNode.children[1].textContent}">`); {% endcomment %}
 
-                document.querySelector('#empoyeeDetail form .modal-body').insertAdjacentHTML('beforebegin',
-                `<input type="hidden" id="apiId" value="${btn.id}">`);
-                
+                document.querySelector('#employeeDetail form .modal-body').insertAdjacentHTML('beforebegin',
+                    `<input type="hidden" id="apiId" value="${btn.id}">`);
+
                 fetch(`${location.origin}/api/bcs/team_permission/${btn.id}/`)
-                .then(res=>res.json())
-                .then(data => {
-                    document.getElementById('designation').value = data.position;
-                    document.querySelectorAll('#privilege option').forEach(option => {
-                        if(option.value === data.privilege)
-                            option.selected = true;
-                        else 
-                            option.selected = false;
-                    })
-                });
+                    .then(res => res.json())
+                    .then(data => {
+                        document.getElementById('designation').value = data.position;
+                        document.querySelectorAll('#privilege option').forEach(option => {
+                            if (option.value === data.privilege)
+                                option.selected = true;
+                            else
+                                option.selected = false;
+                        })
+                    });
 
             });
         });
-       
+
         const updatePrivilege = e => {
             e.preventDefault();
-            const csrf_token = document.querySelector("#empoyeeDetail form input[name='csrfmiddlewaretoken']").value;
+            const csrf_token = document.querySelector("#employeeDetail form input[name='csrfmiddlewaretoken']").value;
             let apiId = document.getElementById('apiId').value;
 
             let privileges = document.getElementById("privilege");
             let selectedPrivilege = privileges.options[privileges.selectedIndex].value;
             let designation = document.getElementById("designation").value;
-
-            console.log({position: designation, privilege: selectedPrivilege});
-            console.log(csrf_token)
 
             fetch(`${location.origin}/api/bcs/team_permission/${apiId}/`, {
                 headers: {
@@ -400,12 +429,12 @@
                 },
                 method: 'PATCH',
                 body: JSON.stringify({position: designation, privilege: selectedPrivilege}),
-                
+
             })
-            .then(res=>{
-                //if(res.statusText === 'OK')
+                .then(res => {
+                    //if(res.statusText === 'OK')
                     location.reload();
-            });
+                });
 
         }
 
@@ -413,20 +442,19 @@
         const submitForm = e => {
             e.preventDefault();
 
-            if(document.querySelectorAll('#invite-form .email-container .email').length > 0){
-                let allEmails='';
+            if (document.querySelectorAll('#invite-form .email-container .email').length > 0) {
+                let allEmails = '';
                 document.querySelectorAll('#invite-form .email-container .email').forEach(email => {
-                    allEmails+= ' ' + email.children[0].textContent.split(' ')[0];
+                    allEmails += ' ' + email.children[0].textContent.split(' ')[0];
                 })
                 document.querySelector('.all-emails').value = allEmails;
                 e.target.submit()
-            }
-            else{
+            } else {
                 console.log(validateEmail)
                 validateEmail.style.display = 'block';
             }
 
-           
+
         }
         let emailInput = document.querySelector('.team-statistics .email-input');
         document.querySelector('.team-statistics .email-container').addEventListener('click', () => {
@@ -513,15 +541,15 @@
             copyText.select();
             copyText.setSelectionRange(0, 99999);
             navigator.clipboard.writeText(copyText.value);
-            
+
             var tooltip = document.getElementById("myTooltip");
             tooltip.innerHTML = "Copied";
-          }
-          
-          function outFunc() {
+        }
+
+        function outFunc() {
             var tooltip = document.getElementById("myTooltip");
             tooltip.innerHTML = "Copy Business Key";
-          }
+        }
     </script>
     <script>
         var alertPlaceholder = document.getElementById('liveAlertPlaceholder')
