@@ -264,7 +264,7 @@
                         <td>
                             <a href="#" class="btn btn-outline-navy btn-sm" data-tootik="View Profile"><i
                                 class="fa fa-user-o"></i></a>
-                            <button class="detail-btn btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#empoyeeDetail">
+                            <button id="{{ employee.id }}" class="detail-btn btn btn-outline-navy btn-sm" data-bs-toggle="modal" data-bs-target="#empoyeeDetail">
                                 <i class="bi bi-pencil"></i>
                             </button>
                             <a href="{% host_url 'bcs_user_team_member_delete' %}{{ employee.id }}" class="del-btn btn btn-outline-danger btn-sm">
@@ -284,29 +284,30 @@
                         <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                            <h5 class="modal-title" id="empoyeeDetail-Label">Change Employee Access & Permissions</h5>
+                            <h5 class="modal-title" id="empoyeeDetail-Label">Change Employee Privilege</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
+                        <form onsubmit="updatePrivilege(event)" action="" method="POST">
                             <div class="modal-body">
-                              <form action="" method="POST">
+                                  {% csrf_token %}
                                 <div class="mb-3">
                                     <label for="designation" class="form-label">Designation</label>
                                     <input type="text" class="form-control" id="designation">
-                                  </div>
+                                </div>
                                 <div class="mb-3">
-                                    <label for="designation" class="form-label">Privileges</label>
-                                    <select class="form-select" aria-label="Default select example">
-                                        <option value="1">Admin</option>
-                                        <option value="2">General Admin</option>
-                                        <option value="3">General Staff</option>
+                                    <label for="privilege" class="form-label">Privileges</label>
+                                    <select id="privilege" class="form-select" aria-label="Default select example">
+                                        <option value="admin">Admin</option>
+                                        <option value="general_admin">General Admin</option>
+                                        <option value="general_staff">General Staff</option>
                                       </select>
                                   </div>
-                              </form>
+                             
                             </div>
                             <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                                <button type="submit" class="btn btn-navy">Update</button>
                             </div>
+                        </form>
                         </div>
                         </div>
                     </div>
@@ -335,7 +336,7 @@
                                     </div>
                                     <div id="validationEmail" class="invalid-feedback">
                                         Please choose a valid email.
-                                      </div>
+                                    </div>
                                 </div>
                                 <input type="text" name="email" class="all-emails" hidden>
                                 <input type="hidden" name="inv-btn">
@@ -350,7 +351,6 @@
 {% endblock content %}
 
 {% block customjs %}
-    <script src="{% static 'tfjs/user_panel/team/chart.js' %}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
             integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
@@ -359,12 +359,55 @@
         document.querySelector('#empoyeeDetail .modal-body');
         document.querySelectorAll('.detail-btn').forEach(btn=>{
             btn.addEventListener('click', e => {
+                
+                {% comment %} document.querySelector('#empoyeeDetail  form .modal-body').insertAdjacentHTML('beforebegin',
+                `<input type="hidden" value="${btn.parentNode.parentNode.children[1].textContent}">`); {% endcomment %}
 
-                document.querySelector('#empoyeeDetail .modal-body form').insertAdjacentHTML('afterbegin',
-                `<input type="hidden" value="${btn.parentNode.parentNode.children[1].textContent}">`)
-                console.log(btn.parentNode.parentNode.children[1].textContent)
+                document.querySelector('#empoyeeDetail form .modal-body').insertAdjacentHTML('beforebegin',
+                `<input type="hidden" id="apiId" value="${btn.id}">`);
+                
+                fetch(`${location.origin}/api/bcs/team_permission/${btn.id}/`)
+                .then(res=>res.json())
+                .then(data => {
+                    document.getElementById('designation').value = data.position;
+                    document.querySelectorAll('#privilege option').forEach(option => {
+                        if(option.value === data.privilege)
+                            option.selected = true;
+                        else 
+                            option.selected = false;
+                    })
+                });
+
+            });
+        });
+       
+        const updatePrivilege = e => {
+            e.preventDefault();
+            const csrf_token = document.querySelector("#empoyeeDetail form input[name='csrfmiddlewaretoken']").value;
+            let apiId = document.getElementById('apiId').value;
+
+            let privileges = document.getElementById("privilege");
+            let selectedPrivilege = privileges.options[privileges.selectedIndex].value;
+            let designation = document.getElementById("designation").value;
+
+            console.log({position: designation, privilege: selectedPrivilege});
+            console.log(csrf_token)
+
+            fetch(`${location.origin}/api/bcs/team_permission/${apiId}/`, {
+                headers: {
+                    'Content-type': 'application/json',
+                    'X-CSRFToken': csrf_token,
+                },
+                method: 'PATCH',
+                body: JSON.stringify({position: designation, privilege: selectedPrivilege}),
+                
             })
-        })
+            .then(res=>{
+                //if(res.statusText === 'OK')
+                    location.reload();
+            });
+
+        }
 
         let validateEmail = document.getElementById('validationEmail');
         const submitForm = e => {
