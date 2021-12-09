@@ -127,9 +127,9 @@
             z-index: unset;
         }
 
-        .card-body .card-text:nth-child(n+4) {
+        {% comment %}.card-body .card-text:nth-child(n+4) {
             display: none;
-        }
+        }{% endcomment %}
     </style>
 
 {% endblock headercss %}
@@ -295,14 +295,14 @@
                                 {% endfor %}
                             </div>
                         </div>
-                        <div class="tooltip">
+                        {% comment %}<div class="tooltip">
                             {% for fieldOrder in current_order.subserviceinput.all %}
                                 {% if order.inputfield.subservice == fieldOrder.inputfield.subservice %}
                                     <p class="card-text">{{ fieldOrder.inputfield.inputfield.placeholder }}: <span
                                             class="items">{{ fieldOrder.inputinfo }}</span></p>
                                 {% endif %}
                             {% endfor %}
-                        </div>
+                        </div>{% endcomment %}
                     </div>
                 {% endfor %}
                 {% comment %}
