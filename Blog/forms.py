@@ -7,8 +7,8 @@ class PostForm(forms.ModelForm):
     # feature_image = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control'}))
     comment_option = forms.ChoiceField(choices=models.COMMENT_OPTIONS,
                                        widget=forms.Select(attrs={'class': 'form-select'}))
-    post_url = forms.CharField(widget=forms.TextInput(
-        attrs={'pattern': 'a-zA-Z0-9-_'}))
+    # post_url = forms.CharField(widget=forms.TextInput(
+    #     attrs={'pattern': '([a-zA-Z0-9]|[-]|[_])'}))
 
     class Meta:
         model = models.Post
