@@ -527,6 +527,26 @@ def category_detailView(request, name1, name2):
     return render(request, 'blog/category.html', context)
 
 
+def category_detailFilterView(request, name1, name2, name3):
+    posts = models.Post.objects.filter(category__category__iexact=str(name1).replace('_', ' '),
+                                       sub_categories__sub_category__iexact=str(name2).replace('_', ' '),
+                                       filter_option__filter_name__iexact=str(name3).replace('_', ' '))
+    filter_options = models.FilterOption.objects.filter(
+        sub_category__category__category__iexact=str(name1).replace('_', ' '),
+        sub_category__sub_category__iexact=str(name2).replace('_', ' '))
+    subcategories = models.BlogSubCategory.objects.filter(category__category__iexact=str(name1).replace('_', ' '))
+
+    context = {
+        'posts': posts.order_by('-date'),
+        'path': name1,
+        'path2': name2,
+        'important_posts': posts.order_by('-total_view')[:4],
+        'subcategories': subcategories,
+        'filter_options': filter_options,
+    }
+    return render(request, 'blog/category.html', context)
+
+
 def filter_post_keywordView(request, type, keyword):
     data = {}
     # posts = Post.objects.filter(category=type).filter(Q(title__icontains=keyword) | Q(short_description__icontains=keyword))

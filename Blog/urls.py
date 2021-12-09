@@ -9,6 +9,7 @@ urlpatterns = [
     path('category/', views.categoryView, name='category'),
     path('category/<name>/', views.categoryView, name='category'),
     path('category/<str:name1>/<str:name2>/', views.category_detailView, name='category_detail'),
+    path('category/<str:name1>/<str:name2>/<str:name3>/', views.category_detailFilterView, name='category_detail_filter'),
     path('articles/', views.postView, name='articles'),
     path('articles/<slug:name>/', views.postView, name='articles'),
     path('case_studies/', views.postView, name='case_studies'),
