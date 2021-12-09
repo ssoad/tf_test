@@ -131,7 +131,8 @@ def adminBlogEditFormView(request, id):
             if i == "filterOption":
                 filterOption = request.POST.get('filterOption')
 
-        form = forms.PostForm(request.POST, request.FILES, instance=current_post)
+        form = forms.PostForm(request.POST, request.FILES,
+                              instance=current_post)
         if form.is_valid():
             # Get Form Data
             # New System
@@ -388,7 +389,8 @@ def indexView(request):
     categories = models.BlogCategory.objects.all()
     subcategories = models.BlogSubCategory.objects.all()
     if request.user.is_authenticated:
-        reading_lists = models.ReadingList.objects.filter(user=request.user).values_list('post', flat=True)
+        reading_lists = models.ReadingList.objects.filter(
+            user=request.user).values_list('post', flat=True)
     else:
         reading_lists = []
     # print(articles)
@@ -407,9 +409,11 @@ def indexView(request):
 def postView(request, name):
     posts = models.Post.objects.all()
     post = models.Post.objects.get(post_url=name)
-    comments = models.Comment.objects.filter(post=post).order_by('-comment_date')
+    comments = models.Comment.objects.filter(
+        post=post).order_by('-comment_date')
     try:
-        reading_lists = models.ReadingList.objects.filter(user=request.user).values_list('post', flat=True)
+        reading_lists = models.ReadingList.objects.filter(
+            user=request.user).values_list('post', flat=True)
         total = post.total_view
         category = str(request.path).split('/')[-3]
         post.total_view = total + 1
@@ -467,9 +471,11 @@ def podcastView(request, name):
 @login_required
 def addToReadingListView(request, id):
     current_post = models.Post.objects.get(id=id)
-    is_saved = models.ReadingList.objects.filter(user=request.user, post=current_post)
+    is_saved = models.ReadingList.objects.filter(
+        user=request.user, post=current_post)
     if not is_saved:
-        models.ReadingList.objects.get_or_create(user=request.user, post=current_post)
+        models.ReadingList.objects.get_or_create(
+            user=request.user, post=current_post)
     else:
         is_saved.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
@@ -483,12 +489,14 @@ def categoryView(request, name):
     subcategories = models.BlogSubCategory.objects.filter(
         category__category__iexact=str(name).replace('_', ' ')).order_by('sub_category')
     try:
-        reading_lists = models.ReadingList.objects.filter(user=request.user).values_list('post', flat=True)
+        reading_lists = models.ReadingList.objects.filter(
+            user=request.user).values_list('post', flat=True)
 
         # print(str(name).replace('_', ' ').title())
         context = {
             'posts': posts.order_by('-date'),
             'path': name,
+            'pathname': name,
             'cat_path': cat_path,
             'important_posts': posts.order_by('-total_view')[:5],
             'subcategories': subcategories,
@@ -500,6 +508,7 @@ def categoryView(request, name):
         context = {
             'posts': posts.order_by('-date'),
             'path': name,
+            'pathname': name,
             'cat_path': cat_path,
             'important_posts': posts.order_by('-total_view')[:5],
             'subcategories': subcategories,
@@ -514,12 +523,14 @@ def category_detailView(request, name1, name2):
     filter_options = models.FilterOption.objects.filter(
         sub_category__category__category__iexact=str(name1).replace('_', ' '),
         sub_category__sub_category__iexact=str(name2).replace('_', ' '))
-    subcategories = models.BlogSubCategory.objects.filter(category__category__iexact=str(name1).replace('_', ' '))
+    subcategories = models.BlogSubCategory.objects.filter(
+        category__category__iexact=str(name1).replace('_', ' '))
 
     context = {
         'posts': posts.order_by('-date'),
         'path': name1,
         'path2': name2,
+        'pathname': name2,
         'important_posts': posts.order_by('-total_view')[:4],
         'subcategories': subcategories,
         'filter_options': filter_options,
@@ -529,17 +540,20 @@ def category_detailView(request, name1, name2):
 
 def category_detailFilterView(request, name1, name2, name3):
     posts = models.Post.objects.filter(category__category__iexact=str(name1).replace('_', ' '),
-                                       sub_categories__sub_category__iexact=str(name2).replace('_', ' '),
+                                       sub_categories__sub_category__iexact=str(
+                                           name2).replace('_', ' '),
                                        filter_option__filter_name__iexact=str(name3).replace('_', ' '))
     filter_options = models.FilterOption.objects.filter(
         sub_category__category__category__iexact=str(name1).replace('_', ' '),
         sub_category__sub_category__iexact=str(name2).replace('_', ' '))
-    subcategories = models.BlogSubCategory.objects.filter(category__category__iexact=str(name1).replace('_', ' '))
+    subcategories = models.BlogSubCategory.objects.filter(
+        category__category__iexact=str(name1).replace('_', ' '))
 
     context = {
         'posts': posts.order_by('-date'),
         'path': name1,
         'path2': name2,
+        'pathname': name3,
         'important_posts': posts.order_by('-total_view')[:4],
         'subcategories': subcategories,
         'filter_options': filter_options,

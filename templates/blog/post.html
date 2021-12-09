@@ -130,6 +130,18 @@
     position: relative;
     left: -20px
 }
+.slick-next {
+    right: 0 !important;
+}
+.slick-prev {
+    left: 0 !important;
+}
+.related-post img{
+    max-height: 150px;
+}
+.slick-slide{
+    height: 250px !important;
+}
 </style>
 <!-- for social share icons  -->
 
@@ -278,10 +290,10 @@
                             <img src="{{post.feature_image.url}}" class="card-img-top" alt="...">
                             <div class="card-body pt-2 p-0">
                                 <a href="{% host_url category host 'blog' %}{{post.post_url}}">
-                                    <h6 class="fw-bold fs-7">{{post.title}}</h6>
+                                    <h6 class="fw-bold fs-7">{{post.title|truncatechars:30}}</h6>
                                 </a>
                                 <p class="fs-7 lh-sm">
-                                {{ post.short_description|truncatechars:140 }}
+                                {{ post.short_description|truncatechars:80 }}
                             </p>
                             </div>
                         </div>
@@ -390,6 +402,7 @@
                     console.log(error)
                 });
 
+
                 document.getElementById('floatingTextarea2').value='';
                window.scrollBy(0, 200);
         });
@@ -454,7 +467,7 @@
                 slidesToShow: 3,
                 slidesToScroll: 3,
                 centerMode: true,
-                centerPadding: '30px',
+                centerPadding: '10px',
                 dots: true,
                 speed: 300,
                 responsive: [
