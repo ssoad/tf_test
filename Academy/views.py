@@ -1,9 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect, reverse
 from Academy import models
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from Academy.models import Course, Section, Content
-
 
 
 # Create your views here.
@@ -122,6 +121,7 @@ def download_file(request, path=''):
         return response
     except:
         return HttpResponse('File not found on the server.')
+
 
 # bcs academy user panel
 @login_required
