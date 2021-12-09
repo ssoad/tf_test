@@ -53,6 +53,10 @@
                         </a>
                         <ul class="dropdown-menu border-0 shadow end-0" style="left: -50px" aria-labelledby="navbarDropdown">
                             <li>
+                                <a class="dropdown-item ps-3" href="{% host_url 'pcs_user_dashboard' host 'mysecurity' %}">
+                                    <i class="icofont-ui-user me-2"></i> Dashboard</a>
+                            </li>
+                            <li>
                                 <a class="dropdown-item ps-3" href="{% host_url 'user_profile' %}">
                                     <i class="icofont-ui-user me-2"></i> My Profile</a>
                             </li>
@@ -112,15 +116,17 @@
         <div class="footer-down">
             <div class="d-flex flex-wrap justify-content-center justify-content-md-around">
                 <div>
-                    <a href="{% url 'account_login' %}" target="_blank" class="copyright-btn">
                     {% if user.is_authenticated %}
-                        Logout
+                        <a href="{% host_url 'logout' %}" target="_blank" class="copyright-btn">
+                            Logout <i class="bi bi-arrow-right"></i>
+                        </a>
                     {% else %}
-                        Create an account or login
+                    <a href="{% url 'account_login' %}" target="_blank" class="copyright-btn">
+                        Create an account or login <i class="bi bi-arrow-right"></i>
+                    </a>
                     {% endif %}
                    
-                    <i class="bi bi-arrow-right"></i>
-                    </a>
+                   
                 </div>
                 <div>
                     <p class="mt-5 mt-md-0 footer-text">Copyright &copy; 2021 Techforing Ltd.
