@@ -147,7 +147,7 @@
                                 <h6><span class="fw-bold">Issue Time:</span> {{ current_order.order_date|time }}
                                 </h6>
                                 <h6><span
-                                        class="fw-bold">Payment Method:</span> {{ current_order.payment_method|capitalize }}
+                                        class="fw-bold">Payment Method:</span> {{ current_order.orderprice_order.payment_method|capitalize }}
                                 </h6>
                             </div>
                         </div>
@@ -176,7 +176,7 @@
                             {% endfor %}
                             </tbody>
                         </table>
-                        <h6 class="text-end">Total: ${{ current_order.price }}</h6>
+                        <h6 class="text-end">Total: {{ current_order.orderprice_order.price }} {{ current_order.orderprice_order.currency|upper }}</h6>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn bg-navy" data-bs-dismiss="modal">Close</button>

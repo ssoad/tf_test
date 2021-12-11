@@ -41,6 +41,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         max_length=100, verbose_name='Email', unique=True, blank=False)
     full_name = models.CharField(verbose_name='Full Name', max_length=100)
     phone_number = PhoneNumberField(verbose_name="Phone Number")
+    address_one = models.CharField(max_length=255, blank=True)
+    address_two = models.CharField(max_length=255, blank=True)
+    city = models.CharField(max_length=255, blank=True)
+    zipcode = models.IntegerField(null=True, blank=True)
     country = models.CharField(
         verbose_name="Country", max_length=50, blank=True)
     profile_pic = models.ImageField(
@@ -87,6 +91,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.full_name
+
+    def address(self):
+        return f'{self.address_one} {self.address_two}, {self.city}, {self.zipcode}, {self.country}'
 
 
 admin_choices = (

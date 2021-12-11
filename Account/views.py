@@ -66,25 +66,50 @@ def profileView(request):
     def userFunc():
         form = forms.InterestForm(instance=interests)
         if not current_user.phone_number \
+                or not current_user.address_one \
+                or not current_user.city \
+                or not current_user.zipcode \
                 or not current_user.country \
                 or not current_user.birth_date \
                 or not current_user.gender:
 
-            form = forms.CountryPhoneForm(instance=current_user)
-            message = 'Fill your information below.'
-            success = 'Please provide these information:'
-            if request.POST:
-                form = forms.CountryPhoneForm(request.POST, instance=current_user)
-                if form.is_valid():
-                    form.save()
-                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
-            context = {
-                'form': form,
-                'message': message,
-                'success': success,
-                'title': 'Basic Info',
-            }
-            return render(request, 'account/profile-info-add.html', context)
+            if not current_user.phone_number \
+                    or not current_user.country \
+                    or not current_user.birth_date \
+                    or not current_user.gender:
+                form = forms.CountryPhoneForm(instance=current_user)
+                message = 'Fill your information below.'
+                success = 'Please provide these information:'
+                if request.POST:
+                    form = forms.CountryPhoneForm(request.POST, instance=current_user)
+                    if form.is_valid():
+                        form.save()
+                        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                context = {
+                    'form': form,
+                    'message': message,
+                    'success': success,
+                    'title': 'Basic Info',
+                }
+                return render(request, 'account/profile-info-add.html', context)
+            elif not current_user.address_one \
+                    or not current_user.city \
+                    or not current_user.zipcode:
+                form = forms.AddressForm(instance=current_user)
+                message = 'Fill your information below.'
+                success = 'Please provide these information:'
+                if request.POST:
+                    form = forms.AddressForm(request.POST, instance=current_user)
+                    if form.is_valid():
+                        form.save()
+                        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                context = {
+                    'form': form,
+                    'message': message,
+                    'success': success,
+                    'title': 'Basic Info',
+                }
+                return render(request, 'account/profile-info-add.html', context)
         else:
             if request.method == 'POST':
                 form = forms.InterestForm(request.POST, instance=interests)

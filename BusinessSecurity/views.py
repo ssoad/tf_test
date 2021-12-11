@@ -615,8 +615,9 @@ def userSubscriptionsView(request):
         if request.user.business_user.privilege == 'general_staff':
             return HttpResponse("You don't have permission to view this page")
         else:
+            services = models.Service.objects.filter(is_subscription_based=True)
             context = {
-
+                'services': services,
             }
             return render(request, 'user_panel/bcs/subscriptions.html', context)
 
@@ -874,7 +875,8 @@ def mainAdminOrdersDetailView(request, id):
         except:
             form1 = forms.OrderAssignForm()
 
-        form2 = forms.OrderPriceForm(instance=current_order)
+        current_price = models.OrderPrice.objects.get(order=current_order)
+        form2 = forms.OrderPriceForm(instance=current_price)
         if request.method == 'POST':
             if 'assign-btn' in request.POST:
                 try:
@@ -889,9 +891,10 @@ def mainAdminOrdersDetailView(request, id):
                     current_order.save()
                     return HttpResponseRedirect(request.META['HTTP_REFERER'])
             elif 'price-btn' in request.POST:
-                form2 = forms.OrderPriceForm(request.POST, instance=current_order)
+                form2 = forms.OrderPriceForm(request.POST, instance=current_price)
                 if form2.is_valid():
                     current_order.order_status = 'on_progress'
+                    current_order.save()
                     new_staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
                     form2.save()
                     return HttpResponseRedirect(request.META['HTTP_REFERER'])
@@ -1182,6 +1185,8 @@ def bcsAdminServiceCategoryEditView(request, id):
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminServiceView(request):
     form = forms.AddServiceForm()
+    sales_persons = models.User.objects.filter(Q(is_staff=True, is_sales=True) | Q(is_superuser=True) |
+                                                Q(is_staff=True, is_sales_head=True))
     services = models.Service.objects.filter(category_choice='bcs')
     if request.method == 'POST':
         form = forms.AddServiceForm(request.POST, request.FILES)
@@ -1192,6 +1197,7 @@ def bcsAdminServiceView(request):
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     context = {
         'form': form,
+        'sales_persons': sales_persons,
         'services': services,
     }
     return render(request, 'admin_panel/bcsTF/service.html', context)
@@ -1747,11 +1753,13 @@ def bcsAdminNewOrdersView(request):
 def bcsAdminOrdersDetailView(request, id):
     if request.user.is_superuser or request.user.is_bcs_head:
         current_order = models.Order.objects.get(id=id)
-        form = forms.OrderPriceForm(instance=current_order)
+        current_price = models.OrderPrice.objects.get(order=current_order)
+        form = forms.OrderPriceForm(instance=current_price)
         if request.method == 'POST':
-            form = forms.OrderPriceForm(request.POST, instance=current_order)
+            form = forms.OrderPriceForm(request.POST, instance=current_price)
             if form.is_valid():
                 current_order.order_status = 'on_progress'
+                current_order.save()
                 # new_staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
                 form.save()
                 return HttpResponseRedirect(request.META['HTTP_REFERER'])

@@ -19,6 +19,7 @@ admin.site.register(models.SelectChoiceRelation)
 admin.site.register(models.SubServiceInput)
 admin.site.register(models.UserSubserviceInput)
 admin.site.register(models.Order)
+admin.site.register(models.OrderPrice)
 admin.site.register(models.OrderStaff)
 
 admin.site.register(models.SubscriptionBasedPackage)

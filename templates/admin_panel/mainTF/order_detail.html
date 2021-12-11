@@ -11,20 +11,19 @@
             z-index: unset;
         }
 
-        .card-body{
+        .card-body {
             max-height: 220px;
             overflow-y: scroll;
         }
-        .card-body::-webkit-scrollbar
-        {
+
+        .card-body::-webkit-scrollbar {
             width: 5px;
             background-color: gray;
         }
 
-        .card-body::-webkit-scrollbar-thumb
-        {
+        .card-body::-webkit-scrollbar-thumb {
             border-radius: 10px;
-            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
             background-color: #182f59;
         }
     </style>
@@ -76,19 +75,24 @@
                                 data-bs-target="#invoiceModal-{{ current_order.id }}">View Invoice
                         </button>
                     </div>
-                    <div class="col-md-6">
-                        <h3>Company: {{ current_order.user.business_user.business.company_name }}</h3>
-                        <p>Company Type: <span
-                                class="text-bold">{{ current_order.user.business_user.business.industry_type|capitalize }}</span>
-                        </p>
-                        <p>Website: <a href="{{ current_order.user.business_user.business.website }}" target="_blank"
-                                       class="text-bold">{{ current_order.user.business_user.business.website }}</a></p>
-                        <p>Number of Employees: <span
-                                class="text-bold">{{ current_order.user.business_user.business.business_size }}</span>
-                        </p>
-                        <p>User Position: <span class="text-bold">{{ current_order.user.business_user.position }}</span>
-                        </p>
-                    </div>
+                    {% if current_order.category_choice == 'bcs' %}
+                        <div class="col-md-6">
+                            <h3>Company: {{ current_order.user.business_user.business.company_name }}</h3>
+                            <p>Company Type: <span
+                                    class="text-bold">{{ current_order.user.business_user.business.industry_type|capitalize }}</span>
+                            </p>
+                            <p>Website: <a href="{{ current_order.user.business_user.business.website }}"
+                                           target="_blank"
+                                           class="text-bold">{{ current_order.user.business_user.business.website }}</a>
+                            </p>
+                            <p>Number of Employees: <span
+                                    class="text-bold">{{ current_order.user.business_user.business.business_size }}</span>
+                            </p>
+                            <p>User Position: <span
+                                    class="text-bold">{{ current_order.user.business_user.position }}</span>
+                            </p>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -162,8 +166,15 @@
                         <div class="mt-5 d-flex justify-content-between">
                             <div class="user-info">
                                 <h6>To</h6>
-                                <h6>{{ current_order.user.business_user.business.company_name }}</h6>
-                                <h6>Tel.: {{ current_order.user.business_user.business.phone_number }}</h6>
+                                {% if current_order.category_choice == 'bcs' %}
+                                    <h6>{{ current_order.user.business_user.business.company_name }}</h6>
+                                    <h6>Tel.: {{ current_order.user.business_user.business.phone_number }}</h6>
+                                {% elif current_order.category_choice == 'pcs' %}
+                                    <h6>{{ current_order.user.full_name }}</h6>
+                                    <h6>Tel.: {{ current_order.user.phone_number }}</h6>
+                                {% endif %}
+
+
                             </div>
                             <div class="invoice-info">
                                 <h6>Invoice #{{ current_order.id }}</h6>
@@ -172,7 +183,7 @@
                                 <h6><span class="fw-bold">Issue Time:</span> {{ current_order.order_date|time }}
                                 </h6>
                                 <h6><span
-                                        class="fw-bold">Payment Method:</span> {{ current_order.payment_method|capitalize }}
+                                        class="fw-bold">Payment Method:</span> {{ current_order.orderprice_order.payment_method|capitalize }}
                                 </h6>
                             </div>
                         </div>
@@ -201,7 +212,8 @@
                             {% endfor %}
                             </tbody>
                         </table>
-                        <h6 class="text-end">Total: ${{ current_order.price }}</h6>
+                        <h6 class="text-end">
+                            Total: {{ current_order.orderprice_order.price }} {{ current_order.orderprice_order.currency|upper }}</h6>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn bg-navy" data-bs-dismiss="modal">Close</button>

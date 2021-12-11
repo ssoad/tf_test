@@ -1,6 +1,6 @@
 {% extends 'base/user_info_base.html' %} {% load static %}
 {% load crispy_forms_tags %}
-{% block title %} {{title}} {% endblock title %}
+{% block title %} {{ title }} {% endblock title %}
 {% block headercss %}
     <style>
         label {
@@ -42,9 +42,10 @@
             border-radius: 4px 0 0 4px;
         }
 
-        #div_id_country {
-            display: none;
-        }
+        {##div_id_country {#}
+        {#    display: none;#}
+        {
+        #}#}
 
         input, select, .select2-selection, .select2 {
             height: 40px !important
@@ -59,12 +60,14 @@
             width: 50%;
             margin: 0 auto
         }
+
         @media (max-width: 500px) {
             form > div {
                 width: 90%;
                 margin: 0 auto
             }
         }
+
         form > div div {
             margin-bottom: 5px
         }
@@ -100,17 +103,24 @@
     </div>
 {% endblock content %} {% block customjs %}
     <script>
-        let selected;
-        let country = document.getElementById('id_country');
-        $(document).ready(function () {
-            $('.countryselectwidget').select2();
-            $('.phoneprefixselect').select2();
 
-            $('.phoneprefixselect').on('select2:select', function (e) {
-                selected = e.params.data.text;
-                country.value = selected.slice(0, selected.indexOf('+')).trim();
+        window.onload = function () {
+            let selected;
+            let country = document.getElementById('id_country');
+            $(document).ready(function () {
+                $('.countryselectwidget').select2();
+                $('.phoneprefixselect').select2();
+
+                $('.phoneprefixselect').on('select2:select', function (e) {
+                    selected = e.params.data.text;
+                    country.value = selected.slice(0, selected.indexOf('+')).trim();
+                });
             });
-        });
+
+            if (country.style.display === 'none') {
+                country.parentNode.parentNode.style.display = 'none'
+            }
+        }
 
     </script>
 {% endblock customjs %}

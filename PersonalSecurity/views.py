@@ -889,11 +889,13 @@ def pcsAdminNewOrdersView(request):
 def pcsAdminOrdersDetailView(request, id):
     if request.user.is_superuser or request.user.is_pcs_head:
         current_order = models.Order.objects.get(id=id)
-        form = forms.OrderPriceForm(instance=current_order)
+        current_price = models.OrderPrice.objects.get(order=current_order)
+        form = forms.OrderPriceForm(instance=current_price)
         if request.method == 'POST':
-            form = forms.OrderPriceForm(request.POST, instance=current_order)
+            form = forms.OrderPriceForm(request.POST, instance=current_price)
             if form.is_valid():
                 current_order.order_status = 'on_progress'
+                current_order.save()
                 # new_staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
                 form.save()
                 return HttpResponseRedirect(request.META['HTTP_REFERER'])

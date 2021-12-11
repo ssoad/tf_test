@@ -46,7 +46,6 @@
 
 
             </div>
-{% comment %}
             <h5 class="mt-5 services-type">Program For Your Employees</h5>
             <!-- more services -->
             <div class="row mx-0 g-3 more-services">
@@ -54,7 +53,7 @@
                     <div class="mt-4 bg-lightgreen px-2 py-3 rounded shadow-md">
                         <h6 class="mb-3 fw-bold text-uppercase">Personal Cybersecurity for Your Employees</h6>
                         <div class="d-flex">
-                            <img class="service-icon" src="{% static '' %}tfimg/user_panel/services/user.png" alt="">
+                            <img class="service-icon" src="{% static 'tfimg/user_panel/services/user.png' %}" alt="">
                             <div class="ps-2">
                                 <h6 class="fw-bold">Concierge Cybersecurity</h6>
                                 <p class="lh-1 fs-6">Our personal cybersecurity services will protect your employee and
@@ -71,7 +70,7 @@
                     <div class="mt-4 bg-lightgreen px-2 py-3 rounded shadow-md">
                         <h6 class="mb-3 fw-bold text-uppercase">Training Program for Your Employees</h6>
                         <div class="d-flex">
-                            <img class="service-icon" src="{% static '' %}tfimg/user_panel/services/online-course.png"
+                            <img class="service-icon" src="{% static 'tfimg/user_panel/services/online-course.png' %}"
                                  alt="">
                             <div class="ps-2">
                                 <h6 class="fw-bold">Leading Ethical Hacking Course</h6>
@@ -87,7 +86,7 @@
                         </div>
                     </div>
                 </div>
-            </div>{% endcomment %}
+            </div>
         </div>
 
 
@@ -105,45 +104,8 @@
                             training program
                         </h4>
 
-                        <form class="mt-4" action="/employee_training_program/" method="POST">
+                        <form class="mt-4" method="POST">
                             {% csrf_token %}
-                            <div id="employee-number-btn">
-                                <select disabled class="form-select bg-white" aria-label="Default select example">
-                                    <option selected>No. of Employees in your
-                                        organization?
-                                    </option>
-                                </select>
-                            </div>
-                            <div id="employee-number-input" class="d-none w-100 p-2 mt-1 shadow border border-navy">
-                                <div class="form-check">
-                                    <input required class="form-check-input" type="radio" name="exampleRadios"
-                                           id="exampleRadios1" value="">
-                                    <label class="form-check-label" for="exampleRadios1">
-                                        1 - 25
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="exampleRadios"
-                                           id="exampleRadios2" value="">
-                                    <label class="form-check-label" for="exampleRadios2">
-                                        26 - 50
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="exampleRadios"
-                                           id="exampleRadios3" value="">
-                                    <label class="form-check-label" for="exampleRadios3">
-                                        51 - 100
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="exampleRadios"
-                                           id="exampleRadios4" value="">
-                                    <label class="form-check-label" for="exampleRadios4">
-                                        Above 100
-                                    </label>
-                                </div>
-                            </div>
 
                             <div id="train-employee-btn">
                                 <select disabled class="mt-4 form-select bg-white" aria-label="Default select example">
