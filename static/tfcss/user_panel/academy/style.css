@@ -42,6 +42,28 @@ header.sticky-top {
     left: 100px
 }
 
+.navbar-toggler:focus {
+    box-shadow: none !important
+}
+
+.sidebar-toggler {
+    position: absolute;
+    top: 30px;
+    left: -15px;
+}
+
+.offcanvas-start {
+    width: 300px;
+}
+
+.offcanvas-body {
+    overflow-x: hidden;
+}
+
+.offcanvas-body .menubar {
+    width: 300px;
+}
+
 .menubar {
     list-style-type: none;
     padding: 10px;
@@ -774,21 +796,22 @@ header.sticky-top {
 
 footer {
     /* width: 95%; */
-    margin-left: auto
+    margin-left: auto;
 }
 
 footer a {
     text-decoration: none;
-    color: white;
+    color: rgb(0, 0, 0);
 }
 
 footer {
-    background-color: #182f59;
+    background-color: #ffffff;
     padding: 1px 0px 0px 0px;
-    color: white;
+    color: rgb(0, 0, 0);
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
+    box-shadow: 1px 1px 5px 1px grey;
 }
 
 footer a i {

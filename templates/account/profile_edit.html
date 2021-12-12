@@ -160,7 +160,7 @@
         let profileInputs = document.querySelectorAll('.profile-info input');
 
 
-        document.getElementById("imageUpload").addEventListener("change", function (e) {
+        document.getElementById("imageUpload")?.addEventListener("change", function (e) {
             if ((this.files[0].type).slice(0, 5) != "image") {
                 document.getElementById("image_form").reset();
                 alert('Invalid Image File!');

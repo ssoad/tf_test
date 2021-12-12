@@ -29,6 +29,28 @@
                 border-left: 4px solid rgb(130, 190, 40);
             }
             
+            .navbar-toggler:focus {
+                box-shadow: none !important
+            }
+            
+            .sidebar-toggler {
+                position: absolute;
+                top: 40px;
+                left: -15px;
+            }
+            
+            .offcanvas-start {
+                width: 300px;
+            }
+            
+            .offcanvas-body {
+                overflow-x: hidden;
+            }
+            
+            .offcanvas-body .menubar {
+                width: 300px;
+            }
+            
             .menubar {
                 list-style-type: none;
                 padding: 10px 2px;

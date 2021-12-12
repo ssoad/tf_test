@@ -8970,6 +8970,9 @@ svg text {
         background-color: rgb(24, 47, 89, 0.8);
         padding: 170px 0px;
     }
+    .login-alt-btn a {
+        padding: 10px;
+    }
 }
 
 .email-confirm {
