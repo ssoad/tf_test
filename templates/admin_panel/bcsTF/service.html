@@ -44,8 +44,8 @@
                                 <form action="" enctype="multipart/form-data" class="needs-validation" method="POST">
                                     {{ form.media }}
 
-                                    <label for="sales" class="fw-bold">Assign To*</label>
-                                    <select required name="" id="sales" class="form-select js-example-basic-multiple" multiple>
+                                    <label for="sales" class="fw-bold">Assign To</label>
+                                    <select name="" id="sales" class="form-select js-example-basic-multiple" multiple>
                                         {% for sales_person in sales_persons %}
                                             <option value="{{ sales_person.id }}">{{ sales_person.email }}</option>
                                         {% endfor %}

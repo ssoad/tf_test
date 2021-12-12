@@ -1185,15 +1185,24 @@ def bcsAdminServiceCategoryEditView(request, id):
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminServiceView(request):
     form = forms.AddServiceForm()
-    sales_persons = models.User.objects.filter(Q(is_staff=True, is_sales=True) | Q(is_superuser=True) |
-                                                Q(is_staff=True, is_sales_head=True))
+    sales_persons = models.User.objects.filter(Q(is_staff=True, is_sales=True))
     services = models.Service.objects.filter(category_choice='bcs')
+
     if request.method == 'POST':
         form = forms.AddServiceForm(request.POST, request.FILES)
         if form.is_valid():
             service = form.save(commit=False)
             service.category_choice = 'bcs'
             service.save()
+            for sale_id in request.POST.getlist('sales'):
+                current_sales = models.User.objects.get(id=sale_id)
+                current_assigned = models.ServiceAssigned.objects.get_or_create(user=current_sales)
+                current_assigned[0].service.add(service)
+                current_assigned[0].save()
+                tracking = models.Tracking.objects.get_or_create(service=service)
+                person = tracking[0].persons
+                tracking[0].persons = f'{person},{sale_id}'
+                tracking[0].save()
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     context = {
         'form': form,
