@@ -14,7 +14,9 @@
     --shrinked-sidebar-width: 76px;
     --sidebar-width: 20%;
 }
-
+.select2-selection button {
+    margin-block: initial;
+}
 body {
     margin: 0;
     padding: 0;

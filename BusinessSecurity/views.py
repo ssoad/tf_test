@@ -1039,6 +1039,14 @@ def mainAdminSupportView(request):
 
 
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def mainAdminProfileView(request, id):
+    current_user = models.User.objects.get(business_user__id=id)
+    context = {
+        'current_user': current_user,
+    }
+    return render(request, 'admin_panel/mainTF/profile.html', context)
+
+@user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminSupportDeleteView(request, id):
     current_user = User.objects.get(id=id)
     if current_user.is_superuser:

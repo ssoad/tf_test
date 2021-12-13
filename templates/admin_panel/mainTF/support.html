@@ -4,7 +4,7 @@
 {% block title %} My Profile
 {% endblock title %} {% block headercss %}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/mainTF/support.css"/>
+    <link rel="stylesheet" href="{% static 'tfcss/admin_panel/mainTF/support.css' %}"/>
     <style>
         .select2-container {
             width: 100% !important;
@@ -176,7 +176,8 @@
                     {% for admin in admin_list %}
                         <tr class="data-row">
                             <td>
-                                <a href="" class="staff-link">{{ admin.full_name }}</a>
+                                <a href="{% host_url 'main_admin_user' %}{{ admin.id }}" target="_blank"
+                                   class="staff-link">{{ admin.full_name }}</a>
                             </td>
                             {% if admin.is_sales %}
                                 <td>Sales</td>
@@ -220,9 +221,8 @@
                                 {% endfor %}
                             </select>
                             <label for="user" style="font-weight: 700; margin-top: 1rem;">Permission*</label>
-                            <select required name="user_permission" id="userType"
-                                    class="form-control form-select">
-                                <option selected disabled>------------</option>
+                            <select multiple required name="user_permission"
+                                    class="form-control form-select admin_type">
                                 <option value="sales">Sales</option>
                                 <option value="blogger">Blogger</option>
                                 <option value="bcs_head">BCS Head</option>
@@ -245,26 +245,60 @@
             $('.js-example-basic-single').select2({
                 dropdownParent: $("#exampleModal")
             })
+            $('.admin_type').select2({
+                dropdownParent: $("#exampleModal")
+            })
 
         });
 
     </script>
-    <script src="{% static '' %}tfjs/admin_panel/mainTF/eventWebinar.js"></script>
+    <script src="{% static 'tfjs/admin_panel/mainTF/eventWebinar.js' %}"></script>
     <!-- <script src="https://cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script> -->
     <script>
         let services = `{{ form|crispy }}`;
 
-        document.getElementById('userType').addEventListener('change', e => {
-            if (e.target.value == 'sales') {
-                e.target.insertAdjacentHTML('afterend', '<div class="servicesList">' + services + '</div>')
-                $('.js-example-basic-multiple').select2({
-                    dropdownParent: $("#exampleModal")
-                })
-            } else {
-                if (document.querySelector('.servicesList'))
+        $('.admin_type').on('select2:select', function (e) {
+            let data = e.params.data;
+            if (data.text !== 'Sales') {
+                $('.admin_type option[value="sales"]').prop('disabled', true);
+
+                  if (document.querySelector('.servicesList'))
                     document.querySelector('.servicesList').outerHTML = '';
             }
-        })
+            else {
+                 $(this).val(null).trigger('change');
+                 $(this).val('sales').trigger('change');
+                  $('.admin_type  option[value!="sales"]').prop('disabled', true);
+
+                if (!document.querySelector('.servicesList'))
+                document.querySelector('#employeeAddForm button[type="submit"]').insertAdjacentHTML('beforebegin', '<div class="servicesList">' + services + '</div>');
+            }
+
+        });
+
+        $('.admin_type').on('change', function (e) {
+
+            if($(this).find('option:selected').length === 0) {
+                $('.admin_type  option').prop('disabled', false);
+                  if (document.querySelector('.servicesList'))
+                    document.querySelector('.servicesList').outerHTML = '';
+            }
+
+
+        });
+
+        {#document.querySelector('.admin_type').addEventListener('change', e => {#}
+        {#    console.log(e)#}
+        {#    if (e.target.value == 'sales') {#}
+        {#        e.target.insertAdjacentHTML('afterend', '<div class="servicesList">' + services + '</div>')#}
+        {#        $('.js-example-basic-multiple').select2({#}
+        {#            dropdownParent: $("#exampleModal")#}
+        {#        })#}
+        {#    } else {#}
+        {#        if (document.querySelector('.servicesList'))#}
+        {#            document.querySelector('.servicesList').outerHTML = '';#}
+        {#    }#}
+        {#})#}
     </script>
 {% endblock customjs %}
