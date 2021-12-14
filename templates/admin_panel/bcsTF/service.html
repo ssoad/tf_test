@@ -12,9 +12,9 @@
     <!-- custom css -->
     <link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/service.css' %}"/>
     <style>
-    .select2-container{
-        width: 100% !important;
-    }
+        .select2-container {
+            width: 100% !important;
+        }
     </style>
 {% endblock headercss %}
 {% block content %}
@@ -43,13 +43,15 @@
                             <div class="modal-body px-3">
                                 <form action="" enctype="multipart/form-data" class="needs-validation" method="POST">
                                     {{ form.media }}
-
-                                    <label for="sales" class="fw-bold">Assign To</label>
-                                    <select name="" id="sales" class="form-select js-example-basic-multiple" multiple>
-                                        {% for sales_person in sales_persons %}
-                                            <option value="{{ sales_person.id }}">{{ sales_person.email }}</option>
-                                        {% endfor %}
-                                    </select>
+                                    <div id="div_sales">
+                                        <label for="sales" class="fw-bold">Assign To</label>
+                                        <select name="" id="sales" class="form-select js-example-basic-multiple"
+                                                multiple>
+                                            {% for sales_person in sales_persons %}
+                                                <option value="{{ sales_person.id }}">{{ sales_person.email }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
 
                                     {{ form|crispy }}
 

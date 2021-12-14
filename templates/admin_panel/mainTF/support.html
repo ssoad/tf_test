@@ -245,10 +245,10 @@
             $('.js-example-basic-single').select2({
                 dropdownParent: $("#exampleModal")
             })
+
             $('.admin_type').select2({
                 dropdownParent: $("#exampleModal")
             })
-
         });
 
     </script>
@@ -260,45 +260,50 @@
 
         $('.admin_type').on('select2:select', function (e) {
             let data = e.params.data;
+
+            ($(this).select2('data')).forEach(item=>{
+                if(item.id == 'sales') {
+                    document.querySelectorAll('.select2-selection__rendered li').forEach(li => {
+                        if(li.title!='Sales')
+                            li.outerHTML='';
+                    })
+                }
+            })
             if (data.text !== 'Sales') {
                 $('.admin_type option[value="sales"]').prop('disabled', true);
 
-                  if (document.querySelector('.servicesList'))
+                if (document.querySelector('.servicesList'))
                     document.querySelector('.servicesList').outerHTML = '';
-            }
-            else {
-                 $(this).val(null).trigger('change');
-                 $(this).val('sales').trigger('change');
-                  $('.admin_type  option[value!="sales"]').prop('disabled', true);
+            } else {
+                $(this).val(null).trigger('change');
+                $(this).val('sales').trigger('change');
+                $('.admin_type  option[value!="sales"]').prop('disabled', true);
 
-                if (!document.querySelector('.servicesList'))
-                document.querySelector('#employeeAddForm button[type="submit"]').insertAdjacentHTML('beforebegin', '<div class="servicesList">' + services + '</div>');
+
+
+                if (!document.querySelector('.servicesList')) {
+                    document.querySelector('#employeeAddForm button[type="submit"]').insertAdjacentHTML('beforebegin', '<div class="servicesList">' + services + '</div>');
+                    $('.js-example-basic-multiple').select2({
+                        dropdownParent: $("#exampleModal")
+                    })
+                }
+
             }
 
         });
 
         $('.admin_type').on('change', function (e) {
 
-            if($(this).find('option:selected').length === 0) {
+            if ($(this).find('option:selected').length === 0) {
                 $('.admin_type  option').prop('disabled', false);
-                  if (document.querySelector('.servicesList'))
+                if (document.querySelector('.servicesList'))
                     document.querySelector('.servicesList').outerHTML = '';
             }
 
 
+
         });
 
-        {#document.querySelector('.admin_type').addEventListener('change', e => {#}
-        {#    console.log(e)#}
-        {#    if (e.target.value == 'sales') {#}
-        {#        e.target.insertAdjacentHTML('afterend', '<div class="servicesList">' + services + '</div>')#}
-        {#        $('.js-example-basic-multiple').select2({#}
-        {#            dropdownParent: $("#exampleModal")#}
-        {#        })#}
-        {#    } else {#}
-        {#        if (document.querySelector('.servicesList'))#}
-        {#            document.querySelector('.servicesList').outerHTML = '';#}
-        {#    }#}
-        {#})#}
+
     </script>
 {% endblock customjs %}
