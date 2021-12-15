@@ -1,398 +1,287 @@
-{% extends 'base/main_admin_base.html' %} {% load static %} {% block title %} Dashboard
+{% extends 'base/main_admin_base.html' %} {% load static %} {% load my_filter %} {% block title %} Dashboard
 {% endblock title %} {% block headercss %}
-<link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/mainTF/dashboard.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/mainTF/dashboard.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 
 {% endblock headercss %} {% block content %}
-<main>
-    <section class="user-stat">
-        <div class="container">
-            <div class="row">
-                <!-- user bubble 1 -->
-                <!-- busineess user bubble starts -->
-                <div class="col-lg-4">
-                    <div class="business-users user-stat-bubble">
-                        <div class="info-user-stat-bubble">
-                            <i class="bi bi-person"></i>
-                            <h4>Total business user</h4>
-                            <p>{{ total_business_user.count }}</p>
-                        </div>
-                    </div>
-                    <div class="accordion accordion-flush business-users-detail card" id="accordionFlushExample">
-                        <div class="accordion-item">
-                            <div class="modal-header">
-                                <button type="button" class="business-btn-close btn-close" aria-label="Close"></button>
+    <main>
+        <section class="user-stat">
+            <div class="container">
+                <div class="row">
+                    <!-- user bubble 1 -->
+                    <!-- busineess user bubble starts -->
+                    <div class="col-lg-4">
+                        <div class="business-users user-stat-bubble">
+                            <div class="info-user-stat-bubble">
+                                <i class="bi bi-person"></i>
+                                <h4>Total business user</h4>
+                                <p>{{ total_business_user.count }}</p>
                             </div>
-                            <h2 class="accordion-header" id="flush-headingOne">
-                                <button class="accordion-button collapsed " type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#flush-collapseOne" aria-expanded="false"
-                                    aria-controls="flush-collapseOne">
-                                    Business Cybersecurity users
-                                </button>
-                            </h2>
-                            <div id="flush-collapseOne" class="accordion-collapse collapse"
-                                aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                                <div class="accordion-body">
-                                    <!-- business Category starts -->
-                                    <div class="accordion accordion-flush" id="businessAccordion">
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header" id="flush-businessOne">
-                                                <button
-                                                    class="accordion-button collapsed d-flex justify-content-between"
-                                                    type="button" data-bs-toggle="collapse"
-                                                    data-bs-target="#businessCategoryOne" aria-expanded="false"
-                                                    aria-controls="businessCategoryOne">
-                                                    <span class="text-capitalize">Risk Assessment users</span> <span
-                                                        class="text-success"> 500</span>
-                                                </button>
-                                            </h2>
-                                            <div id="businessCategoryOne" class="accordion-collapse collapse"
-                                                aria-labelledby="flush-businessOne" data-bs-parent="#businessAccordion">
-                                                <div class="accordion-body">
-                                                    </p>
-                                                    <p class="d-flex justify-content-between"><span>Vulnerability
-                                                            Assessment Users</span> <span class="text-success">
-                                                            200</span>
-                                                    </p>
-                                                    <p class="d-flex justify-content-between"><span>Penatration
-                                                            Users</span>
-                                                        <span class="text-success"> 200</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header" id="flush-businessTwo">
-                                                <button
-                                                    class="accordion-button collapsed d-flex justify-content-between text-capitalize"
-                                                    type="button" data-bs-toggle="collapse"
-                                                    data-bs-target="#businessCategoryTwo" aria-expanded="false"
-                                                    aria-controls="businessCategoryTwo">
-                                                    <span class="text-capitalize">Incident Response Users</span> <span
-                                                        class="text-success"> 500</span>
-                                                </button>
-                                            </h2>
-                                            <div id="businessCategoryTwo" class="accordion-collapse collapse"
-                                                aria-labelledby="flush-businessTwo" data-bs-parent="#businessAccordion">
-                                                <div class="accordion-body">
-                                                    <!-- Subcategory Starts -->
-                                                    <div class="accordion accordion-flush"
-                                                        id="accordionBusinessSubCategory">
-                                                        <div class="accordion-item">
-                                                            <h2 class="accordion-header"
-                                                                id="flush-BusinessSubCategoryOne">
-                                                                <button
-                                                                    class="accordion-button collapsed d-flex justify-content-between"
-                                                                    type="button" data-bs-toggle="collapse"
-                                                                    data-bs-target="#BusinessSubCategoryOne"
-                                                                    aria-expanded="false"
-                                                                    aria-controls="BusinessSubCategoryOne">
-                                                                    <span class="text-capitalize">Hack Recovery
-                                                                        Users</span>
-                                                                    <span class="text-success"> 500</span>
-                                                                </button>
-                                                            </h2>
-                                                            <div id="BusinessSubCategoryOne"
-                                                                class="accordion-collapse collapse"
-                                                                aria-labelledby="flush-headingOne"
-                                                                data-bs-parent="#accordionBusinessSubCategory">
-                                                                <div class="accordion-body">
-                                                                    <p
-                                                                        class="d-flex justify-content-between text-capitalize">
-                                                                        <span>Social Media Hack recovery users</span>
-                                                                        <span class="text-success"> 200</span> </p>
-                                                                    <p class="d-flex justify-content-between">
-                                                                        <span>Email hack recovery users</span> <span
-                                                                            class="text-success"> 200</span> </p>
-                                                                    <p class="d-flex justify-content-between">
-                                                                        <span>Device hack recovery users</span> <span
-                                                                            class="text-success"> 200</span> </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="accordion-item">
-                                                            <h2 class="accordion-header"
-                                                                id="flush-BusinessSubCategoryTwo">
-                                                                <!-- data-bs-toggle="collapse" data-bs-target="#BusinessSubCategoryTwo" aria-expanded="false" aria-controls="BusinessSubCategoryTwo" -->
-                                                                <button
-                                                                    class="accordion-button collapsed d-flex justify-content-between"
-                                                                    type="button">
-                                                                    <span class="text-capitalize">Malware Removal
-                                                                        User</span>
-                                                                    <span class="text-success"> 500</span>
-                                                                </button>
-
-                                                            </h2>
-                                                        </div>
-                                                        <div class="accordion-item">
-                                                            <h2 class="accordion-header"
-                                                                id="flush-BusinessSubCategoryThree">
-                                                                <!-- data-bs-toggle="collapse" data-bs-target="#BusinessSubCategoryThree" aria-expanded="false" aria-controls="BusinessSubCategoryThree" -->
-                                                                <button
-                                                                    class="accordion-button collapsed d-flex justify-content-between"
-                                                                    type="button">
-                                                                    <span class="text-capitalize">Crime & Digital
-                                                                        Forensic
-                                                                        Investigation User</span>
-                                                                    <span class="text-success"> 500</span>
-                                                                </button>
-                                                            </h2>
+                        </div>
+                        <div class="accordion accordion-flush business-users-detail card" id="accordionFlushExample">
+                            <div class="accordion-item">
+                                <div class="modal-header">
+                                    <button type="button" class="business-btn-close btn-close"
+                                            aria-label="Close"></button>
+                                </div>
+                                <h2 class="accordion-header" id="flush-headingOne">
+                                    <button class="accordion-button collapsed " type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#flush-collapseOne" aria-expanded="false"
+                                            aria-controls="flush-collapseOne">
+                                        Business Cybersecurity users
+                                    </button>
+                                </h2>
+                                <div id="flush-collapseOne" class="accordion-collapse collapse"
+                                     aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                    <div class="accordion-body">
+                                        <!-- business Category starts -->
+                                        <div class="accordion accordion-flush" id="businessAccordion">
+                                            {% for service_category in service_categories_bcs %}
+                                                <div class="accordion-item">
+                                                    <h2 class="accordion-header" id="flush-businessOne">
+                                                        <button
+                                                                class="accordion-button collapsed d-flex justify-content-between"
+                                                                type="button" data-bs-toggle="collapse"
+                                                                data-bs-target="#bcs_{{ service_category|replacespace }}"
+                                                                aria-expanded="false"
+                                                                aria-controls="bcs_{{ service_category|replacespace }}">
+                                                            <span class="text-capitalize">{{ service_category }}</span>
+                                                            <span
+                                                                    class="text-success"> <i
+                                                                    class="bi bi-arrow-down-circle"></i></span>
+                                                        </button>
+                                                    </h2>
+                                                    <div id="bcs_{{ service_category|replacespace }}"
+                                                         class="accordion-collapse collapse"
+                                                         aria-labelledby="flush-businessOne"
+                                                         data-bs-parent="#businessAccordion">
+                                                        <div class="accordion-body">
+                                                            {% for serv_cat in service_category.service_category.all %}
+                                                                <p class="d-flex justify-content-between">
+                                                                    <span>{{ serv_cat.service_title }}</span>
+                                                                    <span class="text-success">{{ serv_cat.order_service.count }}</span>
+                                                                </p>
+                                                            {% endfor %}
                                                         </div>
                                                     </div>
-                                                    <!-- Subcategory ends -->
                                                 </div>
-                                            </div>
+                                            {% endfor %}
                                         </div>
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header" id="flush-businessTwo">
-                                                <button
-                                                    class="accordion-button collapsed d-flex justify-content-between text-capitalize"
-                                                    type="button" data-bs-toggle="collapse" data-bs-target=""
-                                                    aria-expanded="false" aria-controls="businessCategoryTwo">
-                                                    <span class="text-capitalize">Security Compliance users</span> <span
-                                                        class="text-success"> 500</span>
-                                                </button>
-                                            </h2>
-                                        </div>
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header" id="flush-businessTwo">
-                                                <button
-                                                    class="accordion-button collapsed d-flex justify-content-between text-capitalize"
-                                                    type="button" data-bs-toggle="collapse" data-bs-target=""
-                                                    aria-expanded="false" aria-controls="businessCategoryTwo">
-                                                    <span class="text-capitalize">SMB Solution users</span> <span
-                                                        class="text-success"> 500</span>
-                                                </button>
-                                            </h2>
-                                        </div>
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header" id="flush-businessTwo">
-                                                <button
-                                                    class="accordion-button collapsed d-flex justify-content-between text-capitalize"
-                                                    type="button" data-bs-toggle="collapse" data-bs-target=""
-                                                    aria-expanded="false" aria-controls="businessCategoryTwo">
-                                                    <span class="text-capitalize">Educational institute users</span>
-                                                    <span class="text-success"> 500</span>
-                                                </button>
-                                            </h2>
+                                        <!-- business Category ends -->
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- busineess user bubble ends -->
+                    </div>
+                    <div class="col-lg-4">
+                        <!-- individual User stat starts -->
+                        <div class="individual-users user-stat-bubble">
+                            <div class="info-user-stat-bubble">
+                                <i class="bi bi-person"></i>
+                                <h4>Total individual users</h4>
+                                <p>{{ total_user.count }}</p>
+                            </div>
+                        </div>
+                        <!-- individual user detail starts.  -->
+                        <div class="individual-users-detail card ">
+                            <div class="modal-header">
+                                <button type="button" class="individual-btn-close btn-close"
+                                        aria-label="Close"></button>
+                            </div>
+                            {% for service_category in service_categories_pcs %}
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-businessOne">
+                                        <button
+                                                class="accordion-button collapsed d-flex justify-content-between"
+                                                type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#pcs_{{ service_category|replacespace }}"
+                                                aria-expanded="false"
+                                                aria-controls="pcs_{{ service_category|replacespace }}">
+                                            <span class="text-capitalize">{{ service_category }}</span>
+                                            <span
+                                                    class="text-success"> <i
+                                                    class="bi bi-arrow-down-circle"></i></span>
+                                        </button>
+                                    </h2>
+                                    <div id="pcs_{{ service_category|replacespace }}"
+                                         class="accordion-collapse collapse"
+                                         aria-labelledby="flush-businessOne"
+                                         data-bs-parent="#businessAccordion">
+                                        <div class="accordion-body">
+                                            {% for serv_cat in service_category.service_category.all %}
+                                                <p class="d-flex justify-content-between">
+                                                    <span>{{ serv_cat.service_title }}</span>
+                                                    <span class="text-success">{{ serv_cat.order_service.count }}</span>
+                                                </p>
+                                            {% endfor %}
                                         </div>
                                     </div>
-                                    <!-- business Category ends -->
                                 </div>
-                            </div>
+                            {% endfor %}
                         </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingThree">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#flush-collapseThree" aria-expanded="false"
-                                    aria-controls="flush-collapseThree">
-                                    Academy Users
-                                </button>
-                            </h2>
-                            <div id="flush-collapseThree" class="accordion-collapse collapse"
-                                aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
-                                <div class="accordion-body">
-                                    <!-- personal category starts -->
-                                    <p class="d-flex justify-content-between"><span>Law enforcement users</span> <span
-                                            class="text-success"> 200</span>
-                                    </p>
-                                    <p class="d-flex justify-content-between"><span>Corporate users</span> <span
-                                            class="text-success"> 200</span>
-                                    </p>
-                                    <p class="d-flex justify-content-between"><span>Educational institute users</span>
-                                        <span class="text-success"> 200</span>
-                                    </p>
-                                </div>
-                                <!-- personal category ends -->
-                            </div>
-                        </div>
+                        <!-- individual user detail ends.  -->
                     </div>
-                    <!-- busineess user bubble ends -->
-                </div>
-                <div class="col-lg-4">
-                    <!-- individual User stat starts -->
-                    <div class="individual-users user-stat-bubble">
-                        <div class="info-user-stat-bubble">
-                            <i class="bi bi-person"></i>
-                            <h4>Total individual users</h4>
-                            <p>{{ total_user.count }}</p>
-                        </div>
-                    </div>
-                    <!-- individual user detail starts.  -->
-                    <div class="individual-users-detail card ">
-                        <div class="modal-header">
-                            <button type="button" class="individual-btn-close btn-close" aria-label="Close"></button>
-                        </div>
-                        <table class="table">
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <li>Concierge Cybersecurity users</li>
-                                    </td>
-                                    <td class="text-success">300</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <li>Professional (CCSP) users </li>
-                                    </td>
-                                    <td class="text-success">200</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- individual user detail ends.  -->
-                </div>
-                <!-- User Stat Chart -->
-                <div class="col-lg-4">
-                    <canvas id="user-chart" style="
+                    <!-- User Stat Chart -->
+                    <div class="col-lg-4">
+                        <canvas id="user-chart" style="
                                 display: block;
                                 width: 821px;
                                 margin-top: 2rem;
                             " width="821" class="chartjs-render-monitor"></canvas>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="info">
-        <div class="container">
-            <!-- User detail Stat -->
-            <div class="row my-5">
-                <!-- select by users -->
-                <div class="col-md-4">
-                    <div class="multiselect">
-                        <div class="selectBox" onclick="showCheckboxes(checkboxes)">
-                            <select>
-                                <option>Select an option</option>
-                            </select>
-                            <div class="overSelect"></div>
-                        </div>
-                        <div id="checkboxes">
-                            <label for="one">
-                                <input type="checkbox" id="one" />By New
-                                User</label>
-                            <label for="two">
-                                <input type="checkbox" id="two" />By
-                                Revenue</label>
-                            <label for="three">
-                                <input type="checkbox" id="three" />By
-                                Order</label>
-                            <label for="three">
-                                <input type="checkbox" id="three" />By
-                                interest List</label>
-                        </div>
-                    </div>
-                </div>
-                <!-- select by program -->
-                <div class="col-md-4">
-                    <div class="multiselect">
-                        <div class="selectBox" onclick="showCheckboxes(checkboxes2)">
-                            <select>
-                                <option>Select an option</option>
-                            </select>
-                            <div class="overSelect"></div>
-                        </div>
-                        <div id="checkboxes2">
-                            <label for="one">
-                                <input type="checkbox" id="one" />Concierge
-                                Cybersecurity</label>
-                            <label for="two">
-                                <input type="checkbox" id="two" />Managed
-                                Cybersecurity</label>
-                            <label for="three">
-                                <input type="checkbox" id="three" />Plug &
-                                Play Program</label>
-                            <label for="three">
-                                <input type="checkbox" id="three" />Professional (Academy)</label>
-                        </div>
-                    </div>
-                </div>
-                <!-- date picker -->
-                <div class="col-md-4">
-                    <input type="text" id="dashboardDaterange" value="Select By Time range" name="daterange" />
-                </div>
-            </div>
-            <div class="row">
-                <!-- info chart -->
-                <div class="col-md-12">
-                    <canvas id="info-chart" height="50" class="chartjs-render-monitor"></canvas>
-                    <!-- filter buttons -->
-                    <div class="filter-options d-flex w-85 float-end justify-content-between mb-3">
-                        <button class="btn btn-secondary mx-2 rounded-pill d-small-none">1d</button>
-                        <button class="btn btn-secondary mx-2 rounded-pill d-small-none active">1w</button>
-                        <button class="btn btn-secondary mx-2 rounded-pill">1mo</button>
-                        <button class="btn btn-secondary mx-2 rounded-pill">3mo</button>
-                        <button class="btn btn-secondary mx-2 rounded-pill">6mo</button>
-                        <button class="btn btn-secondary mx-2 rounded-pill">1y</button>
-                        <button class="btn btn-secondary mx-2 rounded-pill">all</button>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <section class="overview my-5">
-        <div class="activities">
-            <div class="container-fluid">
+        </section>
+        <section class="info">
+            <div class="container">
+                <!-- User detail Stat -->
+                <div class="row my-5">
+                    <!-- select by users -->
+                    <div class="col-md-4">
+                        <div class="multiselect">
+                            <div class="selectBox" onclick="showCheckboxes(checkboxes)">
+                                <select>
+                                    <option>Select an option</option>
+                                </select>
+                                <div class="overSelect"></div>
+                            </div>
+                            <div id="checkboxes">
+                                <label for="one">
+                                    <input type="checkbox" id="one"/>By New
+                                    User</label>
+                                <label for="two">
+                                    <input type="checkbox" id="two"/>By
+                                    Revenue</label>
+                                <label for="three">
+                                    <input type="checkbox" id="three"/>By
+                                    Order</label>
+                                <label for="three">
+                                    <input type="checkbox" id="three"/>By
+                                    interest List</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- select by program -->
+                    <div class="col-md-4">
+                        <div class="multiselect">
+                            <div class="selectBox" onclick="showCheckboxes(checkboxes2)">
+                                <select>
+                                    <option>Select an option</option>
+                                </select>
+                                <div class="overSelect"></div>
+                            </div>
+                            <div id="checkboxes2">
+                                <label for="one">
+                                    <input type="checkbox" id="one"/>Concierge
+                                    Cybersecurity</label>
+                                <label for="two">
+                                    <input type="checkbox" id="two"/>Managed
+                                    Cybersecurity</label>
+                                <label for="three">
+                                    <input type="checkbox" id="three"/>Plug &
+                                    Play Program</label>
+                                <label for="three">
+                                    <input type="checkbox" id="three"/>Professional (Academy)</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- date picker -->
+                    <div class="col-md-4">
+                        <input type="text" id="dashboardDaterange" value="Select By Time range" name="daterange"/>
+                    </div>
+                </div>
                 <div class="row">
-                    <div class="col-lg-6">
-                        <h3 class="mb-3 ">Recent Activities</h3>
-                        <!-- recent activities table -->
-                        <table class="table activites-table" id="activites-table">
-                            <thead>
+                    <!-- info chart -->
+                    <div class="col-md-12">
+                        <canvas id="info-chart" height="50" class="chartjs-render-monitor"></canvas>
+                        <!-- filter buttons -->
+                        <div class="filter-options d-flex w-85 float-end justify-content-between mb-3">
+                            <button class="btn btn-secondary mx-2 rounded-pill d-small-none">1d</button>
+                            <button class="btn btn-secondary mx-2 rounded-pill d-small-none active">1w</button>
+                            <button class="btn btn-secondary mx-2 rounded-pill">1mo</button>
+                            <button class="btn btn-secondary mx-2 rounded-pill">3mo</button>
+                            <button class="btn btn-secondary mx-2 rounded-pill">6mo</button>
+                            <button class="btn btn-secondary mx-2 rounded-pill">1y</button>
+                            <button class="btn btn-secondary mx-2 rounded-pill">all</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="overview my-5">
+            <div class="activities">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h3 class="mb-3 ">Recent Activities</h3>
+                            <!-- recent activities table -->
+                            <table class="table activites-table" id="activites-table">
+                                <thead>
                                 <tr>
                                     <th>activity</th>
                                     <th>time</th>
                                 </tr>
-                            </thead>
-                            <tbody>
+                                </thead>
+                                <tbody>
                                 <tr>
                                     <th><i class="bi bi-person-plus-fill btn-success rounded-circle activites-icon"></i>
-                                        5 users hav signed up</th>
+                                        5 users hav signed up
+                                    </th>
                                     <td><i class="bi bi-clock-fill"></i> 3 minutes ago</td>
                                 </tr>
                                 <tr>
                                     <th><i
                                             class="bi bi-person-check-fill btn-primary rounded-circle activites-icon"></i>
-                                        2 users have subscribed</th>
+                                        2 users have subscribed
+                                    </th>
                                     <td><i class="bi bi-clock-fill"></i> 10 minutes ago</td>
                                 </tr>
                                 <tr>
                                     <th><i class="bi bi-person-fill btn-purple rounded-circle activites-icon"></i> 3
-                                        users have renewed their account</th>
+                                        users have renewed their account
+                                    </th>
                                     <td><i class="bi bi-clock-fill"></i> 30 minutes ago</td>
                                 </tr>
                                 <tr>
                                     <th><i class="bi bi-person-x-fill btn-danger rounded-circle activites-icon"></i> 1
-                                        user have registered CCSP webinar </th>
+                                        user have registered CCSP webinar
+                                    </th>
                                     <td><i class="bi bi-clock-fill"></i> 1 hour ago</td>
                                 </tr>
                                 <tr>
                                     <th><i class="bi bi-person-x-fill btn-danger rounded-circle activites-icon"></i> 1
-                                        user have updated their interest list</th>
+                                        user have updated their interest list
+                                    </th>
                                     <td><i class="bi bi-clock-fill"></i> 1 hour ago</td>
                                 </tr>
                                 <tr>
                                     <th><i class="bi bi-person-x-fill btn-danger rounded-circle activites-icon"></i> 1
-                                        user updated their interest list</th>
+                                        user updated their interest list
+                                    </th>
                                     <td><i class="bi bi-clock-fill"></i> 1 hour ago</td>
                                 </tr>
                                 <tr>
                                     <th><i class="bi bi-person-x-fill btn-danger rounded-circle activites-icon"></i> 1
-                                        PCS user recently subscribed to BCS service</th>
+                                        PCS user recently subscribed to BCS service
+                                    </th>
                                     <td><i class="bi bi-clock-fill"></i> 1 hour ago</td>
                                 </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-lg-6">
-                        <h3 class="mb-3">My Users</h3>
-                        <!-- user table -->
-                        <table class="table users-table" id="users-table" style="max-height: 10px;">
-                            <thead>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-lg-6">
+                            <h3 class="mb-3">My Users</h3>
+                            <!-- user table -->
+                            <table class="table users-table" id="users-table" style="max-height: 10px;">
+                                <thead>
                                 <th>title</th>
                                 <th>title</th>
                                 <th>title</th>
                                 <th>title</th>
-                            </thead>
-                            <tbody>
+                                </thead>
+                                <tbody>
                                 <tr>
                                     <th>Personal cybersecurity</th>
                                     <td><i class="bi bi-person-circle btn-primary rounded-circle activites-icon"></i>
@@ -495,41 +384,41 @@
                                         </button>
                                     </td>
                                 </tr>
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modal 1 -->
+        <div class="modal fade" id="businessModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-body">
+
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+        </div>
+        <!-- Modal 2 -->
+        <div class="modal fade" id="personalModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
 
-    <!-- Modal 1 -->
-    <div class="modal fade" id="businessModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <div class="modal-body">
-
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    </div>
-    <!-- Modal 2 -->
-    <div class="modal fade" id="personalModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-
-                </div>
-            </div>
-        </div>
-    </div>
-</main>
+    </main>
 {% endblock content %} {% block customjs %}
-<script src="{% static '' %}tfjs/admin_panel/mainTF/chart.js"></script>
-<script src="{% static '' %}tfjs/admin_panel/mainTF/dashboard.js"></script>
+    <script src="{% static '' %}tfjs/admin_panel/mainTF/chart.js"></script>
+    <script src="{% static '' %}tfjs/admin_panel/mainTF/dashboard.js"></script>
 {% endblock customjs %}

@@ -410,7 +410,12 @@ def UserFiles(request, id):
 #    pcs admin views
 
 def pcsAdminDashboard(request):
-    return render(request, 'admin_panel/pcsTF/dashboard.html')
+    service_categories = models.ServiceCategory.objects.filter(category_choice='pcs')
+
+    context = {
+        'service_categories': service_categories
+    }
+    return render(request, 'admin_panel/pcsTF/dashboard.html', context)
 
 
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')

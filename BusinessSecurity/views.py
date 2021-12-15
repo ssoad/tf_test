@@ -825,9 +825,13 @@ def ticketDetailView(request, id):
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminDashboardView(request):
     total_user = models.User.objects.all()
+    service_categories_bcs = models.ServiceCategory.objects.filter(category_choice='bcs')
+    service_categories_pcs = models.ServiceCategory.objects.filter(category_choice='pcs')
     context = {
         'total_user': total_user,
         'total_business_user': total_user.filter(is_bcs=True),
+        'service_categories_bcs': service_categories_bcs,
+        'service_categories_pcs': service_categories_pcs,
     }
     return render(request, 'admin_panel/mainTF/dashboard.html', context)
 
@@ -1144,8 +1148,10 @@ def ticketOpenCloseView(request, id):
 # BCS Admin Section
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminDashboardView(request):
-    context = {
+    service_categories = models.ServiceCategory.objects.filter(category_choice='bcs')
 
+    context = {
+        'service_categories': service_categories
     }
     return render(request, 'admin_panel/bcsTF/dashboard.html', context)
 
