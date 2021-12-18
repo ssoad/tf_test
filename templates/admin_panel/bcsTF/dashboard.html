@@ -84,14 +84,10 @@
                                name="daterange"/>
                         <canvas id="info-chart" class="mt-5"></canvas>
                         <!-- filter buttons -->
-                        <div class="filter-options d-flex w-85 float-end justify-content-between mb-3">
-                            <button class="btn btn-secondary mx-2 rounded-pill d-small-none">1d</button>
-                            <button class="btn btn-secondary mx-2 rounded-pill d-small-none active">1w</button>
-                            <button class="btn btn-secondary mx-2 rounded-pill">1mo</button>
-                            <button class="btn btn-secondary mx-2 rounded-pill">3mo</button>
-                            <button class="btn btn-secondary mx-2 rounded-pill">6mo</button>
-                            <button class="btn btn-secondary mx-2 rounded-pill">1y</button>
-                            <button class="btn btn-secondary mx-2 rounded-pill">all</button>
+                        <div class="filter-options d-flex w-100 float-end justify-content-between mb-3">
+                            <button class="btn btn-secondary mx-2 rounded-pill px-3" onclick="getChartData('month')">Month</button>
+                            <button class="btn btn-secondary mx-2 rounded-pill px-3" onclick="getChartData('year')">Year</button>
+                            <button class="btn btn-secondary mx-2 rounded-pill px-3" onclick="getChartData('all')">All</button>
                         </div>
                     </div>
                 </div>
@@ -287,8 +283,8 @@
 {% endblock content %}
 {% block customjs %}
     <!-- custom scripts -->
-    <script src="{% static '' %}tfjs/admin_panel/bcsTF//chart.js"></script>
-    <script src="{% static '' %}tfjs/admin_panel/bcsTF/dashboard.js"></script>
-    <script src="{% static '' %}tfjs/admin_panel/bcsTF/nav.js"></script>
+    <script src="{% static 'tfjs/admin_panel/bcsTF/chart.js' %}"></script>
+    <script src="{% static 'tfjs/admin_panel/bcsTF/dashboard.js' %}"></script>
+    <script src="{% static 'tfjs/admin_panel/bcsTF/nav.js' %}"></script>
 
 {% endblock customjs %}

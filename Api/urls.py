@@ -20,4 +20,17 @@ urlpatterns = [
     path('bcs/choice_field/<id>/', views.ChoiceApiView.as_view(), name='choice_field'),
     path('bcs/user_order/<id>/', views.UserSubServiceOrderApiView.as_view(), name='user_order'),
     path('bcs/team_permission/<id>/', views.TeamPermissionApiView.as_view(), name='team_permission'),
+
+    path('bcs/bcs_admin_all_chart/', views.BCSAdminDashboardAllChartApiView.as_view(), name='bcs_admin_all_chart'),
+    path('bcs/bcs_admin_year_chart/', views.BCSAdminDashboardYearChartApiView.as_view(), name='bcs_admin_year_chart'),
+    path('bcs/bcs_admin_month_chart/', views.BCSAdminDashboardMonthChartApiView.as_view(), name='bcs_admin_month_chart'),
+    path('bcs/bcs_admin_date_range_chart/<date>/', views.BCSAdminDashboardDateRangeChartApiView.as_view(), name='bcs_admin_date_range_chart'),
+
+    path('pcs/pcs_admin_all_chart/', views.PCSAdminDashboardAllChartApiView.as_view(), name='pcs_admin_all_chart'),
+    path('pcs/pcs_admin_year_chart/', views.PCSAdminDashboardYearChartApiView.as_view(), name='pcs_admin_year_chart'),
+    path('pcs/pcs_admin_month_chart/', views.PCSAdminDashboardMonthChartApiView.as_view(), name='pcs_admin_month_chart'),
+
+    path('main/main_admin_all_chart/', views.MainAdminDashboardAllChartApiView.as_view(), name='main_admin_all_chart'),
+    path('main/main_admin_year_chart/', views.MainAdminDashboardYearChartApiView.as_view(), name='main_admin_year_chart'),
+    path('main/main_admin_month_chart/', views.MainAdminDashboardMonthChartApiView.as_view(), name='main_admin_month_chart'),
 ]

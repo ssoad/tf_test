@@ -138,7 +138,7 @@
             <div class="container">
                 <!-- User detail Stat -->
                 <div class="row my-5">
-                    <!-- select by users -->
+                    {% comment %}<!-- select by users -->
                     <div class="col-md-4">
                         <div class="multiselect">
                             <div class="selectBox" onclick="showCheckboxes(checkboxes)">
@@ -186,8 +186,9 @@
                                     <input type="checkbox" id="three"/>Professional (Academy)</label>
                             </div>
                         </div>
-                    </div>
+                    </div>{% endcomment %}
                     <!-- date picker -->
+                    <div class="col-md-8"></div>
                     <div class="col-md-4">
                         <input type="text" id="dashboardDaterange" value="Select By Time range" name="daterange"/>
                     </div>
@@ -197,19 +198,16 @@
                     <div class="col-md-12">
                         <canvas id="info-chart" height="50" class="chartjs-render-monitor"></canvas>
                         <!-- filter buttons -->
-                        <div class="filter-options d-flex w-85 float-end justify-content-between mb-3">
-                            <button class="btn btn-secondary mx-2 rounded-pill d-small-none">1d</button>
-                            <button class="btn btn-secondary mx-2 rounded-pill d-small-none active">1w</button>
-                            <button class="btn btn-secondary mx-2 rounded-pill">1mo</button>
-                            <button class="btn btn-secondary mx-2 rounded-pill">3mo</button>
-                            <button class="btn btn-secondary mx-2 rounded-pill">6mo</button>
-                            <button class="btn btn-secondary mx-2 rounded-pill">1y</button>
-                            <button class="btn btn-secondary mx-2 rounded-pill">all</button>
+                        <div class="filter-options d-flex w-100 float-end justify-content-between mb-3">
+                            <button class="btn btn-secondary mx-2 rounded-pill px-3" onclick="getChartData('month')">Month</button>
+                            <button class="btn btn-secondary mx-2 rounded-pill px-3" onclick="getChartData('year')">Year</button>
+                            <button class="btn btn-secondary mx-2 rounded-pill px-3" onclick="getChartData('all')">All</button>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+    {% comment %}
         <section class="overview my-5">
             <div class="activities">
                 <div class="container-fluid">
@@ -417,8 +415,9 @@
                 </div>
             </div>
         </div>
+    {% endcomment %}
     </main>
 {% endblock content %} {% block customjs %}
-    <script src="{% static '' %}tfjs/admin_panel/mainTF/chart.js"></script>
-    <script src="{% static '' %}tfjs/admin_panel/mainTF/dashboard.js"></script>
+    <script src="{% static 'tfjs/admin_panel/mainTF/chart.js' %}"></script>
+    <script src="{% static 'tfjs/admin_panel/mainTF/dashboard.js' %}"></script>
 {% endblock customjs %}
