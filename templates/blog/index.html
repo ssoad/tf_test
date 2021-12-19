@@ -91,13 +91,13 @@
         </div>
         <div class="col-md-6 pe-md-0">
             {% for post in case_studies %} {% if forloop.counter != 1 %}
-            <div class="row {% if forloop.counter != 2 %}mt-3{% endif %} mx-0 bg-lightnavy">
-                <div class="col-12 col-md-5 p-2 d-flex align-items-center" data-tootik="{{post.title}}" data-tootik-conf="top">
+            <div class="row {% if forloop.counter != 2 %}mt-3{% endif %} mx-0 bg-lightnavy" data-tootik="{{post.title}}" data-tootik-conf="top">
+                <div class="col-12 col-md-5 p-2 d-flex align-items-center">
                     <img src="{{post.feature_image.url}}" class="img-fluid " alt="... ">
                 </div>
                 <div class="col-12 col-md-7 py-2 ps-md-0 pe-1 d-flex align-items-center">
                     <div>
-                        <a href="{% host_url 'case_studies' host 'blog' %}{{post.post_url}}">
+                        <a href="{% host_url 'articles' host 'blog' %}{{post.post_url}}">
                             <h6 class="fw-bold">{{post.title|truncatechars:68}}</h6>
                         </a>
                         <div class="info-area">
@@ -123,7 +123,10 @@
                                 Remove
                             </a>
                             {% endif %}
-                        <p class="mt-1 mb-0 fs-7 lh-sm">{{post.short_description|truncatechars:92}}</p>
+                            
+                        </div>
+                        <p class="mt-1 mb-0 fs-7 lh-sm">{{post.short_description|truncatechars:92}}
+                        </p>
                     </div>
                 </div>
             </div>
