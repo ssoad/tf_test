@@ -40,10 +40,10 @@ const addServiceFormCloses = document.querySelectorAll(".form-close")
 const backToList = document.querySelector(".form-close-back")
 const addServiceForm = document.querySelector(".add-form")
 const tableContainer = document.querySelector(".table-container")
-const formFirstPart = document.querySelectorAll("#div_id_category,#div_id_service_icon,#div_id_service_title,#div_id_short_description, #div_id_has_sub_service, #div_id_is_subscription_based")
+const formFirstPart = document.querySelectorAll("#div_id_category,#div_id_service_icon,#div_id_service_title,#div_id_short_description, #div_id_has_sub_service, #div_id_is_subscription_based,#div_sales")
 const formSecondPart = document.querySelectorAll("#div_id_service_header, #div_id_service_body, #div_id_service_footer, .saveService")
 const serviceHeader = document.querySelector("#div_id_service_header")
-
+console.log(formFirstPart)
 // display service form
 addServiceBtn.addEventListener("click", () => {
     // hide service List

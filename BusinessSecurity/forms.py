@@ -95,9 +95,10 @@ class EventCreateForm(forms.ModelForm):
 
 class OrderPriceForm(forms.ModelForm):
     class Meta:
-        model = models.Order
-        fields = ['price', 'payment_method']
+        model = models.OrderPrice
+        fields = ['price', 'currency', 'payment_method']
         widgets = {
+            'currency': forms.Select(attrs={'class': 'form-select'}),
             'payment_method': forms.Select(attrs={'class': 'form-select'})
         }
 

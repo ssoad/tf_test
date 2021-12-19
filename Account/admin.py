@@ -13,7 +13,8 @@ class AdminUser(UserAdmin):
     fieldsets = (
         ('Login Info', {'fields': ('email', 'password')}),
         ('User Information',
-         {'fields': ('full_name', 'gender', 'profile_pic', 'birth_date', 'country', 'phone_number',)}),
+         {'fields': ('full_name', 'gender', 'profile_pic', 'birth_date', 'address_one', 'address_two', 'city', 'zipcode',
+                     'country', 'phone_number',)}),
         ('Permissions', {'fields': ('is_bcs', 'is_active', 'is_staff', 'is_superuser', 'is_sales_head', 'is_sales',
                                     'is_blogger', 'is_bcs_head', 'is_pcs_head', 'newsletter',)}),
 

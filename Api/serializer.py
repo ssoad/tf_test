@@ -114,3 +114,25 @@ class TeamPermissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = bcsmodels.UsersBusiness
         fields = ['position', 'privilege']
+
+
+class ServiceTFSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = bcsmodels.Service
+        fields = ['is_subscription_based']
+
+
+class BCSAdminDashboardChartSerializer(serializers.ModelSerializer):
+    service = ServiceTFSerializer(many=False, read_only=True)
+
+    class Meta:
+        model = bcsmodels.Order
+        fields = '__all__'
+        depth = 1
+
+    def to_representation(self, instance):
+        data = super(BCSAdminDashboardChartSerializer, self).to_representation(instance)
+        user = data.get('user')
+        user.pop('password')
+        return data
+

@@ -3,6 +3,8 @@ from tinymce.models import HTMLField
 from Account.models import User
 import uuid
 from phonenumber_field.modelfields import PhoneNumberField
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 # Create your models here.
@@ -185,8 +187,33 @@ class Order(models.Model):
     order_status = models.CharField(
         max_length=250, choices=order_status, default='new')
     order_date = models.DateTimeField(auto_now_add=True)
+    # price = models.PositiveIntegerField(default=0)
+    # payment_method = models.CharField(choices=payment_method, max_length=255)
+
+
+currency = (
+    ('euro', 'EURO'),
+    ('pound', 'POUND'),
+    ('dollar', 'DOLLAR'),
+)
+
+
+class OrderPrice(models.Model):
+    order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name='orderprice_order')
     price = models.PositiveIntegerField(default=0)
+    currency = models.CharField(choices=currency, max_length=255)
     payment_method = models.CharField(choices=payment_method, max_length=255)
+
+
+@receiver(post_save, sender=Order)
+def create_order_price(sender, instance, created, **kwargs):
+    if created:
+        OrderPrice.objects.create(order=instance)
+
+
+@receiver(post_save, sender=Order)
+def save_order_price(sender, instance, **kwargs):
+    instance.orderprice_order.save()
 
 
 #
@@ -317,7 +344,8 @@ class Business(models.Model):
     website = models.URLField(max_length=264, default='https://')
     phone_number = models.CharField(max_length=24, verbose_name='Company Phone Number')
     email = models.EmailField(max_length=264, verbose_name='Company Email')
-    road = models.CharField(max_length=255)
+    address_one = models.CharField(max_length=255)
+    address_two = models.CharField(max_length=255, blank=True)
     city = models.CharField(max_length=255)
     zipcode = models.IntegerField()
     country = models.CharField(max_length=255)
@@ -330,7 +358,7 @@ class Business(models.Model):
         return self.company_name
 
     def address(self):
-        return f'{self.road}, {self.city}, {self.zipcode}, {self.country}'
+        return f'{self.address_one} {self.address_two}, {self.city}, {self.zipcode}, {self.country}'
 
     class Meta:
         verbose_name_plural = 'Businesses'

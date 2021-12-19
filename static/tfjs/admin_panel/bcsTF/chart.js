@@ -10,7 +10,7 @@ let userLineChart = new Chart(userChart, {
             borderColor: "black",
             data: [5, 45, 41, 50, 42],
             fill: false,
-        }, ],
+        },],
     },
     options: {
         responsive: true,
@@ -49,67 +49,82 @@ let userLineChart = new Chart(userChart, {
         },
     },
 });
-let infoLineChart = new Chart(infoChart, {
-    type: "line",
-    data: {
-        labels: ["text", "text", "text", "text", "text"],
-        datasets: [{
-            label: "Subscribed client",
-            backgroundColor: "#182F59",
-            borderColor: "#182F59",
-            data: [5, 45, 41, 50, 42],
-            fill: false,
-        }, {
-            label: "non- subscribed client",
-            backgroundColor: "#5BBC2E",
-            borderColor: "#5BBC2E",
-            data: [75, 35, 45, 55, 15],
-            fill: false,
-        }, {
-            label: "total client",
-            backgroundColor: "#111125",
-            borderColor: "#111125",
-            data: [50, 5, 50, 9, 25],
-            fill: false,
-        }, ],
-    },
-    options: {
-        responsive: true,
-        legend: {
-            display: true,
-            labels: {
-                fontColor: "black",
-            },
-            position: "top",
-        },
-        title: {
-            display: false,
-            position: "top",
-            align: 'start',
-            text: "all users",
-        },
-        tooltips: {
-            mode: "index",
-            intersect: false,
-        },
-        hover: {
-            mode: "nearest",
-            intersect: true,
-        },
-        scales: {
-            xAxes: [{
-                gridLines: {
-                    display: false
-                }
-            }],
-            yAxes: [{
-                gridLines: {
-                    display: false
-                }
-            }]
-        },
-    },
-});
+let infoLineChart = new Chart(infoChart, {});
+let getChartData = type => {
+
+    fetch(`http://127.0.0.1:8000/api/bcs/bcs_admin_${type}_chart/`)
+        .then(response => {
+            return response.json()
+        })
+        .then(data => {
+            infoLineChart.destroy();
+            infoLineChart = new Chart(infoChart, {
+                type: "line",
+                data: {
+                    labels: data.x_axis,
+                    datasets: [{
+                        label: "Subscribed client",
+                        backgroundColor: "#182F59",
+                        borderColor: "#182F59",
+                        data: data.datas.for_subscription,
+                        fill: false,
+                    }, {
+                        label: "non- subscribed client",
+                        backgroundColor: "#5BBC2E",
+                        borderColor: "#5BBC2E",
+                        data: data.datas.for_unsubscription,
+                        fill: false,
+                    }, {
+                        label: "total client",
+                        backgroundColor: "#111125",
+                        borderColor: "#111125",
+                        data: data.datas.total_count,
+                        fill: false,
+                    },],
+                },
+                options: {
+                    responsive: true,
+                    legend: {
+                        display: true,
+                        labels: {
+                            fontColor: "black",
+                        },
+                        position: "top",
+                    },
+                    title: {
+                        display: false,
+                        position: "top",
+                        align: 'start',
+                        text: "all users",
+                    },
+                    tooltips: {
+                        mode: "index",
+                        intersect: false,
+                    },
+                    hover: {
+                        mode: "nearest",
+                        intersect: true,
+                    },
+                    scales: {
+                        xAxes: [{
+                            gridLines: {
+                                display: false
+                            }
+                        }],
+                        yAxes: [{
+                            gridLines: {
+                                display: false
+                            }
+                        }]
+                    },
+                },
+            });
+
+        });
+}
+
+getChartData('all');
+
 
 //if(window.innerWidth <=769){
 //    infoLineChart.options.legend.display=false;

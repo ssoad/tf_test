@@ -1,4 +1,4 @@
-{% extends 'base/pcs_user_base.html' %}{% load hosts %} {% load static %} {% load crispy_forms_tags %}
+{% extends 'base/main_admin_base.html' %}{% load hosts %} {% load static %} {% load crispy_forms_tags %}
 {% block title %} Profile {% endblock title %}
 {% block content %}
 <style>
@@ -61,9 +61,10 @@
         box-shadow: none !important;
     }
 </style>
+<main>
 <div class="profile-area">
     {% include 'base/verification_check.html' %}
-    <section class="py-5">
+    <section class="">
         <div class="container">
             <div class="main-body">
                 <div class="row gutters-sm">
@@ -71,11 +72,11 @@
                         <div class="card h-100">
                             <div class="card-body d-flex align-items-center justify-content-center">
                                 <div class="d-flex flex-column align-items-center text-center">
-                                    <img src="{{ user.profile_pic.url }}" alt="Admin" class="rounded-circle" width="150" height="150" style="object-fit: cover">
+                                    <img src="{{ current_user.profile_pic.url }}" alt="Admin" class="rounded-circle" width="150" height="150" style="object-fit: cover">
                                     <div class="mt-3">
-                                        <h4>{{ user.full_name }}</h4>
-                                        <p class="text-secondary mb-1">{{ user.email }}</p>
-                                        <p class="text-muted font-size-sm">{{ user.phone_number }}</p>
+                                        <h4>{{ current_user.full_name }}</h4>
+                                        <p class="text-secondary mb-1">{{ current_user.email }}</p>
+                                        <p class="text-muted font-size-sm">{{ current_user.phone_number }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -90,7 +91,7 @@
                                         <h6 class="mb-0">Full Name</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        {{ user.full_name }}
+                                        {{ current_user.full_name }}
                                     </div>
                                 </div>
                                 <hr>
@@ -99,7 +100,7 @@
                                         <h6 class="mb-0">Email</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        {{ user.email }}
+                                        {{ current_user.email }}
                                     </div>
                                 </div>
                                 <hr>
@@ -108,7 +109,7 @@
                                         <h6 class="mb-0">Birthdate</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        {{ user.birth_date }}
+                                        {{ current_user.birth_date }}
                                     </div>
                                 </div>
                                 <hr>
@@ -117,24 +118,20 @@
                                         <h6 class="mb-0">Gender</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        {{ user.gender }}
+                                        {{ current_user.gender }}
                                     </div>
                                 </div>
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <h6 class="mb-0">Address</h6>
+                                        <h6 class="mb-0">Registration Date</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        {{ user.address }}
+                                        {{ current_user.date_joined }}
                                     </div>
                                 </div>
                                 <hr>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <a class="btn btn-navy" href="{% host_url 'user_profile_edit' %}">Edit</a>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -146,35 +143,10 @@
     </section>
 
 </div>
+</main>
 {% endblock content %}
 {% block customjs %}
 <script>
-    document.querySelector('main>div').classList.value = ''
-    let infoValues = document.querySelectorAll('.profile-info .info-value');
-    let profileInputs = document.querySelectorAll('.profile-info input');
 
-
-
-    document.getElementById("imageUpload")?.addEventListener("change", function(e) {
-        if ((this.files[0].type).slice(0, 5) != "image") {
-            document.getElementById("image_form").reset();
-            alert('Invalid Image File!');
-        } else {
-            if (this.files && this.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    document.querySelector('#imagePreview').style.backgroundImage = 'url(' + e.target.result + ')';
-                }
-                reader.readAsDataURL(this.files[0]);
-                var fileInput = document.getElementById('imageUpload');
-                var filename = fileInput.files[0].name;
-                document.querySelector('.fa-camera').classList.add('d-none');
-            }
-        }
-    });
-
-    document.querySelectorAll('.selection-area label').forEach(label => {
-        label.classList.add('text-truncate');
-    });
 </script>
 {% endblock customjs %}

@@ -129,8 +129,22 @@ class CountryPhoneForm(forms.ModelForm):
         model = models.User
         fields = ['country', 'phone_number', 'birth_date', 'gender']
         widgets = {
-            'gender': forms.Select(attrs={'class': 'form-select'})
+            'gender': forms.Select(attrs={'class': 'form-select'}),
+            'country': forms.TextInput(attrs={'style': 'display: none'}),
         }
+
+
+class AddressForm(forms.ModelForm):
+    address_one = forms.CharField(required=True)
+    address_two = forms.CharField(required=False)
+    city = forms.CharField(required=True)
+    zipcode = forms.IntegerField(required=True)
+    country = forms.CharField(required=True)
+
+    class Meta:
+        model = models.User
+        fields = ['address_one', 'address_two', 'city', 'zipcode', 'country']
+
 
 
 # class BirthDateGenderForm(forms.ModelForm):
@@ -153,7 +167,7 @@ class CountryPhoneForm(forms.ModelForm):
 class ProfileInfoForm(forms.ModelForm):
     class Meta:
         model = models.User
-        fields = ['full_name', 'phone_number',
+        fields = ['full_name', 'phone_number', 'address_one', 'address_two', 'city', 'zipcode',
                   'country', 'birth_date', 'gender']
         widgets = {
             'birth_date': forms.DateInput(attrs={'type': 'date'}),

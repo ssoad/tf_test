@@ -8,6 +8,7 @@ from BusinessSecurity import models as bcsmodels
 from rest_framework import permissions, pagination, filters
 from datetime import date
 from django.db.models import Q
+from rest_framework.response import Response
 
 
 # Create your views here.
@@ -147,3 +148,431 @@ class TeamPermissionApiView(generics.RetrieveUpdateAPIView):
     serializer_class = serializer.TeamPermissionSerializer
     lookup_field = 'id'
     queryset = bcsmodels.UsersBusiness
+
+
+class BCSAdminDashboardAllChartApiView(generics.ListAPIView):
+    serializer_class = serializer.BCSAdminDashboardChartSerializer
+
+    # queryset = bcsmodels.Order.objects.all()
+    # def get_queryset(self):
+    #     w = bcsmodels.Order.objects.filter(service__is_subscription_based=False)
+    #     # print(w.values_list())
+    #     return bcsmodels.Order.objects.all()
+
+    def list(self, request, *args, **kwargs):
+        # ser = self.get_serializer(self.get_queryset(), many=True)
+        # responseData = ser.data
+
+        start_date = 2014
+        end_date = date.today().year
+        all_years = list(range(start_date, end_date + 1))
+
+        subscription_count = []
+        unsubscription_count = []
+        total_count = []
+
+        query = bcsmodels.Order.objects.filter(category_choice='bcs')
+
+        for year in all_years:
+            order = query.filter(order_date__year=year, service__is_subscription_based=False).count()
+            subscription_count.append(order)
+        for year in all_years:
+            order = query.filter(order_date__year=year, service__is_subscription_based=True).count()
+            unsubscription_count.append(order)
+        for year in all_years:
+            order = query.filter(order_date__year=year).count()
+            total_count.append(order)
+
+        datas = {
+            'for_subscription': subscription_count,
+            'for_unsubscription': unsubscription_count,
+            'total_count': total_count,
+        }
+
+        # responseData.append({
+        #     'x_axis': all_years,
+        #     'datas': datas
+        # })
+        return Response({
+            'x_axis': all_years,
+            'datas': datas
+        })
+
+
+class BCSAdminDashboardYearChartApiView(generics.ListAPIView):
+    serializer_class = serializer.BCSAdminDashboardChartSerializer
+
+    # queryset = bcsmodels.Order.objects.all()
+
+    # def get_queryset(self):
+    #     w = bcsmodels.Order.objects.filter(service__is_subscription_based=False)
+    #     # print(w.values_list())
+    #     return bcsmodels.Order.objects.all()
+
+    def list(self, request, *args, **kwargs):
+        # ser = self.get_serializer(self.get_queryset(), many=True)
+        # responseData = ser.data
+
+        start_date = 1
+        end_date = date.today().month
+        # print(end_date)
+        all_months = list(range(start_date, end_date + 1))
+        # print(all_months)
+
+        subscription_count = []
+        unsubscription_count = []
+        total_count = []
+
+        query = bcsmodels.Order.objects.filter(category_choice='bcs')
+
+        for month in all_months:
+            order = query.filter(order_date__month=month, service__is_subscription_based=False).count()
+            subscription_count.append(order)
+        for month in all_months:
+            order = query.filter(order_date__month=month, service__is_subscription_based=True).count()
+            unsubscription_count.append(order)
+        for month in all_months:
+            order = query.filter(order_date__month=month).count()
+            total_count.append(order)
+
+        datas = {
+            'for_subscription': subscription_count,
+            'for_unsubscription': unsubscription_count,
+            'total_count': total_count,
+        }
+
+        # responseData.append({
+        #     'x_axis': all_months,
+        #     'datas': datas
+        # })
+        return Response({
+            'x_axis': all_months,
+            'datas': datas
+        })
+
+
+class BCSAdminDashboardMonthChartApiView(generics.ListAPIView):
+    serializer_class = serializer.BCSAdminDashboardChartSerializer
+
+    # queryset = bcsmodels.Order.objects.all()
+
+    # def get_queryset(self):
+    #     w = bcsmodels.Order.objects.filter(service__is_subscription_based=False)
+    #     # print(w.values_list())
+    #     return bcsmodels.Order.objects.all()
+
+    def list(self, request, *args, **kwargs):
+        # ser = self.get_serializer(self.get_queryset(), many=True)
+        # responseData = ser.data
+
+        start_date = 1
+        end_date = date.today().day
+        # print(end_date)
+        all_dates = list(range(start_date, end_date + 1))
+        # print(all_dates)
+
+        subscription_count = []
+        unsubscription_count = []
+        total_count = []
+
+        query = bcsmodels.Order.objects.filter(category_choice='bcs')
+
+        for day in all_dates:
+            order = query.filter(order_date__day=day, service__is_subscription_based=False).count()
+            subscription_count.append(order)
+        for day in all_dates:
+            order = query.filter(order_date__day=day, service__is_subscription_based=True).count()
+            unsubscription_count.append(order)
+        for day in all_dates:
+            order = query.filter(order_date__day=day).count()
+            total_count.append(order)
+
+        datas = {
+            'for_subscription': subscription_count,
+            'for_unsubscription': unsubscription_count,
+            'total_count': total_count,
+        }
+
+        # responseData.append({
+        #     'x_axis': all_months,
+        #     'datas': datas
+        # })
+        return Response({
+            'x_axis': all_dates,
+            'datas': datas
+        })
+
+
+class BCSAdminDashboardDateRangeChartApiView(generics.ListAPIView):
+    serializer_class = serializer.BCSAdminDashboardChartSerializer
+
+    # queryset = bcsmodels.Order.objects.all()
+
+    # def get_queryset(self):
+    #     w = bcsmodels.Order.objects.filter(service__is_subscription_based=False)
+    #     # print(w.values_list())
+    #     return bcsmodels.Order.objects.all()
+
+    def list(self, request, *args, **kwargs):
+        # ser = self.get_serializer(self.get_queryset(), many=True)
+        # responseData = ser.data
+        print(self.kwargs)
+
+        start_date = 1
+        end_date = date.today().day
+        # print(end_date)
+        all_dates = list(range(start_date, end_date + 1))
+        # print(all_dates)
+
+        subscription_count = []
+        unsubscription_count = []
+        total_count = []
+
+        query = bcsmodels.Order.objects.filter(category_choice='bcs')
+
+        for day in all_dates:
+            order = query.filter(order_date__day=day, service__is_subscription_based=False).count()
+            subscription_count.append(order)
+        for day in all_dates:
+            order = query.filter(order_date__day=day, service__is_subscription_based=True).count()
+            unsubscription_count.append(order)
+        for day in all_dates:
+            order = query.filter(order_date__day=day).count()
+            total_count.append(order)
+
+        datas = {
+            'for_subscription': subscription_count,
+            'for_unsubscription': unsubscription_count,
+            'total_count': total_count,
+        }
+
+        # responseData.append({
+        #     'x_axis': all_months,
+        #     'datas': datas
+        # })
+        return Response({
+            'x_axis': all_dates,
+            'datas': datas
+        })
+
+
+class PCSAdminDashboardAllChartApiView(generics.ListAPIView):
+    serializer_class = serializer.BCSAdminDashboardChartSerializer
+
+    def list(self, request, *args, **kwargs):
+        start_date = 2014
+        end_date = date.today().year
+        all_years = list(range(start_date, end_date + 1))
+
+        subscription_count = []
+        unsubscription_count = []
+        total_count = []
+
+        query = bcsmodels.Order.objects.filter(category_choice='pcs')
+
+        for year in all_years:
+            order = query.filter(order_date__year=year, service__is_subscription_based=False).count()
+            subscription_count.append(order)
+        for year in all_years:
+            order = query.filter(order_date__year=year, service__is_subscription_based=True).count()
+            unsubscription_count.append(order)
+        for year in all_years:
+            order = query.filter(order_date__year=year).count()
+            total_count.append(order)
+
+        datas = {
+            'for_subscription': subscription_count,
+            'for_unsubscription': unsubscription_count,
+            'total_count': total_count,
+        }
+
+        return Response({
+            'x_axis': all_years,
+            'datas': datas
+        })
+
+
+class PCSAdminDashboardYearChartApiView(generics.ListAPIView):
+    serializer_class = serializer.BCSAdminDashboardChartSerializer
+
+    def list(self, request, *args, **kwargs):
+
+        start_date = 1
+        end_date = date.today().month
+        all_months = list(range(start_date, end_date + 1))
+
+        subscription_count = []
+        unsubscription_count = []
+        total_count = []
+
+        query = bcsmodels.Order.objects.filter(category_choice='pcs')
+
+        for month in all_months:
+            order = query.filter(order_date__month=month, service__is_subscription_based=False).count()
+            subscription_count.append(order)
+        for month in all_months:
+            order = query.filter(order_date__month=month, service__is_subscription_based=True).count()
+            unsubscription_count.append(order)
+        for month in all_months:
+            order = query.filter(order_date__month=month).count()
+            total_count.append(order)
+
+        datas = {
+            'for_subscription': subscription_count,
+            'for_unsubscription': unsubscription_count,
+            'total_count': total_count,
+        }
+
+        return Response({
+            'x_axis': all_months,
+            'datas': datas
+        })
+
+
+class PCSAdminDashboardMonthChartApiView(generics.ListAPIView):
+    serializer_class = serializer.BCSAdminDashboardChartSerializer
+
+    def list(self, request, *args, **kwargs):
+
+        start_date = 1
+        end_date = date.today().day
+
+        all_dates = list(range(start_date, end_date + 1))
+
+        subscription_count = []
+        unsubscription_count = []
+        total_count = []
+
+        query = bcsmodels.Order.objects.filter(category_choice='pcs')
+
+        for day in all_dates:
+            order = query.filter(order_date__day=day, service__is_subscription_based=False).count()
+            subscription_count.append(order)
+        for day in all_dates:
+            order = query.filter(order_date__day=day, service__is_subscription_based=True).count()
+            unsubscription_count.append(order)
+        for day in all_dates:
+            order = query.filter(order_date__day=day).count()
+            total_count.append(order)
+
+        datas = {
+            'for_subscription': subscription_count,
+            'for_unsubscription': unsubscription_count,
+            'total_count': total_count,
+        }
+
+        return Response({
+            'x_axis': all_dates,
+            'datas': datas
+        })
+
+
+class MainAdminDashboardAllChartApiView(generics.ListAPIView):
+    serializer_class = serializer.BCSAdminDashboardChartSerializer
+
+    def list(self, request, *args, **kwargs):
+        start_date = 2014
+        end_date = date.today().year
+        all_years = list(range(start_date, end_date + 1))
+
+        subscription_count = []
+        unsubscription_count = []
+        total_count = []
+
+        query = bcsmodels.Order.objects.all()
+
+        for year in all_years:
+            order = query.filter(order_date__year=year, service__is_subscription_based=False).count()
+            subscription_count.append(order)
+        for year in all_years:
+            order = query.filter(order_date__year=year, service__is_subscription_based=True).count()
+            unsubscription_count.append(order)
+        for year in all_years:
+            order = query.filter(order_date__year=year).count()
+            total_count.append(order)
+
+        datas = {
+            'for_subscription': subscription_count,
+            'for_unsubscription': unsubscription_count,
+            'total_count': total_count,
+        }
+
+        return Response({
+            'x_axis': all_years,
+            'datas': datas
+        })
+
+
+class MainAdminDashboardYearChartApiView(generics.ListAPIView):
+    serializer_class = serializer.BCSAdminDashboardChartSerializer
+
+    def list(self, request, *args, **kwargs):
+
+        start_date = 1
+        end_date = date.today().month
+        all_months = list(range(start_date, end_date + 1))
+
+        subscription_count = []
+        unsubscription_count = []
+        total_count = []
+
+        query = bcsmodels.Order.objects.all()
+
+        for month in all_months:
+            order = query.filter(order_date__month=month, service__is_subscription_based=False).count()
+            subscription_count.append(order)
+        for month in all_months:
+            order = query.filter(order_date__month=month, service__is_subscription_based=True).count()
+            unsubscription_count.append(order)
+        for month in all_months:
+            order = query.filter(order_date__month=month).count()
+            total_count.append(order)
+
+        datas = {
+            'for_subscription': subscription_count,
+            'for_unsubscription': unsubscription_count,
+            'total_count': total_count,
+        }
+
+        return Response({
+            'x_axis': all_months,
+            'datas': datas
+        })
+
+
+class MainAdminDashboardMonthChartApiView(generics.ListAPIView):
+    serializer_class = serializer.BCSAdminDashboardChartSerializer
+
+    def list(self, request, *args, **kwargs):
+
+        start_date = 1
+        end_date = date.today().day
+
+        all_dates = list(range(start_date, end_date + 1))
+
+        subscription_count = []
+        unsubscription_count = []
+        total_count = []
+
+        query = bcsmodels.Order.objects.all()
+
+        for day in all_dates:
+            order = query.filter(order_date__day=day, service__is_subscription_based=False).count()
+            subscription_count.append(order)
+        for day in all_dates:
+            order = query.filter(order_date__day=day, service__is_subscription_based=True).count()
+            unsubscription_count.append(order)
+        for day in all_dates:
+            order = query.filter(order_date__day=day).count()
+            total_count.append(order)
+
+        datas = {
+            'for_subscription': subscription_count,
+            'for_unsubscription': unsubscription_count,
+            'total_count': total_count,
+        }
+
+        return Response({
+            'x_axis': all_dates,
+            'datas': datas
+        })

@@ -211,7 +211,8 @@ def userServicesView(request):
         print(data_list)
         print(file_list)
 
-        current_service = get_object_or_404(models.Service, service_title=data_list['service_name'], category_choice='pcs')
+        current_service = get_object_or_404(models.Service, service_title=data_list['service_name'],
+                                            category_choice='pcs')
 
         for data in data_list:
             if data != 'csrfmiddlewaretoken' and data != 'service_name':
@@ -409,7 +410,12 @@ def UserFiles(request, id):
 #    pcs admin views
 
 def pcsAdminDashboard(request):
-    return render(request, 'admin_panel/pcsTF/dashboard.html')
+    service_categories = models.ServiceCategory.objects.filter(category_choice='pcs')
+
+    context = {
+        'service_categories': service_categories
+    }
+    return render(request, 'admin_panel/pcsTF/dashboard.html', context)
 
 
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
@@ -459,6 +465,7 @@ def pcsAdminServiceCategoryEditView(request, id):
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def pcsAdminServiceView(request):
     form = pcsforms.AddServiceForm()
+    sales_persons = models.User.objects.filter(Q(is_staff=True, is_sales=True))
     services = models.Service.objects.filter(category_choice='pcs')
     if request.method == 'POST':
         form = pcsforms.AddServiceForm(request.POST, request.FILES)
@@ -466,9 +473,19 @@ def pcsAdminServiceView(request):
             service = form.save(commit=False)
             service.category_choice = 'pcs'
             service.save()
+            for sale_id in request.POST.getlist('sales'):
+                current_sales = models.User.objects.get(id=sale_id)
+                current_assigned = models.ServiceAssigned.objects.get_or_create(user=current_sales)
+                current_assigned[0].service.add(service)
+                current_assigned[0].save()
+                tracking = models.Tracking.objects.get_or_create(service=service)
+                person = tracking[0].persons
+                tracking[0].persons = f'{person},{sale_id}'
+                tracking[0].save()
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     context = {
         'form': form,
+        'sales_persons': sales_persons,
         'services': services,
     }
     return render(request, 'admin_panel/pcsTF/service.html', context)
@@ -889,11 +906,13 @@ def pcsAdminNewOrdersView(request):
 def pcsAdminOrdersDetailView(request, id):
     if request.user.is_superuser or request.user.is_pcs_head:
         current_order = models.Order.objects.get(id=id)
-        form = forms.OrderPriceForm(instance=current_order)
+        current_price = models.OrderPrice.objects.get(order=current_order)
+        form = forms.OrderPriceForm(instance=current_price)
         if request.method == 'POST':
-            form = forms.OrderPriceForm(request.POST, instance=current_order)
+            form = forms.OrderPriceForm(request.POST, instance=current_price)
             if form.is_valid():
                 current_order.order_status = 'on_progress'
+                current_order.save()
                 # new_staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
                 form.save()
                 return HttpResponseRedirect(request.META['HTTP_REFERER'])
