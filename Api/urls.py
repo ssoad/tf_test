@@ -15,11 +15,14 @@ urlpatterns = [
          name='blog_filter_date_view_api'),
 
     path('bcs/package/<id>/', views.PackageListViewApi.as_view(), name='package_list_api'),  # Not
+
     path('bcs/services/<cat>/', views.ServiceListApiView.as_view(), name='service_list_api'),
     path('bcs/sub_service/<id>/', views.SubServiceApiView.as_view(), name='subservice_list_api'),
     path('bcs/sub_service_input/<id>/', views.SubServiceInputApiView.as_view(), name='subservice_input_list_api'),
     path('bcs/choice_field/<id>/', views.ChoiceApiView.as_view(), name='choice_field'),
+
     path('bcs/user_order/<id>/', views.UserSubServiceOrderApiView.as_view(), name='user_order'),  # Not
+
     path('bcs/team_permission/<id>/', views.TeamPermissionApiView.as_view(), name='team_permission'),
 
     path('bcs/bcs_admin_all_chart/', views.BCSAdminDashboardAllChartApiView.as_view(), name='bcs_admin_all_chart'),

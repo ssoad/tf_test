@@ -17,10 +17,10 @@
             <tr>
                 <td>{{ forloop.counter }}</td>
                 <td><a target="_blank" href="{% host_url 'articles' host 'blog' %}{{ readinglist.post.post_url }}">
-                        {{readinglist.post.title|truncatechars:50 }}</a></td>
+                        {{ readinglist.post.title|truncatechars:50 }}</a></td>
                 <td>{{ readinglist.added_on }}</td>
                 <td>
-                    <a class="text-danger" href="{% host_url 'add_to_reading_list' host 'blog' %}{{  readinglist.id }}">
+                    <a class="text-danger" href="{% host_url 'add_to_reading_list' host 'blog' %}{{  readinglist.post.id }}">
                         <i class="icofont-trash"></i>
                         <span>Remove</span>
                     </a>
