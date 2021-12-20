@@ -155,10 +155,11 @@ class UserSubserviceInputSerializer(serializers.ModelSerializer):
 
 class SubscriptionSerializer(serializers.ModelSerializer):
     order_details = UserSubserviceInputSerializer(source='subserviceinput', many=True)
+    order_price = serializers.CharField(source='orderprice_order.price')
 
     class Meta:
         model = bcsmodels.Order
-        fields = ['id', 'service', 'order_details']
+        fields = ['id', 'service', 'order_details', 'order_price', 'order_status']
         depth = 2
 
     def to_representation(self, instance):

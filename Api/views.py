@@ -550,12 +550,14 @@ class SubscriptionApiView(generics.ListAPIView):
 
     def get_queryset(self):
         service_id = self.kwargs['service']
-        return bcsmodels.Order.objects.filter(service__id=service_id, user=self.request.user)
+        return bcsmodels.Order.objects.filter(service__id=service_id, user=self.request.user,
+                                              service__is_subscription_based=True)
 
     # def list(self, request, *args, **kwargs):
     #     ser = self.get_serializer(self.get_queryset(), many=True)
     #     responseData = ser.data
+    #     print(self.get_queryset())
     #     responseData.append({
-    #         'test': '1223'
+    #         'price': '1223'
     #     })
     #     return Response(responseData)
