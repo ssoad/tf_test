@@ -551,7 +551,7 @@ class SubscriptionApiView(generics.ListAPIView):
     def get_queryset(self):
         service_id = self.kwargs['service']
         return bcsmodels.Order.objects.filter(service__id=service_id, user=self.request.user,
-                                              service__is_subscription_based=True)
+                                              service__is_subscription_based=True).order_by('-order_date')
 
     # def list(self, request, *args, **kwargs):
     #     ser = self.get_serializer(self.get_queryset(), many=True)
