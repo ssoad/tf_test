@@ -9,6 +9,7 @@ from rest_framework import permissions, pagination, filters
 from datetime import date
 from django.db.models import Q
 from rest_framework.response import Response
+from Api import apipermissions
 
 
 # Create your views here.
@@ -19,12 +20,14 @@ class PostApi(generics.ListAPIView):
 
 
 class CategoryApi(generics.ListAPIView):
+    permission_classes = [apipermissions.IsBlogAdmin]
     queryset = models.BlogCategory.objects.all()
     serializer_class = serializer.CategorySerializer
 
 
 class SubCategoryApi(generics.ListAPIView):
     # queryset = models.BlogSubCategory.objects.all()
+    permission_classes = [apipermissions.IsBlogAdmin]
     serializer_class = serializer.SubCategorySerializer
 
     def get_queryset(self):
@@ -34,6 +37,7 @@ class SubCategoryApi(generics.ListAPIView):
 
 class FilterApi(generics.ListAPIView):
     # queryset = models.FilterOption.objects.all()
+    permission_classes = [apipermissions.IsBlogAdmin]
     serializer_class = serializer.FilterSerializer
 
     def get_queryset(self):
@@ -104,6 +108,7 @@ class PackageListViewApi(generics.ListAPIView):
 
 class ServiceListApiView(generics.ListAPIView):
     serializer_class = serializer.ServiceSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     # queryset = bcsmodels.Service.objects.all()
 
@@ -114,6 +119,7 @@ class ServiceListApiView(generics.ListAPIView):
 
 class SubServiceApiView(generics.ListAPIView):
     serializer_class = serializer.SubServiceSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         service_id = self.kwargs['id']
@@ -122,6 +128,7 @@ class SubServiceApiView(generics.ListAPIView):
 
 class SubServiceInputApiView(generics.ListAPIView):
     serializer_class = serializer.SubServiceInputSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         service_id = self.kwargs['id']
@@ -130,6 +137,7 @@ class SubServiceInputApiView(generics.ListAPIView):
 
 class ChoiceApiView(generics.ListAPIView):
     serializer_class = serializer.ChoiceSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         id = self.kwargs['id']
@@ -146,12 +154,14 @@ class UserSubServiceOrderApiView(generics.ListAPIView):
 
 class TeamPermissionApiView(generics.RetrieveUpdateAPIView):
     serializer_class = serializer.TeamPermissionSerializer
+    permission_classes = [apipermissions.IsTeamAdmin]
     lookup_field = 'id'
     queryset = bcsmodels.UsersBusiness
 
 
 class BCSAdminDashboardAllChartApiView(generics.ListAPIView):
     serializer_class = serializer.BCSAdminDashboardChartSerializer
+    permission_classes = [apipermissions.IsBCSAdmin]
 
     # queryset = bcsmodels.Order.objects.all()
     # def get_queryset(self):
@@ -201,6 +211,7 @@ class BCSAdminDashboardAllChartApiView(generics.ListAPIView):
 
 class BCSAdminDashboardYearChartApiView(generics.ListAPIView):
     serializer_class = serializer.BCSAdminDashboardChartSerializer
+    permission_classes = [apipermissions.IsBCSAdmin]
 
     # queryset = bcsmodels.Order.objects.all()
 
@@ -253,6 +264,7 @@ class BCSAdminDashboardYearChartApiView(generics.ListAPIView):
 
 class BCSAdminDashboardMonthChartApiView(generics.ListAPIView):
     serializer_class = serializer.BCSAdminDashboardChartSerializer
+    permission_classes = [apipermissions.IsBCSAdmin]
 
     # queryset = bcsmodels.Order.objects.all()
 
@@ -264,59 +276,6 @@ class BCSAdminDashboardMonthChartApiView(generics.ListAPIView):
     def list(self, request, *args, **kwargs):
         # ser = self.get_serializer(self.get_queryset(), many=True)
         # responseData = ser.data
-
-        start_date = 1
-        end_date = date.today().day
-        # print(end_date)
-        all_dates = list(range(start_date, end_date + 1))
-        # print(all_dates)
-
-        subscription_count = []
-        unsubscription_count = []
-        total_count = []
-
-        query = bcsmodels.Order.objects.filter(category_choice='bcs')
-
-        for day in all_dates:
-            order = query.filter(order_date__day=day, service__is_subscription_based=False).count()
-            subscription_count.append(order)
-        for day in all_dates:
-            order = query.filter(order_date__day=day, service__is_subscription_based=True).count()
-            unsubscription_count.append(order)
-        for day in all_dates:
-            order = query.filter(order_date__day=day).count()
-            total_count.append(order)
-
-        datas = {
-            'for_subscription': subscription_count,
-            'for_unsubscription': unsubscription_count,
-            'total_count': total_count,
-        }
-
-        # responseData.append({
-        #     'x_axis': all_months,
-        #     'datas': datas
-        # })
-        return Response({
-            'x_axis': all_dates,
-            'datas': datas
-        })
-
-
-class BCSAdminDashboardDateRangeChartApiView(generics.ListAPIView):
-    serializer_class = serializer.BCSAdminDashboardChartSerializer
-
-    # queryset = bcsmodels.Order.objects.all()
-
-    # def get_queryset(self):
-    #     w = bcsmodels.Order.objects.filter(service__is_subscription_based=False)
-    #     # print(w.values_list())
-    #     return bcsmodels.Order.objects.all()
-
-    def list(self, request, *args, **kwargs):
-        # ser = self.get_serializer(self.get_queryset(), many=True)
-        # responseData = ser.data
-        print(self.kwargs)
 
         start_date = 1
         end_date = date.today().day
@@ -358,6 +317,7 @@ class BCSAdminDashboardDateRangeChartApiView(generics.ListAPIView):
 
 class PCSAdminDashboardAllChartApiView(generics.ListAPIView):
     serializer_class = serializer.BCSAdminDashboardChartSerializer
+    permission_classes = [apipermissions.IsPCSAdmin]
 
     def list(self, request, *args, **kwargs):
         start_date = 2014
@@ -394,6 +354,7 @@ class PCSAdminDashboardAllChartApiView(generics.ListAPIView):
 
 class PCSAdminDashboardYearChartApiView(generics.ListAPIView):
     serializer_class = serializer.BCSAdminDashboardChartSerializer
+    permission_classes = [apipermissions.IsPCSAdmin]
 
     def list(self, request, *args, **kwargs):
 
@@ -431,6 +392,7 @@ class PCSAdminDashboardYearChartApiView(generics.ListAPIView):
 
 class PCSAdminDashboardMonthChartApiView(generics.ListAPIView):
     serializer_class = serializer.BCSAdminDashboardChartSerializer
+    permission_classes = [apipermissions.IsPCSAdmin]
 
     def list(self, request, *args, **kwargs):
 
@@ -469,6 +431,7 @@ class PCSAdminDashboardMonthChartApiView(generics.ListAPIView):
 
 class MainAdminDashboardAllChartApiView(generics.ListAPIView):
     serializer_class = serializer.BCSAdminDashboardChartSerializer
+    permission_classes = [apipermissions.IsMainAdmin]
 
     def list(self, request, *args, **kwargs):
         start_date = 2014
@@ -505,6 +468,7 @@ class MainAdminDashboardAllChartApiView(generics.ListAPIView):
 
 class MainAdminDashboardYearChartApiView(generics.ListAPIView):
     serializer_class = serializer.BCSAdminDashboardChartSerializer
+    permission_classes = [apipermissions.IsMainAdmin]
 
     def list(self, request, *args, **kwargs):
 
@@ -542,6 +506,7 @@ class MainAdminDashboardYearChartApiView(generics.ListAPIView):
 
 class MainAdminDashboardMonthChartApiView(generics.ListAPIView):
     serializer_class = serializer.BCSAdminDashboardChartSerializer
+    permission_classes = [apipermissions.IsMainAdmin]
 
     def list(self, request, *args, **kwargs):
 
@@ -576,3 +541,23 @@ class MainAdminDashboardMonthChartApiView(generics.ListAPIView):
             'x_axis': all_dates,
             'datas': datas
         })
+
+
+class SubscriptionApiView(generics.ListAPIView):
+    serializer_class = serializer.SubscriptionSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    lookup_field = 'service'
+
+    def get_queryset(self):
+        service_id = self.kwargs['service']
+        return bcsmodels.Order.objects.filter(service__id=service_id, user=self.request.user,
+                                              service__is_subscription_based=True).order_by('-order_date')
+
+    # def list(self, request, *args, **kwargs):
+    #     ser = self.get_serializer(self.get_queryset(), many=True)
+    #     responseData = ser.data
+    #     print(self.get_queryset())
+    #     responseData.append({
+    #         'price': '1223'
+    #     })
+    #     return Response(responseData)

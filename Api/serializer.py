@@ -136,3 +136,42 @@ class BCSAdminDashboardChartSerializer(serializers.ModelSerializer):
         user.pop('password')
         return data
 
+
+class SubServiceInputFieldSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = bcsmodels.SubServiceInput
+        fields = ['inputfield']
+        depth = 1
+
+
+class UserSubserviceInputSerializer(serializers.ModelSerializer):
+    question = SubServiceInputFieldSerializer(source='inputfield')
+
+    class Meta:
+        model = bcsmodels.UserSubserviceInput
+        fields = ['id', 'question', 'inputinfo']
+        depth = 2
+
+
+class SubscriptionSerializer(serializers.ModelSerializer):
+    order_details = UserSubserviceInputSerializer(source='subserviceinput', many=True)
+    order_price = serializers.CharField(source='orderprice_order.price')
+
+    class Meta:
+        model = bcsmodels.Order
+        fields = ['id', 'service', 'order_details', 'order_price', 'order_status']
+        depth = 2
+
+    def to_representation(self, instance):
+        data = super(SubscriptionSerializer, self).to_representation(instance)
+        service = data.get('service')
+        service.pop('category_choice')
+        service.pop('service_icon')
+        service.pop('short_description')
+        service.pop('service_header')
+        service.pop('service_body')
+        service.pop('service_footer')
+        service.pop('has_sub_service')
+        service.pop('is_subscription_based')
+        service.pop('total_customer')
+        return data

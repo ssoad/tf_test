@@ -8,6 +8,7 @@
 
         <div class="mt-4 mb-5 subscription-list d-flex flex-column align-items-start">
             {% for service in services %}
+                {{ service.id }}
                 <button class="btn border-0 fs-5" data-bs-toggle="modal"
                         data-bs-target="#{{ service.service_title|replacespace }}">{{ service.service_title|upper }}</button>
             {% endfor %}

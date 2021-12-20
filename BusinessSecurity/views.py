@@ -949,6 +949,9 @@ def mainAdminEventsView(request):
     context = {
         'form': form,
         'events': events,
+        'previous': events.filter(status='completed'),
+        'active': events.filter(status='active'),
+        'canceled': events.filter(status='canceled'),
     }
     return render(request, 'admin_panel/mainTF/eventWebinar.html', context)
 
