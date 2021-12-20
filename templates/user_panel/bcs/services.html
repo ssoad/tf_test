@@ -518,12 +518,6 @@
             </div>
         </div>
 
-        <!-- preview services  -->
-        <div class="d-none preview-service px-2 py-3 rounded">
-            <h6 class="fw-bold"></h6>
-            <p class="lh-1"></p>
-        </div>
-
         <div id="preview-form" class="d-none">
 
         </div>
@@ -634,7 +628,6 @@
                                     console.log(err)
                                 });
                             } else {
-                                // console.log(e.target);
                                 informationForm.removeChild(document.getElementById(`sub-${e.target.getAttribute("data-id")}-input`))
                                 if (Array.from(document.querySelectorAll('.sub-services .form-check-input')).every(checkbox => checkbox.checked == false))
                                     document.querySelector('.form-container').classList.add('d-none');
@@ -663,9 +656,10 @@
         }
 
         allBtn = Array.from(allBtn);
+        //get another view button from more services
         if(document.querySelector('.more-services #pcs-preview-btn'))
             allBtn.push(document.querySelector('.more-services #pcs-preview-btn'));
-        console.log(allBtn)
+        
 
         allBtn.forEach((btn, index) => {
             btn.addEventListener('click', () => {
