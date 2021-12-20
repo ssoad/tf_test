@@ -44,50 +44,7 @@
                     </div>
                 {% endfor %}
 
-
             </div>
-{% comment %}
-            <h5 class="mt-5 services-type">Program For Your Employees</h5>
-            <!-- more services -->
-            <div class="row mx-0 g-3 more-services">
-                <div class="col-md-6 ps-md-0">
-                    <div class="mt-4 bg-lightgreen px-2 py-3 rounded shadow-md">
-                        <h6 class="mb-3 fw-bold text-uppercase">Personal Cybersecurity for Your Employees</h6>
-                        <div class="d-flex">
-                            <img class="service-icon" src="{% static '' %}tfimg/user_panel/services/user.png" alt="">
-                            <div class="ps-2">
-                                <h6 class="fw-bold">Concierge Cybersecurity</h6>
-                                <p class="lh-1 fs-6">Our personal cybersecurity services will protect your employee and
-                                    employees family in cyberspace always.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-end">
-                            <button id="pcs-preview-btn" class="bg-navy btn btn-sm px-5 text-white">View</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 pe-md-0">
-                    <div class="mt-4 bg-lightgreen px-2 py-3 rounded shadow-md">
-                        <h6 class="mb-3 fw-bold text-uppercase">Training Program for Your Employees</h6>
-                        <div class="d-flex">
-                            <img class="service-icon" src="{% static '' %}tfimg/user_panel/services/online-course.png"
-                                 alt="">
-                            <div class="ps-2">
-                                <h6 class="fw-bold">Leading Ethical Hacking Course</h6>
-                                <p class="lh-1 fs-6">Our personal cybersecurity services will protect your employee and
-                                    employees family in cyberspace always.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-end">
-                            <button data-bs-toggle="modal" data-bs-target="#trainingModal"
-                                    class="bg-navy btn btn-sm px-5 text-white">View
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>{% endcomment %}
         </div>
 
 
@@ -556,12 +513,6 @@
             </div>
         </div>
 
-        <!-- preview services  -->
-        <div class="d-none preview-service px-2 py-3 rounded">
-            <h6 class="fw-bold"></h6>
-            <p class="lh-1"></p>
-        </div>
-
         <div id="preview-form" class="d-none">
 
         </div>
@@ -672,7 +623,6 @@
                                     console.log(err)
                                 });
                             } else {
-                                // console.log(e.target);
                                 informationForm.removeChild(document.getElementById(`sub-${e.target.getAttribute("data-id")}-input`))
                                 if (Array.from(document.querySelectorAll('.sub-services .form-check-input')).every(checkbox => checkbox.checked == false))
                                     document.querySelector('.form-container').classList.add('d-none');
@@ -701,9 +651,10 @@
         }
 
         allBtn = Array.from(allBtn);
+        //get another view button from more services
         if(document.querySelector('.more-services #pcs-preview-btn'))
             allBtn.push(document.querySelector('.more-services #pcs-preview-btn'));
-        console.log(allBtn)
+        
 
         allBtn.forEach((btn, index) => {
             btn.addEventListener('click', () => {
