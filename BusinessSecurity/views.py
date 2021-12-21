@@ -617,7 +617,7 @@ def userSubscriptionsView(request):
         if request.user.business_user.privilege == 'general_staff':
             return HttpResponse("You don't have permission to view this page")
         else:
-            services = models.Service.objects.filter(is_subscription_based=True)
+            services = models.SubscriptionServices.objects.filter(category_choice='bcs')
             context = {
                 'services': services,
             }
@@ -1233,6 +1233,34 @@ def bcsAdminServiceView(request):
     }
     return render(request, 'admin_panel/bcsTF/service.html', context)
 
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def bcsAdminSubscriptionServiceView(request):
+    form = forms.AddSubscriptionServiceForm()
+    # sales_persons = models.User.objects.filter(Q(is_staff=True, is_sales=True))
+    services = models.SubscriptionServices.objects.filter(category_choice='bcs')
+
+    if request.method == 'POST':
+        form = forms.AddSubscriptionServiceForm(request.POST, request.FILES)
+        if form.is_valid():
+            service = form.save(commit=False)
+            service.category_choice = 'bcs'
+            service.save()
+            # for sale_id in request.POST.getlist('sales'):
+            #     current_sales = models.User.objects.get(id=sale_id)
+            #     current_assigned = models.ServiceAssigned.objects.get_or_create(user=current_sales)
+            #     current_assigned[0].service.add(service)
+            #     current_assigned[0].save()
+            #     tracking = models.Tracking.objects.get_or_create(service=service)
+            #     person = tracking[0].persons
+            #     tracking[0].persons = f'{person},{sale_id}'
+            #     tracking[0].save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    context = {
+        'form': form,
+        # 'sales_persons': sales_persons,
+        'services': services,
+    }
+    return render(request, 'admin_panel/bcsTF/subscription-service.html', context)
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminServiceDeleteView(request, id):
@@ -1384,7 +1412,7 @@ def bcsAdminSubscriptionListView(request):
 def bcsAdminSubscriptionPack(request):
     form = forms.AddPackageForm()
     form2 = forms.AddPackageFeatureForm()
-    services = models.Service.objects.filter(is_subscription_based=True)
+    services = models.SubscriptionServices.objects.filter(category_choice='bcs')
     if request.method == 'POST':
         if 'package-btn' in request.POST:
             form = forms.AddPackageForm(request.POST)
