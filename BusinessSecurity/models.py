@@ -37,6 +37,30 @@ class ServiceCategory(models.Model):
         verbose_name_plural = 'Service Categories'
 
 
+class SubscriptionServices(models.Model):
+    category_choice = models.CharField(choices=category_choice, max_length=255)
+    category = models.ForeignKey(
+        ServiceCategory, on_delete=models.CASCADE, related_name='subscription_service_category')
+
+    service_icon = models.ImageField(
+        upload_to='service_icon/', verbose_name='Service Icon')
+    service_title = models.CharField(
+        max_length=264, verbose_name='Service Title')
+    short_description = models.TextField(
+        max_length=1000, verbose_name='Short Description')
+    service_header = HTMLField(verbose_name='Service Header', blank=True)
+    service_body = HTMLField(verbose_name='Service Body', blank=True)
+    service_footer = HTMLField(verbose_name='Service Footer', blank=True)
+    total_customer = models.IntegerField(
+        verbose_name='Total Customer', default=0, blank=True)
+
+    def __str__(self):
+        return self.service_title + '-' + self.category_choice
+
+    class Meta:
+        verbose_name_plural = 'Subscription Services'
+
+
 class Service(models.Model):
     category_choice = models.CharField(choices=category_choice, max_length=255)
     category = models.ForeignKey(
@@ -271,12 +295,12 @@ class TicketComment(models.Model):
 
 
 class SubscriptionBasedPackage(models.Model):
-    service_id = models.ForeignKey(Service, on_delete=models.CASCADE)
+    service_id = models.ForeignKey(SubscriptionServices, on_delete=models.CASCADE)
     package_name = models.CharField(
         max_length=264, verbose_name='Package Name')
-    servers = models.IntegerField()
-    websites = models.IntegerField()
-    workstations = models.IntegerField()
+    # servers = models.IntegerField()
+    # websites = models.IntegerField()
+    # workstations = models.IntegerField()
     duration = models.IntegerField()
     duration_type = models.CharField(
         choices=duration_type, max_length=264, default='month')
@@ -294,9 +318,11 @@ class SubscriptionFeatures(models.Model):
         SubscriptionBasedPackage, on_delete=models.CASCADE, related_name='feature_subscription')
     feature_name = models.CharField(
         max_length=264, verbose_name='Feature Name')
+    feature = models.CharField(
+        max_length=264, verbose_name='Feature')
 
     def __str__(self):
-        return self.feature_name
+        return f'{self.feature_name} - {self.feature}'
 
     class Meta:
         verbose_name_plural = 'Package Features'

@@ -23,8 +23,22 @@ class AddServiceForm(forms.ModelForm):
 
     class Meta:
         model = models.Service
-        fields = ['category', 'service_icon', 'service_title', 'short_description',
-                  'is_subscription_based', 'service_header', 'service_body', 'service_footer', ]
+        fields = ['category', 'service_icon', 'service_title', 'short_description', 'service_header', 'service_body',
+                  'service_footer', ]
+
+
+class AddSubscriptionServiceForm(forms.ModelForm):
+    category = forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-select'}),
+                                      queryset=models.ServiceCategory.objects.filter(category_choice='bcs'))
+
+    # assign_to = forms.ModelChoiceField(widget=forms.SelectMultiple(attrs={'class': 'form-select js-example-basic-multiple'}), queryset=models.User.objects.filter(is_sales=True))
+
+    # service_icon = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = models.SubscriptionServices
+        fields = ['category', 'service_icon', 'service_title', 'short_description', 'service_header', 'service_body',
+                  'service_footer', ]
 
 
 class AddForm(forms.ModelForm):
@@ -53,6 +67,7 @@ class CreateBusinessForm(forms.ModelForm):
     website = forms.URLField(widget=forms.URLInput(
         attrs={'pattern': "^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$",
                'value': "https://"}))
+
     class Meta:
         model = models.Business
         fields = '__all__'
@@ -60,8 +75,8 @@ class CreateBusinessForm(forms.ModelForm):
 
 
 class AddPackageForm(forms.ModelForm):
-    service_id = forms.ModelChoiceField(
-        queryset=models.Service.objects.filter(is_subscription_based=True))
+    # service_id = forms.ModelChoiceField(
+    #     queryset=models.Service.objects.filter(is_subscription_based=True))
 
     class Meta:
         model = models.SubscriptionBasedPackage

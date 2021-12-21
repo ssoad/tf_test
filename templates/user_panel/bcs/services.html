@@ -1,13 +1,13 @@
 {% extends 'base/bcs_user_base.html' %} {% load static %} {% load my_filter %} {% load hosts %} {% block title %}
     Services {% endblock title %} {% block content %}
 
-  <style>
-        form label{
+    <style>
+        form label {
             text-transform: capitalize;
             margin-top: 8px
         }
     </style>
-    
+
     <section class="services position-relative">
         <h4 class="main-heading">All Business Cybersecurity Services
         </h4>
@@ -23,6 +23,26 @@
                     <h5 class="mt-2 services-type">{{ category.category_name }}</h5>
                     <div class="row mx-0 mb-4 gy-4 pt-4 justify-content-center">
                         {% for service in category.service_category.all %}
+                            <div class="col-md-4 px-0 pe-md-5">
+                                <div class="bg-lightgreen p-2 rounded shadow-md">
+                                    <div class="text-center">
+                                        <img class="service-icon" src="{{ service.service_icon.url }}">
+                                    </div>
+                                    <div class="ps-2 mt-2 text-center">
+                                        <h6 class="service-title">{{ service.service_title }}</h6>
+                                        <p class="lh-1 fs-14">
+                                            {{ service.short_description }}
+                                        </p>
+                                    </div>
+                                    <div class="view-btn">
+                                        <button class="{{ service.service_title|replacespace }}-bcs btn btn-sm">View
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        {% for service in category.subscription_service_category.all %}
                             <div class="col-md-4 px-0 pe-md-5">
                                 <div class="bg-lightgreen p-2 rounded shadow-md">
                                     <div class="text-center">
@@ -657,9 +677,9 @@
 
         allBtn = Array.from(allBtn);
         //get another view button from more services
-        if(document.querySelector('.more-services #pcs-preview-btn'))
+        if (document.querySelector('.more-services #pcs-preview-btn'))
             allBtn.push(document.querySelector('.more-services #pcs-preview-btn'));
-        
+
 
         allBtn.forEach((btn, index) => {
             btn.addEventListener('click', () => {

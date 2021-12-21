@@ -111,6 +111,8 @@ urlpatterns = [
     path('bcs_admin_services_category_edit/<id>/', views.bcsAdminServiceCategoryEditView,
          name='bcs_admin_services_category_edit'),
     path('bcs_admin_services/', views.bcsAdminServiceView, name='bcs_admin_services'),
+    path('bcs_admin_subscription_services/', views.bcsAdminSubscriptionServiceView,
+         name='bcs_admin_subscription_services'),
     path('bcs_admin_services_delete/<id>/', views.bcsAdminServiceDeleteView, name='bcs_admin_services_delete'),
     path('bcs_admin_services_edit/<id>/', views.bcsAdminServiceEditView, name='bcs_admin_services_edit'),
     path('bcs_admin_sub_services/', views.bcsAdminSubServiceView, name='bcs_admin_sub_services'),
