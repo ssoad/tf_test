@@ -1413,14 +1413,15 @@ def bcsAdminSubscriptionPack(request):
     form = forms.AddPackageForm()
     form2 = forms.AddPackageFeatureForm()
     services = models.SubscriptionServices.objects.filter(category_choice='bcs')
-    if request.method == 'POST':
-        if 'package-btn' in request.POST:
-            form = forms.AddPackageForm(request.POST)
-            form.save()
-        elif 'feature-btn' in request.POST:
-            form2 = forms.AddPackageFeatureForm(request.POST)
-            form2.save()
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    print(request.POST)
+    # if request.method == 'POST':
+    #     if 'package-btn' in request.POST:
+    #         form = forms.AddPackageForm(request.POST)
+    #         form.save()
+    #     elif 'feature-btn' in request.POST:
+    #         form2 = forms.AddPackageFeatureForm(request.POST)
+    #         form2.save()
+    #     return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
         'form': form,
         'form2': form2,
