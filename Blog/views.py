@@ -404,11 +404,30 @@ def indexView(request):
     }
     return render(request, 'blog/index.html', context)
 
+# posts by search or tags/keyword
+
+
+def relatedPostView(request, tag):
+    print(tag)
+    #posts = models.Post.objects.all()
+    posts = models.Post.objects.filter(
+        Q(title__icontains=tag) | Q(short_description__icontains=tag))
+    reading_lists = models.ReadingList.objects.filter(
+        user=request.user).values_list('post', flat=True)
+    context = {
+        'posts': posts,
+        'reading_lists': reading_lists,
+    }
+    return render(request, 'blog/related_posts.html', context)
 
 # these 3 functions for single post
+
+
 def postView(request, name):
     posts = models.Post.objects.all()
     post = models.Post.objects.get(post_url=name)
+    print(post.tag.all())
+
     comments = models.Comment.objects.filter(
         post=post).order_by('-comment_date')
     try:
@@ -425,6 +444,7 @@ def postView(request, name):
             'comments': comments[:5],
             'comments_count': comments.count,
             'reading_lists': reading_lists,
+            'tags': post.tag.all()
         }
         return render(request, 'blog/post.html', context)
     except:
