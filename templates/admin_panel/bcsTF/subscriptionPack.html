@@ -111,11 +111,11 @@
                         <div class="row gx-3 mx-0 form-group px-0">
                             <div class="col-md-6 ps-0">
                               <label for="featureName-1" class="form-label">Feature Name 1</label>
-                              <input type="text" class="form-control" name="featureName" id="featureName-1">
+                              <input type="text" class="form-control" name="featureName" id="featureName-1" required>
                             </div>
                             <div class="col-md-6 pe-0">
                               <label for="feature-1" class="form-label">Feature 1</label>
-                              <input type="text" class="form-control" name="feature" id="feature-1">
+                              <input type="text" class="form-control" name="feature" id="feature-1" required>
                             </div>
                             <div class="d-flex justify-content-end">
                                 <button type="button" class="btn btn-sm btn-outline-success add-more-feature">Add more</button>
@@ -239,11 +239,11 @@
         feature++;
         e.target.parentNode.insertAdjacentHTML('beforebegin',`<div class="col-md-6 ps-0">
             <label for="featureName-${feature}" class="form-label">Feature Name ${feature}</label>
-            <input type="text" class="form-control" name="featureName" id="featureName-${feature}">
+            <input type="text" class="form-control" name="featureName" id="featureName-${feature}" required>
           </div>
           <div class="col-md-6 pe-0">
             <label for="feature-${feature}" class="form-label">Feature ${feature}</label>
-            <input type="text" class="form-control" name="feature" id="feature-${feature}">
+            <input type="text" class="form-control" name="feature" id="feature-${feature}" required>
           </div>`);
 
     })

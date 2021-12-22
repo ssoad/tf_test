@@ -29,6 +29,16 @@ class AddSubscriptionServiceForm(forms.ModelForm):
         fields = ['category', 'service_icon', 'service_title', 'short_description', 'service_header', 'service_body',
                   'service_footer', ]
 
+
+class AddPackageForm(forms.ModelForm):
+    service_id = forms.ModelChoiceField(
+        queryset=models.SubscriptionServices.objects.filter(category_choice='pcs'))
+
+    class Meta:
+        model = models.SubscriptionBasedPackage
+        fields = '__all__'
+
+
 class AddSubServiceForm(forms.ModelForm):
     service = forms.ModelChoiceField(
         queryset=models.Service.objects.filter(has_sub_service=True, category_choice='pcs'),
