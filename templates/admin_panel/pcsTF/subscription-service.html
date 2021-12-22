@@ -1,15 +1,12 @@
-{% extends 'base/bcs_admin_base.html' %}
+{% extends 'base/pcs_admin_base.html' %}
 {% load static %}
 {% load hosts %}
 {% load crispy_forms_tags %}
 
-{% block title %} BCS Admin Services
+{% block title %} PCS Admin Services Category
 {% endblock title %}
 
 {% block headercss %}
-    <!-- data table css -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css"/>
-    <!-- custom css -->
     <link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/service.css' %}"/>
     <style>
         .select2-container {
@@ -54,7 +51,6 @@
 {#                                    </div>#}
 
                                     {{ form|crispy }}
-
                                     {% csrf_token %}
                                     <div class="d-flex justify-content-between">
                                         <button type="submit" class="btn btn-primary saveService text-capitalize"
@@ -87,7 +83,7 @@
                                     <td>{{ service.short_description }}</td>
                                     <td>
 
-                                        <a href="{% host_url 'bcs_admin_subscription_services_edit' id=service.id %}"
+                                        <a href="{% host_url 'pcs_admin_subscription_services_edit' id=service.id %}"
                                            class="btn editBtn">
                                             <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
                                             Edit
@@ -100,8 +96,6 @@
                                     </td>
                                 </tr>
                             {% endfor %}
-
-
                             </tbody>
                         </table>
                     </div>
@@ -115,7 +109,6 @@
     <script src="{% static 'tfjs/admin_panel/bcsTF/service.js' %}"></script>
     <script>
         $(document).ready(function () {
-            $('.js-example-basic-single').select2();
             $('.js-example-basic-multiple').select2();
         });
     </script>

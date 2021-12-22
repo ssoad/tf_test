@@ -16,6 +16,19 @@ class AddServiceForm(forms.ModelForm):
                   'is_subscription_based', 'service_header', 'service_body', 'service_footer', ]
 
 
+class AddSubscriptionServiceForm(forms.ModelForm):
+    category = forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-select'}),
+                                      queryset=models.ServiceCategory.objects.filter(category_choice='pcs'))
+
+    # assign_to = forms.ModelChoiceField(widget=forms.SelectMultiple(attrs={'class': 'form-select js-example-basic-multiple'}), queryset=models.User.objects.filter(is_sales=True))
+
+    # service_icon = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = models.SubscriptionServices
+        fields = ['category', 'service_icon', 'service_title', 'short_description', 'service_header', 'service_body',
+                  'service_footer', ]
+
 class AddSubServiceForm(forms.ModelForm):
     service = forms.ModelChoiceField(
         queryset=models.Service.objects.filter(has_sub_service=True, category_choice='pcs'),

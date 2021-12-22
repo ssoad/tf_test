@@ -372,6 +372,7 @@ def userServicesView(request):
         else:
             service_category = models.ServiceCategory.objects.filter(category_choice='bcs')
             services = models.Service.objects.filter(category_choice='bcs')
+            subscription_services = models.SubscriptionServices.objects.filter(category_choice='bcs')
             if request.method == 'POST':
                 data_list = request.POST
                 file_list = request.FILES
@@ -424,6 +425,8 @@ def userServicesView(request):
                 'service_category': service_category,
                 'services': services,
                 'services_headings': list(services.values_list('service_title', flat=True)),
+                'subscription_services': subscription_services,
+                'subscription_services_headings': list(subscription_services.values_list('service_title', flat=True)),
             }
             return render(request, 'user_panel/bcs/services.html', context)
 
@@ -1263,11 +1266,33 @@ def bcsAdminSubscriptionServiceView(request):
     return render(request, 'admin_panel/bcsTF/subscription-service.html', context)
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def bcsAdminSubscriptionServiceDeleteView(request, id):
+    current_service = models.SubscriptionServices.objects.get(id=id)
+    current_service.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminServiceDeleteView(request, id):
     current_service = models.Service.objects.get(id=id)
     current_service.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def bcsAdminSubscriptionServiceEditView(request, id):
+    current_service = models.SubscriptionServices.objects.get(id=id)
+    form = forms.AddSubscriptionServiceForm(instance=current_service)
+
+    if request.method == 'POST':
+        form = forms.AddSubscriptionServiceForm(request.POST, request.FILES, instance=current_service)
+        if form.is_valid():
+            form.save()
+
+            return HttpResponseRedirect(reverse('bcs_admin_subscription_services'))
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'admin_panel/bcsTF/editForm.html', context)
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminServiceEditView(request, id):

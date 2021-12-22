@@ -1,4 +1,4 @@
-from django.urls import path,include
+from django.urls import path, include
 from PersonalSecurity import views
 
 urlpatterns = [
@@ -53,7 +53,11 @@ urlpatterns = [
     path('pcs_admin_services_category_edit/<id>/', views.pcsAdminServiceCategoryEditView,
          name='pcs_admin_services_category_edit'),
     path('pcs_admin_services/', views.pcsAdminServiceView, name='pcs_admin_services'),
+    path('pcs_admin_subscription_services/', views.pcsAdminSubscriptionServiceView,
+         name='pcs_admin_subscription_services'),
     path('pcs_admin_services_delete/<id>/', views.pcsAdminServiceDeleteView, name='pcs_admin_services_delete'),
+    path('pcs_admin_subscription_services_edit/<id>/', views.pcsAdminSubscriptionServiceEditView,
+         name='pcs_admin_subscription_services_edit'),
     path('pcs_admin_services_edit/<id>/', views.pcsAdminServiceEditView, name='pcs_admin_services_edit'),
     path('pcs_admin_sub_services/', views.pcsAdminSubServiceView, name='pcs_admin_sub_services'),
     path('pcs_admin_sub_services_delete/<id>/', views.pcsAdminSubServiceDeleteView,
@@ -79,7 +83,6 @@ urlpatterns = [
     path('pcs_admin_order_canceled/', views.pcsAdminOrderCanceledView, name='pcs_admin_order_canceled'),
     path('pcs_admin_order_canceled/<id>/', views.pcsAdminOrderCanceledView, name='pcs_admin_order_canceled'),
 
-
     path('pcs_admin_all_tickets/', views.pcsAdminTicketsView, name='pcs_admin_all_tickets'),
     path('pcs_admin_tickets_detail/', views.pcsAdminTicketsDetailView, name='pcs_admin_tickets_detail'),
     path('pcs_admin_tickets_detail/<id>', views.pcsAdminTicketsDetailView, name='pcs_admin_tickets_detail'),
@@ -90,7 +93,8 @@ urlpatterns = [
     path('pcs_admin_reading_list/', views.pcsAdminReadingList, name='pcs_admin_reading_list'),
     path('pcs_admin_sub_services/', views.pcsAdminSubService, name='pcs_admin_sub_services'),
     path('pcs_admin_individual_users/', views.pcsAdminIndividualUser, name='pcs_admin_individual_users'),
-    path('pcs_admin_individual_user_panel/<id>/', views.pcsAdminIndividualUserPanel, name='pcs_admin_individual_user_panel'),
+    path('pcs_admin_individual_user_panel/<id>/', views.pcsAdminIndividualUserPanel,
+         name='pcs_admin_individual_user_panel'),
     path('pcs_admin_list/', views.pcsAdminList, name='pcs_admin_list'),
     path('pcs_admin_profile/', views.pcsAdminProfile, name='pcs_admin_profile'),
     path('pcs_admin_user_interest/', views.pcsAdminUserInterest, name='pcs_admin_user_interest'),
