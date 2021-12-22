@@ -237,14 +237,13 @@
     let feature = 1;
     document.querySelector('.add-more-feature').addEventListener('click', e => {
         feature++;
-
         e.target.parentNode.insertAdjacentHTML('beforebegin',`<div class="col-md-6 ps-0">
             <label for="featureName-${feature}" class="form-label">Feature Name ${feature}</label>
-            <input type="text" class="form-control" id="featureName-${feature}">
+            <input type="text" class="form-control" name="featureName" id="featureName-${feature}">
           </div>
           <div class="col-md-6 pe-0">
             <label for="feature-${feature}" class="form-label">Feature ${feature}</label>
-            <input type="text" class="form-control" id="feature-${feature}">
+            <input type="text" class="form-control" name="feature" id="feature-${feature}">
           </div>`);
 
     })
