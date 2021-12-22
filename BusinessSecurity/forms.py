@@ -41,6 +41,9 @@ class AddSubscriptionServiceForm(forms.ModelForm):
                   'service_footer', ]
 
 
+
+
+
 class AddForm(forms.ModelForm):
     class Meta:
         model = models.InputFields

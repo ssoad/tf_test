@@ -205,6 +205,7 @@ def userServicesView(request):
     courses = Course.objects.filter(course_type='Personal')
     service_category = models.ServiceCategory.objects.filter(category_choice='pcs')
     services = models.Service.objects.filter(category_choice='pcs')
+    subscription_services = models.SubscriptionServices.objects.filter(category_choice='pcs')
     if request.method == 'POST':
         data_list = request.POST
         file_list = request.FILES
@@ -257,6 +258,8 @@ def userServicesView(request):
         'service_category': service_category,
         'services': services,
         'services_headings': list(services.values_list('service_title', flat=True)),
+        'subscription_services': subscription_services,
+        'subscription_services_headings': list(subscription_services.values_list('service_title', flat=True)),
         'courses': courses,
     }
     return render(request, 'user_panel/pcs/services.html', context)
@@ -492,11 +495,56 @@ def pcsAdminServiceView(request):
 
 
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def pcsAdminSubscriptionServiceView(request):
+    form = pcsforms.AddSubscriptionServiceForm()
+    # sales_persons = models.User.objects.filter(Q(is_staff=True, is_sales=True))
+    services = models.SubscriptionServices.objects.filter(category_choice='pcs')
+
+    if request.method == 'POST':
+        form = pcsforms.AddSubscriptionServiceForm(request.POST, request.FILES)
+        if form.is_valid():
+            service = form.save(commit=False)
+            service.category_choice = 'pcs'
+            service.save()
+            # for sale_id in request.POST.getlist('sales'):
+            #     current_sales = models.User.objects.get(id=sale_id)
+            #     current_assigned = models.ServiceAssigned.objects.get_or_create(user=current_sales)
+            #     current_assigned[0].service.add(service)
+            #     current_assigned[0].save()
+            #     tracking = models.Tracking.objects.get_or_create(service=service)
+            #     person = tracking[0].persons
+            #     tracking[0].persons = f'{person},{sale_id}'
+            #     tracking[0].save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    context = {
+        'form': form,
+        # 'sales_persons': sales_persons,
+        'services': services,
+    }
+    return render(request, 'admin_panel/pcsTF/subscription-service.html', context)
+
+@user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def pcsAdminServiceDeleteView(request, id):
     current_service = models.Service.objects.get(id=id)
     current_service.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+@user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def pcsAdminSubscriptionServiceEditView(request, id):
+    current_service = models.SubscriptionServices.objects.get(id=id)
+    form = pcsforms.AddSubscriptionServiceForm(instance=current_service)
+
+    if request.method == 'POST':
+        form = pcsforms.AddSubscriptionServiceForm(request.POST, request.FILES, instance=current_service)
+        if form.is_valid():
+            form.save()
+
+            return HttpResponseRedirect(reverse('pcs_admin_subscription_services'))
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'admin_panel/pcsTF/editForm.html', context)
 
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def pcsAdminServiceEditView(request, id):

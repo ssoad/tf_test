@@ -27,7 +27,7 @@
     <title>
         {% block title %} {% endblock title %}
     </title>
-    <link rel="icon" href="{% static '' %}tfimg/user_panel/Techforing-Icon.png" type="image/x-icon"/>
+    <link rel="icon" href="{% static 'tfimg/user_panel/Techforing-Icon.png' %}" type="image/x-icon"/>
 </head>
 
 <body>
@@ -78,7 +78,7 @@
             <!-- Brand/logo-->
             <a class="navbar-brand" href="#">
                 <button class="btn btn-close sideBarClose"></button>
-                <img src="{% static '' %}tfimg/user_panel/Techforing-Icon.png" class="icon-logo" alt="">
+                <img src="{% static 'tfimg/user_panel/Techforing-Icon.png' %}" class="icon-logo" alt="">
                 <img src="{% static 'tfimg/admin_panel/TechForingLogo.png' %}" alt="Tech Foring" class="logo"/>
             </a>
             <!-- Nav links starts here -->
@@ -122,6 +122,16 @@
                             <li>
                                 <a class="dropdown-item nav-link" href="{% host_url 'pcs_admin_services' %}">
                                     Services
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item nav-link" href="{% host_url 'pcs_admin_subscription_services' host 'mysecurity' %}">
+                                    Subscription Services
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item nav-link" href="{% host_url 'pcs_admin_subscription_packages' host 'mysecurity' %}">
+                                    Subscription Packages
                                 </a>
                             </li>
                             <li>
