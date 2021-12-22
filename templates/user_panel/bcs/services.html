@@ -56,7 +56,7 @@
                                             </p>
                                         </div>
                                         <div class="view-btn">
-                                            <button class="{{ service.service_title|replacespace }}-bcs btn btn-sm">View
+                                            <button class="{{ service.service_title|replacespace }}-bcs-sub btn btn-sm">View
                                             </button>
                                         </div>
                                     </div>
@@ -221,7 +221,65 @@
             </div>
         {% endfor %}
 
+        <!-- subscription services start.. loaded subscription services details  -->
+        {% for service in subscription_services %}
+        <div class="{{ service | replacespace }}-sub preview-service-info pt-3 pb-5 d-none">
+            <div class='d-none'>
+                {{ service }}
+            </div>
+            <div class="row mx-0 bg-lightgreen shadow-md">
 
+                <div class="col-md-12 ">
+                    <div class="py-2">
+                        <p class="mt-3 mb-0">{{ service.service_header|safe }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="my-3 py-4 px-3 bg-lightgreen shadow-md">
+                <div class="mt-3">
+                    <h6 class="lh-base">
+                        {{ service.service_body|safe }}
+                    </h6>
+                </div>
+            </div>
+            <div class="whom-we-serve my-3 py-4 px-3 bg-lightgreen shadow-md">
+                <p class="mt-3">
+                    {{ service.service_footer|safe }}
+                </p>
+                <div class="mt-3">
+                    <ol class="row mx-0">
+                        {% for subservice in service.subservice_service.all %}
+                            <li class="{{ subservice.service|replacespace }} short-info-li col-auto me-3 lh-base fw-bold">{{ subservice.title }}</li>
+                        {% endfor %}
+                    </ol>
+
+                </div>
+            </div>
+            <div class="my-4 pt-5 px-3">
+                <div class="d-flex justify-content-center">
+                    <button  data-bs-toggle="modal" data-bs-target="#subscriptionDetail" type="button" class="btn bg-navy px-2 py-1 mb-3 mb-md-0">Renew Subscription</button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+    <!-- modal for subscription services -->
+    <div class="modal fade" id="subscriptionDetail" tabindex="-1" aria-labelledby="subscriptionDetailLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content border-0 bg-main">
+        <div class="modal-header border-0">
+            <button type="button" class="btn-close rounded-circle bg-green" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+        </div>
+        <div class="modal-body px-5 pb-5">
+            <h4 class="px-3 fw-bold text-center">Provide information to get a quotation for employee
+                training program
+            </h4>
+        </div>
+    </div>
+    </div>
+    </div>
 
         <!-- preview for pcs employees -->
         <div class="preview-service-info py-3 d-none">
@@ -633,8 +691,6 @@
                                                 }).catch(function (err) {
                                                 console.log(err)
                                             });
-
-                                            {#console.log("select ")#}
                                         } else {
                                             inputFields += `<label for="input-${field.inputfield.id}.${optionId}">${field.inputfield.placeholder}</label>`;
                                             inputFields += `<input class="form-control" type="${field.inputfield.type}" required
@@ -643,7 +699,6 @@
                                             div.innerHTML = inputFields;
                                             informationForm.insertBefore(div, informationForm.children[optionIndex]);
                                         }
-
                                     });
 
                                 }).catch(function (err) {
@@ -685,6 +740,7 @@
 
         allBtn.forEach((btn, index) => {
             btn.addEventListener('click', () => {
+                console.log(document.querySelector(`div.${btn.classList[0]}`))
                 servicesContent.classList.add('d-none');
                 document.querySelector(`div.${btn.classList[0]}`).classList.remove('d-none');
                 backBtn.classList.remove('d-none');
