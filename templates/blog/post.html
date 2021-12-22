@@ -217,10 +217,10 @@
 
     <section class="container-xl main-post-container">
         <section class="mt-3 mb-5">
-            <div class="tags d-flex flex-wrap invisible">
-                <a href="">Risk Assessment</a>
-                <a href="">Business Cybersecurity</a>
-                <a href="">Case Studies</a>
+            <div class="tags d-flex flex-wrap">
+                {% for tag in tags  %}
+                <a href="{% host_url 'related_posts' host 'blog' %}{{tag}}">  {{tag}}</a>
+                {% endfor %}
             </div>
         </section>
         <div class="row mx-0 pt-3">
