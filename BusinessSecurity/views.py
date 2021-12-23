@@ -1480,6 +1480,7 @@ def bcsAdminSubscriptionPackEdit(request, id):
             print(request.POST)
             current_feature = models.SubscriptionFeatures.objects.get(id=request.POST.get('feature_id'))
             current_feature.feature_name = request.POST.get('feature_name')
+            current_feature.feature = request.POST.get('feature')
             current_feature.save()
             return HttpResponseRedirect(request.META['HTTP_REFERER'])
         elif 'add-feature-btn' in request.POST:

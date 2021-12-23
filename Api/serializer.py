@@ -59,14 +59,20 @@ class BlogFilterSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class FeatureSubscriptionsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = bcsmodels.SubscriptionFeatures
+        fields = '__all__'
+
+
 class PackageListSerializer(serializers.ModelSerializer):
-    feature_subscription = serializers.StringRelatedField(many=True)
+    # feature_subscription = serializers.StringRelatedField(many=True)
+    feature_subscription = FeatureSubscriptionsSerializer(many=True)
     service_name = serializers.CharField(source='service_id.service_title')
 
     class Meta:
         model = bcsmodels.SubscriptionBasedPackage
-        fields = ['id', 'service_id', 'service_name', 'package_name', 'servers', 'websites', 'workstations', 'duration',
-                  'duration_type', 'feature_subscription', 'price', ]
+        fields = '__all__'
 
 
 class ServiceSerializer(serializers.ModelSerializer):
