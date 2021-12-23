@@ -253,15 +253,14 @@
             </div>
             <div class="my-4 pt-5 px-3">
                 <div class="d-flex justify-content-center">
-                    <button  data-bs-toggle="modal" data-bs-target="#subscriptionDetail" type="button" class="btn bg-navy px-2 py-1 mb-3 mb-md-0">View Subscription</button>
+                    <button id="subscriptionDetailBtn" data-bs-toggle="modal" data-bs-target="#subscriptionDetail" type="button" class="btn bg-navy px-2 py-1 mb-3 mb-md-0">View Subscription</button>
                 </div>
             </div>
         </div>
     {% endfor %}
 
      <!-- modal for subscription services -->
-     <div class="modal fade" id="subscriptionDetail" tabindex="-1" aria-labelledby="subscriptionDetailLabel"
-     aria-hidden="true">
+<div class="modal fade" id="subscriptionDetail" tabindex="-1" aria-labelledby="subscriptionDetailLabel" aria-hidden="true">
    <div class="modal-dialog modal-dialog-centered modal-xl">
        <div class="modal-content">
            <div class="modal-header">
@@ -1096,5 +1095,10 @@
             numberInput.classList.toggle('d-none');
             numberInput.focus();
         });
+
+
+        document.getElementById('subscriptionDetailBtn').addEventListener('click',() => {
+            console.log('click hoisie')
+        })
     </script>
 {% endblock customjs %}
