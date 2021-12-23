@@ -14,15 +14,26 @@
     --shrinked-sidebar-width: 76px;
     --sidebar-width: 20%;
 }
+
 .select2-selection button {
     margin-block: initial;
 }
+
 body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
     font-family: 'Roboto', sans-serif;
     min-height: 100vh;
+}
+
+.btn-outline-navy {
+    border: 1px solid var(--var-primary-color);
+}
+
+.btn-outline-navy:hover {
+    background-color: var(--var-primary-color);
+    color: white;
 }
 
 ul {
