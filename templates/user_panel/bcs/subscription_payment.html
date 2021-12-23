@@ -1,0 +1,33 @@
+{% extends 'base/bcs_user_base.html' %} {% load static %} {% load hosts %} {% block title %} Payment {% endblock title %} {% block content %}
+
+<div class="subscription-container px-0 px-md-2">
+
+    <h5 class="fw-bold">Ekhane ekta nam diben</h5>
+    <h6 class="text-secondary">Ekhane diben: Please select a payment method</h6>
+    <div class="row my-5 shadow">
+        <div class="col-md-7">
+            ekhane dorkari jinis diben kivabe payment korbe oisob link
+        </div>
+        <div class="col-md-5 border-start border-secondary">
+            <table class="table">
+                <tr>
+                    <td>Package Name: </td>
+                    <td>Ekhane oi package er nam diben please</td>
+                </tr>
+                <tr>
+                    <td>Package details: </td>
+                    <td>mon chaile diyen</td>
+                </tr>
+                <tr>
+                    <td>Price: </td>
+                    <td>dam komaye raikhen</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock content %} {% block customjs %}
+<script>
+</script>
+{% endblock customjs %}

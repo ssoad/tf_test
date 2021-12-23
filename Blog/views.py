@@ -408,8 +408,6 @@ def indexView(request):
 
 
 def relatedPostView(request, tag):
-    print(tag)
-    #posts = models.Post.objects.all()
     posts = models.Post.objects.filter(
         Q(title__icontains=tag) | Q(short_description__icontains=tag))
     reading_lists = models.ReadingList.objects.filter(
@@ -426,7 +424,6 @@ def relatedPostView(request, tag):
 def postView(request, name):
     posts = models.Post.objects.all()
     post = models.Post.objects.get(post_url=name)
-    print(post.tag.all())
 
     comments = models.Comment.objects.filter(
         post=post).order_by('-comment_date')
