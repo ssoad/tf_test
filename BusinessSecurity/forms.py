@@ -97,7 +97,7 @@ class AddPackageFeatureForm(forms.ModelForm):
 class AddIndividualPackageFeatureForm(forms.ModelForm):
     class Meta:
         model = models.SubscriptionFeatures
-        fields = ['feature_name', ]
+        fields = ['feature_name', 'feature']
 
 
 class EventCreateForm(forms.ModelForm):
