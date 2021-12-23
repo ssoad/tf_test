@@ -230,6 +230,7 @@ class BCSAdminDashboardYearChartApiView(generics.ListAPIView):
         # print(end_date)
         all_months = list(range(start_date, end_date + 1))
         # print(all_months)
+        current_year = date.today().year
 
         subscription_count = []
         unsubscription_count = []
@@ -238,13 +239,15 @@ class BCSAdminDashboardYearChartApiView(generics.ListAPIView):
         query = bcsmodels.Order.objects.filter(category_choice='bcs')
 
         for month in all_months:
-            order = query.filter(order_date__month=month, service__is_subscription_based=False).count()
+            order = query.filter(order_date__month=month, order_date__year=current_year,
+                                 service__is_subscription_based=False).count()
             subscription_count.append(order)
         for month in all_months:
-            order = query.filter(order_date__month=month, service__is_subscription_based=True).count()
+            order = query.filter(order_date__month=month, order_date__year=current_year,
+                                 service__is_subscription_based=True).count()
             unsubscription_count.append(order)
         for month in all_months:
-            order = query.filter(order_date__month=month).count()
+            order = query.filter(order_date__month=month, order_date__year=current_year, ).count()
             total_count.append(order)
 
         datas = {
@@ -283,6 +286,7 @@ class BCSAdminDashboardMonthChartApiView(generics.ListAPIView):
         # print(end_date)
         all_dates = list(range(start_date, end_date + 1))
         # print(all_dates)
+        current_month = date.today().month
 
         subscription_count = []
         unsubscription_count = []
@@ -291,13 +295,15 @@ class BCSAdminDashboardMonthChartApiView(generics.ListAPIView):
         query = bcsmodels.Order.objects.filter(category_choice='bcs')
 
         for day in all_dates:
-            order = query.filter(order_date__day=day, service__is_subscription_based=False).count()
+            order = query.filter(order_date__day=day, order_date__month=current_month,
+                                 service__is_subscription_based=False).count()
             subscription_count.append(order)
         for day in all_dates:
-            order = query.filter(order_date__day=day, service__is_subscription_based=True).count()
+            order = query.filter(order_date__day=day, order_date__month=current_month,
+                                 service__is_subscription_based=True).count()
             unsubscription_count.append(order)
         for day in all_dates:
-            order = query.filter(order_date__day=day).count()
+            order = query.filter(order_date__day=day, order_date__month=current_month).count()
             total_count.append(order)
 
         datas = {
@@ -362,6 +368,7 @@ class PCSAdminDashboardYearChartApiView(generics.ListAPIView):
         start_date = 1
         end_date = date.today().month
         all_months = list(range(start_date, end_date + 1))
+        current_year = date.today().year
 
         subscription_count = []
         unsubscription_count = []
@@ -370,13 +377,15 @@ class PCSAdminDashboardYearChartApiView(generics.ListAPIView):
         query = bcsmodels.Order.objects.filter(category_choice='pcs')
 
         for month in all_months:
-            order = query.filter(order_date__month=month, service__is_subscription_based=False).count()
+            order = query.filter(order_date__month=month, order_date__year=current_year,
+                                 service__is_subscription_based=False).count()
             subscription_count.append(order)
         for month in all_months:
-            order = query.filter(order_date__month=month, service__is_subscription_based=True).count()
+            order = query.filter(order_date__month=month, order_date__year=current_year,
+                                 service__is_subscription_based=True).count()
             unsubscription_count.append(order)
         for month in all_months:
-            order = query.filter(order_date__month=month).count()
+            order = query.filter(order_date__month=month, order_date__year=current_year, ).count()
             total_count.append(order)
 
         datas = {
@@ -405,17 +414,20 @@ class PCSAdminDashboardMonthChartApiView(generics.ListAPIView):
         subscription_count = []
         unsubscription_count = []
         total_count = []
+        current_month = date.today().month
 
         query = bcsmodels.Order.objects.filter(category_choice='pcs')
 
         for day in all_dates:
-            order = query.filter(order_date__day=day, service__is_subscription_based=False).count()
+            order = query.filter(order_date__day=day, order_date__month=current_month,
+                                 service__is_subscription_based=False).count()
             subscription_count.append(order)
         for day in all_dates:
-            order = query.filter(order_date__day=day, service__is_subscription_based=True).count()
+            order = query.filter(order_date__day=day, order_date__month=current_month,
+                                 service__is_subscription_based=True).count()
             unsubscription_count.append(order)
         for day in all_dates:
-            order = query.filter(order_date__day=day).count()
+            order = query.filter(order_date__day=day, order_date__month=current_month).count()
             total_count.append(order)
 
         datas = {
@@ -476,6 +488,7 @@ class MainAdminDashboardYearChartApiView(generics.ListAPIView):
         start_date = 1
         end_date = date.today().month
         all_months = list(range(start_date, end_date + 1))
+        current_year = date.today().year
 
         subscription_count = []
         unsubscription_count = []
@@ -484,13 +497,15 @@ class MainAdminDashboardYearChartApiView(generics.ListAPIView):
         query = bcsmodels.Order.objects.all()
 
         for month in all_months:
-            order = query.filter(order_date__month=month, service__is_subscription_based=False).count()
+            order = query.filter(order_date__month=month, order_date__year=current_year,
+                                 service__is_subscription_based=False).count()
             subscription_count.append(order)
         for month in all_months:
-            order = query.filter(order_date__month=month, service__is_subscription_based=True).count()
+            order = query.filter(order_date__month=month, order_date__year=current_year,
+                                 service__is_subscription_based=True).count()
             unsubscription_count.append(order)
         for month in all_months:
-            order = query.filter(order_date__month=month).count()
+            order = query.filter(order_date__month=month, order_date__year=current_year).count()
             total_count.append(order)
 
         datas = {
@@ -519,17 +534,20 @@ class MainAdminDashboardMonthChartApiView(generics.ListAPIView):
         subscription_count = []
         unsubscription_count = []
         total_count = []
+        current_month = date.today().month
 
         query = bcsmodels.Order.objects.all()
 
         for day in all_dates:
-            order = query.filter(order_date__day=day, service__is_subscription_based=False).count()
+            order = query.filter(order_date__day=day, order_date__month=current_month,
+                                 service__is_subscription_based=False).count()
             subscription_count.append(order)
         for day in all_dates:
-            order = query.filter(order_date__day=day, service__is_subscription_based=True).count()
+            order = query.filter(order_date__day=day, order_date__month=current_month,
+                                 service__is_subscription_based=True).count()
             unsubscription_count.append(order)
         for day in all_dates:
-            order = query.filter(order_date__day=day).count()
+            order = query.filter(order_date__day=day, order_date__month=current_month).count()
             total_count.append(order)
 
         datas = {
@@ -562,3 +580,8 @@ class SubscriptionApiView(generics.ListAPIView):
     #         'price': '1223'
     #     })
     #     return Response(responseData)
+
+
+class SubscriptionOrderView(generics.CreateAPIView):
+    serializer_class = serializer.SubscriptionOrderSerializer
+    queryset = bcsmodels.SubscriptionOrder

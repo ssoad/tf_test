@@ -181,3 +181,9 @@ class SubscriptionSerializer(serializers.ModelSerializer):
         service.pop('is_subscription_based')
         service.pop('total_customer')
         return data
+
+
+class SubscriptionOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = bcsmodels.SubscriptionOrder
+        fields = '__all__'

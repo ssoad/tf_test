@@ -632,9 +632,14 @@ def bcsUserMyTeamProfileView(request, id):
 def subscriptionPayment(request, id):
     if not request.user.is_bcs:
         return HttpResponseRedirect(reverse('create_business'))
+    else:
+        current_package = models.SubscriptionBasedPackage.objects.get(id=id)
 
-    print(id)
-    return render(request, 'user_panel/bcs/subscription_payment.html')
+        context = {
+            'current_package': current_package,
+        }
+
+    return render(request, 'user_panel/bcs/subscription_payment.html', context)
 
 
 @login_required
