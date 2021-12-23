@@ -6,6 +6,18 @@
             text-transform: capitalize;
             margin-top: 8px
         }
+        .package .info-btn {
+            border-radius: .3rem !important;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+            background-color: #fff;
+            padding: .5rem .8rem;
+            margin-inline: auto;
+            margin-block-end: 10px;
+            box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%) !important;
+        }
     </style>
 
     <section class="services position-relative">
@@ -257,7 +269,7 @@
             </div>
             <div class="my-4 pt-5 px-3">
                 <div class="d-flex justify-content-center">
-                    <button id="subscriptionDetailBtn" data-bs-toggle="modal" data-bs-target="#subscriptionDetail" type="button" class="btn bg-navy px-2 py-1 mb-3 mb-md-0">View Subscription</button>
+                    <button id="{{service.id}}" data-bs-toggle="modal" data-bs-target="#subscriptionDetail" type="button" class="subscriptionDetailBtn btn bg-navy px-2 py-1">View Subscription</button>
                 </div>
             </div>
         </div>
@@ -268,295 +280,13 @@
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title fw-bold">PLUG & PLAY CYBERSECURITY SOLUTION</h5>
+                <h5 class="modal-title fw-bold"></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center">
-                <div class="package-details">
-                    <div class="row g-3 mx-0 d-flex justify-content-center">
-                        <div class="package col-sm-4 col-md-3">
-                            <div class="bg-lightgreen shadow p-3 rounded h-100">
-                                <h3 class="fw-bold fs-4">BASIC</h3>
-                                <table class="mx-auto mb-3">
-                                    <tr>
-                                        <td>CyberSecurity & Privacy Program
-                                        </td>
-                                        <td>&check;</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Risk Assesment
- 
-                                        </td>
-                                        <td>&check;</td>
-                                    </tr>
- 
-                                    <tr>
-                                        <td>Data Privacy & Protection
- 
-                                        </td>
-                                        <td>&check;</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Vendor Screening
- 
-                                        </td>
-                                        <td>&check;</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Incident Response Strategy
- 
-                                        </td>
-                                        <td>&check;</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Awareness & Training
- 
-                                        </td>
-                                        <td>&check;</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Continuous consultation
- 
-                                        </td>
-                                        <td>&#9679;</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Certification
- 
-                                        </td>
-                                        <td>&check;</td>
-                                    </tr>
-                                </table>
- 
-                                <div class="info-btn">
-                                    <p class="mb-0">
-                                        <i class="icofont-laptop fw-bold"></i> Max Workstations
-                                    </p>
-                                    <p class="mb-0 fw-bold">5</p>
-                                </div>
-                                <div class="mt-2 info-btn">
-                                    <p class="mb-0">
-                                        <i class="icofont-server"></i> Max Servers
-                                    </p>
-                                    <p class="mb-0 fw-bold">5</p>
-                                </div>
-                                <div class="mt-2 info-btn">
-                                    <p class="mb-0">
-                                        <i class="icofont-web"></i> Max Websites
-                                    </p>
-                                    <p class="mb-0 fw-bold">5</p>
-                                </div>
-                                <div class="mt-2 info-btn">
-                                    <p class="mb-0">
-                                        <i class="icofont-tag"></i> Price
-                                    </p>
-                                    <p class="mb-0 fw-bold">500$
-                                    </p>
-                                </div>
-                                <button class="mt-3 btn bg-navy px-3 py-1" data-bs-toggle="modal"
-                                        data-bs-target="#subscribeModal-1">Subscribe
-                                </button>
-                            </div>
-                        </div>
-                        <div class="package d-none d-sm-block col-sm-4 col-md-3">
-                            <div class="bg-lightgreen shadow p-3 rounded h-100">
-                                <h3 class="fw-bold fs-4">MEDIUM</h3>
-                                <table class="mx-auto mb-3">
-                                    <tr>
-                                        <td>CyberSecurity & Privacy Program
-                                        </td>
-                                        <td>&check;</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Risk Assesment
- 
-                                        </td>
-                                        <td>&check;</td>
-                                    </tr>
- 
-                                    <tr>
-                                        <td>Data Privacy & Protection
- 
-                                        </td>
-                                        <td>&check;</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Vendor Screening
- 
-                                        </td>
-                                        <td>&check;</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Incident Response Strategy
- 
-                                        </td>
-                                        <td>&check;</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Awareness & Training
- 
-                                        </td>
-                                        <td>&check;</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Continuous consultation
- 
-                                        </td>
-                                        <td>&#9679;</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Certification
- 
-                                        </td>
-                                        <td>&check;</td>
-                                    </tr>
-                                </table>
- 
-                                <div class="info-btn">
-                                    <p class="mb-0">
-                                        <i class="icofont-laptop fw-bold"></i> Max Workstations
-                                    </p>
-                                    <p class="mb-0 fw-bold">5</p>
-                                </div>
-                                <div class="mt-2 info-btn">
-                                    <p class="mb-0">
-                                        <i class="icofont-server"></i> Max Servers
-                                    </p>
-                                    <p class="mb-0 fw-bold">5</p>
-                                </div>
-                                <div class="mt-2 info-btn">
-                                    <p class="mb-0">
-                                        <i class="icofont-web"></i> Max Websites
-                                    </p>
-                                    <p class="mb-0 fw-bold">5</p>
-                                </div>
-                                <div class="mt-2 info-btn">
-                                    <p class="mb-0">
-                                        <i class="icofont-tag"></i> Price
-                                    </p>
-                                    <p class="mb-0 fw-bold">500$
-                                    </p>
-                                </div>
-                                <a class="mt-3 btn bg-navy px-3 py-1" href="">Subscribe</a>
-                            </div>
-                        </div>
-                        <div class="package d-none d-md-block col-sm-4 col-md-3">
-                            <div class="bg-lightgreen shadow p-3 rounded h-100">
-                                <h3 class="fw-bold fs-4">PREMIUM</h3>
-                                <table class="mx-auto mb-3">
-                                    <tr>
-                                        <td>CyberSecurity & Privacy Program
-                                        </td>
-                                        <td>&check;</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Risk Assesment
- 
-                                        </td>
-                                        <td>&check;</td>
-                                    </tr>
- 
-                                    <tr>
-                                        <td>Data Privacy & Protection
- 
-                                        </td>
-                                        <td>&check;</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Vendor Screening
- 
-                                        </td>
-                                        <td>&check;</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Incident Response Strategy
- 
-                                        </td>
-                                        <td>&check;</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Awareness & Training
- 
-                                        </td>
-                                        <td>&check;</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Continuous consultation
- 
-                                        </td>
-                                        <td>&#9679;</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Certification
- 
-                                        </td>
-                                        <td>&check;</td>
-                                    </tr>
-                                </table>
- 
-                                <div class="info-btn">
-                                    <p class="mb-0">
-                                        <i class="icofont-laptop fw-bold"></i> Max Workstations
-                                    </p>
-                                    <p class="mb-0 fw-bold">5</p>
-                                </div>
-                                <div class="mt-2 info-btn">
-                                    <p class="mb-0">
-                                        <i class="icofont-server"></i> Max Servers
-                                    </p>
-                                    <p class="mb-0 fw-bold">5</p>
-                                </div>
-                                <div class="mt-2 info-btn">
-                                    <p class="mb-0">
-                                        <i class="icofont-web"></i> Max Websites
-                                    </p>
-                                    <p class="mb-0 fw-bold">5</p>
-                                </div>
-                                <div class="mt-2 info-btn">
-                                    <p class="mb-0">
-                                        <i class="icofont-tag"></i> Price
-                                    </p>
-                                    <p class="mb-0 fw-bold">500$
-                                    </p>
-                                </div>
-                                <button class="mt-3 btn bg-navy px-3 py-1" data-bs-toggle="modal"
-                                        data-bs-target="#subscribeModal-1">Subscribe
-                                </button>
-                            </div>
-                        </div>
- 
-                        <div class="package d-none d-md-block col-sm-4 col-md-3">
-                            <div class="bg-lightgreen shadow p-3 rounded h-100">
-                                <h3 class="fw-bold fs-4 text-uppercase">Custom</h3>
-                                <article class="custom-info fw-bold">
-                                    <p>
-                                        Lorem Ipsum is simply dummy text of the printing and typesetting
-                                        industry. Lorem Ipsum has been the industry's standard dummy text ever
-                                        since the 1500s, when an unknown printer took a galley of type and
-                                        scrambled it to make a type specimen book. It has
-                                        survived not only five centuries, but also the leap into electronic
-                                        typesetting.
-                                    </p>
-                                </article>
-                                <li class="mt-4 mb-3 custom-info-listing"><span>Lorem Ipsum is simply dummy text of
-                                    the
-                                    printing.</span></li>
-                                <li class="mt-4 mb-3 custom-info-listing"><span>Lorem Ipsum is simply dummy text of
-                                    the
-                                    printing.</span></li>
-                                <li class="mt-4 mb-3 custom-info-listing"><span>Lorem Ipsum is simply dummy text of
-                                    the
-                                    printing.</span></li>
-                            </div>
-                        </div>
-                    </div>
- 
-                    <!-- if user has not subscribed any package -->
-                    <button class="mt-5 d-inline-block d-xl-none btn btn-outline-success px-3 fs-5"
-                            id="package-change">
-                        <i class="icofont-exchange"></i>
-                    </button>
- 
+                <div class="package-details row g-3">
+                   
+
                 </div>
             </div>
  
@@ -1095,9 +825,49 @@
             numberInput.classList.toggle('d-none');
             numberInput.focus();
         });
+        const packageDetails = document.querySelector(".package-details")
 
-        document.getElementById('subscriptionDetailBtn').addEventListener('click',() => {
-            console.log('click hoisie')
-        })
+        document.querySelector('.subscriptionDetailBtn').addEventListener('click',e => {
+            console.log(e.target.id);
+            packageDetails.innerHTML='';
+
+            fetch(`http://127.0.0.1:8000/api/bcs/package/${e.target.id}/`)
+            .then(response => response.json())
+            .then(result => {
+                document.querySelector('#subscriptionDetail .modal-title').textContent = result[0].service_name;
+                let divHtml;
+                result.map(subscription => {
+                    const div = document.createElement("div")
+                    div.classList.add("package", "bg-lightgreen", "shadow", "p-3", "rounded","col-md-3","mx-2","d-flex","flex-column","justify-content-between")
+                    divHtml = `<h3 class="fw-bold fs-4">${subscription.package_name}</h3> <div>`
+                    subscription.feature_subscription?.map((item, index) => {
+                        divHtml += `<div class="info-btn">
+                            <p class="mb-0">
+                            <i class="bi bi-box"></i> ${item.feature_name}
+                            </p>
+                            <p class="mb-0 fw-bold">${item.feature}</p>
+                            </div>`
+                    })
+                    divHtml += `<div class="mt-2 info-btn">
+                        <p class="mb-0">
+                        <i class="icofont-tag"></i> Price
+                        </p>
+                        <p class="mb-0 fw-bold">${subscription.price}$ <span class="fw-bolder">/${subscription.duration_type}</span>
+                        </p>
+                        </div>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                        <a href="{% host_url 'bcs_subscription_payment' %}${subscription.id}" class="mt-3 btn bg-navy px-5 py-1">Subscribe</a>
+                        </div>`
+                    div.innerHTML = divHtml
+                    packageDetails.appendChild(div)
+                })
+
+            })
+        });
+        
+       
+            
+        
     </script>
 {% endblock customjs %}
