@@ -97,7 +97,7 @@ class BlogFilterDateApiView(generics.ListAPIView):
 
 
 class PackageListViewApi(generics.ListAPIView):
-    permission_classes = [apipermissions.IsBCSAdmin]
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = serializer.PackageListSerializer
 
     # queryset = bcsmodels.SubscriptionBasedPackage.objects.all()
