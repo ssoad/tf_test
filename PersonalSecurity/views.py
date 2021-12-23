@@ -523,11 +523,13 @@ def pcsAdminSubscriptionServiceView(request):
     }
     return render(request, 'admin_panel/pcsTF/subscription-service.html', context)
 
+
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def pcsAdminServiceDeleteView(request, id):
     current_service = models.Service.objects.get(id=id)
     current_service.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def pcsAdminSubscriptionServiceEditView(request, id):
@@ -545,6 +547,7 @@ def pcsAdminSubscriptionServiceEditView(request, id):
         'form': form,
     }
     return render(request, 'admin_panel/pcsTF/editForm.html', context)
+
 
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def pcsAdminServiceEditView(request, id):
@@ -665,8 +668,30 @@ def pcsAdminSubscriptionList(request):
     return render(request, 'admin_panel/pcsTF/subscriptionList.html')
 
 
+@user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def pcsAdminSubscriptionPack(request):
-    return render(request, 'admin_panel/pcsTF/subscriptionPack.html')
+    form = pcsforms.AddPackageForm()
+    services = models.SubscriptionServices.objects.filter(category_choice='pcs')
+
+    if request.method == 'POST':
+        feature_names = request.POST.getlist('featureName')
+        features = request.POST.getlist('feature')
+        form = pcsforms.AddPackageForm(request.POST)
+        if form.is_valid():
+            package = form.save(commit=False)
+
+            package.save()
+            for feature_name, feature in zip(feature_names, features):
+                package_feature = models.SubscriptionFeatures.objects.get_or_create(package=package,
+                                                                                    feature_name=feature_name,
+                                                                                    feature=feature)
+                package_feature[0].save()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    context = {
+        'form': form,
+        'services': services,
+    }
+    return render(request, 'admin_panel/pcsTF/subscriptionPack.html', context)
 
 
 def pcsAdminReadingList(request):

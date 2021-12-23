@@ -307,7 +307,7 @@ class SubscriptionBasedPackage(models.Model):
     price = models.IntegerField()
 
     def __str__(self):
-        return self.package_name
+        return f'{self.package_name} - {self.service_id}'
 
     class Meta:
         verbose_name_plural = 'Subscription Based Packages'

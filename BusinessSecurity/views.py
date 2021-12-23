@@ -1236,6 +1236,7 @@ def bcsAdminServiceView(request):
     }
     return render(request, 'admin_panel/bcsTF/service.html', context)
 
+
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminSubscriptionServiceView(request):
     form = forms.AddSubscriptionServiceForm()
@@ -1265,17 +1266,20 @@ def bcsAdminSubscriptionServiceView(request):
     }
     return render(request, 'admin_panel/bcsTF/subscription-service.html', context)
 
+
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminSubscriptionServiceDeleteView(request, id):
     current_service = models.SubscriptionServices.objects.get(id=id)
     current_service.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminServiceDeleteView(request, id):
     current_service = models.Service.objects.get(id=id)
     current_service.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminSubscriptionServiceEditView(request, id):
@@ -1293,6 +1297,7 @@ def bcsAdminSubscriptionServiceEditView(request, id):
         'form': form,
     }
     return render(request, 'admin_panel/bcsTF/editForm.html', context)
+
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminServiceEditView(request, id):
@@ -1436,20 +1441,24 @@ def bcsAdminSubscriptionListView(request):
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminSubscriptionPack(request):
     form = forms.AddPackageForm()
-    form2 = forms.AddPackageFeatureForm()
     services = models.SubscriptionServices.objects.filter(category_choice='bcs')
-    print(request.POST)
-    # if request.method == 'POST':
-    #     if 'package-btn' in request.POST:
-    #         form = forms.AddPackageForm(request.POST)
-    #         form.save()
-    #     elif 'feature-btn' in request.POST:
-    #         form2 = forms.AddPackageFeatureForm(request.POST)
-    #         form2.save()
-    #     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+    if request.method == 'POST':
+        feature_names = request.POST.getlist('featureName')
+        features = request.POST.getlist('feature')
+        form = forms.AddPackageForm(request.POST)
+        if form.is_valid():
+            package = form.save(commit=False)
+
+            package.save()
+            for feature_name, feature in zip(feature_names, features):
+                package_feature = models.SubscriptionFeatures.objects.get_or_create(package=package,
+                                                                                    feature_name=feature_name,
+                                                                                    feature=feature)
+                package_feature[0].save()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
         'form': form,
-        'form2': form2,
         'services': services,
     }
     return render(request, 'admin_panel/bcsTF/subscriptionPack.html', context)
