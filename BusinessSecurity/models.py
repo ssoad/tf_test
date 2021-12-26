@@ -41,6 +41,7 @@ class SubscriptionServices(models.Model):
     category_choice = models.CharField(choices=category_choice, max_length=255)
     category = models.ForeignKey(
         ServiceCategory, on_delete=models.CASCADE, related_name='subscription_service_category')
+    product_id = models.CharField(max_length=255, blank=True)
 
     service_icon = models.ImageField(
         upload_to='service_icon/', verbose_name='Service Icon')
@@ -295,7 +296,8 @@ class TicketComment(models.Model):
 
 
 class SubscriptionBasedPackage(models.Model):
-    service_id = models.ForeignKey(SubscriptionServices, on_delete=models.CASCADE)
+    service_id = models.ForeignKey(SubscriptionServices, on_delete=models.CASCADE, related_name='package_subscription_service')
+    package_id = models.CharField(max_length=255, blank=True)
     package_name = models.CharField(
         max_length=264, verbose_name='Package Name')
     duration = models.IntegerField()

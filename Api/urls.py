@@ -15,6 +15,7 @@ urlpatterns = [
          name='blog_filter_date_view_api'),
 
     path('bcs/package/<id>/', views.PackageListViewApi.as_view(), name='package_list_api'),
+    path('bcs/subscription_service/<id>/', views.SubscriptionServiceApiView.as_view(), name='subscription_service'),
 
     path('bcs/services/<cat>/', views.ServiceListApiView.as_view(), name='service_list_api'),
     path('bcs/sub_service/<id>/', views.SubServiceApiView.as_view(), name='subservice_list_api'),

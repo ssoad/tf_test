@@ -107,6 +107,16 @@ class PackageListViewApi(generics.ListAPIView):
         return bcsmodels.SubscriptionBasedPackage.objects.filter(service_id=service_id)
 
 
+class SubscriptionServiceApiView(generics.RetrieveAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = serializer.SubscriptionServiceSerializer
+    lookup_field = 'id'
+
+    def get_queryset(self):
+        service_id = self.kwargs['id']
+        return bcsmodels.SubscriptionServices.objects.filter(id=service_id)
+
+
 class ServiceListApiView(generics.ListAPIView):
     serializer_class = serializer.ServiceSerializer
     permission_classes = [permissions.IsAuthenticated]

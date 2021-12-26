@@ -8,7 +8,7 @@
             <div class="col-md-7">
                 <div id="smart-button-container">
                     <div style="text-align: center;">
-                        <div id="paypal-button-container"></div>
+                        <div id="paypal-button-container-P-27S97660DE510432CMHD7J3Y"></div>
                     </div>
                 </div>
             </div>
@@ -31,70 +31,35 @@
         </div>
 
     </div>
+
+
+
 {% endblock content %}
 {% block customjs %}
-    <script src="https://www.paypal.com/sdk/js?client-id=AfTmv1E8P0HbJCkRMtm7s_07rqkJCGvp4WufOBxLWUl5AFujlsqmn6WdpMZo-nQr-yKVTnogZOQYgLnl&enable-funding=venmo&currency=USD"
-            data-sdk-integration-source="button-factory"></script>
-
-    <script>
-        function initPayPalButton() {
-            paypal.Buttons({
-                style: {
-                    shape: 'rect',
-                    color: 'gold',
-                    layout: 'vertical',
-                    label: 'paypal',
-
-                },
-
-                createOrder: function (data, actions) {
-                    return actions.order.create({
-                        purchase_units: [{"amount": {"currency_code": "USD", "value": {{ current_package.price }}}}]
-                    });
-                },
-
-                onApprove: function (data, actions) {
-                    return actions.order.capture().then(function (orderData) {
-
-                        // Full available details
-                        console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
-
-                        // Show a success message within this page, e.g.
-                        const element = document.getElementById('paypal-button-container');
-                        element.innerHTML = '';
-                        element.innerHTML = '<h3>Thank you for your payment!</h3>';
-
-                        // Or go to another URL:  actions.redirect('thank_you.html');
-
-                    });
-                },
-
-                onError: function (err) {
-                    console.log(err);
-                }
-            }).render('#paypal-button-container');
-        }
-
-        initPayPalButton();
-
-        function getCookie(name) {
-            var cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                var cookies = document.cookie.split(';');
-                for (var i = 0; i < cookies.length; i++) {
-                    var cookie = cookies[i].trim();
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
-
-        var csrftoken = getCookie('csrftoken');
-        console.log(csrftoken)
-    </script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AfTmv1E8P0HbJCkRMtm7s_07rqkJCGvp4WufOBxLWUl5AFujlsqmn6WdpMZo-nQr-yKVTnogZOQYgLnl&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
+<script>
+  paypal.Buttons({
+      style: {
+          shape: 'rect',
+          color: 'gold',
+          layout: 'vertical',
+          label: 'subscribe'
+      },
+      createSubscription: function(data, actions) {
+        return actions.subscription.create({
+          /* Creates the subscription */
+          plan_id: 'P-27S97660DE510432CMHD7J3Y',
+          quantity: 1 // The quantity of the product for a subscription
+        });
+      },
+      onApprove: function(data, actions) {
+          console.log(data)
+        alert(data.subscriptionID); // You can add optional success message for the subscriber here
+      }
+  }).render('#paypal-button-container-P-27S97660DE510432CMHD7J3Y'); // Renders the PayPal button
+</script>
 {% endblock customjs %}
+
+
 
 
