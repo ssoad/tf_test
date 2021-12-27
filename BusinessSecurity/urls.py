@@ -6,8 +6,8 @@ from BusinessSecurity import views
 urlpatterns = [
     path('', views.indexView, name='home'),
 
-    path('about_us', views.aboutUsView, name='aboutus'),
-    path('enterprise_cybersecurity', views.enterpriseCyberSecurityView,
+    path('about_us/', views.aboutUsView, name='aboutus'),
+    path('enterprise_cybersecurity/', views.enterpriseCyberSecurityView,
          name='enterprise_cybersecurity'),
     path('vulnerability_assessment/', views.vulnerabilityAssessmentView,
          name='vulnerability_assessment'),
