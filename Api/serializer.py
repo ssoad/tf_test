@@ -69,9 +69,17 @@ class PackageListSerializer(serializers.ModelSerializer):
     # feature_subscription = serializers.StringRelatedField(many=True)
     feature_subscription = FeatureSubscriptionsSerializer(many=True)
     service_name = serializers.CharField(source='service_id.service_title')
+    product_id = serializers.CharField(source='service_id.product_id')
 
     class Meta:
         model = bcsmodels.SubscriptionBasedPackage
+        fields = '__all__'
+
+
+class SubscriptionServiceSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = bcsmodels.SubscriptionServices
         fields = '__all__'
 
 
@@ -181,3 +189,9 @@ class SubscriptionSerializer(serializers.ModelSerializer):
         service.pop('is_subscription_based')
         service.pop('total_customer')
         return data
+
+
+class SubscriptionOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = bcsmodels.SubscriptionOrder
+        fields = '__all__'

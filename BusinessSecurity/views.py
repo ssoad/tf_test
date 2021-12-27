@@ -632,9 +632,14 @@ def bcsUserMyTeamProfileView(request, id):
 def subscriptionPayment(request, id):
     if not request.user.is_bcs:
         return HttpResponseRedirect(reverse('create_business'))
+    else:
+        current_package = models.SubscriptionBasedPackage.objects.get(id=id)
 
-    print(id)
-    return render(request, 'user_panel/bcs/subscription_payment.html')
+        context = {
+            'current_package': current_package,
+        }
+
+    return render(request, 'user_panel/bcs/subscription_payment.html', context)
 
 
 @login_required
@@ -1292,10 +1297,13 @@ def bcsAdminSubscriptionServiceView(request):
 
     if request.method == 'POST':
         form = forms.AddSubscriptionServiceForm(request.POST, request.FILES)
+        # print(request.POST)
         if form.is_valid():
             service = form.save(commit=False)
             service.category_choice = 'bcs'
+            service.product_id = request.POST.get('product_id')
             service.save()
+
             # for sale_id in request.POST.getlist('sales'):
             #     current_sales = models.User.objects.get(id=sale_id)
             #     current_assigned = models.ServiceAssigned.objects.get_or_create(user=current_sales)
@@ -1504,6 +1512,7 @@ def bcsAdminSubscriptionPack(request):
         form = forms.AddPackageForm(request.POST)
         if form.is_valid():
             package = form.save(commit=False)
+            package.package_id = request.POST.get('package_id')
 
             package.save()
             for feature_name, feature in zip(feature_names, features):

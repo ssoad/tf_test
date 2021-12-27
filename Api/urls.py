@@ -14,7 +14,8 @@ urlpatterns = [
     path('blogs/filter/date/<category>/<text>/', views.BlogFilterDateApiView.as_view(),
          name='blog_filter_date_view_api'),
 
-    path('bcs/package/<id>/', views.PackageListViewApi.as_view(), name='package_list_api'),  # Not
+    path('bcs/package/<id>/', views.PackageListViewApi.as_view(), name='package_list_api'),
+    path('bcs/subscription_service/<id>/', views.SubscriptionServiceApiView.as_view(), name='subscription_service'),
 
     path('bcs/services/<cat>/', views.ServiceListApiView.as_view(), name='service_list_api'),
     path('bcs/sub_service/<id>/', views.SubServiceApiView.as_view(), name='subservice_list_api'),
@@ -41,4 +42,6 @@ urlpatterns = [
     path('main/main_admin_month_chart/', views.MainAdminDashboardMonthChartApiView.as_view(),
          name='main_admin_month_chart'),
     path('bcs/bcs_subscriptions/<service>/', views.SubscriptionApiView.as_view(), name='bcs_subscriptions'),
+
+    path('bcs/subscription_order/<id>/', views.SubscriptionOrderView.as_view(), name='subscription_order'),
 ]

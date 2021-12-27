@@ -41,6 +41,7 @@ class SubscriptionServices(models.Model):
     category_choice = models.CharField(choices=category_choice, max_length=255)
     category = models.ForeignKey(
         ServiceCategory, on_delete=models.CASCADE, related_name='subscription_service_category')
+    product_id = models.CharField(max_length=255, blank=True)
 
     service_icon = models.ImageField(
         upload_to='service_icon/', verbose_name='Service Icon')
@@ -295,12 +296,10 @@ class TicketComment(models.Model):
 
 
 class SubscriptionBasedPackage(models.Model):
-    service_id = models.ForeignKey(SubscriptionServices, on_delete=models.CASCADE)
+    service_id = models.ForeignKey(SubscriptionServices, on_delete=models.CASCADE, related_name='package_subscription_service')
+    package_id = models.CharField(max_length=255, blank=True)
     package_name = models.CharField(
         max_length=264, verbose_name='Package Name')
-    # servers = models.IntegerField()
-    # websites = models.IntegerField()
-    # workstations = models.IntegerField()
     duration = models.IntegerField()
     duration_type = models.CharField(
         choices=duration_type, max_length=264, default='month')
@@ -326,6 +325,28 @@ class SubscriptionFeatures(models.Model):
 
     class Meta:
         verbose_name_plural = 'Package Features'
+
+
+class SubscriptionOrder(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE,
+                             related_name='subscriptionorder_user')
+    subscription_service = models.ForeignKey(SubscriptionServices, on_delete=models.CASCADE,
+                                             related_name='subscriptionorder_subscriptionservice')
+    subscription_package = models.ForeignKey(SubscriptionBasedPackage, on_delete=models.CASCADE,
+                                             related_name='subscriptionorder_subscriptionpackage')
+    paypal_email = models.EmailField()
+    paypal_id = models.CharField(max_length=255)
+    paypal_user_name = models.CharField(max_length=255)
+    payment_id = models.CharField(max_length=255)
+    create_time = models.DateTimeField()
+    update_time = models.DateTimeField()
+    amount = models.IntegerField()
+    currency = models.CharField(max_length=255)
+
+    is_active = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.user} - {self.subscription_service} - {self.subscription_package} - {self.is_active}'
 
 
 class UserAllowed(models.Model):
