@@ -67,10 +67,34 @@
                     </div>
                 {% endfor %}
 
+
+                <h5 class="mt-2 services-type">Training</h5>
+                <div class="row mx-0 mb-4 gy-4 pt-4 justify-content-center">
+                    {% for course in courses %}
+                        <div class="col-md-4 px-0 pe-md-5">
+                            <div class="bg-lightgreen p-2 rounded shadow-md">
+                                <div class="text-center">
+                                    <img class="service-icon" src="{% static 'img/training hat.png' %}">
+                                </div>
+                                <div class="ps-2 mt-2 text-center">
+                                    <h6 class="service-title">{{ course.course_name }}</h6>
+                                    <p class="lh-1 fs-14">
+                                        {{ course.short_description }}
+                                    </p>
+                                </div>
+                                <div class="view-btn">
+                                    <button class="{{ course.course_name|replacespace }}-training btn btn-sm">View
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
             </div>
         </div>
 
-        <div class="services-content">
+        {% comment %} <div class="services-content">
             <div class="content-detail pe-2 mt-5">
                 <h5 class="mt-2 services-type">Training</h5>
                 <div class="row mx-0 mb-4 gy-4 pt-4 justify-content-center">
@@ -95,7 +119,7 @@
                     {% endfor %}
                 </div>
             </div>
-        </div>
+        </div> {% endcomment %}
 
         <!-- services start.. loaded services details  -->
         {% for service in services %}
@@ -192,7 +216,7 @@
 
         <!-- training details  -->
         {% for course in courses %}
-            <div class="{{ course.course_name | replacespace }} preview-service-info pt-3 pb-5 d-none">
+            <div class="{{ course.course_name | replacespace }}-training preview-service-info pt-3 pb-5 d-none">
                 <div class='d-none'>
                     {{ course.course_name }}
                 </div>
