@@ -1297,7 +1297,7 @@ def bcsAdminSubscriptionServiceView(request):
 
     if request.method == 'POST':
         form = forms.AddSubscriptionServiceForm(request.POST, request.FILES)
-        print(request.POST)
+        # print(request.POST)
         if form.is_valid():
             service = form.save(commit=False)
             service.category_choice = 'bcs'
