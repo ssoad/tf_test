@@ -209,8 +209,8 @@ def userServicesView(request):
     if request.method == 'POST':
         data_list = request.POST
         file_list = request.FILES
-        print(data_list)
-        print(file_list)
+        # print(data_list)
+        # print(file_list)
 
         current_service = get_object_or_404(models.Service, service_title=data_list['service_name'],
                                             category_choice='pcs')
@@ -261,6 +261,7 @@ def userServicesView(request):
         'subscription_services': subscription_services,
         'subscription_services_headings': list(subscription_services.values_list('service_title', flat=True)),
         'courses': courses,
+        'courses_headings': list(courses.values_list('course_name', flat=True)),
     }
     return render(request, 'user_panel/pcs/services.html', context)
 
