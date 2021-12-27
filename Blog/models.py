@@ -107,3 +107,11 @@ class ReadingList(models.Model):
 
     def __str__(self):
         return f'{self.user} - {self.post}'
+
+
+class BlogSubscription(models.Model):
+    full_name = models.CharField(max_length=255)
+    email = models.EmailField()
+
+    def __str__(self):
+        return f'{self.full_name} - {self.email}'
