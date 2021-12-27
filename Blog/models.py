@@ -4,6 +4,9 @@ from Account.models import User
 from tinymce.models import HTMLField
 import datetime
 
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+
 # Create your models here.
 COMMENT_OPTIONS = (
     ('disabled', 'Disable Comments'),
@@ -107,3 +110,17 @@ class ReadingList(models.Model):
 
     def __str__(self):
         return f'{self.user} - {self.post}'
+
+
+class BlogSubscription(models.Model):
+    full_name = models.CharField(max_length=255)
+    email = models.EmailField(unique=True)
+
+    def __str__(self):
+        return f'{self.full_name} - {self.email}'
+
+
+@receiver(post_save, sender=Post)
+def send_email(sender, instance, created, *args, **kwargs):
+    if created:
+        print(BlogSubscription.objects.all())

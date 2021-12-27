@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 from decouple import config
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,7 +29,8 @@ SECRET_KEY = 'django-insecure-j55@su5sxajtqf_yed#+^vn&p0l=ovow1^6cp$&05so^8^l3th
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0', '44.242.38.198', 'main.techforing.com', 'pcs.techforing.com', 'training.techforing.com',
+                 '127.0.0.1', 'localhost']
 
 # Application definition
 
@@ -115,7 +117,6 @@ TINYMCE_SPELLCHECKER = True
 # TINYMCE_FILEBROWSER = True
 
 
-
 # Crispy_Forms_Settings
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
@@ -185,10 +186,8 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS')
 DEFAULT_FROM_EMAIL = 'Techforing <testtechforing@gmail.com>'
 
-
-
 MIDDLEWARE = [
-    'django_hosts.middleware.HostsRequestMiddleware', #for django-host
+    'django_hosts.middleware.HostsRequestMiddleware',  # for django-host
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     "corsheaders.middleware.CorsMiddleware",
@@ -197,23 +196,32 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_hosts.middleware.HostsResponseMiddleware', #for django-host
+    'django_hosts.middleware.HostsResponseMiddleware',  # for django-host
 ]
+# For Development
+# SESSION_COOKIE_DOMAIN = '127.0.0.1'
+# SESSION_COOKIE_NAME = 'techforingsessionid'
+# SESSION_COOKIE_SECURE = True
+# SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+# ROOT_URLCONF = 'MainTechforing.urls'
+# ROOT_HOSTCONF = 'MainTechforing.hosts'
+# DEFAULT_HOST = 'main'
+# PARENT_HOST = '127.0.0.1:8000'
 
-SESSION_COOKIE_DOMAIN = '127.0.0.1'
+# For Production
+SESSION_COOKIE_DOMAIN = '.techforing.com'
 SESSION_COOKIE_NAME = 'techforingsessionid'
 SESSION_COOKIE_SECURE = True
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
-
 ROOT_URLCONF = 'MainTechforing.urls'
 ROOT_HOSTCONF = 'MainTechforing.hosts'
 DEFAULT_HOST = 'main'
-PARENT_HOST = '127.0.0.1:8000'
+PARENT_HOST = 'techforing.com'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATES_DIR],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -221,6 +229,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'Blog.context_processor.BlogSubscribe',
             ],
         },
     },
@@ -231,25 +240,27 @@ WSGI_APPLICATION = 'MainTechforing.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# For Development
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'techforing',
-#         'USER': 'root',
-#         'PASSWORD': '',
-#         'HOST': 'localhost',
-#         'PORT': '3306',
-#         'OPTIONS': {
-#             'sql_mode': 'traditional',
-#         }
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+# For Production
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+     'default': {
+         'ENGINE': 'django.db.backends.mysql',
+         'NAME': 'main_techforing_v3',
+         'USER': 'root',
+         'PASSWORD': 'hOLL4m&*%$',
+         'OPTIONS': {
+             'sql_mode': 'traditional',
+         }
+     }
+ }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -287,7 +298,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/static/'
-STATICFILES_DIRS = [STATIC_DIR, ]
+STATICFILES_DIRS = ['static']
+
+# tiny config
+TINYMCE_JS_URL = os.path.join(STATIC_URL, "tinymce/tinymce.min.js")
+TINYMCE_JS_ROOT = os.path.join(STATIC_ROOT, "tinymce")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -311,7 +326,7 @@ CORS_ALLOWED_ORIGINS = [
 
 # Media
 MEDIA_URL = '/media/'
-MEDIA_ROOT = MEDIA_DIR
+MEDIA_ROOT = 'media'
 
 # Login
 LOGIN_URL = '/accounts/login/'

@@ -1,4 +1,6 @@
-{% load static %}{% load hosts %}
+{% load static %}
+{% load hosts %}
+{% load crispy_forms_tags %}
 <!DOCTYPE html>
 <html lang="en-US" prefix="og: https://ogp.me/ns#">
 
@@ -104,14 +106,13 @@
                 </div>
                 <div class="col-md-7">
                     <div class="get-updates">
-                        <form class="row">
+                        <form class="row" method="POST">
+                            {% csrf_token %}
                             <div class="col-12 col-md-auto">
-                                <label for="name">Name</label>
-                                <input type="text" class="form-control" id="name" placeholder="Enter your name">
+                                {{ subscribe_form.full_name|as_crispy_field }}
                             </div>
                             <div class="col-12 col-md-auto">
-                                <label for="email">Email Address</label>
-                                <input type="email" class="form-control" id="email" placeholder="Enter your email address">
+                                {{ subscribe_form.email|as_crispy_field }}
                             </div>
                             <div class="col-auto d-flex align-items-end mt-3 mt-lg-0">
                                 <button type="submit" class="btn btn-navy py-2">Subscribe <i
