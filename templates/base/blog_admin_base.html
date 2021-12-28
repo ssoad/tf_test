@@ -25,18 +25,23 @@
     <title>
         {% block title %} {% endblock title %}
     </title>
+    <script>
+        let mainOrigin = location.origin;
+        if(!location.origin.includes('127.0.0.1') && !location.origin.includes('localhost'))
+            mainOrigin = 'https://main.techforing.com';
+    </script>
     <style>
     thead{
         text-transform: capitalize
     }
-    table tbody td, table thead th {
-     text-align: left !important; 
-}
-.dataTables_scrollHeadInner,.dataTables_scrollHeadInner table{
-    width: 100% !important;
-}
+        table tbody td, table thead th {
+        text-align: left !important; 
+    }
+    .dataTables_scrollHeadInner,.dataTables_scrollHeadInner table{
+        width: 100% !important;
+    }
     </style>
-    <link rel="icon" href="{%static ''%}tfimg/user_panel/Techforing-Icon.png" type="image/x-icon" />
+    <link rel="icon" href="{%static 'tfimg/user_panel/Techforing-Icon.png'%}" type="image/x-icon" />
 </head>
 
 <body>
@@ -86,6 +91,9 @@
                             <i class="bi bi-gear-wide-connected"></i> <span class="nav-text">Category</span>
                         </a>
                     </li>
+                    <button class="btn menu-expand-btn btn-outline-navy mt-3 mx-auto d-block">
+                        <i class="icofont-long-arrow-left"></i> Close
+                    </button>
                 </ul>
                 <!-- nav links ends here -->
             </div>

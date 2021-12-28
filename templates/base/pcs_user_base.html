@@ -19,6 +19,11 @@
         {% block title %} {% endblock title %}
     </title>
     <link rel="icon" href="{% static '' %}tfimg/user_panel/Techforing-Icon.png" type="image/x-icon"/>
+    <script>
+        let mainOrigin = location.origin;
+        if(!location.origin.includes('127.0.0.1') && !location.origin.includes('localhost'))
+            mainOrigin = 'https://main.techforing.com';
+    </script>
 </head>
 
 <body style="min-height: 100vh">
@@ -123,12 +128,12 @@
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center fw-bolder">
                     {% if user.business_user.privilege != 'general_staff' %}
                         <li class="nav-item me-4">
-                            <a class="nav-link text-navy fw-bold py-0" href="{% host_url 'bcs_user_dashboard' %}">Service
+                            <a class="nav-link text-green fw-bold py-0" href="{% host_url 'bcs_user_dashboard' %}">Service
                                 For Your Business</a>
                         </li>
                     {% else %}
                         <li class="nav-item me-4">
-                            <a class="nav-link text-navy fw-bold py-0" href="{% host_url 'bcs_user_my_team' %}">Service
+                            <a class="nav-link text-green fw-bold py-0" href="{% host_url 'bcs_user_my_team' %}">Service
                                 For Your Business</a>
                         </li>
                     {% endif %}

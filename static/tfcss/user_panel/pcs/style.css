@@ -150,7 +150,7 @@ a {
 }
 
 .text-green {
-    color: #5BBC2E;
+    color: #5BBC2E !important;
 }
 
 .bg-green {

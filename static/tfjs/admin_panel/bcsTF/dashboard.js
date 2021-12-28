@@ -1,7 +1,5 @@
-let expanded = false;
 
 const showCheckboxes = (checkboxes) => {
-    console.log(checkboxes);
     if (!expanded) {
         checkboxes.style.display = "block";
         expanded = true;
@@ -24,8 +22,8 @@ $(function () {
         function (ev, picker) {
             $(this).val(
                 picker.startDate.format("MM/DD/YYYY") +
-                    " - " +
-                    picker.endDate.format("MM/DD/YYYY")
+                " - " +
+                picker.endDate.format("MM/DD/YYYY")
             );
         }
     );

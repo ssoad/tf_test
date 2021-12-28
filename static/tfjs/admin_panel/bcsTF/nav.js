@@ -66,23 +66,7 @@ hamburger.addEventListener("click", () => {
 
 sideBarClose.addEventListener("click", () => {
   aside.classList.remove("show-aside")
-})
-let expanded = localStorage.getItem("sidebar-expanded");
-const shrinkBtn = document.querySelector(".shrink-btn");
-let expandBtn = document.querySelector('.menu-expand-btn');
-
-shrinkBtn.addEventListener("click", () => {
-  expanded = expanded == 'true' ? 'false' : 'true';
-  // Store value to local storage
-  localStorage.setItem("sidebar-expanded", expanded);
-  updateSidebar();
-})
-expandBtn.addEventListener("click", () => {
-  expanded = expanded == 'true' ? 'false' : 'true';
-  // Store value to local storage
-  localStorage.setItem("sidebar-expanded", expanded);
-  updateSidebar();
-})
+});
 
 const updateSidebar = () => {
   if (expanded == 'true') {
@@ -108,4 +92,23 @@ const updateSidebar = () => {
     shrinkBtn.classList.remove('invisible')
   }
 }
+
+let expanded = localStorage.getItem("sidebar-expanded");
+const shrinkBtn = document.querySelector(".shrink-btn");
+let expandBtn = document.querySelector('.menu-expand-btn');
+
+shrinkBtn.addEventListener("click", () => {
+  expanded = expanded == 'true' ? 'false' : 'true';
+  // Store value to local storage
+  localStorage.setItem("sidebar-expanded", expanded);
+  updateSidebar();
+})
+expandBtn.addEventListener("click", () => {
+  expanded = expanded == 'true' ? 'false' : 'true';
+  // Store value to local storage
+  localStorage.setItem("sidebar-expanded", expanded);
+  updateSidebar();
+})
+
+
 updateSidebar();
