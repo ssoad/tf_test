@@ -120,7 +120,7 @@ class ReadingList(models.Model):
 #         return f'{self.full_name} - {self.email}'
 
 
-@receiver(post_save, sender=Post)
-def send_email(sender, instance, created, *args, **kwargs):
-    if created:
-        print(BlogSubscription.objects.all())
+# @receiver(post_save, sender=Post)
+# def send_email(sender, instance, created, *args, **kwargs):
+#     if created:
+#         print(BlogSubscription.objects.all())

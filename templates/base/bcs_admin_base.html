@@ -218,10 +218,27 @@
                     {#                        </a>#}
                     {#                    </li>#}
                     {#                    <div class="div"></div>#}
-                    <li data-tootik="Training" data-tootik-conf="right">
-                        <a href="{% host_url 'bcs_admin_training' %}" class="nav-link">
-                            <i class="bi bi-award-fill"></i> <span class="nav-text">Training</span>
-                        </a>
+
+                    <li data-tootik="training" data-tootik-conf="right">
+                        <span class="nav-link dropdown-btn dropdown-toggle" id="navbarDropdown" role="button"
+                              data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-award-fill"></i>
+                            <span class="nav-text">Training</span>
+                        </span>
+                        <ul class="dropdown-container" aria-labelledby="navbarDropdown">
+                            <li data-tootik="dashboard" data-tootik-conf="right">
+                                <a class="dropdown-item nav-link"
+                                   href="{% host_url 'bcs_admin_training_category' %}">
+                                    Training Category
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item nav-link"
+                                   href="{% host_url 'bcs_admin_training' %}">
+                                    Training
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <div class="div"></div>
                     <li data-tootik="Tickets" data-tootik-conf="right">

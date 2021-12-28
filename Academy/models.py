@@ -18,7 +18,16 @@ course_type = (
 )
 
 
+class CourseCategory(models.Model):
+    course_type = models.CharField(max_length=264, choices=course_type)
+    category_name = models.CharField(max_length=264)
+
+    def __str__(self):
+        return f'{self.course_type} - {self.category_name}'
+
+
 class Course(models.Model):
+    course_category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE, related_name='course_coursecategory')
     course_type = models.CharField(max_length=264, choices=course_type)
     course_name = models.CharField(max_length=264)
     duration = models.CharField(max_length=264, choices=duration)
