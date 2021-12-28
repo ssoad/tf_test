@@ -602,6 +602,9 @@ class PCSCoursePurchaseApiView(generics.CreateAPIView):
     serializer_class = serializer.PCSCoursePurchaseSerializer
     queryset = coursemodels.CoursePurchase.objects.all()
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
     def create(self, request, *args, **kwargs):
         course = request.data['course']
         try:
@@ -612,4 +615,3 @@ class PCSCoursePurchaseApiView(generics.CreateAPIView):
             ser.is_valid(raise_exception=True)
             self.perform_create(ser)
             return Response(ser.data)
-

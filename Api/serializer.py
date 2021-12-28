@@ -201,3 +201,6 @@ class PCSCoursePurchaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = coursemodels.CoursePurchase
         fields = '__all__'
+        extra_kwargs = {
+            'user': {'read_only': True}
+        }
