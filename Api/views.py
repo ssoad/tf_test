@@ -5,6 +5,7 @@ from Api import serializer
 from rest_framework import generics
 from Blog import models
 from BusinessSecurity import models as bcsmodels
+from Academy import models as coursemodels
 from rest_framework import permissions, pagination, filters
 from datetime import date
 from django.db.models import Q
@@ -595,3 +596,32 @@ class SubscriptionApiView(generics.ListAPIView):
 class SubscriptionOrderView(generics.CreateAPIView):
     serializer_class = serializer.SubscriptionOrderSerializer
     queryset = bcsmodels.SubscriptionOrder
+
+
+class PCSCoursePurchaseCheckApiView(generics.ListAPIView):
+    queryset = coursemodels.CoursePurchase
+
+    def list(self, request, *args, **kwargs):
+        purchased_list = coursemodels.CoursePurchase.objects.filter(user=self.request.user).values_list('course_id',
+                                                                                                        flat=True)
+        print(purchased_list)
+        return Response({'result': purchased_list})
+
+
+class PCSCoursePurchaseApiView(generics.CreateAPIView):
+    serializer_class = serializer.PCSCoursePurchaseSerializer
+    queryset = coursemodels.CoursePurchase.objects.all()
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def create(self, request, *args, **kwargs):
+        course = request.data['course']
+        try:
+            check_existing_order = coursemodels.CoursePurchase.objects.get(user=self.request.user, course_id=course)
+            return Response({'response': 'You have already purchased this course'})
+        except:
+            ser = self.get_serializer(data=request.data)
+            ser.is_valid(raise_exception=True)
+            self.perform_create(ser)
+            return Response(ser.data)

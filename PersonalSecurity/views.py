@@ -269,6 +269,26 @@ def userServicesView(request):
 
 
 @login_required
+def pcsUserCourseDetail(request, id):
+    course = Course.objects.get(id=id)
+    sections = Section.objects.filter(course=course)
+    context = {
+        'course': course,
+        'sections': sections,
+    }
+    return render(request, 'user_panel/pcs/courseDetails.html', context)
+
+
+@login_required
+def pcsUserCoursePayment(request, id):
+    course = Course.objects.get(id=id)
+    context = {
+        'course': course,
+    }
+    return render(request, 'user_panel/pcs/course_payment.html', context)
+
+
+@login_required
 def userQuotationsHistoryView(request):
     orders = models.Order.objects.filter(
         Q(user=request.user, category_choice='pcs') & Q(

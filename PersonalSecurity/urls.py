@@ -27,6 +27,12 @@ urlpatterns = [
     # user panel
     path('pcs_user_dashboard/', views.userDashboardView, name='pcs_user_dashboard'),
     path('pcs_user_services/', views.userServicesView, name='pcs_user_services'),
+    path('pcs_user_course_details/', views.pcsUserCourseDetail, name='pcs_user_course_details'),
+    path('pcs_user_course_details/<id>/', views.pcsUserCourseDetail, name='pcs_user_course_details'),
+    path('pcs_user_course_details/<id>/', views.pcsUserCourseDetail, name='pcs_user_course_details'),
+    path('pcs_user_course_payment/<id>/', views.pcsUserCoursePayment, name='pcs_user_course_payment'),
+    path('pcs_user_course_payment/', views.pcsUserCoursePayment, name='pcs_user_course_payment'),
+    path('pcs_user_course_payment/<id>/', views.pcsUserCoursePayment, name='pcs_user_course_payment'),
     path('pcs_user_reading_list/', views.userReadingListView, name='pcs_user_reading_list'),
     path('pcs_user_quotations_history/', views.userQuotationsHistoryView, name='pcs_user_quotations_history'),
     path('pcs_user_order_history/', views.userOrderHistoryView, name='pcs_user_order_history'),

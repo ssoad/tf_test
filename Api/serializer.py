@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from Blog import models
 from BusinessSecurity import models as bcsmodels
+from Academy import models as coursemodels
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -77,7 +78,6 @@ class PackageListSerializer(serializers.ModelSerializer):
 
 
 class SubscriptionServiceSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = bcsmodels.SubscriptionServices
         fields = '__all__'
@@ -195,3 +195,12 @@ class SubscriptionOrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = bcsmodels.SubscriptionOrder
         fields = '__all__'
+
+
+class PCSCoursePurchaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = coursemodels.CoursePurchase
+        fields = '__all__'
+        extra_kwargs = {
+            'user': {'read_only': True}
+        }
