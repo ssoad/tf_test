@@ -598,6 +598,16 @@ class SubscriptionOrderView(generics.CreateAPIView):
     queryset = bcsmodels.SubscriptionOrder
 
 
+class PCSCoursePurchaseCheckApiView(generics.ListAPIView):
+    queryset = coursemodels.CoursePurchase
+
+    def list(self, request, *args, **kwargs):
+        purchased_list = coursemodels.CoursePurchase.objects.filter(user=self.request.user).values_list('course_id',
+                                                                                                        flat=True)
+        print(purchased_list)
+        return Response({'result': purchased_list})
+
+
 class PCSCoursePurchaseApiView(generics.CreateAPIView):
     serializer_class = serializer.PCSCoursePurchaseSerializer
     queryset = coursemodels.CoursePurchase.objects.all()
