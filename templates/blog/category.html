@@ -255,7 +255,7 @@
                 containerHeading.textContent = 'FILTERED POSTS';
                 importantPosts.classList.add('d-none');
                 recentPosts.classList.add('d-none');
-                let url = `${location.origin}/api/blogs/filter/{{ path|capitalize|lower }}/${e.target.value}/`;
+                let url = `${mainOrigin}/api/blogs/filter/{{ path|capitalize|lower }}/${e.target.value}/`;
                 getPosts(url);
             }
         });
@@ -264,7 +264,7 @@
             containerHeading.textContent = 'FILTERED {{ path|capitalize|upper }}';
             importantPosts.classList.add('d-none');
             recentPosts.classList.add('d-none');
-            let url = `${location.origin}/api/blogs/filter/date/{{ path|capitalize|lower }}/${range}`;
+            let url = `${mainOrigin}/api/blogs/filter/date/{{ path|capitalize|lower }}/${range}`;
             getPosts(url);
         }
 

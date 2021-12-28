@@ -28,6 +28,11 @@
         {% block title %} {% endblock title %}
     </title>
     <link rel="icon" href="{% static 'tfimg/user_panel/Techforing-Icon.png' %}" type="image/x-icon"/>
+    <script>
+        let mainOrigin = location.origin;
+        if(!location.origin.includes('127.0.0.1') && !location.origin.includes('localhost'))
+            mainOrigin = 'https://main.techforing.com';
+    </script>
 </head>
 
 <body>
@@ -76,7 +81,7 @@
     <aside>
         <div class="aside-container position-fixed px-1 pt-2 d-none d-lg-block">
             <!-- Brand/logo-->
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/">
                 <button class="btn btn-close sideBarClose"></button>
                 <img src="{% static 'tfimg/user_panel/Techforing-Icon.png' %}" class="icon-logo" alt="">
                 <img src="{% static 'tfimg/admin_panel/TechForingLogo.png' %}" alt="Tech Foring" class="logo"/>

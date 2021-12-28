@@ -21,6 +21,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     {% block headercss %} {% endblock headercss %}
     <link rel="stylesheet" href="{% static 'tfcss/blog/style.css' %}">
+    <script>
+        let mainOrigin = location.origin;
+        if(!location.origin.includes('127.0.0.1') && !location.origin.includes('localhost'))
+            mainOrigin = 'https://main.techforing.com';
+    </script>
 </head>
 
 <body>

@@ -9,6 +9,9 @@
 
     <div class="subscription-container px-0 px-md-2">
         <h5 class="fw-bold">Please Select Your Payment Method</h5>
+       
+        {% csrf_token %}
+        
         <div class="row my-5 shadow">
             <div class="col-md-7">
                 <div id="smart-button-container">
@@ -17,6 +20,7 @@
                     </div>
                 </div>
             </div>
+            
             <div class="col-md-5 border-start border-secondary">
                 <table class="table">
                     <tr>
@@ -39,7 +43,12 @@
 {% block customjs %}
     <script src="https://www.paypal.com/sdk/js?client-id=sb&enable-funding=venmo&currency=USD"
             data-sdk-integration-source="button-factory"></script>
+            <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        let courseId = "{{course.id}}";
+        const csrf_token = document.querySelector("input[name='csrfmiddlewaretoken']")   
+            
+
         function initPayPalButton() {
             paypal.Buttons({
                 style: {
@@ -47,7 +56,6 @@
                     color: 'gold',
                     layout: 'vertical',
                     label: 'paypal',
-
                 },
 
                 createOrder: function (data, actions) {
@@ -68,6 +76,17 @@
                         element.innerHTML = '<h3>Thank you for your payment!</h3>';
                         console.log(data)
 
+                        fetch(`${mainOrigin}/api/pcs/course_order/`, {
+                            method: 'POST',
+                            body: JSON.stringify({paypal_id: data.orderID, course: courseId}),
+                            headers: {
+                                'Content-type': 'application/json',
+                                'X-CSRFToken': csrf_token.value,
+                            },
+                        })
+                        .then((response) => response.json())
+                        .then(data=>console.log(data))
+
                         // Or go to another URL:  actions.redirect('thank_you.html');
 
                     });
@@ -78,8 +97,18 @@
                 }
             }).render('#paypal-button-container');
         }
+        fetch(`${mainOrigin}/api/pcs/course_order_check/`)
+        .then(res=>res.json())
+        .then(data => {
+        if(data.result.includes(parseInt(courseId))){
+            Swal.fire('Already Purchased.')
+        }
+        else{
+            initPayPalButton();
+        }
+        })
 
-        initPayPalButton();
+        
     </script>
 {% endblock customjs %}
 

@@ -354,7 +354,7 @@
                     post: parseInt(postId)
                 }
                 // console.log(csrf_token.value);
-            fetch(`${location.origin}/api/blogs/comment/${postId}`, {
+            fetch(`${mainOrigin}/api/blogs/comment/${postId}`, {
                     method: 'POST',
                     body: JSON.stringify(requestBody),
                     headers: {
@@ -391,7 +391,7 @@
 
         let pageNo = 2;
          document.getElementById('load-more-btn').addEventListener('click', e => {
-            fetch(`${location.origin}/api/blogs/comment/${postId}?limit=5&page=${pageNo}`)
+            fetch(`${mainOrigin}/api/blogs/comment/${postId}?limit=5&page=${pageNo}`)
              .then(response => response.json())
              .then(result => {
                  if(!result.results){
