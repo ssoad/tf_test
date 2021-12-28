@@ -1,6 +1,6 @@
 from django import forms
 from BusinessSecurity import models
-# from Academy.models import Course, duration, Section, Content
+from Academy.models import Course, duration, Section, Content
 from django.db.models import Q
 from phonenumber_field.formfields import PhoneNumberField
 from phonenumber_field.widgets import PhoneNumberPrefixWidget
