@@ -112,15 +112,15 @@ class ReadingList(models.Model):
         return f'{self.user} - {self.post}'
 
 
-class BlogSubscription(models.Model):
-    full_name = models.CharField(max_length=255)
-    email = models.EmailField(unique=True)
+# class BlogSubscription(models.Model):
+#     full_name = models.CharField(max_length=255)
+#     email = models.EmailField(unique=True)
+#
+#     def __str__(self):
+#         return f'{self.full_name} - {self.email}'
 
-    def __str__(self):
-        return f'{self.full_name} - {self.email}'
 
-
-@receiver(post_save, sender=Post)
-def send_email(sender, instance, created, *args, **kwargs):
-    if created:
-        print(BlogSubscription.objects.all())
+# @receiver(post_save, sender=Post)
+# def send_email(sender, instance, created, *args, **kwargs):
+#     if created:
+#         print(BlogSubscription.objects.all())

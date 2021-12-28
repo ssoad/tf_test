@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect, reverse, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
-from Academy.models import Course, Section, Content
-from Academy.forms import CourseCreateForm, SectionCreateForm, ContentCreateForm
+from Academy.models import Course, Section, Content, CourseCategory
+from Academy.forms import PCSCourseCreateForm, SectionCreateForm, ContentCreateForm, CourseCategoryCreateForm
 from django.core.paginator import Paginator
 from BusinessSecurity import models, forms
 from PersonalSecurity import forms as pcsforms
@@ -203,6 +203,7 @@ def userReadingListView(request):
 @login_required
 def userServicesView(request):
     courses = Course.objects.filter(course_type='Personal')
+    courses_categories = CourseCategory.objects.filter(course_type='Personal')
     service_category = models.ServiceCategory.objects.filter(category_choice='pcs')
     services = models.Service.objects.filter(category_choice='pcs')
     subscription_services = models.SubscriptionServices.objects.filter(category_choice='pcs')
@@ -260,6 +261,7 @@ def userServicesView(request):
         'services_headings': list(services.values_list('service_title', flat=True)),
         'subscription_services': subscription_services,
         'subscription_services_headings': list(subscription_services.values_list('service_title', flat=True)),
+        'courses_categories': courses_categories,
         'courses': courses,
         'courses_headings': list(courses.values_list('course_name', flat=True)),
     }
@@ -743,11 +745,56 @@ def pcsAdminCourseDetail(request):
 
 
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/')
+def pcsAdminTrainingCategoryView(request):
+    form = CourseCategoryCreateForm()
+    categories = CourseCategory.objects.filter(course_type='Personal')
+    if request.method == 'POST':
+        form = CourseCategoryCreateForm(request.POST)
+        if form.is_valid():
+            course = form.save(commit=False)
+            course.course_type = 'Personal'
+            course.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    context = {
+        'form': form,
+        'categories': categories,
+    }
+    return render(request, 'admin_panel/pcsTF/trainingCategory.html', context)
+
+
+@user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/')
+def pcsAdminTrainingCategoryEditView(request, id):
+    current_category = CourseCategory.objects.get(id=id)
+    form = CourseCategoryCreateForm(instance=current_category)
+    if request.method == 'POST':
+        form = CourseCategoryCreateForm(request.POST, instance=current_category)
+        if form.is_valid():
+            form.save()
+            next_page = request.POST.get('next', '/')
+
+            if next_page:
+                return HttpResponseRedirect(next_page)
+            else:
+                return HttpResponseRedirect(reverse('pcs_admin_training_category'))
+    context = {
+        'form': form,
+    }
+    return render(request, 'admin_panel/pcsTF/editForm.html', context)
+
+
+@user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/')
+def pcsAdminTrainingCategoryDelete(request, id):
+    current_category = CourseCategory.objects.get(id=id)
+    current_category.delete()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/')
 def pcsAdminTraining(request):
-    form = CourseCreateForm()
+    form = PCSCourseCreateForm()
     courses = Course.objects.filter(course_type='Personal')
     if request.method == 'POST':
-        form = CourseCreateForm(request.POST)
+        form = PCSCourseCreateForm(request.POST)
         if form.is_valid():
             course = form.save(commit=False)
             course.course_type = 'Personal'
@@ -770,10 +817,10 @@ def pcsAdminTrainingDelete(request, id):
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/')
 def pcsAdminTrainingEdit(request, id):
     current_course = Course.objects.get(id=id)
-    form = CourseCreateForm(instance=current_course)
+    form = PCSCourseCreateForm(instance=current_course)
 
     if request.method == 'POST':
-        form = CourseCreateForm(request.POST, instance=current_course)
+        form = PCSCourseCreateForm(request.POST, instance=current_course)
         if form.is_valid():
             form.save()
             next_page = request.POST.get('next', '/')

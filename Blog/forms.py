@@ -35,11 +35,11 @@ class FilterOptionForm(forms.ModelForm):
         fields = '__all__'
 
 
-class BlogSubscriptionForm(forms.ModelForm):
-    class Meta:
-        model = models.BlogSubscription
-        fields = '__all__'
-        widgets = {
-            'full_name': forms.TextInput(attrs={'placeholder': 'Enter Your Name'}),
-            'email': forms.EmailInput(attrs={'placeholder': 'Enter Your Email'}),
-        }
+# class BlogSubscriptionForm(forms.ModelForm):
+#     class Meta:
+#         model = models.BlogSubscription
+#         fields = '__all__'
+#         widgets = {
+#             'full_name': forms.TextInput(attrs={'placeholder': 'Enter Your Name'}),
+#             'email': forms.EmailInput(attrs={'placeholder': 'Enter Your Email'}),
+#         }

@@ -1,10 +1,10 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse, HttpResponse, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from BusinessSecurity import forms, models
-from Academy.forms import CourseCreateForm, SectionCreateForm, ContentCreateForm
+from Academy.forms import BCSCourseCreateForm, SectionCreateForm, ContentCreateForm, CourseCategoryCreateForm
 from Account.models import User, Permissions, Interest
 from Account.forms import SelectBCSPermissionForm, InterestForm
-from Academy.models import Course, Section, Content
+from Academy.models import Course, Section, Content, CourseCategory
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.core.files.storage import FileSystemStorage
@@ -1677,13 +1677,59 @@ def bcsAdminSingleUserInterest(request, id):
     }
     return render(request, 'admin_panel/bcsTF/editForm.html', context)
 
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminTrainingCategoryView(request):
+    form = CourseCategoryCreateForm()
+    categories = CourseCategory.objects.filter(course_type='Business')
+    if request.method == 'POST':
+        form = CourseCategoryCreateForm(request.POST)
+        if form.is_valid():
+            course = form.save(commit=False)
+            course.course_type = 'Business'
+            course.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    context = {
+        'form': form,
+        'categories': categories,
+    }
+    return render(request, 'admin_panel/bcsTF/trainingCategory.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminTrainingCategoryEditView(request, id):
+    current_category = CourseCategory.objects.get(id=id)
+    form = CourseCategoryCreateForm(instance=current_category)
+    if request.method == 'POST':
+        form = CourseCategoryCreateForm(request.POST, instance=current_category)
+        if form.is_valid():
+            form.save()
+            next_page = request.POST.get('next', '/')
+
+            if next_page:
+                return HttpResponseRedirect(next_page)
+            else:
+                return HttpResponseRedirect(reverse('bcs_admin_training_category'))
+    context = {
+        'form': form,
+    }
+    return render(request, 'admin_panel/pcsTF/editForm.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminTrainingCategoryDelete(request, id):
+    current_category = CourseCategory.objects.get(id=id)
+    current_category.delete()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminTraining(request):
-    form = CourseCreateForm()
+    form = BCSCourseCreateForm()
     courses = Course.objects.filter(course_type='Business')
     if request.method == 'POST':
-        form = CourseCreateForm(request.POST)
+        form = BCSCourseCreateForm(request.POST)
         if form.is_valid():
             course = form.save(commit=False)
             course.course_type = 'Business'
@@ -1706,10 +1752,10 @@ def bcsAdminTrainingDelete(request, id):
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminTrainingEdit(request, id):
     current_course = Course.objects.get(id=id)
-    form = CourseCreateForm(instance=current_course)
+    form = BCSCourseCreateForm(instance=current_course)
 
     if request.method == 'POST':
-        form = CourseCreateForm(request.POST, instance=current_course)
+        form = BCSCourseCreateForm(request.POST, instance=current_course)
         if form.is_valid():
             form.save()
             next_page = request.POST.get('next', '/')
