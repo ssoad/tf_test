@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect, reverse, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
-from Academy.models import Course, Section, Content, CourseCategory
-from Academy.forms import PCSCourseCreateForm, SectionCreateForm, ContentCreateForm, CourseCategoryCreateForm
+# from Academy.models import Course, Section, Content
+# from Academy.forms import PCSCourseCreateForm, SectionCreateForm, ContentCreateForm, CourseCategoryCreateForm
 from django.core.paginator import Paginator
 from BusinessSecurity import models, forms
 from PersonalSecurity import forms as pcsforms
