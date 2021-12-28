@@ -31,6 +31,7 @@ class Course(models.Model):
     course_type = models.CharField(max_length=264, choices=course_type)
     course_name = models.CharField(max_length=264)
     duration = models.CharField(max_length=264, choices=duration)
+    price = models.IntegerField()
     short_description = models.TextField(max_length=1000)
     long_description = HTMLField(max_length=5000)
     created_date = models.DateTimeField(auto_now_add=True)
@@ -76,3 +77,12 @@ class Content(models.Model):
 
         cap.release()
         return str(minutes) + ':' + str(seconds) + ' m'
+
+
+class CoursePurchase(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='coursepurchase_user')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='coursepurchase_course')
+    paypal_id = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f'{self.user.full_name} - {self.course.course_name}'
