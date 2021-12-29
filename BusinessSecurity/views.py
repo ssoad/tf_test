@@ -1,10 +1,10 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse, HttpResponse, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from BusinessSecurity import forms, models
-from Academy.forms import BCSCourseCreateForm, SectionCreateForm, ContentCreateForm, CourseCategoryCreateForm
+from Academy.forms import BCSCourseCreateForm, SectionCreateForm, ContentCreateForm, CourseCategoryCreateForm, BCSSectionCreateForm, BCSContentCreateForm
 from Account.models import User, Permissions, Interest
 from Account.forms import SelectBCSPermissionForm, InterestForm
-from Academy.models import Course, Section, Content, CourseCategory
+from Academy.models import Course, Section, Content, CourseCategory, BCSCourse, BCSSection, BCSContent
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.core.files.storage import FileSystemStorage
@@ -374,6 +374,8 @@ def userServicesView(request):
         if request.user.business_user.privilege == 'general_staff':
             return HttpResponse("You don't have permission to view this page")
         else:
+            courses = BCSCourse.objects.all()
+            courses_categories = CourseCategory.objects.filter(course_type='Business')
             service_category = models.ServiceCategory.objects.filter(
                 category_choice='bcs')
             services = models.Service.objects.filter(category_choice='bcs')
@@ -437,8 +439,39 @@ def userServicesView(request):
                 'services_headings': list(services.values_list('service_title', flat=True)),
                 'subscription_services': subscription_services,
                 'subscription_services_headings': list(subscription_services.values_list('service_title', flat=True)),
+                'courses_categories': courses_categories,
+                'courses': courses,
+                'courses_headings': list(courses.values_list('course_name', flat=True)),
             }
             return render(request, 'user_panel/bcs/services.html', context)
+
+
+@login_required
+def bcsUserCourseDetail(request, id):
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+
+    elif request.user.is_bcs:
+        course = BCSCourse.objects.get(id=id)
+        sections = BCSSection.objects.filter(course=course)
+        context = {
+            'course': course,
+            'sections': sections,
+        }
+        return render(request, 'user_panel/bcs/courseDetails.html', context)
+
+
+@login_required
+def bcsUserCoursePayment(request, id):
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+
+    elif request.user.is_bcs:
+        course = BCSCourse.objects.get(id=id)
+        context = {
+            'course': course,
+        }
+        return render(request, 'user_panel/bcs/course_payment.html', context)
 
 
 @login_required
@@ -1677,6 +1710,7 @@ def bcsAdminSingleUserInterest(request, id):
     }
     return render(request, 'admin_panel/bcsTF/editForm.html', context)
 
+
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminTrainingCategoryView(request):
     form = CourseCategoryCreateForm()
@@ -1722,17 +1756,15 @@ def bcsAdminTrainingCategoryDelete(request, id):
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-
-
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminTraining(request):
     form = BCSCourseCreateForm()
-    courses = Course.objects.filter(course_type='Business')
+    courses = BCSCourse.objects.all()
     if request.method == 'POST':
         form = BCSCourseCreateForm(request.POST)
         if form.is_valid():
             course = form.save(commit=False)
-            course.course_type = 'Business'
+            course.product_id = request.POST.get('product_id')
             course.save()
             return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
@@ -1744,14 +1776,14 @@ def bcsAdminTraining(request):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminTrainingDelete(request, id):
-    current_course = Course.objects.get(id=id)
+    current_course = BCSCourse.objects.get(id=id)
     current_course.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminTrainingEdit(request, id):
-    current_course = Course.objects.get(id=id)
+    current_course = BCSCourse.objects.get(id=id)
     form = BCSCourseCreateForm(instance=current_course)
 
     if request.method == 'POST':
@@ -1772,24 +1804,24 @@ def bcsAdminTrainingEdit(request, id):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminCourseDetail(request, id):
-    course = Course.objects.get(id=id)
-    sections = Section.objects.filter(course=course)
-    form = SectionCreateForm()
-    form2 = ContentCreateForm()
+    course = BCSCourse.objects.get(id=id)
+    sections = BCSSection.objects.filter(course=course)
+    form = BCSSectionCreateForm()
+    form2 = BCSContentCreateForm()
     if request.method == 'POST':
         if 'add_section' in request.POST:
-            form = SectionCreateForm(request.POST)
+            form = BCSSectionCreateForm(request.POST)
             if form.is_valid():
                 section = form.save(commit=False)
                 section.course = course
                 section.save()
                 return HttpResponseRedirect(request.META['HTTP_REFERER'])
         elif 'add_content' in request.POST:
-            form2 = ContentCreateForm(request.POST, request.FILES)
+            form2 = BCSContentCreateForm(request.POST, request.FILES)
             if form2.is_valid():
                 content = form2.save(commit=False)
                 section_id = int(request.POST.get('section_name'))
-                current_section = Section.objects.get(id=section_id)
+                current_section = BCSSection.objects.get(id=section_id)
                 content.section = current_section
                 content.save()
                 return HttpResponseRedirect(request.META['HTTP_REFERER'])
@@ -1805,17 +1837,17 @@ def bcsAdminCourseDetail(request, id):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminCourseContentDelete(request, id):
-    current_content = Content.objects.get(id=id)
+    current_content = BCSContent.objects.get(id=id)
     current_content.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminCourseContentEdit(request, id):
-    current_content = Content.objects.get(id=id)
-    form = ContentCreateForm(instance=current_content)
+    current_content = BCSContent.objects.get(id=id)
+    form = BCSContentCreateForm(instance=current_content)
     if request.method == 'POST':
-        form = ContentCreateForm(
+        form = BCSContentCreateForm(
             request.POST, request.FILES, instance=current_content)
         if form.is_valid():
             form.save()
@@ -1832,10 +1864,10 @@ def bcsAdminCourseContentEdit(request, id):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminCourseSectionEdit(request, id):
-    current_section = Section.objects.get(id=id)
-    form = SectionCreateForm(instance=current_section)
+    current_section = BCSSection.objects.get(id=id)
+    form = BCSSectionCreateForm(instance=current_section)
     if request.method == 'POST':
-        form = SectionCreateForm(
+        form = BCSSectionCreateForm(
             request.POST, request.FILES, instance=current_section)
         if form.is_valid():
             form.save()

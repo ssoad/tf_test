@@ -1,4 +1,6 @@
-{% extends 'base/academy_user_base.html' %} {% load static %} {% load hosts %}
+{% extends 'base/academy_user_base.html' %}
+{% load static %}
+{% load hosts %}
 {% block headercss %}
     <style>
         .course-card {
@@ -11,28 +13,48 @@
         }
     </style>
 {% endblock headercss %}
-{% block title %} My Files {% endblock title %} {% block content %}
-
+{% block title %} My Files {% endblock title %}
+{% block content %}
     <section class="my-files-container ">
-
         <div class="container-fluid">
             <h4 class="fw-bold border-bottom border-gray pb-14p">My Courses</h4>
             <div class="row">
-                {% for course in courses %}
+                {% for course in business_courses %}
                     <div class="col-md-6">
-                    <div class="card course-card">
-                        <div class="row g-0">
-                            <div class="col-md-12">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ course.course_name }}</h5>
-                                    <p>{{ course.short_description }} </p>
-                                    <a href="{% host_url 'academy_user_files' host 'academy' %}{{ course.id }}" class="btn btn-navy text-capitalize">go to course <i
-                                            class="bi bi-arrow-bar-left"></i></a>
+                        <div class="card course-card">
+                            <div class="row g-0">
+                                <div class="col-md-12">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ course.course_name }}</h5>
+                                        <p>{{ course.short_description }} </p>
+                                        <a href="{% host_url 'academy_user_files' host 'academy' %}{{ course.id }}"
+                                           class="btn btn-navy text-capitalize">go to course <i
+                                                class="bi bi-arrow-bar-left"></i></a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                {% endfor %}
+
+            </div>
+            <div class="row">
+                {% for course in personal_courses %}
+                    <div class="col-md-6">
+                        <div class="card course-card">
+                            <div class="row g-0">
+                                <div class="col-md-12">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ course.course_name }}</h5>
+                                        <p>{{ course.short_description }} </p>
+                                        <a href="{% host_url 'academy_user_files' host 'academy' %}{{ course.id }}"
+                                           class="btn btn-navy text-capitalize">go to course <i
+                                                class="bi bi-arrow-bar-left"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 {% endfor %}
 
             </div>

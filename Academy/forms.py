@@ -13,13 +13,12 @@ class CourseCategoryCreateForm(forms.ModelForm):
 
 
 class BCSCourseCreateForm(forms.ModelForm):
-    duration = forms.ChoiceField(choices=duration, widget=forms.Select(attrs={'class': 'form-select'}))
     course_category = forms.ModelChoiceField(queryset=models.CourseCategory.objects.filter(course_type='Business'))
 
     class Meta:
-        model = models.Course
+        model = models.BCSCourse
         fields = '__all__'
-        exclude = ['course_type']
+        exclude = ['product_id']
 
 
 class PCSCourseCreateForm(forms.ModelForm):
@@ -29,7 +28,7 @@ class PCSCourseCreateForm(forms.ModelForm):
     class Meta:
         model = models.Course
         fields = '__all__'
-        exclude = ['course_type']
+        exclude = ['course_type', 'product_id']
 
 
 class SectionCreateForm(forms.ModelForm):
@@ -41,5 +40,17 @@ class SectionCreateForm(forms.ModelForm):
 class ContentCreateForm(forms.ModelForm):
     class Meta:
         model = models.Content
+        fields = '__all__'
+        exclude = ['section', ]
+
+class BCSSectionCreateForm(forms.ModelForm):
+    class Meta:
+        model = models.BCSSection
+        fields = ['section_name', ]
+
+
+class BCSContentCreateForm(forms.ModelForm):
+    class Meta:
+        model = models.BCSContent
         fields = '__all__'
         exclude = ['section', ]
