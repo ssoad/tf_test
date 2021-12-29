@@ -1882,6 +1882,86 @@ def bcsAdminCourseSectionEdit(request, id):
     return render(request, 'admin_panel/bcsTF/editForm.html', context)
 
 
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def bcsAdminCourseSubscriptionPack(request):
+    form = forms.AddPackageForm()
+    services = models.SubscriptionServices.objects.filter(
+        category_choice='bcs')
+
+    if request.method == 'POST':
+        feature_names = request.POST.getlist('featureName')
+        features = request.POST.getlist('feature')
+        form = forms.AddPackageForm(request.POST)
+        if form.is_valid():
+            package = form.save(commit=False)
+            package.package_id = request.POST.get('package_id')
+
+            package.save()
+            for feature_name, feature in zip(feature_names, features):
+                package_feature = models.SubscriptionFeatures.objects.get_or_create(package=package,
+                                                                                    feature_name=feature_name,
+                                                                                    feature=feature)
+                package_feature[0].save()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    context = {
+        'form': form,
+        'services': services,
+    }
+    return render(request, 'admin_panel/bcsTF/subscriptionPack.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def bcsAdminCourseSubscriptionPackEdit(request, id):
+    current_package = models.SubscriptionBasedPackage.objects.get(id=id)
+    package_features = models.SubscriptionFeatures.objects.filter(
+        package=current_package)
+    form = forms.AddPackageForm(instance=current_package)
+    form2 = forms.AddIndividualPackageFeatureForm()
+    if request.method == 'POST':
+        if 'package-btn' in request.POST:
+            form = forms.AddPackageForm(request.POST, instance=current_package)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect(reverse('bcs_admin_subscription_packages'))
+        elif 'feature-btn' in request.POST:
+            print(request.POST)
+            current_feature = models.SubscriptionFeatures.objects.get(
+                id=request.POST.get('feature_id'))
+            current_feature.feature_name = request.POST.get('feature_name')
+            current_feature.feature = request.POST.get('feature')
+            current_feature.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        elif 'add-feature-btn' in request.POST:
+            form2 = forms.AddIndividualPackageFeatureForm(request.POST)
+            if form2.is_valid():
+                feature = form2.save(commit=False)
+                feature.package = current_package
+                feature.save()
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+    context = {
+        'form': form,
+        'form2': form2,
+        'package_features': package_features,
+    }
+    return render(request, 'admin_panel/bcsTF/subscriptionPackEdit.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def bcsAdminCourseSubscriptionPackDelete(request, id):
+    current_package = models.SubscriptionBasedPackage.objects.get(id=id)
+    current_package.delete()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def bcsAdminCourseSubscriptionPackFeatureDelete(request, id):
+    current_feature = models.SubscriptionFeatures.objects.get(id=id)
+    current_feature.delete()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+
 @user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
                   redirect_field_name='/account/profile/')
 def bcsAdminQuotationsView(request):
