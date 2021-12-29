@@ -6,7 +6,7 @@ document.querySelectorAll('.menubar a').forEach((link, index) => {
         let style = document.createElement('style');
         style.innerHTML = `
         .menubar li:nth-child(${index + 1}) {
-            background-color: #151331;
+            background-color: #182a59;
                     border-radius: 5px;
                     border-bottom: none;
                     position: relative;
