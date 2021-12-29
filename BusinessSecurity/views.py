@@ -1,10 +1,13 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse, HttpResponse, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from BusinessSecurity import forms, models
-from Academy.forms import BCSCourseCreateForm, SectionCreateForm, ContentCreateForm, CourseCategoryCreateForm, BCSSectionCreateForm, BCSContentCreateForm
+from Academy.forms import BCSCourseCreateForm, SectionCreateForm, ContentCreateForm, CourseCategoryCreateForm, \
+    BCSSectionCreateForm, BCSContentCreateForm, AddCoursePackageForm, AddCoursePackageFeatureForm, \
+    AddCourseIndividualPackageFeatureForm
 from Account.models import User, Permissions, Interest
 from Account.forms import SelectBCSPermissionForm, InterestForm
-from Academy.models import Course, Section, Content, CourseCategory, BCSCourse, BCSSection, BCSContent
+from Academy.models import Course, Section, Content, CourseCategory, BCSCourse, BCSSection, BCSContent, CoursePackage, \
+    PackageFeatures, CourseOrder, CoursePurchase
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.core.files.storage import FileSystemStorage
@@ -1884,30 +1887,28 @@ def bcsAdminCourseSectionEdit(request, id):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminCourseSubscriptionPack(request):
-    form = forms.AddPackageForm()
-    services = models.SubscriptionServices.objects.filter(
-        category_choice='bcs')
+    form = AddCoursePackageForm()
+    courses = BCSCourse.objects.all()
 
     if request.method == 'POST':
         feature_names = request.POST.getlist('featureName')
         features = request.POST.getlist('feature')
-        form = forms.AddPackageForm(request.POST)
+        form = AddCoursePackageForm(request.POST)
         if form.is_valid():
             package = form.save(commit=False)
             package.package_id = request.POST.get('package_id')
-
             package.save()
             for feature_name, feature in zip(feature_names, features):
-                package_feature = models.SubscriptionFeatures.objects.get_or_create(package=package,
-                                                                                    feature_name=feature_name,
-                                                                                    feature=feature)
+                package_feature = PackageFeatures.objects.get_or_create(package=package,
+                                                                        feature_name=feature_name,
+                                                                        feature=feature)
                 package_feature[0].save()
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
         'form': form,
-        'services': services,
+        'courses': courses,
     }
-    return render(request, 'admin_panel/bcsTF/subscriptionPack.html', context)
+    return render(request, 'admin_panel/bcsTF/coursePack.html', context)
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
@@ -1915,11 +1916,11 @@ def bcsAdminCourseSubscriptionPackEdit(request, id):
     current_package = models.SubscriptionBasedPackage.objects.get(id=id)
     package_features = models.SubscriptionFeatures.objects.filter(
         package=current_package)
-    form = forms.AddPackageForm(instance=current_package)
-    form2 = forms.AddIndividualPackageFeatureForm()
+    form = AddCoursePackageForm(instance=current_package)
+    form2 = AddCourseIndividualPackageFeatureForm()
     if request.method == 'POST':
         if 'package-btn' in request.POST:
-            form = forms.AddPackageForm(request.POST, instance=current_package)
+            form = AddCoursePackageForm(request.POST, instance=current_package)
             if form.is_valid():
                 form.save()
                 return HttpResponseRedirect(reverse('bcs_admin_subscription_packages'))
@@ -1944,7 +1945,7 @@ def bcsAdminCourseSubscriptionPackEdit(request, id):
         'form2': form2,
         'package_features': package_features,
     }
-    return render(request, 'admin_panel/bcsTF/subscriptionPackEdit.html', context)
+    return render(request, 'admin_panel/bcsTF/coursePackEdit.html', context)
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
@@ -1959,7 +1960,6 @@ def bcsAdminCourseSubscriptionPackFeatureDelete(request, id):
     current_feature = models.SubscriptionFeatures.objects.get(id=id)
     current_feature.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
-
 
 
 @user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',

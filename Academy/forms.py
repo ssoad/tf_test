@@ -43,6 +43,7 @@ class ContentCreateForm(forms.ModelForm):
         fields = '__all__'
         exclude = ['section', ]
 
+
 class BCSSectionCreateForm(forms.ModelForm):
     class Meta:
         model = models.BCSSection
@@ -54,3 +55,27 @@ class BCSContentCreateForm(forms.ModelForm):
         model = models.BCSContent
         fields = '__all__'
         exclude = ['section', ]
+
+
+class AddCoursePackageForm(forms.ModelForm):
+    # service_id = forms.ModelChoiceField(
+    #     queryset=models.BCSCourse.objects.all())
+
+    class Meta:
+        model = models.CoursePackage
+        fields = '__all__'
+        exclude = ['package_id']
+
+
+class AddCoursePackageFeatureForm(forms.ModelForm):
+    # service_id = forms.ModelChoiceField(queryset=models.Service.objects.filter(is_subscription_based=True))
+
+    class Meta:
+        model = models.PackageFeatures
+        fields = '__all__'
+
+
+class AddCourseIndividualPackageFeatureForm(forms.ModelForm):
+    class Meta:
+        model = models.PackageFeatures
+        fields = ['feature_name', 'feature']
