@@ -582,7 +582,7 @@
                         </div>
                         </div>`;
 
-                fetchData(`${location.origin}/api/bcs/sub_service/${btn.id}`)
+                fetchData(`${mainOrigin}/api/bcs/sub_service/${btn.id}`)
                     .then(function (data) {
                         previewForm.removeChild(document.getElementById('progress'));
 
@@ -620,13 +620,13 @@
                                 let inputFields = '';
                                 // informationForm.children[optionIndex]
                                 formC.insertAdjacentHTML('beforebegin', `<p id="progress">Loading...</p>`);
-                                fetchData(`${location.origin}/api/bcs/sub_service_input/${optionId}`).then(function (fields) {
+                                fetchData(`${mainOrigin}/api/bcs/sub_service_input/${optionId}`).then(function (fields) {
                                     formContainer.removeChild(document.getElementById("progress"))
                                     inputFields += `<div class="mt-5"data-position="${optionIndex}">  <h6 class="heading">${optionTitle}</h6>`;
                                     fields.forEach(field => {
 
                                         if (field.inputfield.type === 'select') {
-                                            fetchData(`${location.origin}/api/bcs/choice_field/${field.inputfield.id}`)
+                                            fetchData(`${mainOrigin}/api/bcs/choice_field/${field.inputfield.id}`)
                                                 .then(function (data) {
                                                     inputFields += `<label for="input-${field.inputfield.id}.${optionId}">${field.inputfield.placeholder}</label>`;
                                                     inputFields += `<select required id="input-${field.inputfield.id}.${optionId}" name="${field.id}" class="form-select">`;
