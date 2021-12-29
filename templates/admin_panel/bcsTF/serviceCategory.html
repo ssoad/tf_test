@@ -1,13 +1,16 @@
-{% extends 'base/bcs_admin_base.html' %} {% load static %}
+{% extends 'base/bcs_admin_base.html' %}
+{% load static %}
 {% load hosts %}
 {% load crispy_forms_tags %}
 
-{% block title %} BCS Admin Services Category
+{% block title %}
+    BCS Admin Services Category
 {% endblock title %}
 
 {% block headercss %}
     <link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/service.css' %}" />
 {% endblock headercss %}
+
 {% block content %}
     <!-- main section starts -->
     <main>

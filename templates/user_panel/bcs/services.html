@@ -6,6 +6,7 @@
             text-transform: capitalize;
             margin-top: 8px
         }
+
         .package .info-btn {
             border-radius: .3rem !important;
             display: flex;
@@ -68,7 +69,8 @@
                                             </p>
                                         </div>
                                         <div class="view-btn">
-                                            <button class="{{ service.service_title|replacespace }}-bcs-sub btn btn-sm">View
+                                            <button class="{{ service.service_title|replacespace }}-bcs-sub btn btn-sm">
+                                                View
                                             </button>
                                         </div>
                                     </div>
@@ -78,7 +80,31 @@
                     </div>
                 {% endfor %}
 
-
+                <h4 class="main-heading">All Trainings</h4>
+                {% for category in courses_categories %}
+                    <h5 class="mt-2 services-type">{{ category.category_name }}</h5>
+                    <div class="row mx-0 mb-4 gy-4 pt-4 justify-content-center">
+                        {% for course in category.bcscourse_coursecategory.all %}
+                            <div class="col-md-4 px-0 pe-md-5">
+                                <div class="bg-lightgreen p-2 rounded shadow-md">
+                                    <div class="text-center">
+                                        <img class="service-icon" src="{% static 'img/training hat.png' %}">
+                                    </div>
+                                    <div class="ps-2 mt-2 text-center">
+                                        <h6 class="service-title">{{ course.course_name }}</h6>
+                                        <p class="lh-1 fs-14">
+                                            {{ course.short_description }}
+                                        </p>
+                                    </div>
+                                    <div class="view-btn">
+                                        <button class="{{ course.course_name|replacespace }}-training btn btn-sm">View
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
             </div>
             <h5 class="mt-5 services-type">Program For Your Employees</h5>
             <!-- more services -->
@@ -124,7 +150,7 @@
         </div>
 
 
-        <!-- modal for training program -->
+        <!-- modal for training program -->{% comment %}
         <div class="modal fade" id="trainingModal" tabindex="-1" aria-labelledby="trainingModalLabel"
              aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-xl">
@@ -182,7 +208,7 @@
                 </div>
             </div>
         </div>
-
+{% endcomment %}
         <!-- services start  -->
 
         {% for service in services %}
@@ -235,65 +261,98 @@
 
         <!-- subscription services start.. loaded subscription services details  -->
         {% for service in subscription_services %}
-        <div class="{{ service | replacespace }}-sub preview-service-info pt-3 pb-5 d-none">
-            <div class='d-none'>
-                {{ service }}
-            </div>
-            <div class="row mx-0 bg-lightgreen shadow-md">
+            <div class="{{ service | replacespace }}-sub preview-service-info pt-3 pb-5 d-none">
+                <div class='d-none'>
+                    {{ service }}
+                </div>
+                <div class="row mx-0 bg-lightgreen shadow-md">
 
-                <div class="col-md-12 ">
-                    <div class="py-2">
-                        <p class="mt-3 mb-0">{{ service.service_header|safe }}</p>
+                    <div class="col-md-12 ">
+                        <div class="py-2">
+                            <p class="mt-3 mb-0">{{ service.service_header|safe }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="my-3 py-4 px-3 bg-lightgreen shadow-md">
+                    <div class="mt-3">
+                        <h6 class="lh-base">
+                            {{ service.service_body|safe }}
+                        </h6>
+                    </div>
+                </div>
+                <div class="whom-we-serve my-3 py-4 px-3 bg-lightgreen shadow-md">
+                    <p class="mt-3">
+                        {{ service.service_footer|safe }}
+                    </p>
+                    <div class="mt-3">
+                        <ol class="row mx-0">
+                            {% for subservice in service.subservice_service.all %}
+                                <li class="{{ subservice.service|replacespace }} short-info-li col-auto me-3 lh-base fw-bold">{{ subservice.title }}</li>
+                            {% endfor %}
+                        </ol>
+
+                    </div>
+                </div>
+                <div class="my-4 pt-5 px-3">
+                    <div class="d-flex justify-content-center">
+                        <button id="{{ service.id }}" data-bs-toggle="modal" data-bs-target="#subscriptionDetail"
+                                type="button" class="subscriptionDetailBtn btn bg-navy px-2 py-1">View Subscription
+                        </button>
                     </div>
                 </div>
             </div>
-            <div class="my-3 py-4 px-3 bg-lightgreen shadow-md">
-                <div class="mt-3">
-                    <h6 class="lh-base">
-                        {{ service.service_body|safe }}
-                    </h6>
-                </div>
-            </div>
-            <div class="whom-we-serve my-3 py-4 px-3 bg-lightgreen shadow-md">
-                <p class="mt-3">
-                    {{ service.service_footer|safe }}
-                </p>
-                <div class="mt-3">
-                    <ol class="row mx-0">
-                        {% for subservice in service.subservice_service.all %}
-                            <li class="{{ subservice.service|replacespace }} short-info-li col-auto me-3 lh-base fw-bold">{{ subservice.title }}</li>
-                        {% endfor %}
-                    </ol>
+        {% endfor %}
 
+        <!-- training details  -->
+        {% for course in courses %}
+            <div class="{{ course.course_name | replacespace }}-training preview-service-info pt-3 pb-5 d-none">
+                <div class='d-none'>
+                    {{ course.course_name }}
+                </div>
+                <div class="row mx-0 bg-lightgreen shadow-md">
+                    <div class="col-md-12 ">
+                        <div class="py-2">
+                            <p class="mt-3 mb-0">{{ course.short_description }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="my-3 py-4 px-3 bg-lightgreen shadow-md">
+                    <div class="mt-3">
+                        <h6 class="lh-base">
+                            {{ course.long_description|safe }}
+                        </h6>
+                    </div>
+                </div>
+                <div class="my-4 pt-5 px-3">
+                    <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
+                        <a href="{% host_url 'bcs_user_course_details' %}{{ course.id }}"
+                           class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">View Details Module
+                        </a>
+                    </div>
                 </div>
             </div>
-            <div class="my-4 pt-5 px-3">
-                <div class="d-flex justify-content-center">
-                    <button id="{{service.id}}" data-bs-toggle="modal" data-bs-target="#subscriptionDetail" type="button" class="subscriptionDetailBtn btn bg-navy px-2 py-1">View Subscription</button>
-                </div>
-            </div>
-        </div>
         {% endfor %}
 
         <!-- modal for subscription services -->
-<div class="modal fade" id="subscriptionDetail" tabindex="-1" aria-labelledby="subscriptionDetailLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fw-bold"></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center">
-                <div class="package-details row g-3">
-                   
+        <div class="modal fade" id="subscriptionDetail" tabindex="-1" aria-labelledby="subscriptionDetailLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-bold"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <div class="package-details row g-3">
+
+
+                        </div>
+                    </div>
 
                 </div>
             </div>
- 
         </div>
-    </div>
- </div>
- 
+
 
         <!-- preview for pcs employees -->
         <div class="preview-service-info py-3 d-none">
@@ -617,7 +676,8 @@
         </div>
     </section>
 
-{% endblock content %} {% block customjs %}
+{% endblock content %}
+{% block customjs %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <script>
@@ -827,28 +887,28 @@
         });
         const packageDetails = document.querySelector(".package-details")
 
-        document.querySelector('.subscriptionDetailBtn').addEventListener('click',e => {
+        document.querySelector('.subscriptionDetailBtn').addEventListener('click', e => {
             console.log(e.target.id);
-            packageDetails.innerHTML='';
+            packageDetails.innerHTML = '';
 
             fetch(`http://127.0.0.1:8000/api/bcs/package/${e.target.id}/`)
-            .then(response => response.json())
-            .then(result => {
-                document.querySelector('#subscriptionDetail .modal-title').textContent = result[0].service_name;
-                let divHtml;
-                result.map(subscription => {
-                    const div = document.createElement("div")
-                    div.classList.add("package", "bg-lightgreen", "shadow", "p-3", "rounded","col-md-3","mx-2","d-flex","flex-column","justify-content-between")
-                    divHtml = `<h3 class="fw-bold fs-4">${subscription.package_name}</h3> <div>`
-                    subscription.feature_subscription?.map((item, index) => {
-                        divHtml += `<div class="info-btn">
+                .then(response => response.json())
+                .then(result => {
+                    document.querySelector('#subscriptionDetail .modal-title').textContent = result[0].service_name;
+                    let divHtml;
+                    result.map(subscription => {
+                        const div = document.createElement("div")
+                        div.classList.add("package", "bg-lightgreen", "shadow", "p-3", "rounded", "col-md-3", "mx-2", "d-flex", "flex-column", "justify-content-between")
+                        divHtml = `<h3 class="fw-bold fs-4">${subscription.package_name}</h3> <div>`
+                        subscription.feature_subscription?.map((item, index) => {
+                            divHtml += `<div class="info-btn">
                             <p class="mb-0">
                             <i class="bi bi-box"></i> ${item.feature_name}
                             </p>
                             <p class="mb-0 fw-bold">${item.feature}</p>
                             </div>`
-                    })
-                    divHtml += `<div class="mt-2 info-btn">
+                        })
+                        divHtml += `<div class="mt-2 info-btn">
                         <p class="mb-0">
                         <i class="icofont-tag"></i> Price
                         </p>
@@ -859,15 +919,13 @@
                         <div class="d-flex justify-content-center">
                         <a href="{% host_url 'bcs_subscription_payment' %}${subscription.id}" class="mt-3 btn bg-navy px-5 py-1">Subscribe</a>
                         </div>`
-                    div.innerHTML = divHtml
-                    packageDetails.appendChild(div)
-                })
+                        div.innerHTML = divHtml
+                        packageDetails.appendChild(div)
+                    })
 
-            })
+                })
         });
-        
-       
-            
-        
+
+
     </script>
 {% endblock customjs %}
