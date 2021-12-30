@@ -41,6 +41,7 @@ urlpatterns = [
          name='main_admin_year_chart'),
     path('main/main_admin_month_chart/', views.MainAdminDashboardMonthChartApiView.as_view(),
          name='main_admin_month_chart'),
+
     path('bcs/bcs_subscriptions/<service>/', views.SubscriptionApiView.as_view(), name='bcs_subscriptions'),
 
     path('bcs/subscription_order/<id>/', views.SubscriptionOrderView.as_view(), name='subscription_order'),

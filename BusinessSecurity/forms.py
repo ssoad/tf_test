@@ -1,6 +1,6 @@
 from django import forms
 from BusinessSecurity import models
-from Academy.models import Course, duration, Section, Content
+from Academy.models import Course, duration, Section, Content, PackageFeatures, CoursePackage, CoursePurchase
 from django.db.models import Q
 from phonenumber_field.formfields import PhoneNumberField
 from phonenumber_field.widgets import PhoneNumberPrefixWidget
@@ -97,7 +97,7 @@ class AddPackageFeatureForm(forms.ModelForm):
 
 class AddIndividualPackageFeatureForm(forms.ModelForm):
     class Meta:
-        model = models.SubscriptionFeatures
+        model = PackageFeatures
         fields = ['feature_name', 'feature']
 
 

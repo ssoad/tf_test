@@ -219,10 +219,10 @@ class BCSCourseFeatureSubscriptionsSerializer(serializers.ModelSerializer):
 
 
 class BCSCoursePackageListSerializer(serializers.ModelSerializer):
-    # feature_subscription = serializers.StringRelatedField(many=True)
-    # feature_subscription = BCSCourseFeatureSubscriptionsSerializer(many=True)
-    service_name = serializers.CharField(source='service_id.service_title')
-    product_id = serializers.CharField(source='service_id.product_id')
+    # packagefeature_coursepackage = serializers.StringRelatedField(many=True)
+    packagefeature_coursepackage = BCSCourseFeatureSubscriptionsSerializer(many=True)
+    course = serializers.CharField(source='service_id.course_name')
+    # product_id = serializers.CharField(source='service_id.product_id')
 
     class Meta:
         model = coursemodels.CoursePackage

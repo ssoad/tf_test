@@ -1913,8 +1913,8 @@ def bcsAdminCourseSubscriptionPack(request):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminCourseSubscriptionPackEdit(request, id):
-    current_package = models.SubscriptionBasedPackage.objects.get(id=id)
-    package_features = models.SubscriptionFeatures.objects.filter(
+    current_package = CoursePackage.objects.get(id=id)
+    package_features = PackageFeatures.objects.filter(
         package=current_package)
     form = AddCoursePackageForm(instance=current_package)
     form2 = AddCourseIndividualPackageFeatureForm()
@@ -1923,10 +1923,10 @@ def bcsAdminCourseSubscriptionPackEdit(request, id):
             form = AddCoursePackageForm(request.POST, instance=current_package)
             if form.is_valid():
                 form.save()
-                return HttpResponseRedirect(reverse('bcs_admin_subscription_packages'))
+                return HttpResponseRedirect(reverse('bcs_admin_course_packages'))
         elif 'feature-btn' in request.POST:
-            print(request.POST)
-            current_feature = models.SubscriptionFeatures.objects.get(
+            # print(request.POST)
+            current_feature = PackageFeatures.objects.get(
                 id=request.POST.get('feature_id'))
             current_feature.feature_name = request.POST.get('feature_name')
             current_feature.feature = request.POST.get('feature')
