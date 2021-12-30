@@ -83,14 +83,18 @@ INSTALLED_APPS = [
 ]
 
 # Django-Rest-Framework Settings
-# REST_FRAMEWORK = {
-#     'DEFAULT_RENDERER_CLASSES': (
-#         'rest_framework.renderers.JSONRenderer',
-#     ),
-#     'DEFAULT_PARSER_CLASSES': [
-#         'rest_framework.parsers.JSONParser',
-#     ]
-# }
+REST_FRAMEWORK = {
+    # 'DEFAULT_RENDERER_CLASSES': (
+    #     'rest_framework.renderers.JSONRenderer',
+    # ),
+    # 'DEFAULT_PARSER_CLASSES': [
+    #     'rest_framework.parsers.JSONParser',
+    # ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}
 
 # tinymce Settings
 TINYMCE_DEFAULT_CONFIG = {
@@ -250,17 +254,16 @@ WSGI_APPLICATION = 'MainTechforing.wsgi.application'
 
 # For Production
 DATABASES = {
-     'default': {
-         'ENGINE': 'django.db.backends.mysql',
-         'NAME': 'main_techforing_v3',
-         'USER': 'root',
-         'PASSWORD': 'hOLL4m&*%$',
-         'OPTIONS': {
-             'sql_mode': 'traditional',
-         }
-     }
- }
-
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'main_techforing_v3',
+        'USER': 'root',
+        'PASSWORD': 'hOLL4m&*%$',
+        'OPTIONS': {
+            'sql_mode': 'traditional',
+        }
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
