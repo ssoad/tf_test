@@ -211,7 +211,7 @@ MIDDLEWARE = [
 # For Production
 SESSION_COOKIE_DOMAIN = '.techforing.com'
 SESSION_COOKIE_NAME = 'techforingsessionid'
-SESSION_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = True
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 ROOT_URLCONF = 'MainTechforing.urls'
 ROOT_HOSTCONF = 'MainTechforing.hosts'
