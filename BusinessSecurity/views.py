@@ -1610,7 +1610,7 @@ def bcsAdminSubscriptionPackDelete(request, id):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminSubscriptionPackFeatureDelete(request, id):
-    current_feature = models.SubscriptionFeatures.objects.get(id=id)
+    current_feature = PackageFeatures.objects.get(id=id)
     current_feature.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
@@ -1950,7 +1950,7 @@ def bcsAdminCourseSubscriptionPackEdit(request, id):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminCourseSubscriptionPackDelete(request, id):
-    current_package = models.SubscriptionBasedPackage.objects.get(id=id)
+    current_package = CoursePackage.objects.get(id=id)
     current_package.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
