@@ -814,7 +814,6 @@
 
         allBtn.forEach((btn, index) => {
             btn.addEventListener('click', () => {
-                console.log(document.querySelector(`div.${btn.classList[0]}`))
                 servicesContent.classList.add('d-none');
                 document.querySelector(`div.${btn.classList[0]}`).classList.remove('d-none');
                 backBtn.classList.remove('d-none');
@@ -867,15 +866,15 @@
         });
 
         let input = document.getElementById('train-employee-input');
-        document.getElementById('train-employee-btn').addEventListener('click', () => {
+        document.getElementById('train-employee-btn')?.addEventListener('click', () => {
             input.classList.toggle('d-none');
             input.focus();
         });
-        input.addEventListener('keyup', (e) => {
+        input?.addEventListener('keyup', (e) => {
             e.target.value = e.target.value.replace(/[^0-9]/gi, "");
         });
 
-        document.getElementById('employee-program-btn').addEventListener('click', (e) => {
+        document.getElementById('employee-program-btn')?.addEventListener('click', (e) => {
             let trainInput = document.getElementById('employee-program-input');
             trainInput.classList.toggle('d-none');
             trainInput.focus();
@@ -885,46 +884,45 @@
             numberInput.classList.toggle('d-none');
             numberInput.focus();
         });
-        const packageDetails = document.querySelector(".package-details")
 
-        document.querySelector('.subscriptionDetailBtn').addEventListener('click', e => {
-            console.log(e.target.id);
-            packageDetails.innerHTML = '';
-
-            fetch(`http://127.0.0.1:8000/api/bcs/package/${e.target.id}/`)
-                .then(response => response.json())
-                .then(result => {
-                    document.querySelector('#subscriptionDetail .modal-title').textContent = result[0].service_name;
-                    let divHtml;
-                    result.map(subscription => {
-                        const div = document.createElement("div")
-                        div.classList.add("package", "bg-lightgreen", "shadow", "p-3", "rounded", "col-md-3", "mx-2", "d-flex", "flex-column", "justify-content-between")
-                        divHtml = `<h3 class="fw-bold fs-4">${subscription.package_name}</h3> <div>`
-                        subscription.feature_subscription?.map((item, index) => {
-                            divHtml += `<div class="info-btn">
+        const packageDetails = document.querySelector(".package-details");
+        document.querySelectorAll('.subscriptionDetailBtn').forEach(btn => {
+            btn.addEventListener('click', e => {
+                packageDetails.innerHTML = '';
+                fetch(`${mainOrigin}/api/bcs/package/${btn.id}/`)
+                    .then(response => response.json())
+                    .then(result => {
+                        document.querySelector('#subscriptionDetail .modal-title').textContent = result[0].service_name;
+                        let divHtml;
+                        result.map(subscription => {
+                            const div = document.createElement("div")
+                            div.classList.add("package", "bg-lightgreen", "shadow", "p-3", "rounded", "col-md-4", "me-2", "d-flex", "flex-column", "justify-content-between")
+                            divHtml = `<h3 class="fw-bold fs-4">${subscription.package_name}</h3> <div>`
+                            subscription.feature_subscription?.map((item, index) => {
+                                divHtml += `<div class="info-btn">
+                                <p class="mb-0">
+                                <i class="bi bi-box"></i> ${item.feature_name}
+                                </p>
+                                <p class="mb-0 fw-bold">${item.feature}</p>
+                                </div>`
+                            })
+                            divHtml += `<div class="mt-2 info-btn">
                             <p class="mb-0">
-                            <i class="bi bi-box"></i> ${item.feature_name}
+                            <i class="icofont-tag"></i> Price
                             </p>
-                            <p class="mb-0 fw-bold">${item.feature}</p>
+                            <p class="mb-0 fw-bold">${subscription.price}$ <span class="fw-bolder">/${subscription.duration_type}</span>
+                            </p>
+                            </div>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                            <a href="{% host_url 'bcs_subscription_payment' %}${subscription.id}" class="mt-3 btn bg-navy px-5 py-1">Subscribe</a>
                             </div>`
+                            div.innerHTML = divHtml
+                            packageDetails.appendChild(div)
                         })
-                        divHtml += `<div class="mt-2 info-btn">
-                        <p class="mb-0">
-                        <i class="icofont-tag"></i> Price
-                        </p>
-                        <p class="mb-0 fw-bold">${subscription.price}$ <span class="fw-bolder">/${subscription.duration_type}</span>
-                        </p>
-                        </div>
-                        </div>
-                        <div class="d-flex justify-content-center">
-                        <a href="{% host_url 'bcs_subscription_payment' %}${subscription.id}" class="mt-3 btn bg-navy px-5 py-1">Subscribe</a>
-                        </div>`
-                        div.innerHTML = divHtml
-                        packageDetails.appendChild(div)
                     })
-
-                })
-        });
+            });
+        })
 
 
     </script>
