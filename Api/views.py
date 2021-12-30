@@ -625,3 +625,23 @@ class PCSCoursePurchaseApiView(generics.CreateAPIView):
             ser.is_valid(raise_exception=True)
             self.perform_create(ser)
             return Response(ser.data)
+
+
+class BCSCourseApiView(generics.RetrieveAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = serializer.BCSCourseSerializer
+    lookup_field = 'id'
+
+    def get_queryset(self):
+        service_id = self.kwargs['id']
+        return coursemodels.BCSCourse.objects.filter(id=service_id)
+
+class BCSCoursePackageListViewApi(generics.ListAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = serializer.BCSCoursePackageListSerializer
+
+    # queryset = bcsmodels.SubscriptionBasedPackage.objects.all()
+
+    def get_queryset(self):
+        service_id = self.kwargs['id']
+        return coursemodels.CoursePackage.objects.filter(service_id=service_id)

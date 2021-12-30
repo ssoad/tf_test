@@ -41,9 +41,13 @@ urlpatterns = [
          name='main_admin_year_chart'),
     path('main/main_admin_month_chart/', views.MainAdminDashboardMonthChartApiView.as_view(),
          name='main_admin_month_chart'),
+
     path('bcs/bcs_subscriptions/<service>/', views.SubscriptionApiView.as_view(), name='bcs_subscriptions'),
 
     path('bcs/subscription_order/<id>/', views.SubscriptionOrderView.as_view(), name='subscription_order'),
     path('pcs/course_order_check/', views.PCSCoursePurchaseCheckApiView.as_view(), name='course_order_check'),
     path('pcs/course_order/', views.PCSCoursePurchaseApiView.as_view(), name='course_order'),
+
+    path('bcs/bcs_course/<id>/', views.BCSCourseApiView.as_view(), name='bcs_course'),
+    path('bcs/course_package/<id>/', views.BCSCoursePackageListViewApi.as_view(), name='course_package_list_api'),
 ]

@@ -204,3 +204,26 @@ class PCSCoursePurchaseSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'user': {'read_only': True}
         }
+
+
+class BCSCourseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = coursemodels.BCSCourse
+        fields = '__all__'
+
+
+class BCSCourseFeatureSubscriptionsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = coursemodels.PackageFeatures
+        fields = '__all__'
+
+
+class BCSCoursePackageListSerializer(serializers.ModelSerializer):
+    # packagefeature_coursepackage = serializers.StringRelatedField(many=True)
+    packagefeature_coursepackage = BCSCourseFeatureSubscriptionsSerializer(many=True)
+    course = serializers.CharField(source='service_id.course_name')
+    # product_id = serializers.CharField(source='service_id.product_id')
+
+    class Meta:
+        model = coursemodels.CoursePackage
+        fields = '__all__'

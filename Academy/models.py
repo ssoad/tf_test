@@ -12,6 +12,11 @@ duration = (
     ('one_year', 'One Year'),
 )
 
+duration_type = (
+    ('month', 'Month'),
+    ('year', 'Year'),
+)
+
 course_type = (
     ('Business', 'Business'),
     ('Personal', 'Personal'),
@@ -103,7 +108,6 @@ class BCSCourse(models.Model):
         return self.course_name
 
 
-
 class BCSSection(models.Model):
     course = models.ForeignKey(BCSCourse, on_delete=models.CASCADE, related_name='bcssection_bcscourse')
     section_name = models.CharField(max_length=264)
@@ -137,3 +141,53 @@ class BCSContent(models.Model):
 
         cap.release()
         return str(minutes) + ':' + str(seconds) + ' m'
+
+
+class CoursePackage(models.Model):
+    service_id = models.ForeignKey(BCSCourse, on_delete=models.CASCADE, related_name='coursepackage_bcscourse')
+    package_id = models.CharField(max_length=255, blank=True)
+    package_name = models.CharField(
+        max_length=264, verbose_name='Package Name')
+    duration = models.IntegerField()
+    duration_type = models.CharField(
+        choices=duration_type, max_length=264, default='month')
+    price = models.IntegerField()
+
+    def __str__(self):
+        return f'{self.package_name} - {self.service_id}'
+
+
+
+class PackageFeatures(models.Model):
+    package = models.ForeignKey(
+        CoursePackage, on_delete=models.CASCADE, related_name='packagefeature_coursepackage')
+    feature_name = models.CharField(
+        max_length=264, verbose_name='Feature Name')
+    feature = models.CharField(
+        max_length=264, verbose_name='Feature')
+
+    def __str__(self):
+        return f'{self.feature_name} - {self.feature}'
+
+
+
+class CourseOrder(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE,
+                             related_name='courseorder_user')
+    course = models.ForeignKey(BCSCourse, on_delete=models.CASCADE,
+                                             related_name='courseorder_bcscourse')
+    course_package = models.ForeignKey(CoursePackage, on_delete=models.CASCADE,
+                                             related_name='courseorder_coursepackage')
+    paypal_email = models.EmailField()
+    paypal_id = models.CharField(max_length=255)
+    paypal_user_name = models.CharField(max_length=255)
+    payment_id = models.CharField(max_length=255)
+    create_time = models.DateTimeField()
+    update_time = models.DateTimeField()
+    amount = models.IntegerField()
+    currency = models.CharField(max_length=255)
+
+    is_active = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.user} - {self.course} - {self.course_package} - {self.is_active}'
