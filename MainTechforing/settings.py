@@ -209,7 +209,7 @@ MIDDLEWARE = [
 # PARENT_HOST = '127.0.0.1:8000'
 
 # For Production
-SESSION_COOKIE_DOMAIN = '.techforing.com'
+SESSION_COOKIE_DOMAIN = '*.techforing.com'
 SESSION_COOKIE_NAME = 'techforingsessionid'
 SESSION_COOKIE_SECURE = True
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
@@ -354,7 +354,7 @@ CSRF_TRUSTED_ORIGINS = [
 
 CORS_URLS_REGEX = r'^/api/.*$'
 CORS_ALLOW_CREDENTIALS = True
-SESSION_COOKIE_SAMESITE = None
+SESSION_COOKIE_SAMESITE = 'None'
 
 # Media
 MEDIA_URL = '/media/'
