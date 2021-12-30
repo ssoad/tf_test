@@ -636,6 +636,7 @@ class BCSCourseApiView(generics.RetrieveAPIView):
         service_id = self.kwargs['id']
         return coursemodels.BCSCourse.objects.filter(id=service_id)
 
+
 class BCSCoursePackageListViewApi(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = serializer.BCSCoursePackageListSerializer

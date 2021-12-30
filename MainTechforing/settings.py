@@ -323,6 +323,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://44.242.38.198",
     "http://0.0.0.0",
 ]
+CORS_ALLOW_CREDENTIALS = True
 
 # Media
 MEDIA_URL = '/media/'
