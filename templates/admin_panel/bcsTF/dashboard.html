@@ -18,11 +18,11 @@
         <section class="user-stat">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-8">
+                    <div class="col-lg-12">
                         <div class="accordion" id="accordionExample">
                             <div class="row g-4 align-content-center">
                                 {% for service_category in service_categories %}
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <h2 class="subscription-info" style="background-color: #4566A0;"
                                             id="heading{{ service_category.category_name|replacespace }}">
                                             <div class="row">
@@ -66,10 +66,10 @@
                         </div>
                     </div>
 
-                    <!-- User Stat Chart -->
+                    {% comment %} <!-- User Stat Chart -->
                     <div class="col-lg-4">
                         <canvas id="user-chart" class="chartjs-render-monitor"></canvas>
-                    </div>
+                    </div> {% endcomment %}
                 </div>
             </div>
         </section>

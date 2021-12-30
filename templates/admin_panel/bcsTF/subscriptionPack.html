@@ -224,8 +224,7 @@
         let password = 'EOsLHpTI748BbKSwcWlQpgmuJZXyudRnJP50Gc8H5Anf8VnDfk8FtEtRYwJ_iU1T9sgH5DOv53BuqeyH'
 
         service_id.addEventListener('change', (e) => {
-            {#console.log(e.target.value)#}
-            fetch(`http://127.0.0.1:8000/api/bcs/subscription_service/${e.target.value}/`, {
+            fetch(`${mainOrigin}/api/bcs/subscription_service/${e.target.value}/`, {
                 method: 'GET',
                 headers: {
                     'Content-type': 'application/json',
