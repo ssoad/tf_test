@@ -148,7 +148,9 @@
         document.querySelector('.viewPlanModalBtn').addEventListener('click', e => {
             packageDetails.innerHTML = '';
 
-            fetch(`${mainOrigin}/api/bcs/course_package/${courseId}/`)
+            fetch(`${mainOrigin}/api/bcs/course_package/${courseId}/`,{
+                credentials: 'include'
+            })
                 .then(response => response.json())
                 .then(result => {
                     document.querySelector('#viewPlanModal .modal-title').textContent = result[0].course;

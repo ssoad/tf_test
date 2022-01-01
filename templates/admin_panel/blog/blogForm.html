@@ -98,7 +98,9 @@ cursor: pointer;
     const blogSubCategory = document.getElementById("subCategory")
     const filterOption = document.getElementById("filterOption")
     window.addEventListener("load", () => {
-        fetch(`${baseUrl}api/blogs/category/`)
+        fetch(`${baseUrl}api/blogs/category/`,{
+            credentials: 'include'
+        })
             .then(response => response.json())
             .then(result => {
                 result.map((item) => {

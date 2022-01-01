@@ -3,7 +3,9 @@ let infoChart = document.getElementById("info-chart").getContext("2d");
 let infoLineChart = new Chart(infoChart, {});
 let getChartData = type => {
 
-    fetch(`${mainOrigin}/api/bcs/bcs_admin_${type}_chart/`)
+    fetch(`${mainOrigin}/api/bcs/bcs_admin_${type}_chart/`, {
+        credentials: 'include'
+    })
         .then(response => {
             return response.json()
         })

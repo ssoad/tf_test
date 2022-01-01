@@ -871,6 +871,10 @@ ol li {
     font-size: 20px;
 }
 
+.h-200p {
+    height: 200px;
+}
+
 .package .info-btn {
     border-radius: .3rem !important;
     display: flex;

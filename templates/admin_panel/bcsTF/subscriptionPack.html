@@ -226,6 +226,7 @@
         service_id.addEventListener('change', (e) => {
             fetch(`${mainOrigin}/api/bcs/subscription_service/${e.target.value}/`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-type': 'application/json',
                 },
