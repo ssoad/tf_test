@@ -47,6 +47,10 @@
                         <p>Status:
                             {% if current_order.order_status == 'new' %}
                                 <span class="badge bg-primary">{{ current_order.order_status|capitalize }}</span>
+                            {% elif current_order.order_status == 'agreed_to_quotation' %}
+                                <span class="badge bg-success">{{ current_order.order_status|capitalize }}</span>
+                            {% elif current_order.order_status == 'agreed_to_nda_nca' %}
+                                <span class="badge bg-success">{{ current_order.order_status|capitalize }}</span>
                             {% elif current_order.order_status == 'attending' %}
                                 <span class="badge bg-warning text-dark">{{ current_order.order_status|capitalize }}</span>
                             {% elif current_order.order_status == 'on_progress' %}
@@ -102,7 +106,8 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="quotationModal-{{ current_order.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="quotationModal-{{ current_order.id }}" tabindex="-1"
+             aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">

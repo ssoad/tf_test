@@ -8,7 +8,8 @@
             <h3>{{ message }} List</h3>
             {% if not admin %}
                 {% if message == 'Quotations' %}
-                    <a href="{% host_url 'pcs_admin_new_order' host 'mysecurity' %}" class="btn btn-primary">Create New Order</a>
+                    <a href="{% host_url 'pcs_admin_new_order' host 'mysecurity' %}" class="btn btn-primary">Create New
+                        Order</a>
                 {% endif %}
             {% endif %}
 
@@ -37,6 +38,10 @@
                         <td><p class="badge bg-primary">{{ order.order_status|capitalize }}</p></td>
                     {% elif order.order_status == 'assigned' %}
                         <td><p class="badge bg-secondary">{{ order.order_status|capitalize }}</p></td>
+                    {% elif order.order_status == 'agreed_to_quotation' %}
+                        <td><p class="badge bg-success">{{ order.order_status|capitalize }}</p></td>
+                    {% elif order.order_status == 'agreed_to_nda_nca' %}
+                        <td><p class="badge bg-success">{{ order.order_status|capitalize }}</p></td>
                     {% elif order.order_status == 'attending' %}
                         <td><p class="badge bg-warning text-dark">{{ order.order_status|capitalize }}</p></td>
                     {% elif order.order_status == 'on_progress' %}

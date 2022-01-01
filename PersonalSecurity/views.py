@@ -302,7 +302,10 @@ def userQuotationsHistoryView(request):
     #     Q(user=request.user, category_choice='pcs') & Q(
     #         Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
     #     '-order_date')
-    quotations = models.Quotation.objects.filter(order__user=request.user)
+    quotations = models.Quotation.objects.filter(Q(order__user=request.user) & Q(
+        Q(order__order_status='new') | Q(order__order_status='attending')
+        | Q(order__order_status='agreed_to_quotation') | Q(order__order_status='agreed_to_nda_nca')
+        | Q(order__order_status='assigned'))).order_by('-order__order_date')
     context = {
         'quotations': quotations,
         'message': 'Quotations',
@@ -314,7 +317,7 @@ def userQuotationsHistoryView(request):
 def userOrderHistoryView(request):
     orders = models.Order.objects.filter(
         Q(user=request.user, category_choice='pcs') & ~Q(
-            Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
+            Q(order_status='new') | Q(order_status='attending') | Q(order_status='agreed_to_quotation') | Q(order_status='agreed_to_nda_nca') | Q(order_status='assigned'))).order_by(
         '-order_date')
     context = {
         'orders': orders,
@@ -341,7 +344,10 @@ def quotationAcceptView(request, id):
     try:
         current_order = models.Order.objects.get(
             user=request.user, id=id, category_choice='pcs')
+        current_quotation = models.Quotation.objects.get(order=current_order)
+        current_quotation.agree_to_quotation = 'agree'
         current_order.order_status = 'agreed_to_quotation'
+        current_quotation.save()
         current_order.save()
 
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
@@ -354,7 +360,10 @@ def ndaNcaAcceptView(request, id):
     try:
         current_order = models.Order.objects.get(
             user=request.user, id=id, category_choice='pcs')
+        current_quotation = models.Quotation.objects.get(order=current_order)
+        current_quotation.agree_to_nda_nca = 'agree'
         current_order.order_status = 'agreed_to_nda_nca'
+        current_quotation.save()
         current_order.save()
 
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
@@ -367,7 +376,11 @@ def orderRejectView(request, id):
     try:
         current_order = models.Order.objects.get(
             user=request.user, id=id, category_choice='pcs')
+        current_quotation = models.Quotation.objects.get(order=current_order)
+        current_quotation.agree_to_quotation = 'disagree'
+        current_quotation.agree_to_nda_nca = 'disagree'
         current_order.order_status = 'canceled'
+        current_quotation.save()
         current_order.save()
 
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
@@ -1009,6 +1022,7 @@ def pcsAdminQuotationsView(request):
     if request.user.is_sales:
         orders = models.Order.objects.filter(
             Q(orderstaff_order__staff=request.user) & Q(Q(order_status='new') | Q(order_status='attending')
+                                                        | Q(order_status='agreed_to_quotation') | Q(order_status='agreed_to_nda_nca')
                                                         | Q(order_status='assigned'))).order_by('-order_date')
         context = {
             'orders': orders.filter(category_choice='pcs'),
@@ -1018,6 +1032,7 @@ def pcsAdminQuotationsView(request):
     else:
         orders = models.Order.objects.filter(
             Q(category_choice='pcs') & Q(Q(order_status='new') | Q(order_status='attending')
+                                         | Q(order_status='agreed_to_quotation') | Q(order_status='agreed_to_nda_nca')
                                          | Q(order_status='assigned'))).order_by('-order_date')
         print(orders)
         context = {
@@ -1034,7 +1049,9 @@ def pcsAdminOrdersView(request):
     if request.user.is_sales:
         orders = models.Order.objects.filter(
             Q(orderstaff_order__staff=request.user) & ~Q(
-                Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
+                Q(order_status='new') | Q(order_status='attending')
+                | Q(order_status='agreed_to_quotation') | Q(order_status='agreed_to_nda_nca')
+                | Q(order_status='assigned'))).order_by(
             '-order_date')
         context = {
             'orders': orders,
@@ -1044,7 +1061,9 @@ def pcsAdminOrdersView(request):
     else:
         orders = models.Order.objects.filter(
             Q(category_choice='pcs') & ~Q(
-                Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
+                Q(order_status='new') | Q(order_status='attending')
+                | Q(order_status='agreed_to_quotation') | Q(order_status='agreed_to_nda_nca')
+                | Q(order_status='assigned'))).order_by(
             '-order_date')
         context = {
             'orders': orders,
