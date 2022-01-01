@@ -123,7 +123,9 @@
             ticketList.classList.add('d-none');
             ticketForm.classList.remove('d-none');
 
-            fetch(mainOrigin+"/api/bcs/services/pcs/")
+            fetch(mainOrigin+"/api/bcs/services/pcs/",{
+                credentials: 'include'
+            })
                 .then(res => res.json())
                 .then(data => {
                     ticketService.innerHTML='';

@@ -78,6 +78,7 @@
 
                         fetch(`${mainOrigin}/api/pcs/course_order/`, {
                             method: 'POST',
+                            credentials: 'include',
                             body: JSON.stringify({paypal_id: data.orderID, course: courseId}),
                             headers: {
                                 'Content-type': 'application/json',
@@ -97,7 +98,9 @@
                 }
             }).render('#paypal-button-container');
         }
-        fetch(`${mainOrigin}/api/pcs/course_order_check/`)
+        fetch(`${mainOrigin}/api/pcs/course_order_check/`, {
+            credentials: 'include'
+        })
         .then(res=>res.json())
         .then(data => {
         if(data.result.includes(parseInt(courseId))){
