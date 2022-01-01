@@ -1,4 +1,8 @@
-{% extends 'base/pcs_user_base.html' %} {% load static %} {% load my_filter %} {% load hosts %} {% block title %} Order {% endblock title %}
+{% extends 'base/pcs_user_base.html' %}
+{% load static %}
+{% load my_filter %}
+{% load hosts %}
+{% block title %} Order {% endblock title %}
 
 {% block headercss %}
 
@@ -10,20 +14,19 @@
             z-index: unset;
         }
 
-        .card-body{
+        .card-body {
             max-height: 220px;
             overflow-y: scroll;
         }
-        .card-body::-webkit-scrollbar
-        {
+
+        .card-body::-webkit-scrollbar {
             width: 5px;
             background-color: gray;
         }
-        
-        .card-body::-webkit-scrollbar-thumb
-        {
+
+        .card-body::-webkit-scrollbar-thumb {
             border-radius: 10px;
-            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
             background-color: #182f59;
         }
     </style>
@@ -55,91 +58,235 @@
                                 <span class="badge bg-danger">{{ current_order.order_status|capitalize }}</span>
                             {% endif %}
                         </p>
-                        <button class="btn view-btn bg-navy btn-outline-light" data-bs-toggle="modal"
-                                data-bs-target="#invoiceModal-{{ current_order.id }}">View Invoice
-                        </button>
 
+                        {% if current_order.quotation_order.agree_to_quotation == 'agree' and current_order.quotation_order.agree_to_nda_nca == 'agree' %}
+                            <button class="btn view-btn bg-navy btn-outline-light" data-bs-toggle="modal"
+                                    data-bs-target="#invoiceModal-{{ current_order.id }}">View Invoice
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade text-dark" id="invoiceModal-{{ current_order.id }}" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog modal-xl">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title fw-bold" id="exampleModalLabel">Invoice</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body invoice" id="invoice">
+                                            <div class="d-flex justify-content-between">
+                                                <div>
+                                                    <h6>TechForing Ltd.</h6>
+                                                    <h6>Tel.: 01XXXXXXXXX</h6>
+                                                </div>
+                                                <div>
+                                                    <button onclick="generatePDF(this);"
+                                                            class="invoice-btn btn btn-outline-danger py-1 px-3">
+                                                        Download
+                                                        Invoice
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <!-- <h4 class="mt-3 text-center fw-bold">Invoice</h4> -->
+                                            <div class="mt-5 d-flex justify-content-between">
+                                                <div class="user-info">
+                                                    <h6>To</h6>
+                                                    <h6>{{ current_order.user.full_name }}</h6>
+                                                    <h6>Tel.: {{ current_order.user.phone_number }}</h6>
+                                                </div>
+                                                <div class="invoice-info">
+                                                    <h6>Invoice #{{ current_order.id }}</h6>
+                                                    <h6><span
+                                                            class="fw-bold">Issue Date:</span> {{ current_order.order_date|date }}
+                                                    </h6>
+                                                    <h6><span
+                                                            class="fw-bold">Issue Time:</span> {{ current_order.order_date|time }}
+                                                    </h6>
+                                                    <h6><span
+                                                            class="fw-bold">Payment Method:</span> {{ current_order.orderprice_order.payment_method|capitalize }}
+                                                    </h6>
+                                                </div>
+                                            </div>
+
+                                            <table class="mt-2 table border border-dark text-center">
+                                                <thead>
+                                                <tr>
+                                                    <th>Item</th>
+                                                    <th>Description</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for service in current_order.subserviceinput.all %}
+
+                                                    <tr>
+                                                        {% ifchanged %}
+                                                            <td>{{ service.inputfield.subservice }}</td>
+                                                        {% else %}
+                                                            <td class="invisible">{{ service.inputfield.subservice }}</td>
+                                                        {% endifchanged %}
+                                                        <td>
+                                                            {{ service.inputfield.inputfield.placeholder }}: {{ service.inputinfo }}
+                                                        </td>
+                                                    </tr>
+
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                            <h6 class="text-end">
+                                                Total: {{ current_order.orderprice_order.price }} {{ current_order.orderprice_order.currency|upper }}</h6>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn bg-navy" data-bs-dismiss="modal">Close
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="btn view-btn bg-navy btn-outline-light" data-bs-toggle="modal"
+                                    data-bs-target="#quotationModal-{{ current_order.id }}">View Quotation
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade text-dark" id="quotationModal-{{ current_order.id }}" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog modal-xl">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title fw-bold" id="exampleModalLabel">Quotation</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body invoice" id="invoice">
+                                            {{ current_order.quotation_order.quotation_info|safe }}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn bg-navy" data-bs-dismiss="modal">Close
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="btn view-btn bg-navy btn-outline-light" data-bs-toggle="modal"
+                                    data-bs-target="#ndancaModal-{{ current_order.id }}">View NDA/NCA
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade text-dark" id="ndancaModal-{{ current_order.id }}" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog modal-xl">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title fw-bold" id="exampleModalLabel">View NDA/NCA</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body invoice" id="invoice">
+                                            {{ current_order.quotation_order.nda.url }}
+                                            {{ current_order.quotation_order.nda.url }}
+                                            {{ current_order.quotation_order.extra_field }}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn bg-navy" data-bs-dismiss="modal">Close
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% elif current_order.quotation_order.agree_to_quotation == 'disagree' %}
+                            <button class="btn view-btn bg-navy btn-outline-light" data-bs-toggle="modal"
+                                    data-bs-target="#quotationModal-{{ current_order.id }}">View Quotation
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade text-dark" id="quotationModal-{{ current_order.id }}" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog modal-xl">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title fw-bold" id="exampleModalLabel">Quotation</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body invoice" id="invoice">
+                                            {{ current_order.quotation_order.quotation_info|safe }}
+                                        </div>
+                                        <div class="d-flex gap-3 justify-content-end me-3">
+                                            <a href="{% host_url 'pcs_user_order_reject' host 'mysecurity' %}{{ current_order.id }}" class="btn btn-danger">Reject</a>
+                                            <a href="{% host_url 'pcs_user_accept_quotation' host 'mysecurity' %}{{ current_order.id }}" class="btn btn-success">Accept</a>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn bg-navy" data-bs-dismiss="modal">Close
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% elif current_order.quotation_order.agree_to_nda_nca == 'disagree' %}
+                            <button class="btn view-btn bg-navy btn-outline-light" data-bs-toggle="modal"
+                                    data-bs-target="#quotationModal-{{ current_order.id }}">View Quotation
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade text-dark" id="quotationModal-{{ current_order.id }}" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog modal-xl">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title fw-bold" id="exampleModalLabel">Quotation</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body invoice" id="invoice">
+                                            {{ current_order.quotation_order.quotation_info|safe }}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn bg-navy" data-bs-dismiss="modal">Close
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="btn view-btn bg-navy btn-outline-light" data-bs-toggle="modal"
+                                    data-bs-target="#ndancaModal-{{ current_order.id }}">View NDA/NCA
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade text-dark" id="ndancaModal-{{ current_order.id }}" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog modal-xl">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title fw-bold" id="exampleModalLabel">View NDA/NCA</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body invoice" id="invoice">
+                                            {{ current_order.quotation_order.nda.url }}
+                                            {{ current_order.quotation_order.nda.url }}
+                                            {{ current_order.quotation_order.extra_field }}
+                                        </div>
+                                        <div class="d-flex gap-3 justify-content-end me-3">
+                                            <a href="" class="btn btn-danger">Reject</a>
+                                            <a href="" class="btn btn-success">Accept</a>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn bg-navy" data-bs-dismiss="modal">Close
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="invoiceModal-{{ current_order.id }}" tabindex="-1"
-             aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title fw-bold" id="exampleModalLabel">Invoice</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body invoice" id="invoice">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <h6>TechForing Ltd.</h6>
-                                <h6>Tel.: 01XXXXXXXXX</h6>
-                            </div>
-                            <div>
-                                <button onclick="generatePDF(this);"
-                                        class="invoice-btn btn btn-outline-danger py-1 px-3">Download
-                                    Invoice
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- <h4 class="mt-3 text-center fw-bold">Invoice</h4> -->
-                        <div class="mt-5 d-flex justify-content-between">
-                            <div class="user-info">
-                                <h6>To</h6>
-                                <h6>{{ current_order.user.full_name }}</h6>
-                                <h6>Tel.: {{ current_order.user.phone_number }}</h6>
-                            </div>
-                            <div class="invoice-info">
-                                <h6>Invoice #{{ current_order.id }}</h6>
-                                <h6><span class="fw-bold">Issue Date:</span> {{ current_order.order_date|date }}
-                                </h6>
-                                <h6><span class="fw-bold">Issue Time:</span> {{ current_order.order_date|time }}
-                                </h6>
-                                <h6><span
-                                        class="fw-bold">Payment Method:</span> {{ current_order.orderprice_order.payment_method|capitalize }}
-                                </h6>
-                            </div>
-                        </div>
-
-                        <table class="mt-2 table border border-dark text-center">
-                            <thead>
-                            <tr>
-                                <th>Item</th>
-                                <th>Description</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for service in current_order.subserviceinput.all %}
-
-                                <tr>
-                                    {% ifchanged %}
-                                        <td>{{ service.inputfield.subservice }}</td>
-                                    {% else %}
-                                        <td class="invisible">{{ service.inputfield.subservice }}</td>
-                                    {% endifchanged %}
-                                    <td>
-                                        {{ service.inputfield.inputfield.placeholder }}: {{ service.inputinfo }}
-                                    </td>
-                                </tr>
-
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                        <h6 class="text-end">Total: {{ current_order.orderprice_order.price }} {{ current_order.orderprice_order.currency|upper }}</h6>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn bg-navy" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <div class="container-fluid mb-5">
             <h4 class="mt-3 fw-bolder services-type">{{ current_order.service.service_title }}</h4>
@@ -215,7 +362,7 @@
 
         console.log(document.querySelectorAll('.orders .view-btn'))
         document.querySelector('.order-info button').addEventListener('click', () => {
-                document.querySelector('.invoice-btn').classList.remove('d-none');
+            document.querySelector('.invoice-btn').classList.remove('d-none');
         });
 
     </script>

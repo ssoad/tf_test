@@ -5,7 +5,7 @@
 <section class="orders pb-5">
         <h4 class="pt-2 fw-bold border-bottom border-gray pb-14p">Your {{ message }} History</h4>
         <div class="mt-5">&nbsp;</div>
-        {% if not orders.exists %}
+        {% if not quotations.exists %}
             <h3 class="text-center text-gray my-5 py-5 h-100">No {{ message }} History Found!</h3>
             <div class="d-flex my-2 justify-content-center">
                 <a href="{% host_url 'pcs_user_services' host 'mysecurity' %}" class="btn btn-outline-navy">Get a Quotation</a>
@@ -23,27 +23,27 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for order in orders %}
+                {% for quotation in quotations %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td>{{ order.id }}</td>
-                        <td>{{ order.service }}</td>
-                        <td>{{ order.user }}</td>
-                        {% if order.order_status == 'new' %}
-                            <td><p class="badge bg-primary">{{ order.order_status|capitalize }}</p></td>
-                        {% elif order.order_status == 'assigned' %}
-                            <td><p class="badge bg-secondary">{{ order.order_status|capitalize }}</p></td>
-                        {% elif order.order_status == 'attending' %}
-                            <td><p class="badge bg-warning text-dark">{{ order.order_status|capitalize }}</p></td>
-                        {% elif order.order_status == 'on_progress' %}
-                            <td><p class="badge bg-info text-dark">{{ order.order_status|capitalize }}</p></td>
-                        {% elif order.order_status == 'completed' %}
-                            <td><p class="badge bg-success">{{ order.order_status|capitalize }}</p></td>
-                        {% elif order.order_status == 'canceled' %}
-                            <td><p class="badge bg-danger">{{ order.order_status|capitalize }}</p></td>
+                        <td>{{ quotation.order.id }}</td>
+                        <td>{{ quotation.order.service }}</td>
+                        <td>{{ quotation.order.user }}</td>
+                        {% if quotation.order.order_status == 'new' %}
+                            <td><p class="badge bg-primary">{{ quotation.order.order_status|capitalize }}</p></td>
+                        {% elif quotation.order.order_status == 'assigned' %}
+                            <td><p class="badge bg-secondary">{{ quotation.order.order_status|capitalize }}</p></td>
+                        {% elif quotation.order.order_status == 'attending' %}
+                            <td><p class="badge bg-warning text-dark">{{ quotation.order.order_status|capitalize }}</p></td>
+                        {% elif quotation.order.order_status == 'on_progress' %}
+                            <td><p class="badge bg-info text-dark">{{ quotation.order.order_status|capitalize }}</p></td>
+                        {% elif quotation.order.order_status == 'completed' %}
+                            <td><p class="badge bg-success">{{ quotation.order.order_status|capitalize }}</p></td>
+                        {% elif quotation.order.order_status == 'canceled' %}
+                            <td><p class="badge bg-danger">{{ quotation.order.order_status|capitalize }}</p></td>
                         {% endif %}
 
-                        <td><a href="{% host_url 'pcs_user_order_details' host 'mysecurity' %}{{ order.id }}"><i
+                        <td><a href="{% host_url 'pcs_user_order_details' host 'mysecurity' %}{{ quotation.order.id }}"><i
                                 class="bi bi-eye-fill"></i></a></td>
                     </tr>
                 {% endfor %}

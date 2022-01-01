@@ -36,6 +36,14 @@ urlpatterns = [
     path('pcs_user_order_history/', views.userOrderHistoryView, name='pcs_user_order_history'),
     path('pcs_user_order_details/', views.userOrderDetailsView, name='pcs_user_order_details'),
     path('pcs_user_order_details/<id>/', views.userOrderDetailsView, name='pcs_user_order_details'),
+
+    path('pcs_user_accept_quotation/', views.quotationAcceptView, name='pcs_user_accept_quotation'),
+    path('pcs_user_accept_quotation/<id>/', views.quotationAcceptView, name='pcs_user_accept_quotation'),
+    path('pcs_user_accept_nda_nca/', views.ndaNcaAcceptView, name='pcs_user_accept_nda_nca'),
+    path('pcs_user_accept_nda_nca/<id>/', views.ndaNcaAcceptView, name='pcs_user_accept_nda_nca'),
+    path('pcs_user_order_reject/', views.orderRejectView, name='pcs_user_order_reject'),
+    path('pcs_user_order_reject/<id>/', views.orderRejectView, name='pcs_user_order_reject'),
+
     path('pcs_user_subscriptions/', views.userSubscriptionsView, name='pcs_user_subscriptions'),
     path('pcs_user_events/', views.userEventsView, name='pcs_user_events'),
     path('pcs_user_notifications/', views.userNotificationsView, name='pcs_user_notifications'),
