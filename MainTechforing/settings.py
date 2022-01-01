@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-j55@su5sxajtqf_yed#+^vn&p0l=ovow1^6cp$&05so^8^l3th
 DEBUG = True
 
 ALLOWED_HOSTS = ['0.0.0.0', '44.242.38.198', 'main.techforing.com', 'pcs.techforing.com', 'training.techforing.com',
-                 '127.0.0.1', 'localhost']
+                 '127.0.0.1', 'localhost', '.techforing.com']
 
 # Application definition
 
@@ -83,14 +83,18 @@ INSTALLED_APPS = [
 ]
 
 # Django-Rest-Framework Settings
-# REST_FRAMEWORK = {
-#     'DEFAULT_RENDERER_CLASSES': (
-#         'rest_framework.renderers.JSONRenderer',
-#     ),
-#     'DEFAULT_PARSER_CLASSES': [
-#         'rest_framework.parsers.JSONParser',
-#     ]
-# }
+REST_FRAMEWORK = {
+    # 'DEFAULT_RENDERER_CLASSES': (
+    #     'rest_framework.renderers.JSONRenderer',
+    # ),
+    # 'DEFAULT_PARSER_CLASSES': [
+    #     'rest_framework.parsers.JSONParser',
+    # ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}
 
 # tinymce Settings
 TINYMCE_DEFAULT_CONFIG = {
@@ -250,17 +254,16 @@ WSGI_APPLICATION = 'MainTechforing.wsgi.application'
 
 # For Production
 DATABASES = {
-     'default': {
-         'ENGINE': 'django.db.backends.mysql',
-         'NAME': 'main_techforing_v3',
-         'USER': 'root',
-         'PASSWORD': 'hOLL4m&*%$',
-         'OPTIONS': {
-             'sql_mode': 'traditional',
-         }
-     }
- }
-
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'main_techforing_v3',
+        'USER': 'root',
+        'PASSWORD': 'hOLL4m&*%$',
+        'OPTIONS': {
+            'sql_mode': 'traditional',
+        }
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -310,19 +313,52 @@ TINYMCE_JS_ROOT = os.path.join(STATIC_ROOT, "tinymce")
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Cors Settings
-CORS_ALLOWED_ORIGINS = [
-    "https://techforing.com",
-    "https://www.techforing.com",
-    "https://main.techforing.com",
-    "https://bcs.techforing.com",
-    "https://pcs.techforing.com",
-    "https://academy.techforing.com",
-    "https://training.techforing.com",
-    "http://localhost:8080",
-    "http://127.0.0.1:8000",
-    "http://44.242.38.198",
-    "http://0.0.0.0",
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "https://techforing.com",
+#     "https://www.techforing.com",
+#     "https://main.techforing.com",
+#     "https://bcs.techforing.com",
+#     "https://pcs.techforing.com",
+#     "https://academy.techforing.com",
+#     "https://training.techforing.com",
+#     "http://localhost:8080",
+#     "http://127.0.0.1:8000",
+#     "http://44.242.38.198",
+#     "http://0.0.0.0",
+# ]
+CORS_ALLOW_ALL_ORIGINS = True
+
+# CORS_ORIGIN_WHITELIST = [
+#     "https://techforing.com",
+#     "https://www.techforing.com",
+#     "https://main.techforing.com",
+#     "https://bcs.techforing.com",
+#     "https://pcs.techforing.com",
+#     "https://academy.techforing.com",
+#     "https://training.techforing.com",
+#     "http://localhost:8080",
+#     "http://127.0.0.1:8000",
+#     "http://44.242.38.198",
+#     "http://0.0.0.0",
+# ]
+#
+# CSRF_TRUSTED_ORIGINS = [
+#     "https://techforing.com",
+#     "https://www.techforing.com",
+#     "https://main.techforing.com",
+#     "https://bcs.techforing.com",
+#     "https://pcs.techforing.com",
+#     "https://academy.techforing.com",
+#     "https://training.techforing.com",
+#     "http://localhost:8080",
+#     "http://127.0.0.1:8000",
+#     "http://44.242.38.198",
+#     "http://0.0.0.0",
+# ]
+
+CORS_URLS_REGEX = r'^/api/.*$'
+CORS_ALLOW_CREDENTIALS = True
+SESSION_COOKIE_SAMESITE = 'None'
 
 # Media
 MEDIA_URL = '/media/'

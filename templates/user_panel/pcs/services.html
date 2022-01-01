@@ -9,7 +9,7 @@
     </style>
 
     <section class="services position-relative">
-        <h4 class="main-heading">All Business Cybersecurity Services
+        <h4 class="main-heading">All Personal Cybersecurity Services
         </h4>
 
         <button id="back-btn" class="btn btn-outline-success btn-sm d-none position-absolute top-sm-0 end-0">
@@ -66,7 +66,7 @@
                         {% endfor %}
                     </div>
                 {% endfor %}
-
+                {% comment %}
                 <h4 class="main-heading">All Trainings</h4>
                 {% for category in courses_categories %}
                     <h5 class="mt-2 services-type">{{ category.category_name }}</h5>
@@ -92,6 +92,7 @@
                         {% endfor %}
                     </div>
                 {% endfor %}
+            {% endcomment %}
             </div>
         </div>
 
@@ -216,6 +217,7 @@
         {% endfor %}
 
         <!-- training details  -->
+        {% comment %}
         {% for course in courses %}
             <div class="{{ course.course_name | replacespace }}-training preview-service-info pt-3 pb-5 d-none">
                 <div class='d-none'>
@@ -244,9 +246,9 @@
                 </div>
             </div>
         {% endfor %}
-
+{% endcomment %}
         <!-- modal for subscription services -->
-        <div class="modal fade" id="subscriptionDetail" tabindex="-1" aria-labelledby="subscriptionDetailLabel"
+        {% comment %}        <div class="modal fade" id="subscriptionDetail" tabindex="-1" aria-labelledby="subscriptionDetailLabel"
              aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-xl">
                 <div class="modal-content">
@@ -545,7 +547,7 @@
 
                 </div>
             </div>
-        </div>
+        </div>{% endcomment %}
 
 
         <div id="preview-form" class="d-none">
