@@ -4,6 +4,17 @@
 {% load hosts %}
 {% block title %} Dashboard {% endblock title %}
 {% block content %}
+
+<style>
+    .readings img{
+        width: 180px;
+        height: 100px;
+        margin-right: 20px;
+    }
+    .readings a{
+        color: #151331
+    }
+</style>
     <div class="dashboard-container overflow-hidden">
         <section class="dashboard-heading">
             <h3 class="fw-bold">Hello, {{ user.full_name }}</h3>
@@ -160,18 +171,18 @@
                 {% endif %}
             {% else %}
                 
-                <div class='text-center py-4'>Nothing on your reading list. 
+                {% comment %} <div class='text-center py-4'>Nothing on your reading list. 
                     <a target="_blank" class="btn btn-outline-navy btn-sm" href="{% host_url 'index' host 'blog' %}">Add Now</a>
-                </div>
+                </div> {% endcomment %}
+                <h5 class='text-center py-4 fw-bold'>Recent Posts:</h5>
 
                 {% for post in posts %}
     <div class="row mb-3 mx-0 bg-lightnavy">
-        <div class="col-md-3 p-2 d-flex align-items-center">
+        <div class="col-md-12 p-2 d-flex align-items-center">
             <img src="{{post.feature_image.url}}" class="img-fluid " alt="... ">
-        </div>
-        <div class="col-md-9 py-2 d-flex align-items-center">
+        
             <div>
-                <a href="{% host_url 'articles' host 'blog' %}{{post.post_url}}">
+                <a href="{% host_url 'articles' host 'blog' %}{{post.post_url}}" target="_blank">
                     <h6 class="fw-bold">{{post.title}}</h6>
                 </a>
                 <p class="my-2 mb-0 fs-7 lh-sm">{{post.short_description}}</p>
@@ -183,16 +194,7 @@
                     <span class="p-0 me-3 text-green" title="Reading Time">
                         <i class="bi bi-stopwatch"></i>
                         {{post.reading_time}}
-                    </span> {% if post.id not in reading_lists %}
-                    <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}" class="p-0 me-3 text-green" title="Add Reading List">
-                        <i class="bi bi-plus-circle"></i> Add
-                    </a>
-                    {% else %}
-                    <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}" class="p-0 me-3 text-danger" title="Remove From Reading List">
-                        <i class="bi bi-dash-circle"></i> Remove
-                    </a>
-                    {% endif %}
-
+                    </span> 
                 </div>
 
             </div>
