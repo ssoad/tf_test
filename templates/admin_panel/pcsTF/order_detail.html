@@ -1,4 +1,8 @@
-{% extends 'base/pcs_admin_base.html' %}{% load hosts %} {% load crispy_forms_tags %} {% load my_filter %} {% load static %}
+{% extends 'base/pcs_admin_base.html' %}
+{% load hosts %}
+{% load crispy_forms_tags %}
+{% load my_filter %}
+{% load static %}
 {% block title %}
     Orders {% endblock title %}
 {% block headercss %}
@@ -11,20 +15,19 @@
             z-index: unset;
         }
 
-        .card-body{
+        .card-body {
             max-height: 220px;
             overflow-y: scroll;
         }
-        .card-body::-webkit-scrollbar
-        {
+
+        .card-body::-webkit-scrollbar {
             width: 5px;
             background-color: gray;
         }
 
-        .card-body::-webkit-scrollbar-thumb
-        {
+        .card-body::-webkit-scrollbar-thumb {
             border-radius: 10px;
-            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
             background-color: #182f59;
         }
     </style>
@@ -70,6 +73,9 @@
                         <button class="btn view-btn bg-navy btn-outline-light" data-bs-toggle="modal"
                                 data-bs-target="#invoiceModal-{{ current_order.id }}">View Invoice
                         </button>
+                        <button class="btn view-btn bg-navy btn-outline-light" data-bs-toggle="modal"
+                                data-bs-target="#quotationModal-{{ current_order.id }}">Provide Quotation
+                        </button>
                     </div>
                 </div>
             </div>
@@ -86,6 +92,27 @@
                     <form action="" method="POST">
                         <div class="modal-body">
                             {{ form|crispy }}
+                            {% csrf_token %}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" name="price-btn">Add to Progress</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="quotationModal-{{ current_order.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Provide Quotation</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="" method="POST" enctype="multipart/form-data">
+                        <div class="modal-body">
+                            {{ quotation_form.media }}
+                            {{ quotation_form|crispy }}
                             {% csrf_token %}
                         </div>
                         <div class="modal-footer">
@@ -163,7 +190,8 @@
                             {% endfor %}
                             </tbody>
                         </table>
-                        <h6 class="text-end">Total: {{ current_order.orderprice_order.price }} {{ current_order.orderprice_order.currency|upper }}</h6>
+                        <h6 class="text-end">
+                            Total: {{ current_order.orderprice_order.price }} {{ current_order.orderprice_order.currency|upper }}</h6>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn bg-navy" data-bs-dismiss="modal">Close</button>
@@ -247,7 +275,7 @@
 
         console.log(document.querySelectorAll('.orders .view-btn'))
         document.querySelector('.order-info button').addEventListener('click', () => {
-                document.querySelector('.invoice-btn').classList.remove('d-none');
+            document.querySelector('.invoice-btn').classList.remove('d-none');
         });
 
     </script>

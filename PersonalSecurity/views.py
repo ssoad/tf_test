@@ -290,12 +290,13 @@ def pcsUserCoursePayment(request, id):
 
 @login_required
 def userQuotationsHistoryView(request):
-    orders = models.Order.objects.filter(
-        Q(user=request.user, category_choice='pcs') & Q(
-            Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
-        '-order_date')
+    # orders = models.Order.objects.filter(
+    #     Q(user=request.user, category_choice='pcs') & Q(
+    #         Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
+    #     '-order_date')
+    quotations = models.Quotation.objects.filter(order__user=request.user)
     context = {
-        'orders': orders,
+        'quotations': quotations,
         'message': 'Quotations',
     }
     return render(request, 'user_panel/pcs/order_history.html', context)
@@ -322,6 +323,42 @@ def userOrderDetailsView(request, id):
             'current_order': current_order,
         }
         return render(request, 'user_panel/pcs/order_detail.html', context)
+    except:
+        return HttpResponse("You don't have permission to view this page")
+
+
+@login_required
+def quotationAcceptView(request, id):
+    try:
+        current_order = models.Order.objects.get(user=request.user, id=id, category_choice='pcs')
+        current_order.order_status = 'agreed_to_quotation'
+        current_order.save()
+
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    except:
+        return HttpResponse("You don't have permission to view this page")
+
+
+@login_required
+def ndaNcaAcceptView(request, id):
+    try:
+        current_order = models.Order.objects.get(user=request.user, id=id, category_choice='pcs')
+        current_order.order_status = 'agreed_to_nda_nca'
+        current_order.save()
+
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    except:
+        return HttpResponse("You don't have permission to view this page")
+
+
+@login_required
+def orderRejectView(request, id):
+    try:
+        current_order = models.Order.objects.get(user=request.user, id=id, category_choice='pcs')
+        current_order.order_status = 'canceled'
+        current_order.save()
+
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
     except:
         return HttpResponse("You don't have permission to view this page")
 
@@ -941,7 +978,7 @@ def pcsAdminQuotationsView(request):
             Q(orderstaff_order__staff=request.user) & Q(Q(order_status='new') | Q(order_status='attending')
                                                         | Q(order_status='assigned'))).order_by('-order_date')
         context = {
-            'orders': orders,
+            'orders': orders.filter(category_choice='pcs'),
             'message': 'Quotations',
         }
         return render(request, 'admin_panel/pcsTF/orders.html', context)
@@ -1048,7 +1085,9 @@ def pcsAdminOrdersDetailView(request, id):
     if request.user.is_superuser or request.user.is_pcs_head:
         current_order = models.Order.objects.get(id=id)
         current_price = models.OrderPrice.objects.get(order=current_order)
+        current_quotation = models.Quotation.objects.get(order=current_order)
         form = forms.OrderPriceForm(instance=current_price)
+        quotation_form = forms.QuotationForm(instance=current_quotation)
         if request.method == 'POST':
             form = forms.OrderPriceForm(request.POST, instance=current_price)
             if form.is_valid():
@@ -1060,22 +1099,33 @@ def pcsAdminOrdersDetailView(request, id):
         context = {
             'current_order': current_order,
             'form': form,
+            'quotation_form': quotation_form,
         }
         return render(request, 'admin_panel/pcsTF/order_detail.html', context)
     else:
         try:
             current_order = models.Order.objects.get(id=id, orderstaff_order__staff=request.user)
+            current_quotation = models.Quotation.objects.get(order=current_order)
             form = forms.OrderPriceForm(instance=current_order)
+            quotation_form = forms.QuotationForm(instance=current_quotation)
             if request.method == 'POST':
                 form = forms.OrderPriceForm(request.POST, instance=current_order)
+                quotation_form = forms.QuotationForm(files=request.FILES, data=request.POST, instance=current_quotation)
                 if form.is_valid():
                     current_order.order_status = 'on_progress'
                     # new_staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
                     form.save()
                     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                if quotation_form.is_valid():
+                    current_order.order_status = 'attending'
+                    current_order.save()
+                    # new_staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
+                    quotation_form.save()
+                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
             context = {
                 'current_order': current_order,
                 'form': form,
+                'quotation_form': quotation_form,
             }
             return render(request, 'admin_panel/pcsTF/order_detail.html', context)
         except:

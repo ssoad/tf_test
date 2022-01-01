@@ -1970,7 +1970,7 @@ def bcsAdminQuotationsView(request):
             Q(orderstaff_order__staff=request.user) & Q(Q(order_status='new') | Q(order_status='attending')
                                                         | Q(order_status='assigned'))).order_by('-order_date')
         context = {
-            'orders': orders,
+            'orders': orders.filter(category_choice='bcs'),
             'message': 'Quotations',
         }
         return render(request, 'admin_panel/bcsTF/orders.html', context)
