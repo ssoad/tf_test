@@ -46,7 +46,7 @@
                                                     </p>
                                                 </div>
                                                 <div class="view-btn">
-                                                    <button class="{{ service.service_title|replacespace }}-bcs btn btn-sm">
+                                                    <button class="{{ service.service_title|replacespace }}-pcs btn btn-sm">
                                                         View
                                                     </button>
                                                 </div>
@@ -707,6 +707,7 @@
         }
 
         allBtn = Array.from(allBtn);
+        if(document.querySelector('.more-services #pcs-preview-btn'))
         allBtn.push(document.querySelector('.more-services #pcs-preview-btn'));
 
         allBtn.forEach((btn, index) => {
@@ -716,6 +717,7 @@
                 backBtn.classList.remove('d-none');
                 document.body.scrollTop = 0;
                 document.documentElement.scrollTop = 0;
+
                 mainHeading.textContent = document.querySelector(`div.${btn.classList[0]}`).children[0].textContent.split('-')[0];
             });
         });
