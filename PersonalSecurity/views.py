@@ -7,7 +7,7 @@ from BusinessSecurity import models, forms
 from PersonalSecurity import forms as pcsforms
 from django.db.models import Q
 from django.core.files.storage import FileSystemStorage
-from Blog.models import ReadingList
+from Blog.models import ReadingList, Post
 
 
 # Create your views here.
@@ -150,7 +150,8 @@ def siteMapView(request):
 
 def openTicketView(request):
     form = forms.TicketCreateForm()
-    tickets = models.Ticket.objects.filter(user=request.user, category_choice='pcs').order_by('-ticket_date')
+    tickets = models.Ticket.objects.filter(
+        user=request.user, category_choice='pcs').order_by('-ticket_date')
     if request.method == 'POST':
         form = forms.TicketCreateForm(request.POST, request.FILES)
         if form.is_valid():
@@ -177,15 +178,19 @@ def ticketDetailView(request):
 
 @login_required
 def userDashboardView(request):
-    events = models.Events.objects.filter(status='active', category='for_personal_security')
-    registered_event = models.RegisteredEvents.objects.filter(user=request.user).values_list('event', flat=True)
+    events = models.Events.objects.filter(
+        status='active', category='for_personal_security')
+    registered_event = models.RegisteredEvents.objects.filter(
+        user=request.user).values_list('event', flat=True)
     orders = models.Order.objects.filter(
         Q(user=request.user, category_choice='pcs') & ~Q(Q(order_status='new') | Q(order_status='attending'))).order_by(
         '-order_date')[:2]
+    posts = Post.objects.all().order_by('date')[:2]
     context = {
         'events': events,
         'registered_event': registered_event,
         'orders': orders,
+        'posts': posts,
     }
     return render(request, 'user_panel/pcs/dashboard.html', context)
 
@@ -204,9 +209,11 @@ def userReadingListView(request):
 def userServicesView(request):
     courses = Course.objects.filter(course_type='Personal')
     courses_categories = CourseCategory.objects.filter(course_type='Personal')
-    service_category = models.ServiceCategory.objects.filter(category_choice='pcs')
+    service_category = models.ServiceCategory.objects.filter(
+        category_choice='pcs')
     services = models.Service.objects.filter(category_choice='pcs')
-    subscription_services = models.SubscriptionServices.objects.filter(category_choice='pcs')
+    subscription_services = models.SubscriptionServices.objects.filter(
+        category_choice='pcs')
     if request.method == 'POST':
         data_list = request.POST
         file_list = request.FILES
@@ -252,7 +259,8 @@ def userServicesView(request):
             tracking.persons = ','.join(persons_list)
             tracking.save()
             current_staff = models.User.objects.get(id=person)
-            order_staff = models.OrderStaff.objects.create(staff=current_staff, order=order[0])
+            order_staff = models.OrderStaff.objects.create(
+                staff=current_staff, order=order[0])
             order_staff.save()
         return render(request, 'user_panel/pcs/thanks.html')
     context = {
@@ -318,7 +326,8 @@ def userOrderHistoryView(request):
 @login_required
 def userOrderDetailsView(request, id):
     try:
-        current_order = models.Order.objects.get(user=request.user, id=id, category_choice='pcs')
+        current_order = models.Order.objects.get(
+            user=request.user, id=id, category_choice='pcs')
         context = {
             'current_order': current_order,
         }
@@ -330,7 +339,8 @@ def userOrderDetailsView(request, id):
 @login_required
 def quotationAcceptView(request, id):
     try:
-        current_order = models.Order.objects.get(user=request.user, id=id, category_choice='pcs')
+        current_order = models.Order.objects.get(
+            user=request.user, id=id, category_choice='pcs')
         current_order.order_status = 'agreed_to_quotation'
         current_order.save()
 
@@ -342,7 +352,8 @@ def quotationAcceptView(request, id):
 @login_required
 def ndaNcaAcceptView(request, id):
     try:
-        current_order = models.Order.objects.get(user=request.user, id=id, category_choice='pcs')
+        current_order = models.Order.objects.get(
+            user=request.user, id=id, category_choice='pcs')
         current_order.order_status = 'agreed_to_nda_nca'
         current_order.save()
 
@@ -354,7 +365,8 @@ def ndaNcaAcceptView(request, id):
 @login_required
 def orderRejectView(request, id):
     try:
-        current_order = models.Order.objects.get(user=request.user, id=id, category_choice='pcs')
+        current_order = models.Order.objects.get(
+            user=request.user, id=id, category_choice='pcs')
         current_order.order_status = 'canceled'
         current_order.save()
 
@@ -373,7 +385,8 @@ def userSubscriptionsView(request):
 
 @login_required
 def userEventsView(request):
-    registered_event = models.RegisteredEvents.objects.filter(user=request.user).values_list('event', flat=True)
+    registered_event = models.RegisteredEvents.objects.filter(
+        user=request.user).values_list('event', flat=True)
     events = models.Events.objects.filter(category='for_personal_security',
                                           registered_event_event__user=request.user)
     context = {
@@ -385,7 +398,8 @@ def userEventsView(request):
 
 @login_required
 def userNotificationsView(request):
-    notifications = models.Notification.objects.filter(category_choice='pcs').order_by('-notification_time')
+    notifications = models.Notification.objects.filter(
+        category_choice='pcs').order_by('-notification_time')
     context = {
         'notifications': notifications
     }
@@ -473,7 +487,8 @@ def UserFiles(request, id):
 #    pcs admin views
 
 def pcsAdminDashboard(request):
-    service_categories = models.ServiceCategory.objects.filter(category_choice='pcs')
+    service_categories = models.ServiceCategory.objects.filter(
+        category_choice='pcs')
 
     context = {
         'service_categories': service_categories
@@ -502,18 +517,21 @@ def pcsAdminServiceCategoryView(request):
 
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def pcsAdminServiceCategoryDeleteView(request, id):
-    current_category = models.ServiceCategory.objects.get(id=id, category_choice='pcs')
+    current_category = models.ServiceCategory.objects.get(
+        id=id, category_choice='pcs')
     current_category.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def pcsAdminServiceCategoryEditView(request, id):
-    current_category = models.ServiceCategory.objects.get(id=id, category_choice='pcs')
+    current_category = models.ServiceCategory.objects.get(
+        id=id, category_choice='pcs')
     form = forms.AddServiceCategoryForm(instance=current_category)
 
     if request.method == 'POST':
-        form = forms.AddServiceCategoryForm(request.POST, instance=current_category)
+        form = forms.AddServiceCategoryForm(
+            request.POST, instance=current_category)
         if form.is_valid():
             form.save()
 
@@ -538,10 +556,12 @@ def pcsAdminServiceView(request):
             service.save()
             for sale_id in request.POST.getlist('sales'):
                 current_sales = models.User.objects.get(id=sale_id)
-                current_assigned = models.ServiceAssigned.objects.get_or_create(user=current_sales)
+                current_assigned = models.ServiceAssigned.objects.get_or_create(
+                    user=current_sales)
                 current_assigned[0].service.add(service)
                 current_assigned[0].save()
-                tracking = models.Tracking.objects.get_or_create(service=service)
+                tracking = models.Tracking.objects.get_or_create(
+                    service=service)
                 person = tracking[0].persons
                 tracking[0].persons = f'{person},{sale_id}'
                 tracking[0].save()
@@ -558,7 +578,8 @@ def pcsAdminServiceView(request):
 def pcsAdminSubscriptionServiceView(request):
     form = pcsforms.AddSubscriptionServiceForm()
     # sales_persons = models.User.objects.filter(Q(is_staff=True, is_sales=True))
-    services = models.SubscriptionServices.objects.filter(category_choice='pcs')
+    services = models.SubscriptionServices.objects.filter(
+        category_choice='pcs')
 
     if request.method == 'POST':
         form = pcsforms.AddSubscriptionServiceForm(request.POST, request.FILES)
@@ -597,7 +618,8 @@ def pcsAdminSubscriptionServiceEditView(request, id):
     form = pcsforms.AddSubscriptionServiceForm(instance=current_service)
 
     if request.method == 'POST':
-        form = pcsforms.AddSubscriptionServiceForm(request.POST, request.FILES, instance=current_service)
+        form = pcsforms.AddSubscriptionServiceForm(
+            request.POST, request.FILES, instance=current_service)
         if form.is_valid():
             form.save()
 
@@ -615,7 +637,8 @@ def pcsAdminServiceEditView(request, id):
     form = pcsforms.AddServiceForm(instance=current_service)
 
     if request.method == 'POST':
-        form = pcsforms.AddServiceForm(request.POST, request.FILES, instance=current_service)
+        form = pcsforms.AddServiceForm(
+            request.POST, request.FILES, instance=current_service)
         if form.is_valid():
             form.save()
 
@@ -631,17 +654,20 @@ def pcsAdminServiceEditView(request, id):
 def pcsSubServiceFormView(request):
     form = forms.AddForm()
     form_lists = models.InputFields.objects.all()
-    select_choices = list(models.SelectChoice.objects.all().values('id', 'choices'))
+    select_choices = list(
+        models.SelectChoice.objects.all().values('id', 'choices'))
 
     if request.method == 'POST':
         form = forms.AddForm(request.POST)
         if form.is_valid():
             current_input = form.save()
-            current_input_field = models.InputFields.objects.get(id=current_input.id)
+            current_input_field = models.InputFields.objects.get(
+                id=current_input.id)
             if request.POST.getlist('options'):
                 for i in request.POST.getlist('options'):
                     field = models.SelectChoice.objects.get(id=i)
-                    new_choices = models.SelectChoiceRelation.objects.get_or_create(input_field=current_input_field)
+                    new_choices = models.SelectChoiceRelation.objects.get_or_create(
+                        input_field=current_input_field)
                     new_choices[0].choice_field.add(field)
                     new_choices[0].save()
 
@@ -683,7 +709,8 @@ def pcsAdminSubServiceFormEditView(request, id):
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def pcsAdminSubServiceView(request):
     form = pcsforms.AddSubServiceForm()
-    sub_services = models.SubService.objects.filter(service__category_choice='pcs')
+    sub_services = models.SubService.objects.filter(
+        service__category_choice='pcs')
     if request.method == 'POST':
         form = pcsforms.AddSubServiceForm(request.POST)
         if form.is_valid():
@@ -709,7 +736,8 @@ def pcsAdminSubServiceEditView(request, id):
     form = pcsforms.AddSubServiceForm(instance=current_sub_service)
 
     if request.method == 'POST':
-        form = pcsforms.AddSubServiceForm(request.POST, instance=current_sub_service)
+        form = pcsforms.AddSubServiceForm(
+            request.POST, instance=current_sub_service)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('pcs_admin_sub_services'))
@@ -731,7 +759,8 @@ def pcsAdminSubscriptionList(request):
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def pcsAdminSubscriptionPack(request):
     form = pcsforms.AddPackageForm()
-    services = models.SubscriptionServices.objects.filter(category_choice='pcs')
+    services = models.SubscriptionServices.objects.filter(
+        category_choice='pcs')
 
     if request.method == 'POST':
         feature_names = request.POST.getlist('featureName')
@@ -772,7 +801,8 @@ def pcsAdminIndividualUser(request):
 
 def pcsAdminIndividualUserPanel(request, id):
     current_user = models.User.objects.get(id=id)
-    orders = models.Order.objects.filter(user=current_user, category_choice='pcs')
+    orders = models.Order.objects.filter(
+        user=current_user, category_choice='pcs')
 
     context = {
         'current_user': current_user,
@@ -824,7 +854,8 @@ def pcsAdminTrainingCategoryEditView(request, id):
     current_category = CourseCategory.objects.get(id=id)
     form = CourseCategoryCreateForm(instance=current_category)
     if request.method == 'POST':
-        form = CourseCategoryCreateForm(request.POST, instance=current_category)
+        form = CourseCategoryCreateForm(
+            request.POST, instance=current_category)
         if form.is_valid():
             form.save()
             next_page = request.POST.get('next', '/')
@@ -937,7 +968,8 @@ def pcsAdminCourseContentEdit(request, id):
     current_content = Content.objects.get(id=id)
     form = ContentCreateForm(instance=current_content)
     if request.method == 'POST':
-        form = ContentCreateForm(request.POST, request.FILES, instance=current_content)
+        form = ContentCreateForm(
+            request.POST, request.FILES, instance=current_content)
         if form.is_valid():
             form.save()
             next_page = request.POST.get('next', '/')
@@ -956,7 +988,8 @@ def pcsAdminCourseSectionEdit(request, id):
     current_section = Section.objects.get(id=id)
     form = SectionCreateForm(instance=current_section)
     if request.method == 'POST':
-        form = SectionCreateForm(request.POST, request.FILES, instance=current_section)
+        form = SectionCreateForm(
+            request.POST, request.FILES, instance=current_section)
         if form.is_valid():
             form.save()
             next_page = request.POST.get('next', '/')
@@ -1026,19 +1059,22 @@ def pcsAdminNewOrdersView(request):
     service_category = models.ServiceCategory.objects.filter(category_choice='pcs',
                                                              service_category__service_assigned_service__user=request.user)
     user_lists = models.User.objects.all()
-    services = models.Service.objects.filter(category_choice='pcs', service_assigned_service__user=request.user)
+    services = models.Service.objects.filter(
+        category_choice='pcs', service_assigned_service__user=request.user)
 
     # print(service_category.count())
     # print(services.count())
     if request.method == 'POST':
         data_list = request.POST
         file_list = request.FILES
-        current_customer = models.User.objects.get(email=data_list.get('customer'))
+        current_customer = models.User.objects.get(
+            email=data_list.get('customer'))
         # print(current_customer)
         # print(data_list)
         # print(file_list)
 
-        current_service = get_object_or_404(models.Service, service_title=data_list['service_name'])
+        current_service = get_object_or_404(
+            models.Service, service_title=data_list['service_name'])
 
         for data in data_list:
             if data != 'csrfmiddlewaretoken' and data != 'service_name' and data != 'customer':
@@ -1067,7 +1103,8 @@ def pcsAdminNewOrdersView(request):
         order = models.Order.objects.get_or_create(user=current_customer, order_status='new',
                                                    service=current_service, category_choice='pcs')
         print(order)
-        order_staff = models.OrderStaff.objects.get_or_create(staff=request.user, order=order[0])
+        order_staff = models.OrderStaff.objects.get_or_create(
+            staff=request.user, order=order[0])
         order_staff[0].save()
         return HttpResponseRedirect(reverse('pcs_admin_quotations'))
     context = {
@@ -1104,13 +1141,17 @@ def pcsAdminOrdersDetailView(request, id):
         return render(request, 'admin_panel/pcsTF/order_detail.html', context)
     else:
         try:
-            current_order = models.Order.objects.get(id=id, orderstaff_order__staff=request.user)
-            current_quotation = models.Quotation.objects.get(order=current_order)
+            current_order = models.Order.objects.get(
+                id=id, orderstaff_order__staff=request.user)
+            current_quotation = models.Quotation.objects.get(
+                order=current_order)
             form = forms.OrderPriceForm(instance=current_order)
             quotation_form = forms.QuotationForm(instance=current_quotation)
             if request.method == 'POST':
-                form = forms.OrderPriceForm(request.POST, instance=current_order)
-                quotation_form = forms.QuotationForm(files=request.FILES, data=request.POST, instance=current_quotation)
+                form = forms.OrderPriceForm(
+                    request.POST, instance=current_order)
+                quotation_form = forms.QuotationForm(
+                    files=request.FILES, data=request.POST, instance=current_quotation)
                 if form.is_valid():
                     current_order.order_status = 'on_progress'
                     # new_staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)

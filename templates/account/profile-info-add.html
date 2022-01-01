@@ -12,6 +12,9 @@
             width: 30%;
             border-radius: 0
         }
+        #div_id_phone_number .select2-selection--single{
+            height: 40px
+        }
 
         #id_phone_number_1 {
             width: 70%;
@@ -42,10 +45,6 @@
             border-radius: 4px 0 0 4px;
         }
 
-        {##div_id_country {#}
-        {#    display: none;#}
-        {
-        #}#}
 
         input, select, .select2-selection, .select2 {
             height: 40px !important
@@ -81,7 +80,7 @@
             <h5 class="text-center text-green">{{ success }}</h5>
         {% endif %}
 
-        <div class="p-md-5 py-3 shadow rounded">
+        <div class="p-md-5 py-3">
             {% if message %}
                 {% include 'base/verification_check.html' %}
             {% endif %}
