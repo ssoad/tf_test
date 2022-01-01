@@ -41,9 +41,6 @@ class AddSubscriptionServiceForm(forms.ModelForm):
                   'service_footer', ]
 
 
-
-
-
 class AddForm(forms.ModelForm):
     class Meta:
         model = models.InputFields
@@ -120,6 +117,13 @@ class OrderPriceForm(forms.ModelForm):
             'currency': forms.Select(attrs={'class': 'form-select'}),
             'payment_method': forms.Select(attrs={'class': 'form-select'})
         }
+
+
+class QuotationForm(forms.ModelForm):
+    class Meta:
+        model = models.Quotation
+        # fields = '__all__'
+        exclude = ['category_choice', 'order', 'agree_to_quotation', 'agree_to_nda_nca']
 
 
 class OrderAssignForm(forms.ModelForm):

@@ -188,6 +188,9 @@ order_status = (
     ('new', 'New'),
     ('assigned', 'Assigned'),
     ('attending', 'Attending'),
+    ('agreed_to_quotation', 'Agreed To Quotation'),
+    ('agreed_to_nda_nca', 'Agreed To NDA/NCA'),
+    ('disagreed', 'Disagreed'),
     ('on_progress', 'On Progress'),
     ('completed', 'Completed'),
     ('canceled', 'Canceled'),
@@ -216,6 +219,23 @@ class Order(models.Model):
     # payment_method = models.CharField(choices=payment_method, max_length=255)
 
 
+agreement = (
+    ('agree', 'Agree'),
+    ('disagree', 'Disagree'),
+)
+
+
+class Quotation(models.Model):
+    order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name='quotation_order')
+    nda = models.FileField(upload_to='nda/', blank=True, null=True)
+    nca = models.FileField(upload_to='nca/', blank=True, null=True)
+    # quotation = models.FileField(upload_to='quotation/', blank=True, null=True)
+    quotation_info = HTMLField(blank=True, null=True)
+    extra_field = models.CharField(max_length=255, blank=True, null=True)
+    agree_to_quotation = models.CharField(choices=agreement, default='disagree', max_length=255)
+    agree_to_nda_nca = models.CharField(choices=agreement, default='disagree', max_length=255)
+
+
 currency = (
     ('euro', 'EURO'),
     ('pound', 'POUND'),
@@ -234,12 +254,17 @@ class OrderPrice(models.Model):
 def create_order_price(sender, instance, created, **kwargs):
     if created:
         OrderPrice.objects.create(order=instance)
+        Quotation.objects.create(order=instance)
 
 
 @receiver(post_save, sender=Order)
 def save_order_price(sender, instance, **kwargs):
     instance.orderprice_order.save()
 
+
+# @receiver(post_save, sender=Order)
+# def save_order_quotation(sender, instance, **kwargs):
+#     instance.quotation_order.save()
 
 #
 # class ServiceSales(models.Model):
@@ -296,7 +321,8 @@ class TicketComment(models.Model):
 
 
 class SubscriptionBasedPackage(models.Model):
-    service_id = models.ForeignKey(SubscriptionServices, on_delete=models.CASCADE, related_name='package_subscription_service')
+    service_id = models.ForeignKey(SubscriptionServices, on_delete=models.CASCADE,
+                                   related_name='package_subscription_service')
     package_id = models.CharField(max_length=255, blank=True)
     package_name = models.CharField(
         max_length=264, verbose_name='Package Name')
