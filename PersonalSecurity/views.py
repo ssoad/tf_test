@@ -317,7 +317,8 @@ def userQuotationsHistoryView(request):
 def userOrderHistoryView(request):
     orders = models.Order.objects.filter(
         Q(user=request.user, category_choice='pcs') & ~Q(
-            Q(order_status='new') | Q(order_status='attending') | Q(order_status='agreed_to_quotation') | Q(order_status='agreed_to_nda_nca') | Q(order_status='assigned'))).order_by(
+            Q(order_status='new') | Q(order_status='attending') | Q(order_status='agreed_to_quotation') | Q(
+                order_status='agreed_to_nda_nca') | Q(order_status='assigned'))).order_by(
         '-order_date')
     context = {
         'orders': orders,
@@ -1022,7 +1023,8 @@ def pcsAdminQuotationsView(request):
     if request.user.is_sales:
         orders = models.Order.objects.filter(
             Q(orderstaff_order__staff=request.user) & Q(Q(order_status='new') | Q(order_status='attending')
-                                                        | Q(order_status='agreed_to_quotation') | Q(order_status='agreed_to_nda_nca')
+                                                        | Q(order_status='agreed_to_quotation') | Q(
+                order_status='agreed_to_nda_nca')
                                                         | Q(order_status='assigned'))).order_by('-order_date')
         context = {
             'orders': orders.filter(category_choice='pcs'),
@@ -1075,61 +1077,144 @@ def pcsAdminOrdersView(request):
 @user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/',
                   redirect_field_name='/account/profile/')
 def pcsAdminNewOrdersView(request):
-    service_category = models.ServiceCategory.objects.filter(category_choice='pcs',
-                                                             service_category__service_assigned_service__user=request.user)
-    user_lists = models.User.objects.all()
-    services = models.Service.objects.filter(
-        category_choice='pcs', service_assigned_service__user=request.user)
+    if request.user.is_superuser:
+        service_category = models.ServiceCategory.objects.filter(category_choice='pcs')
+        user_lists = models.User.objects.all()
+        services = models.Service.objects.filter(category_choice='pcs')
+        order_price_form = forms.OrderPriceForm()
 
-    # print(service_category.count())
-    # print(services.count())
-    if request.method == 'POST':
-        data_list = request.POST
-        file_list = request.FILES
-        current_customer = models.User.objects.get(
-            email=data_list.get('customer'))
-        # print(current_customer)
-        # print(data_list)
-        # print(file_list)
+        if request.method == 'POST':
+            data_list = request.POST
+            file_list = request.FILES
+            current_customer = models.User.objects.get(
+                email=data_list.get('customer'))
 
-        current_service = get_object_or_404(
-            models.Service, service_title=data_list['service_name'])
+            current_service = get_object_or_404(
+                models.Service, service_title=data_list['service_name'])
 
-        for data in data_list:
-            if data != 'csrfmiddlewaretoken' and data != 'service_name' and data != 'customer':
-                current_input = models.SubServiceInput.objects.get(id=data)
+            for data in data_list:
+                if data != 'csrfmiddlewaretoken' and data != 'service_name' \
+                        and data != 'customer' and data != 'price' \
+                        and data != 'currency' and data != 'payment_method':
+                    current_input = models.SubServiceInput.objects.get(id=data)
+                    input_data = models.UserSubserviceInput(user=current_customer, inputfield=current_input,
+                                                            inputinfo=data_list[data])
+                    input_data.save()
+                    order = models.Order.objects.get_or_create(user=current_customer, order_status='new',
+                                                               service=current_service, category_choice='pcs')
+
+                    order[0].subserviceinput.add(input_data)
+            for files in file_list:
+                current_input = models.SubServiceInput.objects.get(id=files)
+                myfile = file_list[files]
+                fs = FileSystemStorage()
+                filename = fs.save(myfile.name, myfile)
+                uploaded_file_url = fs.url(filename)
                 input_data = models.UserSubserviceInput(user=current_customer, inputfield=current_input,
-                                                        inputinfo=data_list[data])
+                                                        inputinfo=uploaded_file_url)
                 input_data.save()
                 order = models.Order.objects.get_or_create(user=current_customer, order_status='new',
                                                            service=current_service, category_choice='pcs')
 
                 order[0].subserviceinput.add(input_data)
-        for files in file_list:
-            current_input = models.SubServiceInput.objects.get(id=files)
-            myfile = file_list[files]
-            fs = FileSystemStorage()
-            filename = fs.save(myfile.name, myfile)
-            uploaded_file_url = fs.url(filename)
-            input_data = models.UserSubserviceInput(user=current_customer, inputfield=current_input,
-                                                    inputinfo=uploaded_file_url)
-            input_data.save()
+
+            order = models.Order.objects.get_or_create(user=current_customer, order_status='new',
+                                                       service=current_service, category_choice='pcs')
+            # print(order)
+            if not order[0].orderstaff_order.all().exists():
+                tracking = models.Tracking.objects.get(service=current_service)
+                persons = tracking.persons
+                persons_list = list(filter(None, persons.split(',')))
+                person = persons_list.pop(0)
+                persons_list.append(person)
+                tracking.persons = ','.join(persons_list)
+                tracking.save()
+                current_staff = models.User.objects.get(id=person)
+                order_staff = models.OrderStaff.objects.create(
+                    staff=current_staff, order=order[0])
+                order_staff.save()
+            order[0].order_status = 'on_progress'
+            order[0].save()
+            order_staff = models.OrderStaff.objects.get_or_create(
+                staff=request.user, order=order[0])
+            order_staff[0].save()
+            order_price = models.OrderPrice.objects.get(order=order[0])
+            order_quotation = models.Quotation.objects.get(order=order[0])
+            order_price.price = data_list.get('price')
+            order_price.payment_method = data_list.get('payment_method')
+            order_price.currency = data_list.get('currency')
+            order_quotation.agree_to_quotation = 'agree'
+            order_quotation.agree_to_nda_nca = 'agree'
+            order_quotation.save()
+            order_price.save()
+            return HttpResponseRedirect(reverse('pcs_admin_orders'))
+    else:
+        service_category = models.ServiceCategory.objects.filter(category_choice='pcs',
+                                                                 service_category__service_assigned_service__user=request.user)
+        user_lists = models.User.objects.all()
+        services = models.Service.objects.filter(
+            category_choice='pcs', service_assigned_service__user=request.user)
+
+        order_price_form = forms.OrderPriceForm()
+
+        if request.method == 'POST':
+            data_list = request.POST
+            file_list = request.FILES
+            current_customer = models.User.objects.get(
+                email=data_list.get('customer'))
+
+            current_service = get_object_or_404(
+                models.Service, service_title=data_list['service_name'])
+
+            for data in data_list:
+                if data != 'csrfmiddlewaretoken' and data != 'service_name' \
+                        and data != 'customer' and data != 'price' \
+                        and data != 'currency' and data != 'payment_method':
+                    current_input = models.SubServiceInput.objects.get(id=data)
+                    input_data = models.UserSubserviceInput(user=current_customer, inputfield=current_input,
+                                                            inputinfo=data_list[data])
+                    input_data.save()
+                    order = models.Order.objects.get_or_create(user=current_customer, order_status='new',
+                                                               service=current_service, category_choice='pcs')
+
+                    order[0].subserviceinput.add(input_data)
+            for files in file_list:
+                current_input = models.SubServiceInput.objects.get(id=files)
+                myfile = file_list[files]
+                fs = FileSystemStorage()
+                filename = fs.save(myfile.name, myfile)
+                uploaded_file_url = fs.url(filename)
+                input_data = models.UserSubserviceInput(user=current_customer, inputfield=current_input,
+                                                        inputinfo=uploaded_file_url)
+                input_data.save()
+                order = models.Order.objects.get_or_create(user=current_customer, order_status='new',
+                                                           service=current_service, category_choice='pcs')
+
+                order[0].subserviceinput.add(input_data)
+
             order = models.Order.objects.get_or_create(user=current_customer, order_status='new',
                                                        service=current_service, category_choice='pcs')
 
-            order[0].subserviceinput.add(input_data)
-
-        order = models.Order.objects.get_or_create(user=current_customer, order_status='new',
-                                                   service=current_service, category_choice='pcs')
-        print(order)
-        order_staff = models.OrderStaff.objects.get_or_create(
-            staff=request.user, order=order[0])
-        order_staff[0].save()
-        return HttpResponseRedirect(reverse('pcs_admin_quotations'))
+            order[0].order_status = 'on_progress'
+            order[0].save()
+            order_staff = models.OrderStaff.objects.get_or_create(
+                staff=request.user, order=order[0])
+            order_staff[0].save()
+            order_price = models.OrderPrice.objects.get(order=order[0])
+            order_quotation = models.Quotation.objects.get(order=order[0])
+            order_price.price = data_list.get('price')
+            order_price.payment_method = data_list.get('payment_method')
+            order_price.currency = data_list.get('currency')
+            order_quotation.agree_to_quotation = 'agree'
+            order_quotation.agree_to_nda_nca = 'agree'
+            order_quotation.save()
+            order_price.save()
+            return HttpResponseRedirect(reverse('pcs_admin_orders'))
     context = {
         'service_category': service_category,
         'services': services,
         'user_lists': user_lists,
+        'order_price_form': order_price_form,
         'services_headings': list(services.values_list('service_title', flat=True)),
     }
     return render(request, 'admin_panel/pcsTF/create_user_services.html', context)

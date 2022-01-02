@@ -6,12 +6,10 @@
     <main>
         <div class="d-flex justify-content-between align-items-center pb-5">
             <h3>{{ message }} List</h3>
-            {% if not admin %}
-                {% if message == 'Quotations' %}
+                {% if message == 'Orders' %}
                     <a href="{% host_url 'pcs_admin_new_order' host 'mysecurity' %}" class="btn btn-primary">Create New
                         Order</a>
                 {% endif %}
-            {% endif %}
 
         </div>
 
