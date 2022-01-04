@@ -149,6 +149,7 @@ def siteMapView(request):
 
 
 def openTicketView(request):
+    orders = models.Order.objects.filter(user=request.user)
     form = forms.TicketCreateForm()
     tickets = models.Ticket.objects.filter(
         user=request.user, category_choice='pcs').order_by('-ticket_date')
@@ -165,6 +166,7 @@ def openTicketView(request):
     context = {
         'form': form,
         'tickets': tickets,
+        'orders': orders,
     }
     return render(request, 'user_panel/pcs/ticket.html', context)
 
@@ -204,6 +206,17 @@ def userReadingListView(request):
     }
     return render(request, 'user_panel/pcs/reading_list.html', context)
 
+@login_required
+def addToReadingListView(request, id):
+    current_post = Post.objects.get(id=id)
+    is_saved = ReadingList.objects.filter(
+        user=request.user, post=current_post)
+    if not is_saved:
+        ReadingList.objects.get_or_create(
+            user=request.user, post=current_post)
+    else:
+        is_saved.delete()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 @login_required
 def userServicesView(request):
@@ -380,7 +393,7 @@ def orderRejectView(request, id):
         current_quotation = models.Quotation.objects.get(order=current_order)
         current_quotation.agree_to_quotation = 'disagree'
         current_quotation.agree_to_nda_nca = 'disagree'
-        current_order.order_status = 'canceled'
+        current_order.order_status = 'disagreed'
         current_quotation.save()
         current_order.save()
 
@@ -1135,9 +1148,7 @@ def pcsAdminNewOrdersView(request):
                 order_staff.save()
             order[0].order_status = 'on_progress'
             order[0].save()
-            order_staff = models.OrderStaff.objects.get_or_create(
-                staff=request.user, order=order[0])
-            order_staff[0].save()
+
             order_price = models.OrderPrice.objects.get(order=order[0])
             order_quotation = models.Quotation.objects.get(order=order[0])
             order_price.price = data_list.get('price')
@@ -1231,11 +1242,16 @@ def pcsAdminOrdersDetailView(request, id):
         quotation_form = forms.QuotationForm(instance=current_quotation)
         if request.method == 'POST':
             form = forms.OrderPriceForm(request.POST, instance=current_price)
+            quotation_form = forms.QuotationForm(
+                files=request.FILES, data=request.POST, instance=current_quotation)
             if form.is_valid():
                 current_order.order_status = 'on_progress'
                 current_order.save()
                 # new_staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
                 form.save()
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            if quotation_form.is_valid():
+                quotation_form.save()
                 return HttpResponseRedirect(request.META['HTTP_REFERER'])
         context = {
             'current_order': current_order,

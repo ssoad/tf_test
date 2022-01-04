@@ -404,6 +404,7 @@ def indexView(request):
     }
     return render(request, 'blog/index.html', context)
 
+
 # posts by search or tags/keyword
 
 
@@ -417,6 +418,7 @@ def relatedPostView(request, tag):
         'reading_lists': reading_lists,
     }
     return render(request, 'blog/related_posts.html', context)
+
 
 # these 3 functions for single post
 
@@ -496,6 +498,16 @@ def addToReadingListView(request, id):
     else:
         is_saved.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@login_required
+def readingListPost(request, id):
+    current_reading = models.ReadingList.objects.get(id=id)
+    current_post = current_reading.post
+    current_reading.status = 'read'
+    current_reading.save()
+    return HttpResponseRedirect(
+        reverse(f'{(str(current_post.category).lower()).replace(" ", "_")}', kwargs={'name': current_post.post_url}))
 
 
 # for specific category

@@ -51,6 +51,8 @@
                                 <span class="badge bg-success">{{ current_order.order_status|capitalize }}</span>
                             {% elif current_order.order_status == 'agreed_to_nda_nca' %}
                                 <span class="badge bg-success">{{ current_order.order_status|capitalize }}</span>
+                            {% elif current_order.order_status == 'disagreed' %}
+                                <span class="badge bg-danger">{{ current_order.order_status|capitalize }}</span>
                             {% elif current_order.order_status == 'attending' %}
                                 <span class="badge bg-warning text-dark">{{ current_order.order_status|capitalize }}</span>
                             {% elif current_order.order_status == 'on_progress' %}

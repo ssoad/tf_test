@@ -103,14 +103,20 @@ class Comment(models.Model):
         return f'{self.post.title}\'s comment'
 
 
+reading_status = (
+    ('read', 'Read'),
+    ('unread', 'Unread'),
+)
+
+
 class ReadingList(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reading_list_user')
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='reading_list_post')
     added_on = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=255, choices=reading_status, default='unread')
 
     def __str__(self):
         return f'{self.user} - {self.post}'
-
 
 # class BlogSubscription(models.Model):
 #     full_name = models.CharField(max_length=255)

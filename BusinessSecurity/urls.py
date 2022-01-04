@@ -123,6 +123,14 @@ urlpatterns = [
          name='bcs_user_order_details'),
     path('bcs_user_order_details/<id>/',
          views.userOrderDetailsView, name='bcs_user_order_details'),
+
+    path('bcs_user_accept_quotation/', views.quotationAcceptView, name='bcs_user_accept_quotation'),
+    path('bcs_user_accept_quotation/<id>/', views.quotationAcceptView, name='bcs_user_accept_quotation'),
+    path('bcs_user_accept_nda_nca/', views.ndaNcaAcceptView, name='bcs_user_accept_nda_nca'),
+    path('bcs_user_accept_nda_nca/<id>/', views.ndaNcaAcceptView, name='bcs_user_accept_nda_nca'),
+    path('bcs_user_order_reject/', views.orderRejectView, name='bcs_user_order_reject'),
+    path('bcs_user_order_reject/<id>/', views.orderRejectView, name='bcs_user_order_reject'),
+
     path('bcs_user_subscriptions/', views.userSubscriptionsView,
          name='bcs_user_subscriptions'),
     path('bcs_subscription_payment/', views.subscriptionPayment,

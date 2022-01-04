@@ -52,6 +52,8 @@
                                 <span class="badge bg-success">{{ current_order.order_status|capitalize }}</span>
                             {% elif current_order.order_status == 'agreed_to_nda_nca' %}
                                 <span class="badge bg-success">{{ current_order.order_status|capitalize }}</span>
+                            {% elif current_order.order_status == 'disagreed' %}
+                                <span class="badge bg-danger">{{ current_order.order_status|capitalize }}</span>
                             {% elif current_order.order_status == 'attending' %}
                                 <span class="badge bg-warning text-dark">{{ current_order.order_status|capitalize }}</span>
                             {% elif current_order.order_status == 'on_progress' %}
@@ -220,9 +222,11 @@
                                         </div>
                                         <div class="d-flex gap-3 justify-content-end me-3">
                                             <a href="
+
                                                     {% host_url 'pcs_user_order_reject' host 'mysecurity' %}{{ current_order.id }}"
                                                class="btn btn-danger">Reject</a>
                                             <a href="
+
                                                     {% host_url 'pcs_user_accept_quotation' host 'mysecurity' %}{{ current_order.id }}"
                                                class="btn btn-success">Accept</a>
                                         </div>
@@ -279,8 +283,12 @@
                                             {{ current_order.quotation_order.extra_field }}
                                         </div>
                                         <div class="d-flex gap-3 justify-content-end me-3">
-                                            <a href="{% host_url 'pcs_user_order_reject' host 'mysecurity' %}{{ current_order.id }}" class="btn btn-danger">Reject</a>
-                                            <a href="{% host_url 'pcs_user_accept_nda_nca' host 'mysecurity' %}{{ current_order.id }}" class="btn btn-success">Accept</a>
+                                            <a href="
+                                                    {% host_url 'pcs_user_order_reject' host 'mysecurity' %}{{ current_order.id }}"
+                                               class="btn btn-danger">Reject</a>
+                                            <a href="
+                                                    {% host_url 'pcs_user_accept_nda_nca' host 'mysecurity' %}{{ current_order.id }}"
+                                               class="btn btn-success">Accept</a>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn bg-navy" data-bs-dismiss="modal">Close

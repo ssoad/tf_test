@@ -1,7 +1,6 @@
 from django.urls import path, include
 from Blog import views
 
-
 urlpatterns = [
     path('', views.indexView, name='index'),
 
@@ -22,6 +21,10 @@ urlpatterns = [
          name='add_to_reading_list'),
     path('add_to_reading_list/<id>/',
          views.addToReadingListView, name='add_to_reading_list'),
+    path('reading_list_post/', views.readingListPost,
+         name='reading_list_post'),
+    path('reading_list_post/<id>/', views.readingListPost,
+         name='reading_list_post'),
     path('filter_post_keyword/<str:type>/<str:keyword>/',
          views.filter_post_keywordView, name='filter_post_keyword'),
     path('filter_post_date/<str:type>/<str:range>/',

@@ -1,4 +1,11 @@
-{% extends 'base/pcs_user_base.html' %} {% load static %} {% load hosts %} {% block title %} Reading List {% endblock title %} {% block content %}
+{% extends 'base/pcs_user_base.html' %}
+{% load static %}
+{% load hosts %}
+{% load my_filter %}
+{% block title %}
+    Reading List
+{% endblock title %}
+{% block content %}
 
 <section class="reading-list">
     <h4 class="pt-3 fw-bold border-bottom border-gray pb-14p">Your Reading List</h4>
@@ -8,7 +15,9 @@
             <tr>
                 <th>No.</th>
                 <th>Title</th>
+                <th>Category</th>
                 <th>Added On</th>
+                <th>Status</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -16,11 +25,13 @@
             {% for readinglist in readinglists %}
             <tr>
                 <td>{{ forloop.counter }}</td>
-                <td><a target="_blank" href="{% host_url 'articles' host 'blog' %}{{ readinglist.post.post_url }}">
+                <td><a target="_blank" href="{% host_url 'reading_list_post' host 'blog' %}{{ readinglist.id }}">
                         {{ readinglist.post.title|truncatechars:50 }}</a></td>
+                <td>{{ readinglist.post.category }}</td>
                 <td>{{ readinglist.added_on }}</td>
+                <td>{{ readinglist.status|capitalize }}</td>
                 <td>
-                    <a class="text-danger" href="{% host_url 'add_to_reading_list' host 'blog' %}{{  readinglist.post.id }}">
+                    <a class="text-danger" href="{% host_url 'add_reading_list' %}{{  readinglist.post.id }}">
                         <i class="icofont-trash"></i>
                         <span>Remove</span>
                     </a>
