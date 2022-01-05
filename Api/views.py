@@ -646,3 +646,42 @@ class BCSCoursePackageListViewApi(generics.ListAPIView):
     def get_queryset(self):
         service_id = self.kwargs['id']
         return coursemodels.CoursePackage.objects.filter(service_id=service_id)
+
+
+class CollectiveNotificationApiView(generics.CreateAPIView):
+    permission_classes = [apipermissions.IsMainAdmin]
+    serializer_class = serializer.CollectiveNotificationSerializer
+    queryset = bcsmodels.Notification
+
+
+class CollectiveApiView(generics.ListAPIView):
+    def list(self, request, *args, **kwargs):
+        return Response({
+            'response': ['PCS', 'BCS']
+        })
+
+
+class IndividualApiView(generics.ListAPIView):
+    permission_classes = [apipermissions.IsMainAdmin]
+    serializer_class = serializer.IndividualSerializer
+
+    def list(self, request, *args, **kwargs):
+        emails = models.User.objects.all()
+        ser = self.get_serializer(emails, many=True)
+        datas = []
+        for email in ser.data:
+            datas.append(email['email'])
+        return Response({
+            'response': datas
+        })
+
+
+class InterestApiView(generics.ListAPIView):
+    permission_classes = [apipermissions.IsMainAdmin]
+
+    def list(self, request, *args, **kwargs):
+        return Response({
+            'response': ['Risk Assessment', 'Incident Response', 'Cyber Crime Investigation',
+                         'Open Source Intelligent', 'Hack Recovery', 'Virus Removal', 'Digital Forensic',
+                         'Digital Integration']
+        })

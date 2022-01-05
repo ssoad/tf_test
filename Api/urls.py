@@ -50,4 +50,9 @@ urlpatterns = [
 
     path('bcs/bcs_course/<id>/', views.BCSCourseApiView.as_view(), name='bcs_course'),
     path('bcs/course_package/<id>/', views.BCSCoursePackageListViewApi.as_view(), name='course_package_list_api'),
+
+    path('main/collective/', views.CollectiveApiView.as_view(), name='collective'),
+    path('main/individual/', views.IndividualApiView.as_view(), name='individual'),
+    path('main/interest/', views.InterestApiView.as_view(), name='interest'),
+    path('main/collective_notification/', views.CollectiveNotificationApiView.as_view(), name='collective_notification'),
 ]

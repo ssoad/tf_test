@@ -222,8 +222,21 @@ class BCSCoursePackageListSerializer(serializers.ModelSerializer):
     # packagefeature_coursepackage = serializers.StringRelatedField(many=True)
     packagefeature_coursepackage = BCSCourseFeatureSubscriptionsSerializer(many=True)
     course = serializers.CharField(source='service_id.course_name')
+
     # product_id = serializers.CharField(source='service_id.product_id')
 
     class Meta:
         model = coursemodels.CoursePackage
         fields = '__all__'
+
+
+class CollectiveNotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = bcsmodels.Notification
+        fields = '__all__'
+
+
+class IndividualSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.User
+        fields = ['email']

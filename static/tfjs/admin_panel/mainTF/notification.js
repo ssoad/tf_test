@@ -12,27 +12,6 @@ $(document).ready(function () {
     });
 });
 
-const checkEmpty = (btn, textArea, error) => {
-    btn.addEventListener('click', () => {
-        if (textArea.value == "") {
-            error.classList.remove("d-none")
-        }
-        setTimeout(()=> {
-            error.classList.add("d-none")
-        }, 1000)
-    })
-}
-
-
-const sendBtn = document.querySelector('.sendBtn')
-const addBtn = document.querySelector('.addBtn')
-const sendNotification = document.querySelector('.sendNotification')
-const addNotification = document.querySelector('.addNotification')
-const sendError = document.querySelector('.sendError')
-const addError = document.querySelector('.addError')
-
-checkEmpty(sendBtn, sendNotification, sendError);
-checkEmpty(addBtn, addNotification, addError);
 
 const deleteRowBtn = document.querySelectorAll(".dlt")
 

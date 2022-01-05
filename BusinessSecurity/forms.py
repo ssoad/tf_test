@@ -180,8 +180,7 @@ class AssignToServiceForm(forms.ModelForm):
 
 
 class NotificationForm(forms.ModelForm):
-    category_choice = forms.ChoiceField(label='Select Target Users', choices=models.category_choice)
-    notification = forms.Field(widget=forms.Textarea(attrs={'cols': '10', 'rows': '5'}))
+    # category_choice = forms.ChoiceField(label='Select Target Users', choices=models.category_choice)
 
     class Meta:
         model = models.Notification

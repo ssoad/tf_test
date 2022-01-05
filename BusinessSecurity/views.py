@@ -1077,7 +1077,7 @@ def mainAdminNotificationView(request):
             return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
         'form': form,
-        'notifications': notifications
+        'notifications': notifications,
     }
     return render(request, 'admin_panel/mainTF/notification.html', context)
 

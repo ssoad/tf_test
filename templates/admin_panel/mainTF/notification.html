@@ -6,12 +6,19 @@
 {% endblock title %}
 {% block headercss %}
     <link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/mainTF/notification.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 {% endblock headercss %}
 {% block content %}
 
     <main class="mb-5">
         <div class="container">
             <div class="row my-3">
+                <h3 class="text-uppercase">Select Category</h3>
+                <select name="notification_type" id="notification_type" class="form-select mb-3">
+                    <option value="individual">Individual</option>
+                    <option value="collective">Collective</option>
+                    <option value="interest">Interest</option>
+                </select>
                 <form action="" method="POST">
                     {% csrf_token %}
                     <h3 class="text-uppercase">send Notification</h3>
@@ -27,9 +34,8 @@
                                 <option value="pcs">Personal User</option>
                             </select>
                         </div>{% endcomment %}
-
+                    {{ form.media }}
                     {{ form|crispy }}
-
                     <div class="">
                         <button name="instant-btn" class="btn btn-primary fw-bolder text-uppercase float-end sendBtn"
                                 type="submit">
@@ -85,25 +91,14 @@
                             <th>notification text</th>
                             <th>target user</th>
                             <th>time</th>
-                            <th>action</th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for notification in notifications %}
                             <tr class="">
-                                <td>{{ notification.notification }}</td>
+                                <td>{{ notification.notification|safe }}</td>
                                 <td>{{ notification.category_choice|upper }}</td>
                                 <td class="text-center">{{ notification.notification_time }}</td>
-                                <td>
-                                    <a href="" class="btn">
-                                        <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
-                                        Edit
-                                    </a>
-                                    <a href="{% host_url 'main_admin_notification_delete' %}{{ notification.id }}" class="btn dlt">
-                                        <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                        Delete
-                                    </a>
-                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -111,62 +106,45 @@
                 </div>
             </div>
         </div>
-        <!-- Modal -->
-        <div class="edit-notification modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog  modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title w-85 text-center" id="exampleModalLabel">
-                            Edit Notification
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body px-4">
-                        <div class="cotainer">
-                            <form action="">
-                                <div class="row my-3">
-                                    <h5>Notification Text</h5>
-                                    <textarea name="send-notification" id="" cols="50" rows="5"
-                                              placeholder="write here"></textarea>
-                                    <div class="row my-3">
-                                        <div class="col-md-3">
-                                            <select class="form-select" aria-label="Default select">
-                                                <option>Select target users</option>
-                                                <option value="">New User</option>
-                                                <option value="">New Subscribe User</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <select class="form-select" aria-label="Default select">
-                                                <option>
-                                                    Select target users by interest list
-                                                </option>
-                                                <option value="">Concierge Cybersecurity</option>
-                                                <option value="">Security Compliance</option>
-                                                <option value="">Training Program</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6 d-flex align-center">
-                                            <label for="notificationRange" class="notificationRange">Select Date &
-                                                time: </label>
-                                            <input type="datetime-local" class="form-control"
-                                                   placeholder="Select a Date and Time"
-                                                   id="notificationRange"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <button type="button" class="btn btn-primary">
-                            Update
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </main>
 {% endblock content %} {% block customjs %}
-    <script src="{% static '' %}tfjs/admin_panel/mainTF/notification.js"></script>
+    <script src="{% static 'tfjs/admin_panel/mainTF/notification.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+     let categoryChoice = document.getElementById('id_category_choice');
+    fetch(`${mainOrigin}/api/main/individual/`)
+        .then(res=>res.json())
+        .then(data=> {
+            let categoryField = `<select id="id_category_choice" class="form-control" name="category_choice">`;
+            data.response.forEach(option=>{
+                categoryField+= `<option value="${option.toLowerCase().replace(' ','_')}">${option}</option>`;
+            });
+            categoryField+='</select>';
+            categoryChoice.outerHTML = categoryField;
 
+            $('#id_category_choice').select2();
+        })
+
+    document.getElementById('notification_type').addEventListener('change',e=>{
+         categoryChoice = document.getElementById('id_category_choice');
+
+        fetch(`${mainOrigin}/api/main/${e.target.value}/`)
+        .then(res=>res.json())
+        .then(data=> {
+            let categoryField = `<select id="id_category_choice" class="form-control" name="category_choice">`;
+            data.response.forEach(option=>{
+                categoryField+= `<option value="${option.toLowerCase().replace(' ','_')}">${option}</option>`;
+            });
+            categoryField+='</select>';
+            categoryChoice.outerHTML = categoryField;
+
+            $('#id_category_choice').select2();
+        })
+    });
+    {#$(document).ready(function() {#}
+    {#    document.getElementById('id_category_choice').outerHTML = ``;#}
+    {#        $('#id_category_choice').select2();#}
+    {#    });#}
+    </script>
 {% endblock customjs %}
