@@ -73,7 +73,7 @@
                                 {% host_url 'bcs_admin_tickets_detail' %}{{ ticket.id }}">{{ ticket.ticket_title }}</a>
                         </td>
                         <td>{{ ticket.ticket_category }}</td>
-                        <td>{{ ticket.ticket_type|upper }}</td>
+                        <td>{{ ticket.category_choice|upper }}</td>
                         <td>{{ ticket.ticket_status }}</td>
                         <td>{{ ticket.ticket_date }}</td>
                         <td>

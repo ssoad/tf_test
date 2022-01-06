@@ -15,12 +15,25 @@
     --sidebar-width: 20%;
 }
 
+.select2-selection button {
+    margin-block: initial;
+}
+
 body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
     font-family: 'Roboto', sans-serif;
     min-height: 100vh;
+}
+
+.btn-outline-navy {
+    border: 1px solid var(--var-primary-color);
+}
+
+.btn-outline-navy:hover {
+    background-color: var(--var-primary-color);
+    color: white;
 }
 
 ul {
@@ -515,20 +528,22 @@ table.dataTable tbody th.select-checkbox:after {
 /*Footer*/
 
 footer {
-    background-color: #182f59;
+    background-color: white;
     padding: 1px 0px 0px 0px;
-    color: white;
+    color: black;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
+    box-shadow: 1px 1px 5px 1px grey;
 }
 
 footer a {
-    color: white;
+    color: black;
 }
 
 footer a i {
     font-size: 22px;
+    color: #181e2f;
 }
 
 .footer-shrink {
@@ -549,7 +564,7 @@ footer a i {
 .white-line {
     width: 100%;
     height: 1px;
-    background-color: white;
+    background-color: #181e2f;
 }
 
 .line1 {

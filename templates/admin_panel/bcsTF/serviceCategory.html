@@ -1,13 +1,16 @@
-{% extends 'base/bcs_admin_base.html' %} {% load static %}
+{% extends 'base/bcs_admin_base.html' %}
+{% load static %}
 {% load hosts %}
 {% load crispy_forms_tags %}
 
-{% block title %} BCS Admin Services Category
+{% block title %}
+    BCS Admin Services Category
 {% endblock title %}
 
 {% block headercss %}
     <link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/service.css' %}" />
 {% endblock headercss %}
+
 {% block content %}
     <!-- main section starts -->
     <main>
@@ -27,7 +30,6 @@
                             <tr>
                                 <th>SL</th>
                                 <th>Service Name</th>
-                                <th>Description</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -38,7 +40,6 @@
                                 <td>
                                     {{ category.category_name }}
                                 </td>
-                                <td>{{ category.category_description }} </td>
                                 <td>
                                     <a href="{% host_url 'bcs_admin_services_category_edit' id=category.id %}" class="btn">
                                         <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
@@ -49,8 +50,6 @@
                                 </td>
                             </tr>
                         {% endfor %}
-                        
-
                         </tbody>
                     </table>
                 </div>
@@ -67,19 +66,7 @@
                         <form action="" method="POST">
                             {{ form|crispy }}
                             {% csrf_token %}
-{#                            <div class="col-auto mb-3">#}
-{#                                <label for="serviceName">Service Name</label>#}
-{#                                <input type="serviceName" class="form-control" id="serviceName"#}
-{#                                    placeholder="Enter Service Name" />#}
-{#                            </div>#}
-{#                            <div class="col-auto mb-3">#}
-{#                                <label for="description">Description</label>#}
-{#                                <textarea name="description" id="description" class="form-control" cols="30" rows="10"></textarea>#}
-{#                            </div>#}
                             <div class="d-flex justify-content-between">
-{#                                <button type="button" class="btn btn-primary">#}
-{#                                    Save and add another#}
-{#                                </button>#}
                                 <button type="submit" class="btn btn-primary">
                                     Save
                                 </button>

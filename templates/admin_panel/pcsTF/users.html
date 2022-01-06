@@ -1,4 +1,6 @@
-{% extends 'base/pcs_admin_base.html' %} {% load static %} {% load hosts %}
+{% extends 'base/pcs_admin_base.html' %}
+{% load my_filter %}
+{% load static %} {% load hosts %}
 {% block title %} PCS Admin Users
 {% endblock title %}
 
@@ -6,7 +8,7 @@
     <!-- Data table select style -->
     <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css" />
     <!-- custom style -->
-    <link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/bcsTF/users.css" />
+    <link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/users.css' %}" />
     <!-- charts js-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 {% endblock headercss %}
@@ -15,322 +17,41 @@
     <main>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-4">
-                    <div class="user-info bg-primary-25">
-                        <h3>SUBSCRIBED CLIENT</h3>
-                        <p class="fw-bolder">
-                            <i class="bi bi-people"></i> 200
-                        </p>
-                    </div>
-                    <div class="user-info bg-primary-50">
-                        <h3>ONE TIME PURCHASE CLIENT</h3>
-                        <p class="fw-bolder">
-                            <i class="bi bi-people"></i> 150
-                        </p>
-                    </div>
-                    <div class="user-info bg-primary-dark">
-                        <h3>TOTAL CLIENT</h3>
-                        <p class="fw-bolder">
-                            <i class="bi bi-people"></i> 350
-                        </p>
-                    </div>
-                </div>
-                <div class="col-md-8">
-                    <!-- User info Stat Chart -->
-                    <input type="text" id="userDaterange" value="Select By Time range" name="daterange" class="float-start"/>
-                    <canvas id="user-info-chart" ></canvas>
-                    <!-- filter buttons -->
-                    <div class="filter-options d-flex w-85 float-end justify-content-between mb-3">
-                        <button class="btn btn-secondary mx-2 rounded-pill">1d</button>
-                        <button class="btn btn-secondary mx-2 rounded-pill active">1w</button>
-                        <button class="btn btn-secondary mx-2 rounded-pill">1mo</button>
-                        <button class="btn btn-secondary mx-2 rounded-pill">3mo</button>
-                        <button class="btn btn-secondary mx-2 rounded-pill">6mo</button>
-                        <button class="btn btn-secondary mx-2 rounded-pill">1y</button>
-                        <button class="btn btn-secondary mx-2 rounded-pill">all</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="row">
                 <div class="col-lg-12" style="margin-top: 5rem;margin-bottom: 10rem; position: relative;">
                     <div class="float-start heading mb-3 position-absolute" style="z-index: 1;">
                         <h2 class=" text-uppercase d-inline me-5">ALL USERS</h2>
-                        <button class="btn btn-primary text-uppercase" data-bs-toggle="modal" data-bs-target="#exampleModal">Inivite users</button>
                     </div>
                     <table id="all-user-info" class="table table-bordered display service nowrap" style="width:100%">
                         <thead>
-                            <tr>
-                                <th><input type="checkbox" class="selectAll" name="selectAll" value="all"></th>
-                                <th>Full name</th>
-                                <th>Business email</th>
-                                <th>phone number</th>
-                                <th>organization</th>
-                                <th>position</th>
-                                <th>gender</th>
-                                <th>order Date</th>
-                                <th>renewal Date</th>
-                                <th>services</th>
-                                <th>Training</th>
-                                <th>action</th>
-                            </tr>
+                        <tr>
+                            <th>No</th>
+                            <th>User name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Country</th>
+                            <th>Registration Date</th>
+                            <th>action</th>
+                        </tr>
                         </thead>
                         <tbody>
+                        {% for all_user in all_users %}
                             <tr>
-                                <td></td>
-                                <td>jhon</td>
-                                <td>jhone123@mail.com</td>
-                                <td>+880172589225</td>
-                                <td>ABCD group</td>
-                                <td>CTO</td>
-                                <td>Male</td>
-                                <td>03/08/2021</td>
-                                <td>03/09/2021</td>
-                                <td>1</td>
-                                <td>Yes (CCSP)</td>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ all_user.full_name }}</td>
+                                <td><a href="mailto:{{ all_user.email }}">{{ all_user.email }}</a></td>
+                                <td>{{ all_user.phone_number }}</td>
+                                <td>{{ all_user.country }}</td>
+                                <td>{{ all_user.date_joined|date }}</td>
                                 <td>
-                                    <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-                                        <i class="bi bi-pencil-square text-primary rounded-circle activites-icon"></i>
-                                    </button>
-                                    <button class="btn trash">
-                                        <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                    </button>
-                                    <a href="{%host_url 'pcs_admin_individual_user_panel'%}" class="btn view">
+                                    <a href="{% host_url 'pcs_admin_individual_user_panel' id=all_user.id %}"
+                                       class="btn view">
                                         <i class="bi bi-eye-fill text-success rounded-circle activites-icon"></i>
                                     </a>
                                 </td>
                             </tr>
-                            <tr>
-                                <td></td>
-                                <td>jhon</td>
-                                <td>jhone123@mail.com</td>
-                                <td>+880172589225</td>
-                                <td>ABCD group</td>
-                                <td>CTO</td>
-                                <td>Male</td>
-                                <td>03/08/2021</td>
-                                <td>03/09/2021</td>
-                                <td>1</td>
-                                <td>No</td>
-                                <td>
-                                    <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-                                        <i class="bi bi-pencil-square text-primary rounded-circle activites-icon"></i>
-                                    </button>
-                                    <button class="btn trash">
-                                        <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                    </button>
-                                    <a href="{%host_url 'pcs_admin_individual_user_panel'%}" class="btn view">
-                                        <i class="bi bi-eye-fill text-success rounded-circle activites-icon"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td>jhon</td>
-                                <td>jhone123@mail.com</td>
-                                <td>+880172589225</td>
-                                <td>ABCD group</td>
-                                <td>CTO</td>
-                                <td>Male</td>
-                                <td>03/08/2021</td>
-                                <td>03/09/2021</td>
-                                <td>1</td>
-                                <td>No</td>
-                                <td>
-                                    <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-                                        <i class="bi bi-pencil-square text-primary rounded-circle activites-icon"></i>
-                                    </button>
-                                    <button class="btn trash">
-                                        <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
-                                    </button>
-                                    <a href="{%host_url 'pcs_admin_individual_user_panel'%}" class="btn view">
-                                        <i class="bi bi-eye-fill text-success rounded-circle activites-icon"></i>
-                                    </a>
-                                </td>
-                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
-                </div>
-            </div>
-        </div>
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered expanded-modal">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h2>Invite User</h2>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="">
-                            <div class="col-auto mb-3">
-                                <label for="subServiceName">Name</label>
-                                <input type="text" class="form-control" id="subServiceName"
-                                    placeholder="Enter First Name" />
-                            </div>
-                            <div class="col-auto mb-3">
-                                <label for="subServiceName">Email </label>
-                                <input type="email" class="form-control" id="subServiceName"
-                                    placeholder="Enter Email Address" />
-                            </div>
-                            <div class="col-auto mb-3">
-                                <label for="subServiceName">Organization</label>
-                                <input type="text" class="form-control" id="subServiceName"
-                                    placeholder="Enter Organization Name" />
-                            </div>
-                            <div class="col-auto mb-3">
-                                <label for="subServiceName">Select members</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option value="1">09 to 10</option>
-                                    <option value="2">10 to 20</option>
-                                    <option value="3">20 to 30</option>
-                                  </select>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <!-- <button type="button" class="btn btn-primary">
-                                    Save and add another
-                                </button> -->
-                                <button type="button" class="btn btn-primary">
-                                    Invite User
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered expanded-modal">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h2>Edit User</h2>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="">
-                            <div class="col-auto mb-3">
-                                <label for="subServiceName">First Name</label>
-                                <input type="text" class="form-control" id="subServiceName"
-                                    placeholder="Enter First Name" />
-                            </div>
-                            <div class="col-auto mb-3">
-                                <label for="subServiceName">Last Name</label>
-                                <input type="text" class="form-control" id="subServiceName"
-                                    placeholder="Enter Last Name" />
-                            </div>
-                            <div class="col-auto mb-3">
-                                <label for="subServiceName">Email Name</label>
-                                <input type="email" class="form-control" id="subServiceName"
-                                    placeholder="Enter Email Address" />
-                            </div>
-                            <div class="col-auto mb-3">
-                                <label for="subServiceName">Password</label>
-                                <input type="password" class="form-control" id="subServiceName"
-                                    placeholder="Enter Password" />
-                            </div>
-                            <div class="col-auto mb-3">
-                                <label for="subServiceName">Confirm Password</label>
-                                <input type="password" class="form-control" id="subServiceName"
-                                    placeholder="Confirm Password" />
-                            </div>
-                            <div class="col-auto mb-3">
-                                <label for="subServiceName">Organization</label>
-                                <input type="text" class="form-control" id="subServiceName"
-                                    placeholder="Enter Organization Name" />
-                            </div>
-                            <div class="col-auto mb-3">
-                                <label for="subServiceName">Position</label>
-                                <input type="text" class="form-control" id="subServiceName"
-                                    placeholder="Enter Position Name" />
-                            </div>
-                            <div class="col-auto mb-3">
-                                <div class="accordion" id="accordionExample">
-                                    <div class="accordion-item">
-                                      <h2 class="accordion-header" id="headingOne">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                            Interest List
-                                        </button>
-                                      </h2>
-                                      <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                                        <div class="accordion-body">
-                                          <div class="row">
-                                              <div class="col-md-4">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                                    <label class="form-check-label" for="flexCheckDefault">
-                                                    Risk Assessment
-                                                    </label>
-                                                  </div>
-                                                  <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
-                                                    <label class="form-check-label" for="flexCheckDefault">
-                                                    Risk Assessment  
-                                                    </label>
-                                                  </div>
-                                                  <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
-                                                    <label class="form-check-label" for="flexCheckDefault">
-                                                    Risk Assessment
-                                                    </label>
-                                                  </div>
-                                              </div>
-                                              <div class="col-md-4">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                                    <label class="form-check-label" for="flexCheckDefault">
-                                                    Risk Assessment
-                                                    </label>
-                                                  </div>
-                                                  <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
-                                                    <label class="form-check-label" for="flexCheckDefault">
-                                                    Risk Assessment
-                                                    </label>
-                                                  </div>
-                                                  <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
-                                                    <label class="form-check-label" for="flexCheckDefault">
-                                                    Risk Assessment  
-                                                    </label>
-                                                  </div>
-                                              </div>
-                                              <div class="col-md-4">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                                    <label class="form-check-label" for="flexCheckDefault">
-                                                    Risk Assessment
-                                                    </label>
-                                                  </div>
-                                                  <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
-                                                    <label class="form-check-label" for="flexCheckDefault">
-                                                    Risk Assessment
-                                                    </label>
-                                                  </div>
-                                                  <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
-                                                    <label class="form-check-label" for="flexCheckDefault">
-                                                    Risk Assessment
-                                                    </label>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <!-- <button type="button" class="btn btn-primary">
-                                    Save and add another
-                                </button> -->
-                                <button type="button" class="btn btn-primary">
-                                    Update
-                                </button>
-                            </div>
-                        </form>
-                    </div>
                 </div>
             </div>
         </div>

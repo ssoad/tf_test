@@ -2,6 +2,9 @@ from django.db import models
 from tinymce.models import HTMLField
 from Account.models import User
 import uuid
+from phonenumber_field.modelfields import PhoneNumberField
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 # Create your models here.
@@ -32,6 +35,31 @@ class ServiceCategory(models.Model):
 
     class Meta:
         verbose_name_plural = 'Service Categories'
+
+
+class SubscriptionServices(models.Model):
+    category_choice = models.CharField(choices=category_choice, max_length=255)
+    category = models.ForeignKey(
+        ServiceCategory, on_delete=models.CASCADE, related_name='subscription_service_category')
+    product_id = models.CharField(max_length=255, blank=True)
+
+    service_icon = models.ImageField(
+        upload_to='service_icon/', verbose_name='Service Icon')
+    service_title = models.CharField(
+        max_length=264, verbose_name='Service Title')
+    short_description = models.TextField(
+        max_length=1000, verbose_name='Short Description')
+    service_header = HTMLField(verbose_name='Service Header', blank=True)
+    service_body = HTMLField(verbose_name='Service Body', blank=True)
+    service_footer = HTMLField(verbose_name='Service Footer', blank=True)
+    total_customer = models.IntegerField(
+        verbose_name='Total Customer', default=0, blank=True)
+
+    def __str__(self):
+        return self.service_title + '-' + self.category_choice
+
+    class Meta:
+        verbose_name_plural = 'Subscription Services'
 
 
 class Service(models.Model):
@@ -160,6 +188,9 @@ order_status = (
     ('new', 'New'),
     ('assigned', 'Assigned'),
     ('attending', 'Attending'),
+    ('agreed_to_quotation', 'Agreed To Quotation'),
+    ('agreed_to_nda_nca', 'Agreed To NDA/NCA'),
+    ('disagreed', 'Disagreed'),
     ('on_progress', 'On Progress'),
     ('completed', 'Completed'),
     ('canceled', 'Canceled'),
@@ -184,9 +215,56 @@ class Order(models.Model):
     order_status = models.CharField(
         max_length=250, choices=order_status, default='new')
     order_date = models.DateTimeField(auto_now_add=True)
+    # price = models.PositiveIntegerField(default=0)
+    # payment_method = models.CharField(choices=payment_method, max_length=255)
+
+
+agreement = (
+    ('agree', 'Agree'),
+    ('disagree', 'Disagree'),
+)
+
+
+class Quotation(models.Model):
+    order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name='quotation_order')
+    nda = models.FileField(upload_to='nda/', blank=True, null=True)
+    nca = models.FileField(upload_to='nca/', blank=True, null=True)
+    # quotation = models.FileField(upload_to='quotation/', blank=True, null=True)
+    quotation_info = HTMLField(blank=True, null=True)
+    extra_field = models.CharField(max_length=255, blank=True, null=True)
+    agree_to_quotation = models.CharField(choices=agreement, default='disagree', max_length=255)
+    agree_to_nda_nca = models.CharField(choices=agreement, default='disagree', max_length=255)
+
+
+currency = (
+    ('euro', 'EURO'),
+    ('pound', 'POUND'),
+    ('dollar', 'DOLLAR'),
+)
+
+
+class OrderPrice(models.Model):
+    order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name='orderprice_order')
     price = models.PositiveIntegerField(default=0)
+    currency = models.CharField(choices=currency, max_length=255)
     payment_method = models.CharField(choices=payment_method, max_length=255)
 
+
+@receiver(post_save, sender=Order)
+def create_order_price(sender, instance, created, **kwargs):
+    if created:
+        OrderPrice.objects.create(order=instance)
+        Quotation.objects.create(order=instance)
+
+
+@receiver(post_save, sender=Order)
+def save_order_price(sender, instance, **kwargs):
+    instance.orderprice_order.save()
+
+
+# @receiver(post_save, sender=Order)
+# def save_order_quotation(sender, instance, **kwargs):
+#     instance.quotation_order.save()
 
 #
 # class ServiceSales(models.Model):
@@ -201,10 +279,6 @@ class OrderStaff(models.Model):
         User, on_delete=models.CASCADE, related_name='orderstaff_user')
 
 
-ticket_type = (
-    ('bcs', 'BCS'),
-    ('pcs', 'PCS'),
-)
 ticket_status = (
     ('open', 'Open'),
     ('closed', 'Closed'),
@@ -212,9 +286,9 @@ ticket_status = (
 
 
 class Ticket(models.Model):
+    category_choice = models.CharField(choices=category_choice, max_length=255)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='ticket_user')
-    ticket_type = models.CharField(max_length=255, choices=ticket_type)
     ticket_category = models.CharField(max_length=255, verbose_name='Category')
     ticket_title = models.CharField(max_length=255, verbose_name='Title')
     ticket_description = HTMLField(verbose_name='Description')
@@ -247,19 +321,18 @@ class TicketComment(models.Model):
 
 
 class SubscriptionBasedPackage(models.Model):
-    service_id = models.ForeignKey(Service, on_delete=models.CASCADE)
+    service_id = models.ForeignKey(SubscriptionServices, on_delete=models.CASCADE,
+                                   related_name='package_subscription_service')
+    package_id = models.CharField(max_length=255, blank=True)
     package_name = models.CharField(
         max_length=264, verbose_name='Package Name')
-    servers = models.IntegerField()
-    websites = models.IntegerField()
-    workstations = models.IntegerField()
     duration = models.IntegerField()
     duration_type = models.CharField(
         choices=duration_type, max_length=264, default='month')
     price = models.IntegerField()
 
     def __str__(self):
-        return self.package_name
+        return f'{self.package_name} - {self.service_id}'
 
     class Meta:
         verbose_name_plural = 'Subscription Based Packages'
@@ -270,12 +343,36 @@ class SubscriptionFeatures(models.Model):
         SubscriptionBasedPackage, on_delete=models.CASCADE, related_name='feature_subscription')
     feature_name = models.CharField(
         max_length=264, verbose_name='Feature Name')
+    feature = models.CharField(
+        max_length=264, verbose_name='Feature')
 
     def __str__(self):
-        return self.feature_name
+        return f'{self.feature_name} - {self.feature}'
 
     class Meta:
         verbose_name_plural = 'Package Features'
+
+
+class SubscriptionOrder(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE,
+                             related_name='subscriptionorder_user')
+    subscription_service = models.ForeignKey(SubscriptionServices, on_delete=models.CASCADE,
+                                             related_name='subscriptionorder_subscriptionservice')
+    subscription_package = models.ForeignKey(SubscriptionBasedPackage, on_delete=models.CASCADE,
+                                             related_name='subscriptionorder_subscriptionpackage')
+    paypal_email = models.EmailField()
+    paypal_id = models.CharField(max_length=255)
+    paypal_user_name = models.CharField(max_length=255)
+    payment_id = models.CharField(max_length=255)
+    create_time = models.DateTimeField()
+    update_time = models.DateTimeField()
+    amount = models.IntegerField()
+    currency = models.CharField(max_length=255)
+
+    is_active = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.user} - {self.subscription_service} - {self.subscription_package} - {self.is_active}'
 
 
 class UserAllowed(models.Model):
@@ -308,18 +405,23 @@ industry_type = (
 
 privilege = (
     ('admin', 'Admin'),
-    ('member', 'Member'),
+    ('general_admin', 'General Admin'),
+    ('general_staff', 'General Staff'),
 )
 
 
 class Business(models.Model):
     industry_type = models.CharField(max_length=264, choices=industry_type)
     company_name = models.CharField(max_length=264)
-    company_logo = models.ImageField(upload_to='company/')
+    company_logo = models.ImageField(upload_to='company/', default='company/default.jpg')
     website = models.URLField(max_length=264, default='https://')
-    phone_number = models.CharField(max_length=264, default='+')
-    email = models.EmailField(max_length=264, default='email@email.com')
-    address = models.TextField()
+    phone_number = models.CharField(max_length=24, verbose_name='Company Phone Number')
+    email = models.EmailField(max_length=264, verbose_name='Company Email')
+    address_one = models.CharField(max_length=255)
+    address_two = models.CharField(max_length=255, blank=True)
+    city = models.CharField(max_length=255)
+    zipcode = models.IntegerField()
+    country = models.CharField(max_length=255)
     business_size = models.IntegerField(
         default=10, verbose_name='Number of Employees')
     created_date = models.DateTimeField(auto_now_add=True)
@@ -327,6 +429,9 @@ class Business(models.Model):
 
     def __str__(self):
         return self.company_name
+
+    def address(self):
+        return f'{self.address_one} {self.address_two}, {self.city}, {self.zipcode}, {self.country}'
 
     class Meta:
         verbose_name_plural = 'Businesses'
@@ -337,8 +442,8 @@ class UsersBusiness(models.Model):
         User, on_delete=models.CASCADE, related_name='business_user')
     business = models.ForeignKey(
         Business, on_delete=models.CASCADE, related_name='business_business')
-    position = models.CharField(max_length=264)
-    privilege = models.CharField(max_length=264, choices=privilege)
+    position = models.CharField(max_length=264, default='staff')
+    privilege = models.CharField(max_length=264, choices=privilege, default='general_staff')
     joined_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -392,3 +497,10 @@ class RegisteredEvents(models.Model):
 
     class Meta:
         verbose_name_plural = 'Registered Events'
+
+
+class Notification(models.Model):
+    category_choice = models.CharField(max_length=255)
+    notification = HTMLField()
+    notification_time = models.DateTimeField(auto_now_add=True)
+    # date_time = models.DateTimeField()

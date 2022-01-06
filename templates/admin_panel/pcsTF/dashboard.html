@@ -1,4 +1,4 @@
-{% extends 'base/pcs_admin_base.html' %} {% load static %}
+{% extends 'base/pcs_admin_base.html' %} {% load static %} {% load my_filter %}
 
 {% block title %} PCS Admin Dashboard
 {% endblock title %}
@@ -17,45 +17,54 @@
         <section class="user-stat">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-8">
-                        <div class="row g-4 align-content-center">
-                            <div class="col-md-6">
-                                <div class="subscription-info" style="background-color: #2C4C8C;">
-                                    <h3>INCIDENT RESPONSE</h3>
-                                    <p class="fw-bolder">
-                                        <i class="bi bi-person"></i> <span style="font-size: 25px;">750</span> users
-                                    </p>
-                                </div>
+                    <div class="col-lg-12">
+                        <div class="accordion" id="accordionExample">
+                            <div class="row g-4 align-content-center">
+                                {% for service_category in service_categories %}
+                                    <div class="col-md-4">
+                                        <h2 class="subscription-info" style="background-color: #4566A0;"
+                                            id="heading{{ service_category.category_name|replacespace }}">
+                                            <div class="row">
+                                                <div class="col-9">
+                                                    <h3>{{ service_category.category_name }}</h3>
+                                                </div>
+                                                <div class="col-2">
+                                                    <button class="accordion-button collapsed text-white"
+                                                            style="width: fit-content; padding: 0; font-size: 30px;background-color: transparent"
+                                                            type="button"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#collapse{{ service_category.category_name|replacespace }}"
+                                                            aria-expanded="false"
+                                                            aria-controls="collapse{{ service_category.category_name|replacespace }}">
+                                                        <i class="bi bi-arrow-down-circle"></i>
+                                                    </button>
+
+                                                </div>
+                                            </div>
+                                        </h2>
+                                        <div id="collapse{{ service_category.category_name|replacespace }}"
+                                             class="accordion-collapse collapse"
+                                             aria-labelledby="heading{{ service_category.category_name|replacespace }}"
+                                             data-bs-parent="#accordionExample">
+                                            <div class="accordion-body" style="padding: 10px">
+                                                {% for serv_cat in service_category.service_category.all %}
+                                                    <div class="row py-2">
+                                                        <div class="col-10">
+                                                            {{ serv_cat.service_title }}
+                                                        </div>
+                                                        <div class="col-2">
+                                                            {{ serv_cat.order_service.count }} <i class="bi bi-person"></i>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
                             </div>
-                            <div class="col-md-6">
-                                <div class="subscription-info" style="background-color: #2C4C8C;">
-                                    <h3>CYBER INVESTIGATION</h3>
-                                    <p class="fw-bolder">
-                                        <i class="bi bi-person"></i> <span style="font-size: 25px;">750</span> users
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="subscription-info" style="background-color: #4566A0;">
-                                    <h3>DATA & PRIVACY PROTECTION</h3>
-                                    <p class="fw-bolder">
-                                        <i class="bi bi-person"></i> <span style="font-size: 25px;">750</span> users
-                                    </p>
-                                </div>
-                            </div>
-                            
                         </div>
                     </div>
-                    
-                    <!-- User Stat Chart -->
-                    <div class="col-lg-4">
-                        
-                        <canvas id="user-chart" style="
-                                    display: block;
-                                    width: 821px;
-                                    margin-top: 2rem;
-                                " width="821" class="chartjs-render-monitor"></canvas>
-                    </div>
+
                 </div>
             </div>
         </section>
@@ -65,22 +74,19 @@
                     <!-- info chart -->
                     <div class="col-md-12 mt-5">
                         <!-- date picker -->
-                        <input type="text" id="dashboardDaterange" class="float-end" value="Select By Time range" name="daterange" />
+{#                        <input type="text" id="dashboardDaterange" class="float-end" placeholder="Select By Time range" name="daterange" />#}
                         <canvas id="info-chart"></canvas>
                         <!-- filter buttons -->
-                        <div class="filter-options d-flex w-85 float-end justify-content-between mb-3">
-                            <button class="btn btn-secondary mx-2 rounded-pill d-small-none">1d</button>
-                            <button class="btn btn-secondary mx-2 rounded-pill d-small-none active">1w</button>
-                            <button class="btn btn-secondary mx-2 rounded-pill">1mo</button>
-                            <button class="btn btn-secondary mx-2 rounded-pill">3mo</button>
-                            <button class="btn btn-secondary mx-2 rounded-pill">6mo</button>
-                            <button class="btn btn-secondary mx-2 rounded-pill">1y</button>
-                            <button class="btn btn-secondary mx-2 rounded-pill">all</button>
+                        <div class="filter-options d-flex w-100 float-end justify-content-between mb-3">
+                            <button class="btn btn-secondary mx-2 rounded-pill px-3" onclick="getChartData('month')">Month</button>
+                            <button class="btn btn-secondary mx-2 rounded-pill px-3" onclick="getChartData('year')">Year</button>
+                            <button class="btn btn-secondary mx-2 rounded-pill px-3" onclick="getChartData('all')">All</button>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+        {% comment %}
         <section class="overview my-5">
             <div class="activities">
                 <div class="container-fluid">
@@ -265,37 +271,11 @@
                 </div>
             </div>
         </section>
-
-        <!-- Modal 1 -->
-        <div class="modal fade" id="businessModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-
-                    <div class="modal-body">
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
-        <!-- Modal 2 -->
-        <div class="modal fade" id="personalModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-
-                    </div>
-                </div>
-            </div>
-        </div>
+{% endcomment %}
     </main>
 {% endblock content %}
 {% block customjs %}
     <!-- custom scripts -->
-    <script src="{% static 'tfjs/admin_panel/bcsTF//chart.js' %}"></script>
+    <script src="{% static 'tfjs/admin_panel/pcsTF//chart.js' %}"></script>
     <script src="{% static 'tfjs/admin_panel/bcsTF/dashboard.js' %}"></script>
-    <script src="{% static 'tfjs/admin_panel/bcsTF/nav.js' %}"></script>
 {% endblock customjs %}

@@ -1,10 +1,13 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse, HttpResponse, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from BusinessSecurity import forms, models
-from Academy.forms import CourseCreateForm, SectionCreateForm, ContentCreateForm
+from Academy.forms import BCSCourseCreateForm, SectionCreateForm, ContentCreateForm, CourseCategoryCreateForm, \
+    BCSSectionCreateForm, BCSContentCreateForm, AddCoursePackageForm, AddCoursePackageFeatureForm, \
+    AddCourseIndividualPackageFeatureForm
 from Account.models import User, Permissions, Interest
 from Account.forms import SelectBCSPermissionForm, InterestForm
-from Academy.models import Course, Section, Content
+from Academy.models import Course, Section, Content, CourseCategory, BCSCourse, BCSSection, BCSContent, CoursePackage, \
+    PackageFeatures, CourseOrder, CoursePurchase
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.core.files.storage import FileSystemStorage
@@ -310,6 +313,24 @@ def createBusinessView(request):
                                                                     position=position, privilege='admin')
                 user_business.save()
                 return HttpResponseRedirect(reverse('bcs_user_dashboard'))
+            elif 'join' in request.POST:
+                joining_key = request.POST.get('joining_key')
+                try:
+                    business = models.Business.objects.get(
+                        unique_id=joining_key)
+                    current_user.is_bcs = True
+                    current_user.save()
+                    user_business = models.UsersBusiness.objects.create(user=current_user, business=business,
+                                                                        position='staff', privilege='general_staff')
+                    user_business.save()
+                    return HttpResponseRedirect(reverse('bcs_user_dashboard'))
+                except:
+                    message = 'Wrong Business Key'
+                    context = {
+                        'form': form,
+                        'message': message,
+                    }
+                    return render(request, 'user_panel/bcs/redirection.html', context)
 
         context = {
             'form': form,
@@ -325,16 +346,27 @@ def userDashboardView(request):
         return HttpResponseRedirect(reverse('create_business'))
 
     elif request.user.is_bcs:
-        events = models.Events.objects.filter(status='active')
-        registered_event = models.RegisteredEvents.objects.filter(user=request.user).values_list('event', flat=True)
-        orders = models.Order.objects.filter(
-            Q(user=request.user) & ~Q(Q(order_status='new') | Q(order_status='attending'))).order_by('-order_date')[:2]
-        context = {
-            'events': events,
-            'registered_event': registered_event,
-            'orders': orders,
-        }
-        return render(request, 'user_panel/bcs/dashboard.html', context)
+        if request.user.business_user.privilege == 'general_staff':
+            return HttpResponse("You don't have permission to view this page")
+        else:
+            current_business = request.user.business_user.business
+            notifications = models.Notification.objects.filter(
+                category_choice='bcs').order_by('-notification_time')[:2]
+
+            events = models.Events.objects.filter(
+                status='active', category='for_business_security')
+            registered_event = models.RegisteredEvents.objects.filter(
+                user=request.user).values_list('event', flat=True)
+            orders = models.Order.objects.filter(
+                Q(user__business_user__business=current_business, category_choice='bcs') & ~Q(
+                    Q(order_status='new') | Q(order_status='attending'))).order_by('-order_date')[:2]
+            context = {
+                'events': events,
+                'registered_event': registered_event,
+                'orders': orders,
+                'notifications': notifications,
+            }
+            return render(request, 'user_panel/bcs/dashboard.html', context)
 
 
 @login_required
@@ -342,61 +374,107 @@ def userServicesView(request):
     if not request.user.is_bcs:
         return HttpResponseRedirect(reverse('create_business'))
     elif request.user.is_bcs:
-        service_category = models.ServiceCategory.objects.filter(category_choice='bcs')
-        services = models.Service.objects.filter(category_choice='bcs')
-        if request.method == 'POST':
-            data_list = request.POST
-            file_list = request.FILES
-            # print(data_list)
-            # print(file_list)
+        if request.user.business_user.privilege == 'general_staff':
+            return HttpResponse("You don't have permission to view this page")
+        else:
+            courses = BCSCourse.objects.all()
+            courses_categories = CourseCategory.objects.filter(course_type='Business')
+            service_category = models.ServiceCategory.objects.filter(
+                category_choice='bcs')
+            services = models.Service.objects.filter(category_choice='bcs')
+            subscription_services = models.SubscriptionServices.objects.filter(
+                category_choice='bcs')
+            if request.method == 'POST':
+                data_list = request.POST
+                file_list = request.FILES
+                # print(data_list)
+                # print(file_list)
 
-            current_service = get_object_or_404(models.Service, service_title=data_list['service_name'])
+                current_service = get_object_or_404(models.Service, service_title=data_list['service_name'],
+                                                    category_choice='bcs')
 
-            for data in data_list:
-                if data != 'csrfmiddlewaretoken' and data != 'service_name':
-                    current_input = models.SubServiceInput.objects.get(id=data)
+                for data in data_list:
+                    if data != 'csrfmiddlewaretoken' and data != 'service_name':
+                        current_input = models.SubServiceInput.objects.get(
+                            id=data)
+                        input_data = models.UserSubserviceInput(user=request.user, inputfield=current_input,
+                                                                inputinfo=data_list[data])
+                        input_data.save()
+                        order = models.Order.objects.get_or_create(user=request.user, order_status='new',
+                                                                   service=current_service, category_choice='bcs')
+
+                        order[0].subserviceinput.add(input_data)
+                for files in file_list:
+                    current_input = models.SubServiceInput.objects.get(
+                        id=files)
+                    myfile = file_list[files]
+                    fs = FileSystemStorage()
+                    filename = fs.save(myfile.name, myfile)
+                    uploaded_file_url = fs.url(filename)
                     input_data = models.UserSubserviceInput(user=request.user, inputfield=current_input,
-                                                            inputinfo=data_list[data])
+                                                            inputinfo=uploaded_file_url)
                     input_data.save()
                     order = models.Order.objects.get_or_create(user=request.user, order_status='new',
                                                                service=current_service, category_choice='bcs')
 
                     order[0].subserviceinput.add(input_data)
-            for files in file_list:
-                current_input = models.SubServiceInput.objects.get(id=files)
-                myfile = file_list[files]
-                fs = FileSystemStorage()
-                filename = fs.save(myfile.name, myfile)
-                uploaded_file_url = fs.url(filename)
-                input_data = models.UserSubserviceInput(user=request.user, inputfield=current_input,
-                                                        inputinfo=uploaded_file_url)
-                input_data.save()
+
                 order = models.Order.objects.get_or_create(user=request.user, order_status='new',
                                                            service=current_service, category_choice='bcs')
 
-                order[0].subserviceinput.add(input_data)
+                if not order[0].orderstaff_order.all().exists():
+                    tracking = models.Tracking.objects.get(
+                        service=current_service)
+                    persons = tracking.persons
+                    persons_list = list(filter(None, persons.split(',')))
+                    person = persons_list.pop(0)
+                    persons_list.append(person)
+                    tracking.persons = ','.join(persons_list)
+                    tracking.save()
+                    current_staff = models.User.objects.get(id=person)
+                    order_staff = models.OrderStaff.objects.create(
+                        staff=current_staff, order=order[0])
+                    order_staff.save()
+                return render(request, 'user_panel/bcs/thanks.html')
+            context = {
+                'service_category': service_category,
+                'services': services,
+                'services_headings': list(services.values_list('service_title', flat=True)),
+                'subscription_services': subscription_services,
+                'subscription_services_headings': list(subscription_services.values_list('service_title', flat=True)),
+                'courses_categories': courses_categories,
+                'courses': courses,
+                'courses_headings': list(courses.values_list('course_name', flat=True)),
+            }
+            return render(request, 'user_panel/bcs/services.html', context)
 
-            order = models.Order.objects.get_or_create(user=request.user, order_status='new',
-                                                       service=current_service, category_choice='bcs')
 
-            if not order[0].orderstaff_order.all().exists():
-                tracking = models.Tracking.objects.get(service=current_service)
-                persons = tracking.persons
-                persons_list = list(filter(None, persons.split(',')))
-                person = persons_list.pop(0)
-                persons_list.append(person)
-                tracking.persons = ','.join(persons_list)
-                tracking.save()
-                current_staff = models.User.objects.get(id=person)
-                order_staff = models.OrderStaff.objects.create(staff=current_staff, order=order[0])
-                order_staff.save()
-            return render(request, 'user_panel/bcs/thanks.html')
+@login_required
+def bcsUserCourseDetail(request, id):
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+
+    elif request.user.is_bcs:
+        course = BCSCourse.objects.get(id=id)
+        sections = BCSSection.objects.filter(course=course)
         context = {
-            'service_category': service_category,
-            'services': services,
-            'services_headings': list(services.values_list('service_title', flat=True)),
+            'course': course,
+            'sections': sections,
         }
-        return render(request, 'user_panel/bcs/services.html', context)
+        return render(request, 'user_panel/bcs/courseDetails.html', context)
+
+
+@login_required
+def bcsUserCoursePayment(request, id):
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+
+    elif request.user.is_bcs:
+        course = BCSCourse.objects.get(id=id)
+        context = {
+            'course': course,
+        }
+        return render(request, 'user_panel/bcs/course_payment.html', context)
 
 
 @login_required
@@ -405,13 +483,18 @@ def userQuotationsHistoryView(request):
         return HttpResponseRedirect(reverse('create_business'))
 
     elif request.user.is_bcs:
-        orders = models.Order.objects.filter(
-            Q(user=request.user) & Q(Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by('-order_date')
-        context = {
-            'orders': orders,
-            'message': 'Quotations',
-        }
-        return render(request, 'user_panel/bcs/order_history.html', context)
+        if request.user.business_user.privilege == 'general_staff':
+            return HttpResponse("You don't have permission to view this page")
+        else:
+            orders = models.Order.objects.filter(
+                Q(user=request.user, category_choice='bcs') & Q(
+                    Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
+                '-order_date')
+            context = {
+                'orders': orders,
+                'message': 'Quotations',
+            }
+            return render(request, 'user_panel/bcs/order_history.html', context)
 
 
 @login_required
@@ -420,14 +503,19 @@ def userOrderHistoryView(request):
         return HttpResponseRedirect(reverse('create_business'))
 
     elif request.user.is_bcs:
-        orders = models.Order.objects.filter(
-            Q(user=request.user) & ~Q(Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by('-order_date')
-        print(orders.query)
-        context = {
-            'orders': orders,
-            'message': 'Orders',
-        }
-        return render(request, 'user_panel/bcs/order_history.html', context)
+        if request.user.business_user.privilege == 'general_staff':
+            return HttpResponse("You don't have permission to view this page")
+        else:
+            orders = models.Order.objects.filter(
+                Q(user=request.user, category_choice='bcs') & ~Q(
+                    Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
+                '-order_date')
+            print(orders.query)
+            context = {
+                'orders': orders,
+                'message': 'Orders',
+            }
+            return render(request, 'user_panel/bcs/order_history.html', context)
 
 
 @login_required
@@ -436,14 +524,88 @@ def userOrderDetailsView(request, id):
         return HttpResponseRedirect(reverse('create_business'))
 
     elif request.user.is_bcs:
+        if request.user.business_user.privilege == 'general_staff':
+            return HttpResponse("You don't have permission to view this page")
+        else:
+            try:
+                order = models.Order.objects.get(id=id, category_choice='bcs')
+                if order.user.business_user.business == request.user.business_user.business:
+                    current_order = models.Order.objects.get(id=id, category_choice='bcs')
+                    context = {
+                        'current_order': current_order,
+                    }
+                    return render(request, 'user_panel/bcs/order_detail.html', context)
+                else:
+                   return HttpResponse("You don't have permission to view this page")
+            except:
+                return HttpResponse("You don't have permission to view this page")
+
+
+@login_required
+def quotationAcceptView(request, id):
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+
+    elif request.user.is_bcs:
         try:
-            current_order = models.Order.objects.get(user=request.user, id=id)
-            context = {
-                'current_order': current_order,
-            }
-            return render(request, 'user_panel/bcs/order_detail.html', context)
+            order = models.Order.objects.get(id=id, category_choice='bcs')
+            if order.user.business_user.business == request.user.business_user.business:
+                current_order = models.Order.objects.get(id=id, category_choice='bcs')
+                current_quotation = models.Quotation.objects.get(order=current_order)
+                current_quotation.agree_to_quotation = 'agree'
+                current_order.order_status = 'agreed_to_quotation'
+                current_quotation.save()
+                current_order.save()
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            else:
+                return HttpResponse("You don't have permission to view this page")
         except:
             return HttpResponse("You don't have permission to view this page")
+
+
+@login_required
+def ndaNcaAcceptView(request, id):
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+
+    elif request.user.is_bcs:
+        try:
+            order = models.Order.objects.get(id=id, category_choice='bcs')
+            if order.user.business_user.business == request.user.business_user.business:
+                current_order = models.Order.objects.get(id=id, category_choice='bcs')
+                current_quotation = models.Quotation.objects.get(order=current_order)
+                current_quotation.agree_to_nda_nca = 'agree'
+                current_order.order_status = 'agreed_to_nda_nca'
+                current_quotation.save()
+                current_order.save()
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            else:
+                return HttpResponse("You don't have permission to view this page")
+        except:
+            return HttpResponse("You don't have permission to view this page")
+
+
+@login_required
+def orderRejectView(request, id):
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+
+    elif request.user.is_bcs:
+        try:
+            current_order = models.Order.objects.get(
+                user=request.user, id=id, category_choice='bcs')
+            current_quotation = models.Quotation.objects.get(order=current_order)
+            current_quotation.agree_to_quotation = 'disagree'
+            current_quotation.agree_to_nda_nca = 'disagree'
+            current_order.order_status = 'disagreed'
+            current_quotation.save()
+            current_order.save()
+
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        except:
+            return HttpResponse("You don't have permission to view this page")
+
+
 
 
 @login_required
@@ -453,24 +615,88 @@ def bcsUserMyTeamView(request):
 
     elif request.user.is_bcs:
         try:
-            current_business = models.UsersBusiness.objects.get(user=request.user)
+            current_business = models.UsersBusiness.objects.get(
+                user=request.user)
 
-            image_form = forms.BusinessLogoForm(instance=current_business.business)
-            info_form = forms.BusinessInfoForm(instance=current_business.business)
+            business = current_business.business
+            admins = business.business_business.filter(
+                privilege='admin').count()
+
+            image_form = forms.BusinessLogoForm(
+                instance=current_business.business)
+            info_form = forms.BusinessInfoForm(
+                instance=current_business.business)
             if request.method == 'POST':
                 if 'img-btn' in request.POST:
-                    image_form = forms.BusinessLogoForm(request.POST, request.FILES, instance=current_business.business)
+                    image_form = forms.BusinessLogoForm(
+                        request.POST, request.FILES, instance=current_business.business)
                     if image_form.is_valid():
                         image_form.save()
                 elif 'info-btn' in request.POST:
-                    info_form = forms.BusinessInfoForm(request.POST, instance=current_business.business)
+                    info_form = forms.BusinessInfoForm(
+                        request.POST, instance=current_business.business)
                     if info_form.is_valid():
                         info_form.save()
                     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                elif 'inv-btn' in request.POST:
+                    emails = request.POST['email'].split()
+                    # print(emails)
+                    err_mail = []
+                    suc_mail = []
+                    for mail in emails:
+                        try:
+                            added_user = models.User.objects.get(email=mail)
+                            added_user.is_bcs = True
+                            added_user.save()
+                            user_business = models.UsersBusiness.objects.get_or_create(user=added_user,
+                                                                                       business=current_business.business)
+                            user_business[0].save()
+                            suc_mail.append(mail)
+                            context = {
+                                'current_business': current_business,
+                                'image_form': image_form,
+                                'info_form': info_form,
+                                'admins': admins,
+                                'success': f'User with given email {suc_mail} added'
+                            }
+
+                        except:
+                            err_mail.append(mail)
+                            context = {
+                                'current_business': current_business,
+                                'image_form': image_form,
+                                'info_form': info_form,
+                                'admins': admins,
+                                'message': f'User with given email {err_mail} not found'
+                            }
+                    return render(request, 'user_panel/bcs/my_team.html', context)
+
+                    # if added_user is not None:
+                    #     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                    # else:
+                    #     return render(request, 'user_panel/bcs/my_team.html', context)
+                    # return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                    # user_business = models.UsersBusiness.objects.get_or_create(user=added_user, business=current_business.business)
+                    # user_business[0].save()
+                    # return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                    # try:
+                    #     added_user = models.User.objects.get(email=request.POST.get('email'))
+                    #     user_business = models.UsersBusiness.objects.get_or_create(user=added_user, business=current_business.business)
+                    #     user_business[0].save()
+                    #     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                    # except:
+                    #     context = {
+                    #         'current_business': current_business,
+                    #         'image_form': image_form,
+                    #         'info_form': info_form,
+                    #         'message': 'User with given email not found'
+                    #     }
+                    #     return render(request, 'user_panel/bcs/my_team.html', context)
             context = {
                 'current_business': current_business,
                 'image_form': image_form,
                 'info_form': info_form,
+                'admins': admins,
             }
             return render(request, 'user_panel/bcs/my_team.html', context)
         except:
@@ -479,15 +705,47 @@ def bcsUserMyTeamView(request):
 
 @login_required
 def bcsUserTeamMemberDeleteView(request, id):
-    current_employee = models.UsersBusiness.objects.get(id=id)
-    current_user = models.User.objects.get(id=current_employee.user.id)
-    if current_user == request.user:
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    if request.user.business_user.privilege == 'general_staff':
+        return HttpResponse("You don't have permission to view this page")
     else:
-        current_user.is_bcs = False
-        current_user.save()
-        current_employee.delete()
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        current_employee = models.UsersBusiness.objects.get(id=id)
+        current_user = models.User.objects.get(id=current_employee.user.id)
+        if current_user == request.user \
+                or current_user.business_user.privilege == 'general_admin' \
+                or current_employee.privilege == 'admin':
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        else:
+            current_user.is_bcs = False
+            current_user.save()
+            current_employee.delete()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@login_required
+def bcsUserMyTeamProfileView(request, id):
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+
+    elif request.user.is_bcs:
+        current_user = models.User.objects.get(business_user__id=id)
+        context = {
+            'current_user': current_user,
+        }
+        return render(request, 'user_panel/bcs/profile.html', context)
+
+
+@login_required
+def subscriptionPayment(request, id):
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+    else:
+        current_package = models.SubscriptionBasedPackage.objects.get(id=id)
+
+        context = {
+            'current_package': current_package,
+        }
+
+    return render(request, 'user_panel/bcs/subscription_payment.html', context)
 
 
 @login_required
@@ -496,10 +754,15 @@ def userSubscriptionsView(request):
         return HttpResponseRedirect(reverse('create_business'))
 
     elif request.user.is_bcs:
-        context = {
-
-        }
-        return render(request, 'user_panel/bcs/subscriptions.html', context)
+        if request.user.business_user.privilege == 'general_staff':
+            return HttpResponse("You don't have permission to view this page")
+        else:
+            services = models.SubscriptionServices.objects.filter(
+                category_choice='bcs')
+            context = {
+                'services': services,
+            }
+            return render(request, 'user_panel/bcs/subscriptions.html', context)
 
 
 @login_required
@@ -507,7 +770,8 @@ def userEventsView(request):
     if not request.user.is_bcs:
         return HttpResponseRedirect(reverse('create_business'))
     elif request.user.is_bcs:
-        registered_event = models.RegisteredEvents.objects.filter(user=request.user).values_list('event', flat=True)
+        registered_event = models.RegisteredEvents.objects.filter(
+            user=request.user).values_list('event', flat=True)
         events = models.Events.objects.filter(category='for_business_security',
                                               registered_event_event__user=request.user)
         context = {
@@ -522,13 +786,18 @@ def userEventRegisterView(request, id):
     if not request.user.is_bcs:
         return HttpResponseRedirect(reverse('create_business'))
     elif request.user.is_bcs:
-        current_event = models.Events.objects.get(id=id)
-        is_register = models.RegisteredEvents.objects.filter(user=request.user, event=current_event)
-        if not is_register:
-            models.RegisteredEvents.objects.get_or_create(user=request.user, event=current_event)
+        if request.user.business_user.privilege == 'general_staff':
+            return HttpResponse("You don't have permission to view this page")
         else:
-            is_register.delete()
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            current_event = models.Events.objects.get(id=id)
+            is_register = models.RegisteredEvents.objects.filter(
+                user=request.user, event=current_event)
+            if not is_register:
+                models.RegisteredEvents.objects.get_or_create(
+                    user=request.user, event=current_event)
+            else:
+                is_register.delete()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
 @login_required
@@ -537,10 +806,15 @@ def userNotificationsView(request):
         return HttpResponseRedirect(reverse('create_business'))
 
     elif request.user.is_bcs:
-        context = {
-
-        }
-        return render(request, 'user_panel/bcs/notifications.html', context)
+        if request.user.business_user.privilege == 'general_staff':
+            return HttpResponse("You don't have permission to view this page")
+        else:
+            notifications = models.Notification.objects.filter(
+                Q(category_choice='bcs') | Q(category_choice__iexact=request.user.business_user.business.company_name)).order_by('-notification_time')
+            context = {
+                'notifications': notifications
+            }
+            return render(request, 'user_panel/bcs/notifications.html', context)
 
 
 @login_required
@@ -549,10 +823,13 @@ def userSettingsView(request):
         return HttpResponseRedirect(reverse('create_business'))
 
     elif request.user.is_bcs:
-        context = {
+        if request.user.business_user.privilege == 'general_staff':
+            return HttpResponse("You don't have permission to view this page")
+        else:
+            context = {
 
-        }
-        return render(request, 'user_panel/bcs/settings.html', context)
+            }
+            return render(request, 'user_panel/bcs/settings.html', context)
 
 
 @login_required
@@ -638,50 +915,72 @@ def emailInvitationView(request):
 
 @login_required
 def openTicketView(request):
-    form = forms.TicketCreateForm()
-    tickets = models.Ticket.objects.filter(user=request.user).order_by('-ticket_date')
-    if request.method == 'POST':
-        form = forms.TicketCreateForm(request.POST, request.FILES)
-        if form.is_valid():
-            ticket = form.save(commit=False)
-            ticket.user = request.user
-            ticket.ticket_type = 'bcs'
-            ticket.ticket_status = 'open'
-            ticket.ticket_category = request.POST.get('ticket_category')
-            ticket.save()
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
-    context = {
-        'form': form,
-        'tickets': tickets,
-    }
-    return render(request, 'user_panel/bcs/ticket.html', context)
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+
+    elif request.user.is_bcs:
+        if request.user.business_user.privilege == 'general_staff':
+            return HttpResponse("You don't have permission to view this page")
+        else:
+            form = forms.TicketCreateForm()
+            tickets = models.Ticket.objects.filter(
+                user=request.user, category_choice='bcs').order_by('-ticket_date')
+            if request.method == 'POST':
+                form = forms.TicketCreateForm(request.POST, request.FILES)
+                if form.is_valid():
+                    ticket = form.save(commit=False)
+                    ticket.user = request.user
+                    ticket.category_choice = 'bcs'
+                    ticket.ticket_status = 'open'
+                    ticket.ticket_category = request.POST.get(
+                        'ticket_category')
+                    ticket.save()
+                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            context = {
+                'form': form,
+                'tickets': tickets,
+            }
+            return render(request, 'user_panel/bcs/ticket.html', context)
 
 
 def ticketDetailView(request, id):
-    ticket = models.Ticket.objects.get(id=id)
-    commentform = forms.TicketCommentForm()
-    if request.method == 'POST':
-        commentform = forms.TicketCommentForm(request.POST)
-        if commentform.is_valid():
-            comment = commentform.save(commit=False)
-            comment.user = request.user
-            comment.ticket = ticket
-            comment.save()
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
-    context = {
-        'ticket': ticket,
-        'commentform': commentform,
-    }
-    return render(request, 'user_panel/bcs/ticket_detail.html', context)
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+
+    elif request.user.is_bcs:
+        if request.user.business_user.privilege == 'general_staff':
+            return HttpResponse("You don't have permission to view this page")
+        else:
+            ticket = models.Ticket.objects.get(id=id)
+            commentform = forms.TicketCommentForm()
+            if request.method == 'POST':
+                commentform = forms.TicketCommentForm(request.POST)
+                if commentform.is_valid():
+                    comment = commentform.save(commit=False)
+                    comment.user = request.user
+                    comment.ticket = ticket
+                    comment.save()
+                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            context = {
+                'ticket': ticket,
+                'commentform': commentform,
+            }
+            return render(request, 'user_panel/bcs/ticket_detail.html', context)
 
 
 # Main Admin Sections
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminDashboardView(request):
     total_user = models.User.objects.all()
+    service_categories_bcs = models.ServiceCategory.objects.filter(
+        category_choice='bcs')
+    service_categories_pcs = models.ServiceCategory.objects.filter(
+        category_choice='pcs')
     context = {
         'total_user': total_user,
         'total_business_user': total_user.filter(is_bcs=True),
+        'service_categories_bcs': service_categories_bcs,
+        'service_categories_pcs': service_categories_pcs,
     }
     return render(request, 'admin_panel/mainTF/dashboard.html', context)
 
@@ -697,7 +996,8 @@ def mainAdminProfileView(request):
 @user_passes_test(main_admin_permission_check_order_page, login_url='/accounts/login/',
                   redirect_field_name='/account/profile/')
 def mainAdminQuotationsView(request):
-    orders = models.Order.objects.filter(Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned')).order_by('-order_date')
+    orders = models.Order.objects.filter(
+        Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned')).order_by('-order_date')
     context = {
         'orders': orders,
         'message': 'Quotations',
@@ -708,7 +1008,8 @@ def mainAdminQuotationsView(request):
 @user_passes_test(main_admin_permission_check_order_page, login_url='/accounts/login/',
                   redirect_field_name='/account/profile/')
 def mainAdminOrdersView(request):
-    orders = models.Order.objects.filter(~Q(Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
+    orders = models.Order.objects.filter(
+        ~Q(Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
         '-order_date')
     context = {
         'orders': orders,
@@ -729,11 +1030,13 @@ def mainAdminOrdersDetailView(request, id):
         except:
             form1 = forms.OrderAssignForm()
 
-        form2 = forms.OrderPriceForm(instance=current_order)
+        current_price = models.OrderPrice.objects.get(order=current_order)
+        form2 = forms.OrderPriceForm(instance=current_price)
         if request.method == 'POST':
             if 'assign-btn' in request.POST:
                 try:
-                    form1 = forms.OrderAssignForm(request.POST, instance=order_staff)
+                    form1 = forms.OrderAssignForm(
+                        request.POST, instance=order_staff)
                 except:
                     form1 = forms.OrderAssignForm(request.POST)
                 if form1.is_valid():
@@ -744,10 +1047,13 @@ def mainAdminOrdersDetailView(request, id):
                     current_order.save()
                     return HttpResponseRedirect(request.META['HTTP_REFERER'])
             elif 'price-btn' in request.POST:
-                form2 = forms.OrderPriceForm(request.POST, instance=current_order)
+                form2 = forms.OrderPriceForm(
+                    request.POST, instance=current_price)
                 if form2.is_valid():
                     current_order.order_status = 'on_progress'
-                    new_staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
+                    current_order.save()
+                    new_staff = models.OrderStaff.objects.get_or_create(
+                        order=current_order, staff=request.user)
                     form2.save()
                     return HttpResponseRedirect(request.META['HTTP_REFERER'])
         context = {
@@ -762,10 +1068,26 @@ def mainAdminOrdersDetailView(request, id):
 
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminNotificationView(request):
-    context = {
+    form = forms.NotificationForm()
+    notifications = models.Notification.objects.all().order_by('-notification_time')
 
+    if 'instant-btn' in request.POST:
+        form = forms.NotificationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    context = {
+        'form': form,
+        'notifications': notifications,
     }
     return render(request, 'admin_panel/mainTF/notification.html', context)
+
+
+@user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def mainAdminNotificationDeleteView(request, id):
+    current_notification = models.Notification.objects.get(id=id)
+    current_notification.delete()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
@@ -780,6 +1102,9 @@ def mainAdminEventsView(request):
     context = {
         'form': form,
         'events': events,
+        'previous': events.filter(status='completed'),
+        'active': events.filter(status='active'),
+        'canceled': events.filter(status='canceled'),
     }
     return render(request, 'admin_panel/mainTF/eventWebinar.html', context)
 
@@ -828,12 +1153,12 @@ def mainAdminSupportView(request):
     bcs_head = User.objects.filter(is_bcs_head=True)
     pcs_head = User.objects.filter(is_pcs_head=True)
     form = forms.AssignToServiceForm()
-    print(request.POST)
+
     if request.method == 'POST':
         user_email = request.POST.get('user_email')
         user_permission = request.POST.get('user_permission')
         current_user = User.objects.get(email=user_email)
-        if user_permission == 'sales':
+        if 'sales' in request.POST.getlist('user_permission'):
             current_user.is_staff = True
             current_user.is_sales = True
             form = forms.AssignToServiceForm(request.POST)
@@ -842,25 +1167,28 @@ def mainAdminSupportView(request):
                 assigned.user = current_user
                 for service_id in request.POST.getlist('service'):
                     service = models.Service.objects.get(id=service_id)
-                    tracking = models.Tracking.objects.get_or_create(service=service)
+                    tracking = models.Tracking.objects.get_or_create(
+                        service=service)
                     person = tracking[0].persons
                     tracking[0].persons = f'{person},{current_user.id}'
                     tracking[0].save()
                 assigned.save()
                 form.save_m2m()
                 current_user.save()
-        elif user_permission == 'blogger':
-            current_user.is_staff = True
-            current_user.is_blogger = True
-            current_user.save()
-        elif user_permission == 'bcs_head':
-            current_user.is_staff = True
-            current_user.is_bcs_head = True
-            current_user.save()
-        elif user_permission == 'pcs_head':
-            current_user.is_staff = True
-            current_user.is_pcs_head = True
-            current_user.save()
+        else:
+            for item in request.POST.getlist('user_permission'):
+                if 'blogger' in request.POST.getlist('user_permission'):
+                    current_user.is_staff = True
+                    current_user.is_blogger = True
+                    current_user.save()
+                if 'bcs_head' in request.POST.getlist('user_permission'):
+                    current_user.is_staff = True
+                    current_user.is_bcs_head = True
+                    current_user.save()
+                if 'pcs_head' in request.POST.getlist('user_permission'):
+                    current_user.is_staff = True
+                    current_user.is_pcs_head = True
+                    current_user.save()
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
     context = {
@@ -876,35 +1204,46 @@ def mainAdminSupportView(request):
 
 
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def mainAdminProfileView(request, id):
+    current_user = models.User.objects.get(business_user__id=id)
+    context = {
+        'current_user': current_user,
+    }
+    return render(request, 'admin_panel/mainTF/profile.html', context)
+
+
+@user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminSupportDeleteView(request, id):
     current_user = User.objects.get(id=id)
     if current_user.is_superuser:
         pass
-    elif current_user.is_sales:
-        current_user.is_staff = False
-        current_user.is_sales = False
-        current_user.save()
-        assigned = models.ServiceAssigned.objects.get(user=current_user)
-        trackings = models.Tracking.objects.filter(persons__icontains=current_user.id)
-        for tracking in trackings:
-            persons = tracking.persons
-            persons_list = list(filter(None, persons.split(',')))
-            persons_list.remove(str(current_user.id))
-            tracking.persons = ','.join(persons_list)
-            tracking.save()
-        assigned.delete()
-    elif current_user.is_blogger:
-        current_user.is_staff = False
-        current_user.is_blogger = False
-        current_user.save()
-    elif current_user.is_bcs_head:
-        current_user.is_staff = False
-        current_user.is_bcs_head = False
-        current_user.save()
-    elif current_user.is_pcs_head:
-        current_user.is_staff = False
-        current_user.is_pcs_head = False
-        current_user.save()
+    else:
+        if current_user.is_sales:
+            current_user.is_staff = False
+            current_user.is_sales = False
+            current_user.save()
+            assigned = models.ServiceAssigned.objects.get(user=current_user)
+            trackings = models.Tracking.objects.filter(
+                persons__icontains=current_user.id)
+            for tracking in trackings:
+                persons = tracking.persons
+                persons_list = list(filter(None, persons.split(',')))
+                persons_list.remove(str(current_user.id))
+                tracking.persons = ','.join(persons_list)
+                tracking.save()
+            assigned.delete()
+        if current_user.is_blogger:
+            current_user.is_staff = False
+            current_user.is_blogger = False
+            current_user.save()
+        if current_user.is_bcs_head:
+            current_user.is_staff = False
+            current_user.is_bcs_head = False
+            current_user.save()
+        if current_user.is_pcs_head:
+            current_user.is_staff = False
+            current_user.is_pcs_head = False
+            current_user.save()
 
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
@@ -951,8 +1290,7 @@ def mainAdminTicketsDetailView(request, id):
     return render(request, 'admin_panel/mainTF/ticket_detail.html', context)
 
 
-@user_passes_test(main_admin_permission_check_order_page, login_url='/accounts/login/',
-                  redirect_field_name='/account/profile/')
+@login_required
 def ticketOpenCloseView(request, id):
     current_ticket = models.Ticket.objects.get(id=id)
     if current_ticket.ticket_status == 'open':
@@ -968,15 +1306,18 @@ def ticketOpenCloseView(request, id):
 # BCS Admin Section
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminDashboardView(request):
-    context = {
+    service_categories = models.ServiceCategory.objects.filter(
+        category_choice='bcs')
 
+    context = {
+        'service_categories': service_categories
     }
     return render(request, 'admin_panel/bcsTF/dashboard.html', context)
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminServiceCategoryView(request):
-    categories = models.ServiceCategory.objects.all()
+    categories = models.ServiceCategory.objects.filter(category_choice='bcs')
     form = forms.AddServiceCategoryForm()
 
     if request.method == 'POST':
@@ -996,18 +1337,21 @@ def bcsAdminServiceCategoryView(request):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminServiceCategoryDeleteView(request, id):
-    current_category = models.ServiceCategory.objects.get(id=id)
+    current_category = models.ServiceCategory.objects.get(
+        id=id, category_choice='bcs')
     current_category.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminServiceCategoryEditView(request, id):
-    current_category = models.ServiceCategory.objects.get(id=id)
+    current_category = models.ServiceCategory.objects.get(
+        id=id, category_choice='bcs')
     form = forms.AddServiceCategoryForm(instance=current_category)
 
     if request.method == 'POST':
-        form = forms.AddServiceCategoryForm(request.POST, instance=current_category)
+        form = forms.AddServiceCategoryForm(
+            request.POST, instance=current_category)
         if form.is_valid():
             form.save()
 
@@ -1022,19 +1366,74 @@ def bcsAdminServiceCategoryEditView(request, id):
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminServiceView(request):
     form = forms.AddServiceForm()
-    services = models.Service.objects.all()
+    sales_persons = models.User.objects.filter(Q(is_staff=True, is_sales=True))
+    services = models.Service.objects.filter(category_choice='bcs')
+
     if request.method == 'POST':
         form = forms.AddServiceForm(request.POST, request.FILES)
         if form.is_valid():
             service = form.save(commit=False)
             service.category_choice = 'bcs'
             service.save()
+            for sale_id in request.POST.getlist('sales'):
+                current_sales = models.User.objects.get(id=sale_id)
+                current_assigned = models.ServiceAssigned.objects.get_or_create(
+                    user=current_sales)
+                current_assigned[0].service.add(service)
+                current_assigned[0].save()
+                tracking = models.Tracking.objects.get_or_create(
+                    service=service)
+                person = tracking[0].persons
+                tracking[0].persons = f'{person},{sale_id}'
+                tracking[0].save()
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     context = {
         'form': form,
+        'sales_persons': sales_persons,
         'services': services,
     }
     return render(request, 'admin_panel/bcsTF/service.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def bcsAdminSubscriptionServiceView(request):
+    form = forms.AddSubscriptionServiceForm()
+    # sales_persons = models.User.objects.filter(Q(is_staff=True, is_sales=True))
+    services = models.SubscriptionServices.objects.filter(
+        category_choice='bcs')
+
+    if request.method == 'POST':
+        form = forms.AddSubscriptionServiceForm(request.POST, request.FILES)
+        # print(request.POST)
+        if form.is_valid():
+            service = form.save(commit=False)
+            service.category_choice = 'bcs'
+            service.product_id = request.POST.get('product_id')
+            service.save()
+
+            # for sale_id in request.POST.getlist('sales'):
+            #     current_sales = models.User.objects.get(id=sale_id)
+            #     current_assigned = models.ServiceAssigned.objects.get_or_create(user=current_sales)
+            #     current_assigned[0].service.add(service)
+            #     current_assigned[0].save()
+            #     tracking = models.Tracking.objects.get_or_create(service=service)
+            #     person = tracking[0].persons
+            #     tracking[0].persons = f'{person},{sale_id}'
+            #     tracking[0].save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    context = {
+        'form': form,
+        # 'sales_persons': sales_persons,
+        'services': services,
+    }
+    return render(request, 'admin_panel/bcsTF/subscription-service.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def bcsAdminSubscriptionServiceDeleteView(request, id):
+    current_service = models.SubscriptionServices.objects.get(id=id)
+    current_service.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
@@ -1045,12 +1444,32 @@ def bcsAdminServiceDeleteView(request, id):
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def bcsAdminSubscriptionServiceEditView(request, id):
+    current_service = models.SubscriptionServices.objects.get(id=id)
+    form = forms.AddSubscriptionServiceForm(instance=current_service)
+
+    if request.method == 'POST':
+        form = forms.AddSubscriptionServiceForm(
+            request.POST, request.FILES, instance=current_service)
+        if form.is_valid():
+            form.save()
+
+            return HttpResponseRedirect(reverse('bcs_admin_subscription_services'))
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'admin_panel/bcsTF/editForm.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminServiceEditView(request, id):
     current_service = models.Service.objects.get(id=id)
     form = forms.AddServiceForm(instance=current_service)
 
     if request.method == 'POST':
-        form = forms.AddServiceForm(request.POST, request.FILES, instance=current_service)
+        form = forms.AddServiceForm(
+            request.POST, request.FILES, instance=current_service)
         if form.is_valid():
             form.save()
 
@@ -1065,8 +1484,8 @@ def bcsAdminServiceEditView(request, id):
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminSubServiceView(request):
     form = forms.AddSubServiceForm()
-    sub_services = models.SubService.objects.all()
-    # print(request.POST)
+    sub_services = models.SubService.objects.filter(
+        service__category_choice='bcs')
     if request.method == 'POST':
         form = forms.AddSubServiceForm(request.POST)
         if form.is_valid():
@@ -1092,7 +1511,8 @@ def bcsAdminSubServiceEditView(request, id):
     form = forms.AddSubServiceForm(instance=current_sub_service)
 
     if request.method == 'POST':
-        form = forms.AddSubServiceForm(request.POST, instance=current_sub_service)
+        form = forms.AddSubServiceForm(
+            request.POST, instance=current_sub_service)
         if form.is_valid():
             form.save()
 
@@ -1108,7 +1528,8 @@ def bcsAdminSubServiceEditView(request, id):
 def bcsSubServiceFormView(request):
     form = forms.AddForm()
     form_lists = models.InputFields.objects.all()
-    select_choices = list(models.SelectChoice.objects.all().values('id', 'choices'))
+    select_choices = list(
+        models.SelectChoice.objects.all().values('id', 'choices'))
 
     # print(request.POST)
     if request.method == 'POST':
@@ -1116,13 +1537,15 @@ def bcsSubServiceFormView(request):
         if form.is_valid():
             current_input = form.save()
             # print(current_input.id)
-            current_input_field = models.InputFields.objects.get(id=current_input.id)
+            current_input_field = models.InputFields.objects.get(
+                id=current_input.id)
             # print(request.POST.getlist('options'))
             if request.POST.getlist('options'):
                 for i in request.POST.getlist('options'):
                     field = models.SelectChoice.objects.get(id=i)
                     # print(field)
-                    new_choices = models.SelectChoiceRelation.objects.get_or_create(input_field=current_input_field)
+                    new_choices = models.SelectChoiceRelation.objects.get_or_create(
+                        input_field=current_input_field)
                     new_choices[0].choice_field.add(field)
                     new_choices[0].save()
 
@@ -1187,19 +1610,26 @@ def bcsAdminSubscriptionListView(request):
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminSubscriptionPack(request):
     form = forms.AddPackageForm()
-    form2 = forms.AddPackageFeatureForm()
-    services = models.Service.objects.filter(is_subscription_based=True)
+    services = models.SubscriptionServices.objects.filter(
+        category_choice='bcs')
+
     if request.method == 'POST':
-        if 'package-btn' in request.POST:
-            form = forms.AddPackageForm(request.POST)
-            form.save()
-        elif 'feature-btn' in request.POST:
-            form2 = forms.AddPackageFeatureForm(request.POST)
-            form2.save()
+        feature_names = request.POST.getlist('featureName')
+        features = request.POST.getlist('feature')
+        form = forms.AddPackageForm(request.POST)
+        if form.is_valid():
+            package = form.save(commit=False)
+            package.package_id = request.POST.get('package_id')
+
+            package.save()
+            for feature_name, feature in zip(feature_names, features):
+                package_feature = models.SubscriptionFeatures.objects.get_or_create(package=package,
+                                                                                    feature_name=feature_name,
+                                                                                    feature=feature)
+                package_feature[0].save()
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
         'form': form,
-        'form2': form2,
         'services': services,
     }
     return render(request, 'admin_panel/bcsTF/subscriptionPack.html', context)
@@ -1208,7 +1638,8 @@ def bcsAdminSubscriptionPack(request):
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminSubscriptionPackEdit(request, id):
     current_package = models.SubscriptionBasedPackage.objects.get(id=id)
-    package_features = models.SubscriptionFeatures.objects.filter(package=current_package)
+    package_features = models.SubscriptionFeatures.objects.filter(
+        package=current_package)
     form = forms.AddPackageForm(instance=current_package)
     form2 = forms.AddIndividualPackageFeatureForm()
     if request.method == 'POST':
@@ -1219,8 +1650,10 @@ def bcsAdminSubscriptionPackEdit(request, id):
                 return HttpResponseRedirect(reverse('bcs_admin_subscription_packages'))
         elif 'feature-btn' in request.POST:
             print(request.POST)
-            current_feature = models.SubscriptionFeatures.objects.get(id=request.POST.get('feature_id'))
+            current_feature = models.SubscriptionFeatures.objects.get(
+                id=request.POST.get('feature_id'))
             current_feature.feature_name = request.POST.get('feature_name')
+            current_feature.feature = request.POST.get('feature')
             current_feature.save()
             return HttpResponseRedirect(request.META['HTTP_REFERER'])
         elif 'add-feature-btn' in request.POST:
@@ -1248,7 +1681,7 @@ def bcsAdminSubscriptionPackDelete(request, id):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminSubscriptionPackFeatureDelete(request, id):
-    current_feature = models.SubscriptionFeatures.objects.get(id=id)
+    current_feature = PackageFeatures.objects.get(id=id)
     current_feature.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
@@ -1308,7 +1741,8 @@ def bcsAdminEdit(request, id):
     current_admin = Permissions.objects.get(id=id)
     permission_form = SelectBCSPermissionForm(instance=current_admin)
     if request.method == 'POST':
-        permission_form = SelectBCSPermissionForm(request.POST, instance=current_admin)
+        permission_form = SelectBCSPermissionForm(
+            request.POST, instance=current_admin)
         if permission_form.is_valid():
             permission_form.save()
             return HttpResponseRedirect(reverse('bcs_admin_list'))
@@ -1351,15 +1785,60 @@ def bcsAdminSingleUserInterest(request, id):
     return render(request, 'admin_panel/bcsTF/editForm.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
-def bcsAdminTraining(request):
-    form = CourseCreateForm()
-    courses = Course.objects.filter(course_type='Business')
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminTrainingCategoryView(request):
+    form = CourseCategoryCreateForm()
+    categories = CourseCategory.objects.filter(course_type='Business')
     if request.method == 'POST':
-        form = CourseCreateForm(request.POST)
+        form = CourseCategoryCreateForm(request.POST)
         if form.is_valid():
             course = form.save(commit=False)
             course.course_type = 'Business'
+            course.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    context = {
+        'form': form,
+        'categories': categories,
+    }
+    return render(request, 'admin_panel/bcsTF/trainingCategory.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminTrainingCategoryEditView(request, id):
+    current_category = CourseCategory.objects.get(id=id)
+    form = CourseCategoryCreateForm(instance=current_category)
+    if request.method == 'POST':
+        form = CourseCategoryCreateForm(request.POST, instance=current_category)
+        if form.is_valid():
+            form.save()
+            next_page = request.POST.get('next', '/')
+
+            if next_page:
+                return HttpResponseRedirect(next_page)
+            else:
+                return HttpResponseRedirect(reverse('bcs_admin_training_category'))
+    context = {
+        'form': form,
+    }
+    return render(request, 'admin_panel/pcsTF/editForm.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def bcsAdminTrainingCategoryDelete(request, id):
+    current_category = CourseCategory.objects.get(id=id)
+    current_category.delete()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def bcsAdminTraining(request):
+    form = BCSCourseCreateForm()
+    courses = BCSCourse.objects.all()
+    if request.method == 'POST':
+        form = BCSCourseCreateForm(request.POST)
+        if form.is_valid():
+            course = form.save(commit=False)
+            course.product_id = request.POST.get('product_id')
             course.save()
             return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
@@ -1371,18 +1850,18 @@ def bcsAdminTraining(request):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminTrainingDelete(request, id):
-    current_course = Course.objects.get(id=id)
+    current_course = BCSCourse.objects.get(id=id)
     current_course.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminTrainingEdit(request, id):
-    current_course = Course.objects.get(id=id)
-    form = CourseCreateForm(instance=current_course)
+    current_course = BCSCourse.objects.get(id=id)
+    form = BCSCourseCreateForm(instance=current_course)
 
     if request.method == 'POST':
-        form = CourseCreateForm(request.POST, instance=current_course)
+        form = BCSCourseCreateForm(request.POST, instance=current_course)
         if form.is_valid():
             form.save()
             next_page = request.POST.get('next', '/')
@@ -1399,24 +1878,24 @@ def bcsAdminTrainingEdit(request, id):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminCourseDetail(request, id):
-    course = Course.objects.get(id=id)
-    sections = Section.objects.filter(course=course)
-    form = SectionCreateForm()
-    form2 = ContentCreateForm()
+    course = BCSCourse.objects.get(id=id)
+    sections = BCSSection.objects.filter(course=course)
+    form = BCSSectionCreateForm()
+    form2 = BCSContentCreateForm()
     if request.method == 'POST':
         if 'add_section' in request.POST:
-            form = SectionCreateForm(request.POST)
+            form = BCSSectionCreateForm(request.POST)
             if form.is_valid():
                 section = form.save(commit=False)
                 section.course = course
                 section.save()
                 return HttpResponseRedirect(request.META['HTTP_REFERER'])
         elif 'add_content' in request.POST:
-            form2 = ContentCreateForm(request.POST, request.FILES)
+            form2 = BCSContentCreateForm(request.POST, request.FILES)
             if form2.is_valid():
                 content = form2.save(commit=False)
                 section_id = int(request.POST.get('section_name'))
-                current_section = Section.objects.get(id=section_id)
+                current_section = BCSSection.objects.get(id=section_id)
                 content.section = current_section
                 content.save()
                 return HttpResponseRedirect(request.META['HTTP_REFERER'])
@@ -1432,17 +1911,18 @@ def bcsAdminCourseDetail(request, id):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminCourseContentDelete(request, id):
-    current_content = Content.objects.get(id=id)
+    current_content = BCSContent.objects.get(id=id)
     current_content.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminCourseContentEdit(request, id):
-    current_content = Content.objects.get(id=id)
-    form = ContentCreateForm(instance=current_content)
+    current_content = BCSContent.objects.get(id=id)
+    form = BCSContentCreateForm(instance=current_content)
     if request.method == 'POST':
-        form = ContentCreateForm(request.POST, request.FILES, instance=current_content)
+        form = BCSContentCreateForm(
+            request.POST, request.FILES, instance=current_content)
         if form.is_valid():
             form.save()
             next_page = request.POST.get('next', '/')
@@ -1458,10 +1938,11 @@ def bcsAdminCourseContentEdit(request, id):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminCourseSectionEdit(request, id):
-    current_section = Section.objects.get(id=id)
-    form = SectionCreateForm(instance=current_section)
+    current_section = BCSSection.objects.get(id=id)
+    form = BCSSectionCreateForm(instance=current_section)
     if request.method == 'POST':
-        form = SectionCreateForm(request.POST, request.FILES, instance=current_section)
+        form = BCSSectionCreateForm(
+            request.POST, request.FILES, instance=current_section)
         if form.is_valid():
             form.save()
             next_page = request.POST.get('next', '/')
@@ -1475,6 +1956,83 @@ def bcsAdminCourseSectionEdit(request, id):
     return render(request, 'admin_panel/bcsTF/editForm.html', context)
 
 
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def bcsAdminCourseSubscriptionPack(request):
+    form = AddCoursePackageForm()
+    courses = BCSCourse.objects.all()
+
+    if request.method == 'POST':
+        feature_names = request.POST.getlist('featureName')
+        features = request.POST.getlist('feature')
+        form = AddCoursePackageForm(request.POST)
+        if form.is_valid():
+            package = form.save(commit=False)
+            package.package_id = request.POST.get('package_id')
+            package.save()
+            for feature_name, feature in zip(feature_names, features):
+                package_feature = PackageFeatures.objects.get_or_create(package=package,
+                                                                        feature_name=feature_name,
+                                                                        feature=feature)
+                package_feature[0].save()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    context = {
+        'form': form,
+        'courses': courses,
+    }
+    return render(request, 'admin_panel/bcsTF/coursePack.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def bcsAdminCourseSubscriptionPackEdit(request, id):
+    current_package = CoursePackage.objects.get(id=id)
+    package_features = PackageFeatures.objects.filter(
+        package=current_package)
+    form = AddCoursePackageForm(instance=current_package)
+    form2 = AddCourseIndividualPackageFeatureForm()
+    if request.method == 'POST':
+        if 'package-btn' in request.POST:
+            form = AddCoursePackageForm(request.POST, instance=current_package)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect(reverse('bcs_admin_course_packages'))
+        elif 'feature-btn' in request.POST:
+            # print(request.POST)
+            current_feature = PackageFeatures.objects.get(
+                id=request.POST.get('feature_id'))
+            current_feature.feature_name = request.POST.get('feature_name')
+            current_feature.feature = request.POST.get('feature')
+            current_feature.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        elif 'add-feature-btn' in request.POST:
+            form2 = forms.AddIndividualPackageFeatureForm(request.POST)
+            if form2.is_valid():
+                feature = form2.save(commit=False)
+                feature.package = current_package
+                feature.save()
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+    context = {
+        'form': form,
+        'form2': form2,
+        'package_features': package_features,
+    }
+    return render(request, 'admin_panel/bcsTF/coursePackEdit.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def bcsAdminCourseSubscriptionPackDelete(request, id):
+    current_package = CoursePackage.objects.get(id=id)
+    current_package.delete()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def bcsAdminCourseSubscriptionPackFeatureDelete(request, id):
+    current_feature = models.SubscriptionFeatures.objects.get(id=id)
+    current_feature.delete()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
 @user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
                   redirect_field_name='/account/profile/')
 def bcsAdminQuotationsView(request):
@@ -1483,7 +2041,7 @@ def bcsAdminQuotationsView(request):
             Q(orderstaff_order__staff=request.user) & Q(Q(order_status='new') | Q(order_status='attending')
                                                         | Q(order_status='assigned'))).order_by('-order_date')
         context = {
-            'orders': orders,
+            'orders': orders.filter(category_choice='bcs'),
             'message': 'Quotations',
         }
         return render(request, 'admin_panel/bcsTF/orders.html', context)
@@ -1504,7 +2062,10 @@ def bcsAdminQuotationsView(request):
 def bcsAdminOrdersView(request):
     if request.user.is_sales:
         orders = models.Order.objects.filter(
-            Q(orderstaff_order__staff=request.user) & ~Q(Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
+            Q(orderstaff_order__staff=request.user) & ~Q(
+                Q(order_status='new') | Q(order_status='attending')
+                | Q(order_status='agreed_to_quotation') | Q(order_status='agreed_to_nda_nca')
+                | Q(order_status='assigned'))).order_by(
             '-order_date')
         context = {
             'orders': orders,
@@ -1513,7 +2074,10 @@ def bcsAdminOrdersView(request):
         return render(request, 'admin_panel/bcsTF/orders.html', context)
     else:
         orders = models.Order.objects.filter(
-            Q(category_choice='bcs') & ~Q(Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
+            Q(category_choice='bcs') & ~Q(
+                Q(order_status='new') | Q(order_status='attending')
+                | Q(order_status='agreed_to_quotation') | Q(order_status='agreed_to_nda_nca')
+                | Q(order_status='assigned'))).order_by(
             '-order_date')
         context = {
             'orders': orders,
@@ -1525,57 +2089,141 @@ def bcsAdminOrdersView(request):
 @user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
                   redirect_field_name='/account/profile/')
 def bcsAdminNewOrdersView(request):
-    service_category = models.ServiceCategory.objects.filter(category_choice='bcs',
-                                                             service_category__service_assigned_service__user=request.user)
-    user_lists = models.User.objects.filter(is_bcs=True)
-    services = models.Service.objects.filter(category_choice='bcs', service_assigned_service__user=request.user)
+    if request.user.is_superuser:
+        service_category = models.ServiceCategory.objects.filter(category_choice='bcs')
+        user_lists = models.User.objects.all()
+        services = models.Service.objects.filter(category_choice='bcs')
+        order_price_form = forms.OrderPriceForm()
 
-    # print(service_category.count())
-    # print(services.count())
-    if request.method == 'POST':
-        data_list = request.POST
-        file_list = request.FILES
-        current_customer = models.User.objects.get(email=data_list.get('customer'))
-        # print(current_customer)
-        # print(data_list)
-        # print(file_list)
+        if request.method == 'POST':
+            data_list = request.POST
+            file_list = request.FILES
+            current_customer = models.User.objects.get(
+                email=data_list.get('customer'))
 
-        current_service = get_object_or_404(models.Service, service_title=data_list['service_name'])
+            current_service = get_object_or_404(
+                models.Service, service_title=data_list['service_name'])
 
-        for data in data_list:
-            if data != 'csrfmiddlewaretoken' and data != 'service_name' and data != 'customer':
-                current_input = models.SubServiceInput.objects.get(id=data)
+            for data in data_list:
+                if data != 'csrfmiddlewaretoken' and data != 'service_name' \
+                        and data != 'customer' and data != 'price' \
+                        and data != 'currency' and data != 'payment_method':
+                    current_input = models.SubServiceInput.objects.get(id=data)
+                    input_data = models.UserSubserviceInput(user=current_customer, inputfield=current_input,
+                                                            inputinfo=data_list[data])
+                    input_data.save()
+                    order = models.Order.objects.get_or_create(user=current_customer, order_status='new',
+                                                               service=current_service, category_choice='bcs')
+
+                    order[0].subserviceinput.add(input_data)
+            for files in file_list:
+                current_input = models.SubServiceInput.objects.get(id=files)
+                myfile = file_list[files]
+                fs = FileSystemStorage()
+                filename = fs.save(myfile.name, myfile)
+                uploaded_file_url = fs.url(filename)
                 input_data = models.UserSubserviceInput(user=current_customer, inputfield=current_input,
-                                                        inputinfo=data_list[data])
+                                                        inputinfo=uploaded_file_url)
                 input_data.save()
                 order = models.Order.objects.get_or_create(user=current_customer, order_status='new',
                                                            service=current_service, category_choice='bcs')
 
                 order[0].subserviceinput.add(input_data)
-        for files in file_list:
-            current_input = models.SubServiceInput.objects.get(id=files)
-            myfile = file_list[files]
-            fs = FileSystemStorage()
-            filename = fs.save(myfile.name, myfile)
-            uploaded_file_url = fs.url(filename)
-            input_data = models.UserSubserviceInput(user=current_customer, inputfield=current_input,
-                                                    inputinfo=uploaded_file_url)
-            input_data.save()
+
+            order = models.Order.objects.get_or_create(user=current_customer, order_status='new',
+                                                       service=current_service, category_choice='bcs')
+            # print(order)
+            if not order[0].orderstaff_order.all().exists():
+                tracking = models.Tracking.objects.get(service=current_service)
+                persons = tracking.persons
+                persons_list = list(filter(None, persons.split(',')))
+                person = persons_list.pop(0)
+                persons_list.append(person)
+                tracking.persons = ','.join(persons_list)
+                tracking.save()
+                current_staff = models.User.objects.get(id=person)
+                order_staff = models.OrderStaff.objects.create(
+                    staff=current_staff, order=order[0])
+                order_staff.save()
+            order[0].order_status = 'on_progress'
+            order[0].save()
+
+            order_price = models.OrderPrice.objects.get(order=order[0])
+            order_quotation = models.Quotation.objects.get(order=order[0])
+            order_price.price = data_list.get('price')
+            order_price.payment_method = data_list.get('payment_method')
+            order_price.currency = data_list.get('currency')
+            order_quotation.agree_to_quotation = 'agree'
+            order_quotation.agree_to_nda_nca = 'agree'
+            order_quotation.save()
+            order_price.save()
+            return HttpResponseRedirect(reverse('bcs_admin_orders'))
+    else:
+        service_category = models.ServiceCategory.objects.filter(category_choice='bcs',
+                                                                 service_category__service_assigned_service__user=request.user)
+        user_lists = models.User.objects.filter(is_bcs=True)
+        services = models.Service.objects.filter(
+            category_choice='bcs', service_assigned_service__user=request.user)
+
+        order_price_form = forms.OrderPriceForm()
+
+        if request.method == 'POST':
+            data_list = request.POST
+            file_list = request.FILES
+            current_customer = models.User.objects.get(
+                email=data_list.get('customer'))
+
+            current_service = get_object_or_404(
+                models.Service, service_title=data_list['service_name'])
+
+            for data in data_list:
+                if data != 'csrfmiddlewaretoken' and data != 'service_name' and data != 'customer':
+                    current_input = models.SubServiceInput.objects.get(id=data)
+                    input_data = models.UserSubserviceInput(user=current_customer, inputfield=current_input,
+                                                            inputinfo=data_list[data])
+                    input_data.save()
+                    order = models.Order.objects.get_or_create(user=current_customer, order_status='new',
+                                                               service=current_service, category_choice='bcs')
+
+                    order[0].subserviceinput.add(input_data)
+
+            for files in file_list:
+                current_input = models.SubServiceInput.objects.get(id=files)
+                myfile = file_list[files]
+                fs = FileSystemStorage()
+                filename = fs.save(myfile.name, myfile)
+                uploaded_file_url = fs.url(filename)
+                input_data = models.UserSubserviceInput(user=current_customer, inputfield=current_input,
+                                                        inputinfo=uploaded_file_url)
+                input_data.save()
+                order = models.Order.objects.get_or_create(user=current_customer, order_status='new',
+                                                           service=current_service, category_choice='bcs')
+
+                order[0].subserviceinput.add(input_data)
+
             order = models.Order.objects.get_or_create(user=current_customer, order_status='new',
                                                        service=current_service, category_choice='bcs')
 
-            order[0].subserviceinput.add(input_data)
-
-        order = models.Order.objects.get_or_create(user=current_customer, order_status='new',
-                                                   service=current_service, category_choice='bcs')
-        print(order)
-        order_staff = models.OrderStaff.objects.get_or_create(staff=request.user, order=order[0])
-        order_staff[0].save()
-        return HttpResponseRedirect(reverse('bcs_admin_quotations'))
+            order[0].order_status = 'on_progress'
+            order[0].save()
+            order_staff = models.OrderStaff.objects.get_or_create(
+                staff=request.user, order=order[0])
+            order_staff[0].save()
+            order_price = models.OrderPrice.objects.get(order=order[0])
+            order_quotation = models.Quotation.objects.get(order=order[0])
+            order_price.price = data_list.get('price')
+            order_price.payment_method = data_list.get('payment_method')
+            order_price.currency = data_list.get('currency')
+            order_quotation.agree_to_quotation = 'agree'
+            order_quotation.agree_to_nda_nca = 'agree'
+            order_quotation.save()
+            order_price.save()
+            return HttpResponseRedirect(reverse('bcs_admin_orders'))
     context = {
         'service_category': service_category,
         'services': services,
         'user_lists': user_lists,
+        'order_price_form': order_price_form,
         'services_headings': list(services.values_list('service_title', flat=True)),
     }
     return render(request, 'admin_panel/bcsTF/create_user_services.html', context)
@@ -1586,33 +2234,57 @@ def bcsAdminNewOrdersView(request):
 def bcsAdminOrdersDetailView(request, id):
     if request.user.is_superuser or request.user.is_bcs_head:
         current_order = models.Order.objects.get(id=id)
-        form = forms.OrderPriceForm(instance=current_order)
+        current_price = models.OrderPrice.objects.get(order=current_order)
+        current_quotation = models.Quotation.objects.get(order=current_order)
+        form = forms.OrderPriceForm(instance=current_price)
+        quotation_form = forms.QuotationForm(instance=current_quotation)
         if request.method == 'POST':
-            form = forms.OrderPriceForm(request.POST, instance=current_order)
+            form = forms.OrderPriceForm(request.POST, instance=current_price)
+            quotation_form = forms.QuotationForm(
+                files=request.FILES, data=request.POST, instance=current_quotation)
             if form.is_valid():
                 current_order.order_status = 'on_progress'
+                current_order.save()
                 # new_staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
                 form.save()
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            if quotation_form.is_valid():
+                quotation_form.save()
                 return HttpResponseRedirect(request.META['HTTP_REFERER'])
         context = {
             'current_order': current_order,
             'form': form,
+            'quotation_form': quotation_form,
         }
         return render(request, 'admin_panel/bcsTF/order_detail.html', context)
     else:
         try:
-            current_order = models.Order.objects.get(id=id, orderstaff_order__staff=request.user)
+            current_order = models.Order.objects.get(
+                id=id, orderstaff_order__staff=request.user)
+            current_quotation = models.Quotation.objects.get(
+                order=current_order)
             form = forms.OrderPriceForm(instance=current_order)
+            quotation_form = forms.QuotationForm(instance=current_quotation)
             if request.method == 'POST':
-                form = forms.OrderPriceForm(request.POST, instance=current_order)
+                form = forms.OrderPriceForm(
+                    request.POST, instance=current_order)
+                quotation_form = forms.QuotationForm(
+                    files=request.FILES, data=request.POST, instance=current_quotation)
                 if form.is_valid():
                     current_order.order_status = 'on_progress'
                     # new_staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
                     form.save()
                     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                if quotation_form.is_valid():
+                    current_order.order_status = 'attending'
+                    current_order.save()
+                    # new_staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
+                    quotation_form.save()
+                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
             context = {
                 'current_order': current_order,
                 'form': form,
+                'quotation_form': quotation_form,
             }
             return render(request, 'admin_panel/bcsTF/order_detail.html', context)
         except:
@@ -1705,7 +2377,7 @@ def bcsAdminOrderCanceledView(request, id):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminTicketsView(request):
-    tickets = models.Ticket.objects.filter(ticket_type='bcs')
+    tickets = models.Ticket.objects.filter(category_choice='bcs')
     context = {
         'tickets': tickets,
     }

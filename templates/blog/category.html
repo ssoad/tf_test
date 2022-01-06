@@ -17,7 +17,7 @@
     <section class="row mx-0 banner-1">
         <div class="col-md-6 col-lg-7 col-xl-8 pe-2 banner-bg">
             <div class="d-flex flex-column justify-content-center h-100">
-                <h4 class="fw-bold">{{ path|capitalize|upper }}</h4>
+                <h4 class="fw-bold">{{ pathname|capitalize|upper }}</h4>
                 <h5 class="text-capitalize">
                 {% if path == 'articles' %}
                 Keep yourself updated about latest cybersecurity problems and solutions.
@@ -59,7 +59,10 @@
                         {% endfor %}
                     </div>
                 {% else %}
+                   <div class="d-none d-md-block text-center">
                     <h4 class="text-center fw-bold">Upcoming Podcast</h4>
+                    <img src="{% static 'tfimg/blog/upcoming.png' %}" style="width: 70%;height: auto;" />
+                   </div>
                 {% endif %}
             </div>
         </div>
@@ -95,7 +98,7 @@
         </div>
     </div>
 
-    {% if path|capitalize|upper != 'PODCAST' %}
+    {% if path|capitalize|upper != 'PODCAST' and important_posts.count > 1 %}
         <section class="important-posts mt-4 px-2 px-md-0">
             <a href="" class="container-heading">MOST IMPORTANT {{ path|capitalize|upper }}</a>
             <div class="bg-light">
@@ -109,7 +112,7 @@
                                     <h2>{{ post.title }}</h2>
                                     <span class="date">
                             <i class="bi bi-calendar"></i>
-                            July 19, 2019
+                            {{ post.date|date }}
                         </span>
                                     <span class="ms-2">
                             <i class="bi bi-stopwatch"></i>
@@ -122,6 +125,7 @@
 
                     <div class="col-md-4 mb-4 mb-md-0">
                         {% for post in important_posts %}
+                        {% if forloop.counter == 1 %}
                             <a href="{% host_url path host 'blog' %}{{ post.post_url }}"
                                class="url-wrapper h-100 gradient">
                                 <img src="{{ post.feature_image.url }}" class="position-absolute" alt="">
@@ -129,7 +133,7 @@
                                     <h2>{{ post.title }}</h2>
                                     <span class="date">
                             <i class="bi bi-calendar"></i>
-                            July 19, 2019
+                            {{ post.date|date }}
                         </span>
                                     <span class="ms-2">
                             <i class="bi bi-stopwatch"></i>
@@ -137,6 +141,7 @@
                         </span>
                                 </div>
                             </a>
+                            {% endif %}
                         {% endfor %}
                     </div>
                     <div class="col-md-4 pe-md-0">
@@ -148,7 +153,7 @@
                                     <h2>{{ post.title }}</h2>
                                     <span class="date">
                             <i class="bi bi-calendar"></i>
-                            July 19, 2019
+                            {{ post.date|date }}
                         </span>
                                     <span class="ms-2">
                             <i class="bi bi-stopwatch"></i>
@@ -171,7 +176,7 @@
                 <div class="post col" data-aos="fade-up">
                     <div class="card h-100">
 
-                        {% if reading_lists.exists %}
+                        {% if user.is_authenticated %}
                             {% if post.id not in reading_lists %}
                                 <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}"
                                    class="btn add-btn"><i class="bi bi-plus-lg"></i>
@@ -183,6 +188,11 @@
                                     <span>Remove from my reading list</span>
                                 </a>
                             {% endif %}
+                        {% else %}
+                        <a href="{% host_url 'account_login' %}"
+                                   class="btn add-btn"><i class="bi bi-plus-lg"></i>
+                                    <span>Login First</span>
+                                </a>
                         {% endif %}
 
                         <img src="{{ post.feature_image.url }}" class="card-img-top" alt="{{ post.title }}">
@@ -220,36 +230,7 @@
     </section> -->
 
 
-    <!-- get updates form  -->
-    <h5 class="get-update-heading">
-        <i class="bi bi-envelope px-2"></i>
-    </h5>
-    <section class="get-updates mb-5 shadow-sm py-3 bg-gray rounded">
-        <div class="row mx-0 align-items-center">
-            <div class="col-md-5">
-                <h4 class="fw-bold">Get Updates</h4>
-                <h5 class="text-secondary">Sign up to receive the latest news</h5>
-
-            </div>
-            <div class="col-md-7">
-                <div class="get-updates">
-                    <form class="row">
-                        <div class="col-12 col-md-auto">
-                            <label for="name">Name</label>
-                            <input type="text" class="form-control" id="name" placeholder="Enter your name">
-                        </div>
-                        <div class="col-12 col-md-auto">
-                            <label for="email">Email Address</label>
-                            <input type="email" class="form-control" id="email" placeholder="Enter your email address">
-                        </div>
-                        <div class="col-auto d-flex align-items-end mt-3 mt-lg-0">
-                            <button type="submit" class="btn btn-navy py-2">Subscribe <i
-                                    class="bi bi-arrow-right"></i></button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-    </section>
+   
 
 {% endblock content %}
 {% block customjs %}
@@ -274,7 +255,7 @@
                 containerHeading.textContent = 'FILTERED POSTS';
                 importantPosts.classList.add('d-none');
                 recentPosts.classList.add('d-none');
-                let url = `${location.origin}/api/blogs/filter/{{ path|capitalize|lower }}/${e.target.value}/`;
+                let url = `${mainOrigin}/api/blogs/filter/{{ path|capitalize|lower }}/${e.target.value}/`;
                 getPosts(url);
             }
         });
@@ -283,7 +264,7 @@
             containerHeading.textContent = 'FILTERED {{ path|capitalize|upper }}';
             importantPosts.classList.add('d-none');
             recentPosts.classList.add('d-none');
-            let url = `${location.origin}/api/blogs/filter/date/{{ path|capitalize|lower }}/${range}`;
+            let url = `${mainOrigin}/api/blogs/filter/date/{{ path|capitalize|lower }}/${range}`;
             getPosts(url);
         }
 
@@ -343,6 +324,10 @@
                 $.ajax({
                     url: url,
                     type: 'get',
+                    xhrFields: {
+                        withCredentials: true
+                     },
+                     crossDomain: true,
                     dataType: 'json',
                     success: function (data) {
                         resolve(data) // Resolve promise and go to then()

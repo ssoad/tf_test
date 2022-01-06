@@ -10,15 +10,19 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static '' %}tfcss/user_panel/bcs/style.css"/>
+    <link rel="stylesheet" href="{% static 'tfcss/user_panel/bcs/style.css' %}"/>
     <link id="tooltip" rel="stylesheet" href="https://npmcdn.com/tootik@1.0.2/css/tootik.min.css">
     {% block headercss %} {% endblock headercss %}
     <title>
         {% block title %} {% endblock title %}
     </title>
     <link rel="icon" href="{% static '' %}tfimg/user_panel/Techforing-Icon.png" type="image/x-icon"/>
+    <script>
+        let mainOrigin = location.origin;
+        if(!location.origin.includes('127.0.0.1') && !location.origin.includes('localhost'))
+            mainOrigin = 'https://main.techforing.com';
+    </script>
 </head>
-
 <body>
 
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
@@ -29,84 +33,110 @@
 
 <div class="w-20 h-100 position-fixed bg-white shadow-sm px-1 pt-2 d-none d-lg-block">
     <a class="my-3" href="/">
-        <img class="mx-auto my-3 logo-sm" src="{% static '' %}tfimg/user_panel/Techforing-Icon.png" width="40"
+        <img class="mx-auto my-3 logo-sm" src="{% static 'tfimg/user_panel/Techforing-Icon.png' %}" width="40"
              height="40" alt="Logo">
-        <img class="mx-auto my-1 logo-lg" src="{% static '' %}tfimg/user_panel/logo.png" width="125" height="60"
+        <img class="mx-auto my-1 logo-lg" src="{% static 'tfimg/user_panel/logo.png' %}" width="125" height="60"
              alt="Logo">
     </a>
-    <ul class="menubar">
-        <li>
-            <a href="{% host_url 'bcs_user_dashboard' %}" data-tootik="Dashboard" data-tootik-conf="right">
-                <i class="icofont-home"></i>
-                <span>Dashboard</span>
-            </a>
-        </li>
-        <li>
-            <a href="{% host_url 'bcs_user_services' %}" data-tootik="Services" data-tootik-conf="right">
-                <i class="icofont-cubes"></i>
-                <span>Services</span>
-            </a>
-        </li>
-        <li>
-            <a href="{% host_url 'bcs_user_quotations_history' %}" data-tootik="Quotations History" data-tootik-conf="right">
-                <i class="icofont-cart-alt"></i>
-                <span>Quotations History</span>
-            </a>
-        </li>
-        <li>
-            <a href="{% host_url 'bcs_user_order_history' %}" data-tootik="Order History" data-tootik-conf="right">
-                <i class="icofont-cart-alt"></i>
-                <span>Order History</span>
-            </a>
-        </li>
-        <li>
-            <a href="{% host_url 'bcs_user_my_team' %}" data-tootik="My Team" data-tootik-conf="right">
-                <i class="icofont-people"></i>
-                <span>My Team</span>
-            </a>
-        </li>
-        <li>
-            <a href="{% host_url 'bcs_user_subscriptions' %}" data-tootik="Subscriptions" data-tootik-conf="right">
-                <i class="icofont-dollar"></i>
-                <span>Subscriptions</span>
-            </a>
-        </li>
-        <li>
-            <a href="{% url 'bcs_user_events' %}" data-tootik="Eevents & Webinars" data-tootik-conf="right">
-                <i class="icofont-ui-calendar"></i>
-                <span>Events & Webinars</span>
-            </a>
-        </li>
-        <li>
-            <a href="{% host_url 'bcs_user_notifications' %}" data-tootik="Notifications" data-tootik-conf="right">
-                <i class="icofont-notification"></i>
-                <span>Notifications</span>
-            </a>
-        </li>
-        <li>
-            <a href="{% host_url 'open_tickets' %}" data-tootik="Support" data-tootik-conf="right">
-                <i class="icofont-support"></i>
-                <span>Support</span>
-            </a>
-        </li>
+    <ul class="menubar pt-3">
+        {% if user.business_user.privilege != 'general_staff' %}
+            <li>
+                <a href="{% host_url 'bcs_user_dashboard' %}" data-tootik="Dashboard" data-tootik-conf="right">
+                    <i class="icofont-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% host_url 'bcs_user_services' %}" data-tootik="Services" data-tootik-conf="right">
+                    <i class="icofont-cubes"></i>
+                    <span>Services</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% host_url 'bcs_user_quotations_history' %}" data-tootik="Quotations History"
+                   data-tootik-conf="right">
+                    <i class="icofont-info-circle"></i>
+                    <span>Quotations History</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% host_url 'bcs_user_order_history' %}" data-tootik="Order History" data-tootik-conf="right">
+                    <i class="icofont-cart-alt"></i>
+                    <span>Order History</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% host_url 'bcs_user_my_team' %}" data-tootik="My Team" data-tootik-conf="right">
+                    <i class="icofont-people"></i>
+                    <span>My Team</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% host_url 'bcs_user_subscriptions' %}" data-tootik="Subscriptions" data-tootik-conf="right">
+                    <i class="icofont-dollar"></i>
+                    <span>Subscriptions</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'bcs_user_events' %}" data-tootik="Eevents & Webinars" data-tootik-conf="right">
+                    <i class="icofont-ui-calendar"></i>
+                    <span>Events & Webinars</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% host_url 'bcs_user_notifications' %}" data-tootik="Notifications" data-tootik-conf="right">
+                    <i class="icofont-notification"></i>
+                    <span>Notifications</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% host_url 'open_tickets' %}" data-tootik="Support" data-tootik-conf="right">
+                    <i class="icofont-support"></i>
+                    <span>Support</span>
+                </a>
+            </li>
+        {% else %}
+            <li>
+                <a href="{% host_url 'bcs_user_my_team' %}" data-tootik="My Team" data-tootik-conf="right">
+                    <i class="icofont-people"></i>
+                    <span>My Team</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'bcs_user_events' %}" data-tootik="Eevents & Webinars" data-tootik-conf="right">
+                    <i class="icofont-ui-calendar"></i>
+                    <span>Events & Webinars</span>
+                </a>
+            </li>
+        {% endif %}
+
+        <button class="btn menu-shrink-btn btn-outline-navy mt-3 mx-auto d-block d-none">
+            <i class="icofont-long-arrow-left"></i> Close
+        </button>
     </ul>
 </div>
 <!-- Header Start -->
 <header class="sticky-top">
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
         <div class="container-fluid d-flex justify-content-lg-around">
-            <button class="btn menu-expand-btn d-none d-lg-block"><i class="icofont-navigation-menu"></i></button>
-            <a class="navbar-brand pt-2 d-lg-none" href="/">
+            <button class="btn menu-expand-btn d-none"><i class="icofont-navigation-menu"></i></button>
+            <a class="navbar-brand pt-2 d-lg-none ms-3" href="/">
                 <img src="{% static '' %}tfimg/user_panel/logo.png" width="125" height="60" alt="Logo">
             </a>
-            <button class="navbar-toggler d-block d-lg-none" type="button" data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <button class="sidebar-toggler btn px-3 d-block d-lg-none" type="button"
+                                data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
+                                aria-controls="offcanvasExample">
+                                <span class="navbar-toggler-icon"></span>
+                        </button>
+            <button class="navbar-toggler p-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <img class="ms-2 rounded-circle" src="{{ user.profile_pic.url }}"
+                width="40" height="40" alt="">
+              </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center fw-bolder">
                     <li class="nav-item me-4">
-                        <a class="nav-link text-navy fw-bold py-0" href="{% url 'pcs_user_services' %}">Personal
+                        <a class="nav-link text-green fw-bold py-0"
+                           href="{% host_url 'pcs_user_dashboard' host 'mysecurity' %}">Personal
                             Services</a>
                     </li>
                     <li class="nav-item dropdown">
@@ -122,8 +152,8 @@
                                     <i class="icofont-ui-user me-2"></i> My Profile</a>
                             </li>
                             <li>
-                                <a class="dropdown-item ps-3" href="{% host_url 'user_profile' %}">
-                                    <i class="icofont-edit me-2"></i> Edit Profile
+                                <a class="dropdown-item ps-3" href="{% host_url 'change_password' %}">
+                                    <i class="icofont-edit me-2"></i> Change Password
                                 </a>
                             </li>
                             <li>
@@ -133,15 +163,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown">
-                        <button class="btn btn-sm px-3 btn-outline-primary mx-auto mb-5 d-block d-lg-none" type="button"
-                                data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
-                                aria-controls="offcanvasExample">
-                            <i class="icofont-long-arrow-right"></i>
-                        </button>
-                    </li>
                 </ul>
-
             </div>
         </div>
     </nav>
@@ -151,7 +173,7 @@
     <div class="ps-2 ps-lg-3 py-3 pe-2">
         {% block content %} {% endblock content %}
     </div>
-     <footer class="footer row mx-0 py-4 position-sticky top-100">
+    <footer class="footer row mx-0 py-4 position-sticky top-100">
         <div class="col-md-4 d-flex justify-content-center">
             <a href="{% host_url 'policy' %}" class="me-5">PRIVACY POLICY</a>
             <a href="{% host_url 'terms' %}">TERMS OF USE</a>
@@ -175,8 +197,7 @@
             </a>
         </div>
         <div class="col-md-4 p-2 pb-2 text-center">
-            <p>Copyright © 2021 Techforing Ltd.
-            </p>
+            <p>Copyright © 2022 Techforing Ltd.</p>
         </div>
     </footer>
 </main>
@@ -187,81 +208,86 @@
         crossorigin="anonymous"></script>
 <script src="{% static 'tfjs/user_panel/bcs/menubar.js' %}"></script>
 <script>
-    document.querySelector('.navbar-toggler').addEventListener('click', e => {
+    document.querySelector('.sidebar-toggler').addEventListener('click', e => {
         document.querySelector('.offcanvas-body').innerHTML = document.querySelector('.w-20 .menubar').outerHTML;
+        document.querySelector('.sidebar-toggler').classList.toggle('flip');
     })
-    
-        let logoSm = document.querySelector('.logo-sm');
-        let logoLg = document.querySelector('.logo-lg');
-        let expandedBtn = document.querySelector('.menu-expand-btn');
-        let expanded = localStorage.getItem("sidebar-expanded");
 
-        let hideLinkText = () => {
-            menubarSize('5%', '95%');
-            document.querySelector('.w-80').style.marginLeft = '5%';
-            expandedBtn.style.left = '100px';
+    let logoSm = document.querySelector('.logo-sm');
+    let logoLg = document.querySelector('.logo-lg');
+    let expandBtn = document.querySelector('.menu-expand-btn');
+    let shrinkBtn = document.querySelector('.menu-shrink-btn');
+    let expanded = localStorage.getItem("sidebar-expanded");
 
-            logoSm.style.display = 'block';
-            logoLg.style.display = 'none';
-            document.querySelectorAll('.w-20 .menubar li').forEach(li => {
-                li.style.paddingLeft = '6px';
-                li.children[0].children[1].style.display = 'none';
-                li.children[0].style.justifyContent = 'center';
-            });
+    let hideLinkText = () => {
+        menubarSize('5%', '95%');
+        document.querySelector('.w-80').style.marginLeft = '5%';
 
-            if (document.getElementById('modal-spacing'))
-                document.getElementById('modal-spacing').outerHTML = '';
+        logoSm.style.display = 'block';
+        logoLg.style.display = 'none';
+        document.querySelectorAll('.w-20 .menubar li').forEach(li => {
+            li.style.paddingLeft = '6px';
+            li.children[0].children[1].style.display = 'none';
+            li.children[0].style.justifyContent = 'center';
+        });
 
-            if (!document.getElementById('tooltip'))
-                document.head.insertAdjacentHTML('beforeend', '<link id="tooltip" rel="stylesheet" href="https://npmcdn.com/tootik@1.0.2/css/tootik.min.css">');
-        }
-        let showLinkText = () => {
-            menubarSize('18%', '82%');
-            document.querySelector('.w-80').style.marginLeft = '18%';
-            expandedBtn.style.left = '280px';
+        if (document.getElementById('modal-spacing'))
+            document.getElementById('modal-spacing').outerHTML = '';
 
-            logoSm.style.display = 'none';
-            logoLg.style.display = 'block';
-            document.querySelectorAll('.w-20 .menubar li').forEach(li => {
-                li.style.paddingLeft = '15px';
-                li.children[0].children[1].style.display = 'initial';
-                li.children[0].style.justifyContent = 'flex-start';
-            });
-           
-            document.head.insertAdjacentHTML('beforeend', `<style id="modal-spacing"> .modal-dialog {
+        if (!document.getElementById('tooltip'))
+            document.head.insertAdjacentHTML('beforeend', '<link id="tooltip" rel="stylesheet" href="https://npmcdn.com/tootik@1.0.2/css/tootik.min.css">');
+    }
+    let showLinkText = () => {
+        menubarSize('18%', '82%');
+        document.querySelector('.w-80').style.marginLeft = '18%';
+
+        logoSm.style.display = 'none';
+        logoLg.style.display = 'block';
+        document.querySelectorAll('.w-20 .menubar li').forEach(li => {
+            li.style.paddingLeft = '15px';
+            li.children[0].children[1].style.display = 'initial';
+            li.children[0].style.justifyContent = 'flex-start';
+        });
+
+        document.head.insertAdjacentHTML('beforeend', `<style id="modal-spacing"> .modal-dialog {
                     padding-left: 18%;
                 }</style>`);
 
-            if (document.getElementById('tooltip'))
+        if (document.getElementById('tooltip'))
             document.getElementById('tooltip').outerHTML = '';
+    }
 
-        }
+    let menubarSize = (menuWidth, contentWidth) => {
+        document.querySelector('.w-20').style.width = menuWidth;
+        document.querySelector('.w-80').style.width = contentWidth;
+    }
 
-        let menubarSize = (menuWidth, contentWidth) => {
-            document.querySelector('.w-20').style.width = menuWidth;
-            document.querySelector('.w-80').style.width = contentWidth;
-        }
-
-        let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-        if(width>991){
-            if(expanded == 'true')
+    const updateUI = () => {
+        if (expanded == 'true') {
             showLinkText();
-        else 
+            shrinkBtn.classList.remove('d-none');
+            expandBtn.classList.add('d-none');
+        } else {
             hideLinkText();
+            shrinkBtn.classList.add('d-none');
+            expandBtn.classList.remove('d-none');
         }
+    }
+    const updatePreference = () => {
+        expanded = expanded == 'true' ? 'false' : 'true';
+        // Store value to local storage
+        localStorage.setItem("sidebar-expanded", expanded);
+        updateUI();
+    }
 
-        expandedBtn.addEventListener('click', e => {
-            expanded = expanded == 'true' ? 'false' : 'true';
-            // Store value to local storage
-            localStorage.setItem("sidebar-expanded", expanded);
-            console.log('inside button '+ expanded, typeof(expanded));
 
-            if (expanded == 'true') {
-                showLinkText();
-            } else {
-                hideLinkText();
-            }
-        });
+    let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    if (width > 991) {
+        updateUI()
+    }
+
+    expandBtn.addEventListener('click', updatePreference);
+    shrinkBtn.addEventListener('click', updatePreference);
 
 </script>
 {% block customjs %} {% endblock customjs %}

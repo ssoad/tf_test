@@ -51,8 +51,8 @@
                                         <tr>
                                             <th class="title fw-bold" style="width: 40%;">{{ section.section_name }}
                                             </th>
-                                            <th>{{ section.content_section.all.count }} on demand videos</th>
-                                            <th class="text-center">{{ section.content_section.all.count }}
+                                            <th>{{ section.bcscontent_bcssection.all.count }} on demand videos</th>
+                                            <th class="text-center">{{ section.bcscontent_bcssection.all.count }}
                                                 downloadable resources
                                             </th>
                                             <th class="fw-bold text-end">
@@ -75,7 +75,7 @@
                             <div class="accordion-body">
                                 <table class="w-100" id="table">
                                     <tbody class="fs-14">
-                                        {% for content in section.content_section.all %}
+                                        {% for content in section.bcscontent_bcssection.all %}
                                         <tr>
                                             <td class="col1" style="width: 40%;">
                                                 <i class="icofont-ui-video-play"></i>
@@ -118,7 +118,7 @@
                             </div>
                         </div>
                     </div>
-                    {% for content in section.content_section.all %}
+                    {% for content in section.bcscontent_bcssection.all %}
                     <div class="modal fade" id="preview-video{{ content.id }}" tabindex="-1"
                         aria-labelledby="trainingModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-xl">

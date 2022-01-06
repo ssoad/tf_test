@@ -63,7 +63,7 @@
 </style>
 <div class="profile-area">
     {% include 'base/verification_check.html' %}
-    <section class="">
+    <section class="py-5">
         <div class="container">
             <div class="main-body">
                 <div class="row gutters-sm">
@@ -123,10 +123,10 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <h6 class="mb-0">Registration Date</h6>
+                                        <h6 class="mb-0">Address</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        {{ user.date_joined }}
+                                        {{ user.address }}
                                     </div>
                                 </div>
                                 <hr>
@@ -155,7 +155,7 @@
 
 
 
-    document.getElementById("imageUpload").addEventListener("change", function(e) {
+    document.getElementById("imageUpload")?.addEventListener("change", function(e) {
         if ((this.files[0].type).slice(0, 5) != "image") {
             document.getElementById("image_form").reset();
             alert('Invalid Image File!');

@@ -1,5 +1,12 @@
-{% extends 'base/pcs_user_base.html' %} {% load static %} {% load hosts %} {% block title %}
+{% extends 'base/pcs_user_base.html' %} {% load static %} {% load my_filter %} {% load hosts %} {% block title %}
     Services {% endblock title %} {% block content %}
+
+    <style>
+        form label {
+            text-transform: capitalize;
+            margin-top: 8px
+        }
+    </style>
 
     <section class="services position-relative">
         <h4 class="main-heading">All Personal Cybersecurity Services
@@ -12,656 +19,558 @@
 
         <div class="services-content">
             <div class="content-detail pe-2 mt-5">
-                <h5 class="mt-2 services-type">Data and Privacy Protection</h5>
+                {% for category in service_category %}
+                    <h5 class="mt-2 services-type">{{ category.category_name }}</h5>
+                    <div class="row mx-0 mb-4 gy-4 pt-4 justify-content-center">
+                        {% for service in category.service_category.all %}
+                            <div class="col-md-4 px-0 pe-md-5">
+                                <div class="bg-lightgreen p-2 rounded shadow-md">
+                                    <div class="text-center">
+                                        <img class="service-icon" src="{{ service.service_icon.url }}">
+                                    </div>
+                                    <div class="ps-2 mt-2 text-center">
+                                        <h6 class="service-title">{{ service.service_title }}</h6>
+                                        <p class="lh-1 fs-14">
+                                            {{ service.short_description }}
+                                        </p>
+                                    </div>
+                                    <div class="view-btn">
+                                        <button class="{{ service.service_title|replacespace }}-pcs btn btn-sm">View
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        {% for service in category.subscription_service_category.all %}
+                            {% if service.category_choice == 'pcs' %}
+                                <div class="col-md-4 px-0 pe-md-5">
+                                    <div class="bg-lightgreen p-2 rounded shadow-md">
+                                        <div class="text-center">
+                                            <img class="service-icon" src="{{ service.service_icon.url }}">
+                                        </div>
+                                        <div class="ps-2 mt-2 text-center">
+                                            <h6 class="service-title">{{ service.service_title }}</h6>
+                                            <p class="lh-1 fs-14">
+                                                {{ service.short_description }}
+                                            </p>
+                                        </div>
+                                        <div class="view-btn">
+                                            <button class="{{ service.service_title|replacespace }}-pcs-sub btn btn-sm">
+                                                View
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+                {% comment %}
+                <h4 class="main-heading">All Trainings</h4>
+                {% for category in courses_categories %}
+                    <h5 class="mt-2 services-type">{{ category.category_name }}</h5>
+                    <div class="row mx-0 mb-4 gy-4 pt-4 justify-content-center">
+                        {% for course in category.course_coursecategory.all %}
+                            <div class="col-md-4 px-0 pe-md-5">
+                                <div class="bg-lightgreen p-2 rounded shadow-md">
+                                    <div class="text-center">
+                                        <img class="service-icon" src="{% static 'img/training hat.png' %}">
+                                    </div>
+                                    <div class="ps-2 mt-2 text-center">
+                                        <h6 class="service-title">{{ course.course_name }}</h6>
+                                        <p class="lh-1 fs-14">
+                                            {{ course.short_description }}
+                                        </p>
+                                    </div>
+                                    <div class="view-btn">
+                                        <button class="{{ course.course_name|replacespace }}-training btn btn-sm">View
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            {% endcomment %}
+            </div>
+        </div>
+
+        {% comment %} <div class="services-content">
+            <div class="content-detail pe-2 mt-5">
+                <h5 class="mt-2 services-type">Training</h5>
                 <div class="row mx-0 mb-4 gy-4 pt-4 justify-content-center">
-                    <div class="col-md-6 px-0 pe-md-5">
-                        <div class="bg-lightgreen p-2 rounded shadow-md">
-                            <div class="text-center">
-                                <img class="service-icon" src="{% static '' %}tfimg/user_panel/services/concierge.png">
-                            </div>
-                            <div class="ps-2 mt-2">
-                                <h6 class="service-title">Concierge Cybersecurity</h6>
-                                <p class="lh-1 fs-14">Personal information security from cyber criminals and unknown
-                                    entities
-                                </p>
-                            </div>
-                            <div class="view-btn">
-                                <button class="btn btn-sm">View</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <h5 class="services-type py-4">Cyber Investigation</h5>
-                <div class="row gx-3 gy-4 mb-4">
-                    <div class="col-md-6">
-                        <div class="bg-lightgreen p-2 rounded shadow-md">
-                            <div class="text-center">
-                                <img class="service-icon"
-                                     src="{% static '' %}tfimg/user_panel/services/open-source.png">
-                            </div>
-                            <div class="ps-2 mt-2">
-                                <h6 class="service-title">Open Source Intelligence</h6>
-                                <p class="lh-1 fs-14">Personal information security from cyber criminals and unknown
-                                    entities
-                                </p>
-                            </div>
-                            <div class="view-btn">
-                                <button class="btn btn-sm">View</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="bg-lightgreen p-2 rounded shadow-md">
-                            <div class="text-center">
-                                <img class="service-icon"
-                                     src="{% static '' %}tfimg/user_panel/services/crime-investigation.png">
-                            </div>
-                            <div class="ps-2 mt-2">
-                                <h6 class="service-title">Crime Investigation</h6>
-                                <p class="lh-1 fs-14">Personal information security from cyber criminals and unknown
-                                    entities
-                                </p>
-                            </div>
-                            <div class="view-btn">
-                                <button class="btn btn-sm">View</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <h5 class="services-type py-4">INCIDENT RESPONSE</h5>
-                <div class="row gx-3 gy-4 mb-4">
-                    <div class="col-md-4">
-                        <div class="bg-lightgreen p-2 rounded shadow-md">
-                            <div class="text-center">
-                                <img class="service-icon"
-                                     src="{% static '' %}tfimg/user_panel/services/hack-removal.png">
-                            </div>
-                            <div class="ps-2 mt-2">
-                                <h6 class="service-title">Hack Recovery</h6>
-                                <p class="lh-1 fs-14">Personal information security from cyber criminals and unknown
-                                    entities
-                                </p>
-                            </div>
-                            <div class="view-btn">
-                                <button class="btn btn-sm">View</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="bg-lightgreen p-2 rounded shadow-md">
-                            <div class="text-center">
-                                <img class="service-icon"
-                                     src="{% static '' %}tfimg/user_panel/services/malware-removal.png">
-                            </div>
-                            <div class="ps-2 mt-2">
-                                <h6 class="service-title">Virus Removal</h6>
-                                <p class="lh-1 fs-14">Personal information security from cyber criminals and unknown
-                                    entities
-                                </p>
-                            </div>
-                            <div class="view-btn">
-                                <button class="btn btn-sm">View</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="bg-lightgreen p-2 rounded shadow-md">
-                            <div class="text-center">
-                                <img class="service-icon"
-                                     src="{% static '' %}tfimg/user_panel/services/data-removal.png">
-                            </div>
-                            <div class="ps-2 mt-2">
-                                <h6 class="service-title">Data Removal</h6>
-                                <p class="lh-1 fs-14">Personal information security from cyber criminals and unknown
-                                    entities
-                                </p>
-                            </div>
-                            <div class="view-btn">
-                                <button class="btn btn-sm">View</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <h5 class="services-type">Training Program</h5>
-                <div class="row mx-0 gy-4 mb-4 pt-4 justify-content-center">
                     {% for course in courses %}
-                        <div class="col-md-6 px-0 pe-md-5">
+                        <div class="col-md-4 px-0 pe-md-5">
                             <div class="bg-lightgreen p-2 rounded shadow-md">
                                 <div class="text-center">
-                                    <img class="service-icon"
-                                         src="{% static 'tfimg/user_panel/services/Training.png' %}">
+                                    <img class="service-icon" src="{% static 'img/training hat.png' %}">
                                 </div>
-                                <div class="ps-2 mt-2">
+                                <div class="ps-2 mt-2 text-center">
                                     <h6 class="service-title">{{ course.course_name }}</h6>
                                     <p class="lh-1 fs-14">
                                         {{ course.short_description }}
                                     </p>
                                 </div>
                                 <div class="view-btn">
-                                    <button class="btn btn-sm">View</button>
+                                    <button class="{{ course.course_name|replacespace }}-pcs btn btn-sm">View
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     {% endfor %}
-                    {% comment %}
-                <div class="col-md-6 px-0 pe-md-5">
-                    <div class="bg-lightgreen p-2 rounded shadow-md">
-                        <div class="text-center">
-                            <img class="service-icon" src="{% static '' %}tfimg/user_panel/services/Training.png">
+                </div>
+            </div>
+        </div> {% endcomment %}
+
+        <!-- services start.. loaded services details  -->
+        {% for service in services %}
+            <div class="{{ service | replacespace }} preview-service-info pt-3 pb-5 d-none">
+                <div class='d-none'>
+                    {{ service }}
+                </div>
+                <div class="row mx-0 bg-lightgreen shadow-md">
+
+                    <div class="col-md-12 ">
+                        <div class="py-2">
+                            <p class="mt-3 mb-0">{{ service.service_header|safe }}</p>
                         </div>
-                        <div class="ps-2 mt-2">
-                            <h6 class="service-title">CCSP Training</h6>
-                            <p class="lh-1 fs-14">Personal information security from cyber criminals and unknown entities
-                            </p>
+                    </div>
+                </div>
+                <div class="my-3 py-4 px-3 bg-lightgreen shadow-md">
+                    <div class="mt-3">
+                        <h6 class="lh-base">
+                            {{ service.service_body|safe }}
+                        </h6>
+                    </div>
+                </div>
+                <div class="whom-we-serve my-3 py-4 px-3 bg-lightgreen shadow-md">
+                    <p class="mt-3">
+                        {{ service.service_footer|safe }}
+                    </p>
+                    <div class="mt-3">
+                        <ol class="row mx-0">
+                            {% for subservice in service.subservice_service.all %}
+                                <li class="{{ subservice.service|replacespace }} short-info-li col-auto me-3 lh-base fw-bold">{{ subservice.title }}</li>
+                            {% endfor %}
+                        </ol>
+
+                    </div>
+                </div>
+                <div class="my-4 pt-5 px-3">
+                    <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
+                        <button id="{{ service.id }}" type="button"
+                                class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">Provide information
+                            to
+                            get a quotation
+                        </button>
+                        <a href="{% host_url 'pcs_appointment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
+                            representatives</a>
+
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+        <!-- subscription services start.. loaded subscription services details  -->
+        {% for service in subscription_services %}
+            <div class="{{ service | replacespace }}-sub preview-service-info pt-3 pb-5 d-none">
+                <div class='d-none'>
+                    {{ service }}
+                </div>
+                <div class="row mx-0 bg-lightgreen shadow-md">
+
+                    <div class="col-md-12 ">
+                        <div class="py-2">
+                            <p class="mt-3 mb-0">{{ service.service_header|safe }}</p>
                         </div>
-                        <div class="view-btn">
-                            <button class="btn btn-sm">View</button>
+                    </div>
+                </div>
+                <div class="my-3 py-4 px-3 bg-lightgreen shadow-md">
+                    <div class="mt-3">
+                        <h6 class="lh-base">
+                            {{ service.service_body|safe }}
+                        </h6>
+                    </div>
+                </div>
+                <div class="whom-we-serve my-3 py-4 px-3 bg-lightgreen shadow-md">
+                    <p class="mt-3">
+                        {{ service.service_footer|safe }}
+                    </p>
+                    <div class="mt-3">
+                        <ol class="row mx-0">
+                            {% for subservice in service.subservice_service.all %}
+                                <li class="{{ subservice.service|replacespace }} short-info-li col-auto me-3 lh-base fw-bold">{{ subservice.title }}</li>
+                            {% endfor %}
+                        </ol>
+
+                    </div>
+                </div>
+                <div class="my-4 pt-5 px-3">
+                    <div class="d-flex justify-content-center">
+                        <button id="subscriptionDetailBtn" data-bs-toggle="modal" data-bs-target="#subscriptionDetail"
+                                type="button" class="btn bg-navy px-2 py-1 mb-3 mb-md-0">View Subscription
+                        </button>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+        <!-- training details  -->
+        {% comment %}
+        {% for course in courses %}
+            <div class="{{ course.course_name | replacespace }}-training preview-service-info pt-3 pb-5 d-none">
+                <div class='d-none'>
+                    {{ course.course_name }}
+                </div>
+                <div class="row mx-0 bg-lightgreen shadow-md">
+                    <div class="col-md-12 ">
+                        <div class="py-2">
+                            <p class="mt-3 mb-0">{{ course.short_description }}</p>
                         </div>
                     </div>
                 </div>
-            {% endcomment %}
-                </div>
-            </div>
-
-        </div>
-
-        <!-- services start  -->
-        <!-- Concierge Cybersecurity -->
-        <div class="preview-service-info pt-3 d-none">
-            <div class="row mx-0 bg-lightgreen shadow-md">
-                <div class="col-md-3 py-4">
-                    <img src="{% static '' %}tfimg/user_panel/cc.png" class="img-fluid d-block mx-auto" alt="...">
-                </div>
-                <div class="col-md-9 d-flex flex-column justify-content-center align-items-center">
-                    <div>
-                        <!-- <h4 class="fw-bold">Concierge Cybersecurity</h4> -->
-                        <h6 class="fw-semi text-start fontAwesome mt-3">SECURE YOUR DIGITAL LIFE
-                        </h6>
-                        <p class="mt-3">We protect High-Net-Worth Individuals, Corporate Executives & Their household
-                            with White-Glove Cybersecurity & Threat Detection Solutions. Our personal cybersecurity
-                            services will protect you and your family in cyberspace, always.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="my-5 py-4 px-3 bg-lightgreen shadow-md">
-                <h5 class="fw-bold">Concierge Cybersecurity Services</h5>
-                <div class="mt-4">
-                    <h6 class="fw-bold text-gray">Prevent Hackers at All Times</h6>
-                    <p>Personal information security from cyber criminals and unknown entities. Total safeguarding your
-                        Phone, iPad, android and computer devices. Your cloud storage will be the most secure cloud
-                        storage for personal use.</p>
-
-                    <h6 class="fw-bold text-gray">Protect Digital Assets</h6>
-                    <p>We ensure your Digital Asset Security across all devices including iMac, MacBook, Mac Mini, PCs
-                        and Mobile. Personal Cloud account security for iCloud, Google Drive, Dropbox etc make us stand
-                        out among most private security companies.
-                    </p>
-
-                    <h6 class="fw-bold text-gray">Secure Communication Channels</h6>
-                    <p>Facebook, Instagram , snapchat, twitter and other social media accounts are secured and updated.
-                        Ensuring your virtual life is not disrupted. Keeping your personal and business email accounts
-                        secure and encrypted beyond regular.
-                    </p>
-
-                    <h6 class="fw-bold text-gray">Guard Your Privacy Online</h6>
-                    <p>Concierge Cybersecurity protects you online from attacks like ransomware, phishing, malware,
-                        spyware and insider threat. Facebook, Google or Microsoft, we hide your digital trace from all
-                        tech companies to keep your privacy intact.
-                    </p>
-                </div>
-            </div>
-
-            <div class="whom-we-serve my-5 py-4 px-3 bg-lightgreen shadow-md">
-                <h5 class="fw-bold">Whom We Serve</h5>
-                <div class="mt-4">
-                    <div class="d-flex justify-content-between flex-wrap">
-                        <h6 class="lh-base">HIGH-NET-WORTH INDIVIDUALS</h6>
-                        <h6 class="lh-base">BUSINESS EXECUTIVES</h6>
-                        <h6 class="lh-base">POLITICAL LEADERS</h6>
-                        <h6 class="lh-base">CELEBRITIES & MEDIA PERSONALITIES
+                <div class="my-3 py-4 px-3 bg-lightgreen shadow-md">
+                    <div class="mt-3">
+                        <h6 class="lh-base">
+                            {{ course.long_description|safe }}
                         </h6>
                     </div>
+                </div>
+                <div class="my-4 pt-5 px-3">
+                    <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
+                        <a href="{% host_url 'pcs_user_course_details' host 'mysecurity' %}{{ course.id }}"
+                                class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">View Details Module
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+{% endcomment %}
+        <!-- modal for subscription services -->
+        {% comment %}        <div class="modal fade" id="subscriptionDetail" tabindex="-1" aria-labelledby="subscriptionDetailLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-bold">PLUG & PLAY CYBERSECURITY SOLUTION</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <div class="package-details">
+                            <div class="row g-3 mx-0 d-flex justify-content-center">
+                                <div class="package col-sm-4 col-md-3">
+                                    <div class="bg-lightgreen shadow p-3 rounded h-100">
+                                        <h3 class="fw-bold fs-4">BASIC</h3>
+                                        <table class="mx-auto mb-3">
+                                            <tr>
+                                                <td>CyberSecurity & Privacy Program
+                                                </td>
+                                                <td>&check;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Risk Assesment
 
-                </div>
-            </div>
-            <div class="my-4 pt-5 px-3">
-                <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
-                    <button type="button" class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">Provide information
-                        to
-                        get a quotation
-                    </button>
-                    <a href="{% host_url 'pcs_appoinment' host 'mysecurity' %}" class="btn bg-navy px-2 py-1">Talk to
-                        one of
-                        our representatives</a>
+                                                </td>
+                                                <td>&check;</td>
+                                            </tr>
 
-                </div>
-            </div>
-        </div>
-        <!-- Open Source Intelligence -->
-        <div class="preview-service-info pt-3 d-none">
-            <div class="row mx-0 bg-lightgreen shadow-md">
-                <div class="col-md-3 py-4">
-                    <img src="{% static '' %}tfimg/user_panel/osi.png" class="img-fluid d-block mx-auto" alt="...">
-                </div>
-                <div class="col-md-9 d-flex flex-column justify-content-center align-items-center">
-                    <div>
-                        <!-- <h4 class="fw-bold">Open Source Intelligence</h4> -->
-                        <h6 class="fw-semi text-start fontAwesome mt-3">OSINT INVESTIGATIONS- PROTECT YOUR PRIVATE
-                            INFORMATION
-                        </h6>
-                        <p class="mt-3">OSINT investigations are searching and skimming out data from publicly available
-                            sources to gather intelligence about an entity. Businesses, organizations, and even
-                            individuals approach us looking for background information about someone,
-                            helping them make a better decision.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="mt-5 py-4 px-3 bg-lightgreen shadow-md">
-                <h5 class="fw-bold">Open Source Intelligence Services</h5>
-                <div class="row mt-4">
-                    <div class="col-md-4">
-                        <ol start="1">
-                            <li class="lh-lg">Background check</li>
-                            <li class="lh-lg">Personal information audit</li>
-                            <li class="lh-lg">Identifying security gaps</li>
-                        </ol>
-                    </div>
-                    <div class="col-md-4">
-                        <ol start="4">
-                            <li class="lh-lg">Accurate and actionable findings</li>
-                            <li class="lh-lg">Expose the intruders and his motive</li>
-                            <li class="lh-lg">Fight information leaks</li>
-                        </ol>
-                    </div>
-                    <div class="col-md-4">
-                        <ol start="7">
-                            <li class="lh-lg">Surveillance and private monitoring</li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-            <div class="my-5 py-4 px-3 bg-lightgreen shadow-md">
-                <h5 class="fw-bold">Who needs it</h5>
-                <div class="mt-4">
-                    <ul class="d-grid gap-3">
-                        <li>To move up professionally, sometimes C-level Executives need to ensure they have a spotless
-                            record online. As some organizations do background checks on who they are recruiting, a
-                            candidate better keeps track of whether a disgruntled
-                            x-colleague put anything negative about him on the internet.
-                        </li>
-                        <li>Take a person who and his family has been harassed online by an unknown entity. Making prank
-                            calls, reporting social media profiles, publishing scandalous articles indicate cyber
-                            harassment.
-                        </li>
-                        <li>When it comes to marrying someone, some families need a background check about the person
-                            their son or daughter will marry. It requires checking on family backgrounds and criminal
-                            and educational records, reputation in the workplace,
-                            and educational institutes.
-                        </li>
+                                            <tr>
+                                                <td>Data Privacy & Protection
 
-                        <li> We also had to collect information ranging from character traits to his relationships, who
-                            he is meeting after office hours, if he is having an affair or not, etc.
-                        </li>
-                        <li>Open source intelligence websites, there are government reports, newspapers, radio, TV,
-                            blogs, and forums that are also more useful than meets the eyes.
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="my-4 pt-5 px-3">
-                <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
-                    <button type="button" class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">Provide information
-                        to
-                        get a quotation
-                    </button>
-                    <a href="{% host_url 'pcs_appoinment' host 'mysecurity' %}" class="btn bg-navy px-2 py-1">Talk to
-                        one of
-                        our representatives</a>
+                                                </td>
+                                                <td>&check;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Vendor Screening
 
-                </div>
-            </div>
-        </div>
-        <!-- Crime Investigation -->
-        <div class="preview-service-info pt-3 d-none">
-            <div class="row mx-0 bg-lightgreen shadow-md">
-                <div class="col-md-3 py-4">
-                    <img src="{% static '' %}tfimg/user_panel/ci.png" class="img-fluid d-block mx-auto" alt="...">
-                </div>
-                <div class="col-md-9 d-flex flex-column justify-content-center align-items-center">
-                    <div>
-                        <!-- <h4 class="fw-bold">Crime Investigation</h4> -->
-                        <h6 class="fw-semi text-start fontAwesome mt-3">BE WISE DECIDE QUICKLY PREVENT CYBERCRIMES
-                        </h6>
-                        <p class="mt-3">When a crime happens in a computer system, the technical complications are
-                            increased exponentially. You need a computer crime investigator who can report on reliable
-                            evidence findings with a threat prevention plan for the future.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="mt-5 py-4 px-3 bg-lightgreen shadow-md">
-                <h5 class="fw-bold">Cybercrime Services</h5>
-                <div class="row mt-4">
-                    <div class="col-md-3">
-                        <ol start="1" class="mb-0">
-                            <li class="lh-lg">Cyber Harassment</li>
-                            <li class="lh-lg">Privacy Invasion</li>
-                        </ol>
-                    </div>
-                    <div class="col-md-3">
-                        <ol start="3" class="mb-0">
-                            <li class="lh-lg">Cyber Bullying</li>
-                            <li class="lh-lg">Phishing Scams</li>
-                        </ol>
-                    </div>
-                    <div class="col-md-3">
-                        <ol start="5" class="mb-0">
-                            <li class="lh-lg">Hack Incident</li>
-                            <li class="lh-lg">Cyber Scamming</li>
-                        </ol>
-                    </div>
-                    <div class="col-md-3" class="mb-0">
-                        <ol start="7">
-                            <li class="lh-lg">Identity Theft</li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-            <div class="my-5 py-4 px-3 bg-lightgreen shadow-md">
-                <h5 class="fw-bold">WHO NEEDS IT</h5>
-                <div class="mt-4">
-                    <ul class="d-grid gap-3 ps-3">
-                        <li>Have you ever been bullied or scammed online? Is your reputation on the line? If cybercrime
-                            happens to you, you must report the incident to the local police and obtain the police
-                            report or case number. A thorough cybercrime investigation
-                            may save you from further damage to your digital assets.
-                        </li>
-                        <li>Cyberbullying typically involves tweens and teens. But any individual adult can experience
-                            public shaming, which is considered "cyber harassment.” For example, when a minor harasses
-                            an adult, it falls under cyber harassment. If anyone
-                            happens to spreads lies about or posts embarrassing content on social media about you, You
-                            can consider yourself a victim of Cyberbullying.
-                        </li>
-                        <li>According to the anti-phishing working groups, almost 100 thousand attempts are reported
-                            monthly worldwide. There was an email with a message offering the recipient a healthy
-                            financial gain in the notorious Nigerian Prince Scam.
-                        </li>
+                                                </td>
+                                                <td>&check;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Incident Response Strategy
 
-                        <li> These incidents naturally cause mental or physical harm, loss to the victim directly or
-                            indirectly. Also, hacking like cyberbullying, invoice fraud, email scams, social media
-                            fraud, privacy invasion, phishing, cyber harassment can
-                            lead to significant damage like financial drainage, defamation, etc.
-                        </li>
+                                                </td>
+                                                <td>&check;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Awareness & Training
 
-                    </ul>
-                </div>
-            </div>
-            <div class="my-4 pt-5 px-3">
-                <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
-                    <button type="button" class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">Provide information
-                        to
-                        get a quotation
-                    </button>
-                    <a href="{% host_url 'pcs_appoinment' host 'mysecurity' %}" class="btn bg-navy px-2 py-1">Talk to
-                        one of
-                        our representatives</a>
+                                                </td>
+                                                <td>&check;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Continuous consultation
 
-                </div>
-            </div>
-        </div>
-        <!-- Hack Recovery -->
-        <div class="preview-service-info pt-3 d-none">
-            <div class="row mx-0 bg-lightgreen shadow-md">
-                <div class="col-md-3 py-4">
-                    <img src="{% static '' %}tfimg/user_panel/hr.png" class="img-fluid d-block mx-auto" alt="...">
-                </div>
-                <div class="col-md-9 d-flex flex-column justify-content-center align-items-center">
-                    <div>
-                        <!-- <h4 class="fw-bold">Hack Recovery</h4> -->
-                        <h6 class="fw-semi text-start fontAwesome mt-3">GOT HACKED? WE GET YOUR ACCOUNT AND DATA BACK.
-                        </h6>
-                        <p class="mt-3">If you believe your device or account is hacked, make a decision fast to prevent
-                            hackers from causing further damage. our cyber consultant team is all set to give you a
-                            quick and smart solution.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="mt-5 py-4 px-3 bg-lightgreen shadow-md">
-                <h5 class="fw-bold">Hack Recovery Services</h5>
-                <div class="row mt-4">
-                    <div class="col-md-4">
-                        <ol start="1" class="mb-0">
-                            <li class="lh-lg">Social media hack recovery</li>
-                            <li class="lh-lg">Device hack recovery</li>
-                        </ol>
-                    </div>
-                    <div class="col-md-4">
-                        <ol start="3" class="mb-0">
-                            <li class="lh-lg">Email hack recovery</li>
-                            <li class="lh-lg">Financial account recovery</li>
-                        </ol>
-                    </div>
-                    <div class="col-md-4">
-                        <ol start="5" class="mb-0">
-                            <li class="lh-lg">Personal cloud hack recovery</li>
-                        </ol>
-                    </div>
+                                                </td>
+                                                <td>&#9679;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Certification
 
-                </div>
-            </div>
-            <div class="my-5 py-4 px-3 bg-lightgreen shadow-md">
-                <h5 class="fw-bold">WHO NEEDS IT</h5>
-                <div class="mt-4">
-                    <ul class="d-grid gap-3">
-                        <li>Is your email hacked or do you suspect it is being compromised? If your contacts complain
-                            about suspicious emails from your account, your email account is possibly compromised.
-                            Hackers have gained access, sending spam, using it for
-                            their own benefit. You may encounter data loss, password changed, unexpected password reset
-                            emails, login from unusual IP addresses or devices. We can help to restore your email
-                            accounts.
-                        </li>
-                        <li>Security breaches in consumer cloud accounts like Apple iCloud breach, amazon data breach,
-                            dropbox leaked scenarios are quite prevalent among high-net-worth individuals. This is more
-                            than a little unsettling. But as always, we have
-                            your back!
-                        </li>
-                        <li>Android is known to be the most vulnerable operating system beside windows. Macs and Linux
-                            are hackable too. Hackers tend to exploit it by accessing a system or network and you start
-                            to encounter various issues with your OS. Battery
-                            dying on you frequently, system lagging, unwanted applications running in the background are
-                            just some of the symptoms. That means the OS needs a recovery.
-                        </li>
+                                                </td>
+                                                <td>&check;</td>
+                                            </tr>
+                                        </table>
 
-                        <li> Let's get the bitter truth out of the way, you won’t get your money back! Sometimes, even
-                            bank accounts are hacked directly or through online payment systems like PayPal. We can help
-                            you salvage your online payment system.
-                        </li>
+                                        <div class="info-btn">
+                                            <p class="mb-0">
+                                                <i class="icofont-laptop fw-bold"></i> Max Workstations
+                                            </p>
+                                            <p class="mb-0 fw-bold">5</p>
+                                        </div>
+                                        <div class="mt-2 info-btn">
+                                            <p class="mb-0">
+                                                <i class="icofont-server"></i> Max Servers
+                                            </p>
+                                            <p class="mb-0 fw-bold">5</p>
+                                        </div>
+                                        <div class="mt-2 info-btn">
+                                            <p class="mb-0">
+                                                <i class="icofont-web"></i> Max Websites
+                                            </p>
+                                            <p class="mb-0 fw-bold">5</p>
+                                        </div>
+                                        <div class="mt-2 info-btn">
+                                            <p class="mb-0">
+                                                <i class="icofont-tag"></i> Price
+                                            </p>
+                                            <p class="mb-0 fw-bold">500$
+                                            </p>
+                                        </div>
+                                        <button class="mt-3 btn bg-navy px-3 py-1" data-bs-toggle="modal"
+                                                data-bs-target="#subscribeModal-1">Subscribe
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="package d-none d-sm-block col-sm-4 col-md-3">
+                                    <div class="bg-lightgreen shadow p-3 rounded h-100">
+                                        <h3 class="fw-bold fs-4">MEDIUM</h3>
+                                        <table class="mx-auto mb-3">
+                                            <tr>
+                                                <td>CyberSecurity & Privacy Program
+                                                </td>
+                                                <td>&check;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Risk Assesment
 
-                    </ul>
-                </div>
-            </div>
-            <div class="my-4 pt-5 px-3">
-                <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
-                    <button type="button" class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">Provide information
-                        to
-                        get a quotation
-                    </button>
-                    <a href="{% host_url 'pcs_appoinment' host 'mysecurity' %}" class="btn bg-navy px-2 py-1">Talk to
-                        one of
-                        our representatives</a>
+                                                </td>
+                                                <td>&check;</td>
+                                            </tr>
 
-                </div>
-            </div>
-        </div>
-        <!-- Virus Removal -->
-        <div class="preview-service-info pt-3 d-none">
-            <div class="row mx-0 bg-lightgreen shadow-md">
-                <div class="col-md-3 py-4">
-                    <img src="{% static '' %}tfimg/user_panel/vr.png" class="img-fluid d-block mx-auto" alt="...">
-                </div>
-                <div class="col-md-9 pt-2 d-flex flex-column justify-content-center align-items-center">
-                    <div>
-                        <!-- <h4 class="fw-bold">Virus Removal</h4> -->
-                        <h6 class="fw-semi text-start fontAwesome mt-3">WE CLEAN YOUR SYSTEM WITH TAUT MALWARE REMOVAL
-                            SOLUTION
-                        </h6>
-                        <p class="mt-3">Is your PC slowing down? Can't get rid of annoying pop-ups? Computer crashes
-                            randomly? It could mean you are affected by malware, which is short for Malicious software.
-                            Virus is one kind of malware. But there are other kinds of malware,
-                            which simply destroys data and a seriously harmful element to operating systems. </p>
-                    </div>
-                </div>
-            </div>
-            <div class="mt-5 py-4 px-3 bg-lightgreen shadow-md">
-                <h5 class="fw-bold">How We Help You</h5>
-                <div class="row mt-4">
-                    <div class="col-md-6">
-                        <ol start="1" class="mb-0">
-                            <li class="lh-lg">Remove malware from PC</li>
-                            <li class="lh-lg">Remove spyware & ransomware</li>
-                        </ol>
-                    </div>
-                    <div class="col-md-6">
-                        <ol start="3" class="mb-0">
-                            <li class="lh-lg">Remove adware from MAC</li>
-                            <li class="lh-lg">Clean up viruses on phone</li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-            <div class="process-of-cleaning my-5 py-4 px-3 bg-lightgreen shadow-md">
-                <h5 class="fw-bold">PROCESS OF CLEANING</h5>
-                <div class="mt-4">
-                    <p>We check for symptoms of a malware infection, enter safe mode and back up your files except the
-                        program files, as those might be infected. Afterwards, we run the scan, detect malwares and
-                        remove them. Finally, the old files are restored
-                        and the malware cleaning process is completed.</p>
-                    <div class="pe-md-4 d-flex justify-content-between flex-wrap">
-                        <h6 class="lh-base">CHECK</h6>
-                        <h6 class="lh-base">DETECT</h6>
-                        <h6 class="lh-base">REMOVE</h6>
-                        <h6 class="lh-base">RESTORE</h6>
-                        <h6 class="lh-base">PREVENT</h6>
+                                            <tr>
+                                                <td>Data Privacy & Protection
+
+                                                </td>
+                                                <td>&check;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Vendor Screening
+
+                                                </td>
+                                                <td>&check;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Incident Response Strategy
+
+                                                </td>
+                                                <td>&check;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Awareness & Training
+
+                                                </td>
+                                                <td>&check;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Continuous consultation
+
+                                                </td>
+                                                <td>&#9679;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Certification
+
+                                                </td>
+                                                <td>&check;</td>
+                                            </tr>
+                                        </table>
+
+                                        <div class="info-btn">
+                                            <p class="mb-0">
+                                                <i class="icofont-laptop fw-bold"></i> Max Workstations
+                                            </p>
+                                            <p class="mb-0 fw-bold">5</p>
+                                        </div>
+                                        <div class="mt-2 info-btn">
+                                            <p class="mb-0">
+                                                <i class="icofont-server"></i> Max Servers
+                                            </p>
+                                            <p class="mb-0 fw-bold">5</p>
+                                        </div>
+                                        <div class="mt-2 info-btn">
+                                            <p class="mb-0">
+                                                <i class="icofont-web"></i> Max Websites
+                                            </p>
+                                            <p class="mb-0 fw-bold">5</p>
+                                        </div>
+                                        <div class="mt-2 info-btn">
+                                            <p class="mb-0">
+                                                <i class="icofont-tag"></i> Price
+                                            </p>
+                                            <p class="mb-0 fw-bold">500$
+                                            </p>
+                                        </div>
+                                        <a class="mt-3 btn bg-navy px-3 py-1" href="">Subscribe</a>
+                                    </div>
+                                </div>
+                                <div class="package d-none d-md-block col-sm-4 col-md-3">
+                                    <div class="bg-lightgreen shadow p-3 rounded h-100">
+                                        <h3 class="fw-bold fs-4">PREMIUM</h3>
+                                        <table class="mx-auto mb-3">
+                                            <tr>
+                                                <td>CyberSecurity & Privacy Program
+                                                </td>
+                                                <td>&check;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Risk Assesment
+
+                                                </td>
+                                                <td>&check;</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>Data Privacy & Protection
+
+                                                </td>
+                                                <td>&check;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Vendor Screening
+
+                                                </td>
+                                                <td>&check;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Incident Response Strategy
+
+                                                </td>
+                                                <td>&check;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Awareness & Training
+
+                                                </td>
+                                                <td>&check;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Continuous consultation
+
+                                                </td>
+                                                <td>&#9679;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Certification
+
+                                                </td>
+                                                <td>&check;</td>
+                                            </tr>
+                                        </table>
+
+                                        <div class="info-btn">
+                                            <p class="mb-0">
+                                                <i class="icofont-laptop fw-bold"></i> Max Workstations
+                                            </p>
+                                            <p class="mb-0 fw-bold">5</p>
+                                        </div>
+                                        <div class="mt-2 info-btn">
+                                            <p class="mb-0">
+                                                <i class="icofont-server"></i> Max Servers
+                                            </p>
+                                            <p class="mb-0 fw-bold">5</p>
+                                        </div>
+                                        <div class="mt-2 info-btn">
+                                            <p class="mb-0">
+                                                <i class="icofont-web"></i> Max Websites
+                                            </p>
+                                            <p class="mb-0 fw-bold">5</p>
+                                        </div>
+                                        <div class="mt-2 info-btn">
+                                            <p class="mb-0">
+                                                <i class="icofont-tag"></i> Price
+                                            </p>
+                                            <p class="mb-0 fw-bold">500$
+                                            </p>
+                                        </div>
+                                        <button class="mt-3 btn bg-navy px-3 py-1" data-bs-toggle="modal"
+                                                data-bs-target="#subscribeModal-1">Subscribe
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="package d-none d-md-block col-sm-4 col-md-3">
+                                    <div class="bg-lightgreen shadow p-3 rounded h-100">
+                                        <h3 class="fw-bold fs-4 text-uppercase">Custom</h3>
+                                        <article class="custom-info fw-bold">
+                                            <p>
+                                                Lorem Ipsum is simply dummy text of the printing and typesetting
+                                                industry. Lorem Ipsum has been the industry's standard dummy text ever
+                                                since the 1500s, when an unknown printer took a galley of type and
+                                                scrambled it to make a type specimen book. It has
+                                                survived not only five centuries, but also the leap into electronic
+                                                typesetting.
+                                            </p>
+                                        </article>
+                                        <li class="mt-4 mb-3 custom-info-listing"><span>Lorem Ipsum is simply dummy text of
+                                   the
+                                   printing.</span></li>
+                                        <li class="mt-4 mb-3 custom-info-listing"><span>Lorem Ipsum is simply dummy text of
+                                   the
+                                   printing.</span></li>
+                                        <li class="mt-4 mb-3 custom-info-listing"><span>Lorem Ipsum is simply dummy text of
+                                   the
+                                   printing.</span></li>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- if user has not subscribed any package -->
+                            <button class="mt-5 d-inline-block d-xl-none btn btn-outline-success px-3 fs-5"
+                                    id="package-change">
+                                <i class="icofont-exchange"></i>
+                            </button>
+
+                        </div>
                     </div>
 
                 </div>
             </div>
-            <div class="my-4 pt-5 px-3">
-                <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
-                    <button type="button" class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">Provide information
-                        to
-                        get a quotation
-                    </button>
-                    <a href="{% host_url 'pcs_appoinment' host 'mysecurity' %}" class="btn bg-navy px-2 py-1">Talk to
-                        one of
-                        our representatives</a>
+        </div>{% endcomment %}
 
-                </div>
-            </div>
-        </div>
-        <!-- Data Removal -->
-        <div class="preview-service-info pt-3 d-none">
-            <div class="row mx-0 bg-lightgreen shadow-md">
-                <div class="col-md-3 py-4">
-                    <img src="{% static '' %}tfimg/user_panel/dr.png" class="img-fluid d-block mx-auto" alt="...">
-                </div>
-                <div class="col-md-9 pt-2 d-flex flex-column justify-content-center align-items-center">
-                    <div>
-                        <!-- <h4 class="fw-bold">Data Removal</h4> -->
-                        <h6 class="fw-semi text-start fontAwesome mt-3">HACKERS ARE AFTER YOUR PERSONAL DATA. HOW DO YOU
-                            DEFEND IT?
-                        </h6>
-                        <p class="mt-3">We are one of the leading companies that remove personal information from the
-                            internet. Our privacy experts come to a common ground with big data brokers and find a
-                            permanent way out. Thus, we can save you from further internet defamation.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="my-5 py-4 px-3 bg-lightgreen shadow-md">
-                <h5 class="fw-bold">Methods techforing follows to identify, remove and protect client’s personal
-                    information
-                </h5>
-                <div class="mt-4">
-                    <ul class="d-grid gap-3 ps-3">
-                        <li>We track down clients’ personal data from search engines, data aggregators and deep web.
-                        </li>
-                        <li>We come to a common ground with big broker sites and search engines and convince them to
-                            remove personal data from the internet.
-                        </li>
-                        <li>We ensure deleted data never reappears.</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="whom-we-serve my-5 py-4 px-3 bg-lightgreen shadow-md">
-                <h5 class="fw-bold">Why You Need This</h5>
-                <div class="mt-4">
-                    <p>According to the General Data Protection Regulation (GDPR), You have a right to keep your private
-                        data and web portals from being subject to automated decision making.
-                    </p>
-                    <p class="h6 fw-bold">Despite this, you may appear in several bad links in the form of:
-                    </p>
-                    <div class="mt-3 d-flex justify-content-between flex-wrap">
-                        <h6 class="lh-base">Misrepresented in Articles</h6>
-                        <h6 class="lh-base">Financial Information leak</h6>
-                        <h6 class="lh-base">Scandalous Photos and Videos</h6>
-                        <h6 class="lh-base">Fake Dating Profiles</h6>
-                        <h6 class="lh-base">Links revealing your personal information like phone number and email
-                            address
-                        </h6>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="my-4 pt-5 px-3">
-                <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
-                    <button type="button" class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">Provide information
-                        to
-                        get a quotation
-                    </button>
-                    <a href="{% host_url 'pcs_appoinment' host 'mysecurity' %}" class="btn bg-navy px-2 py-1">Talk to
-                        one of
-                        our representatives</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- CCSP -->
-        <div class="preview-service-info pt-3 d-none">
-            <h5 class="py-5 my-5 text-center">Informations are not available!</h5>
-        </div>
 
         <div id="preview-form" class="d-none">
 
         </div>
     </section>
-{% endblock content %} {% block customjs %}
 
+{% endblock content %} {% block customjs %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <script>
-        let mainHeading = document.querySelector('.services .main-heading');
-        let mainHeadingText = 'All Personal Cybersecurity Services';
-        let servicesHeading = ['Concierge Cybersecurity', 'Open Source Intelligence',
-            'Crime Investigation', 'Hack Recovery', 'Virus Removal', 'Data Removal', 'CCSP Program'
-        ];
         let backBtn = document.getElementById('back-btn');
         let servicesContent = document.querySelector('.services-content');
         let previewServiceInfos = document.querySelectorAll('.preview-service-info');
-        let allBtn = document.querySelectorAll('.services-content button');
+        let allBtn = document.querySelectorAll('.services-content .content-detail button');
         let quotationBtns = document.querySelectorAll('.get-quotation');
         let previewForm = document.getElementById('preview-form');
-        let formJsAdded = false;
-        let allForms = ['concierge_cybersecurity', 'osint_intelligence', 'crime_investigation', 'hack_recovery', 'virus_removal', 'data_removal'];
-        let allServicesInputFrom;
-        let allServicesFromContainer;
-        let allServices;
 
+
+        let allServices;
+        let mainHeading = document.querySelector('.services .main-heading');
+        let mainHeadingText = 'All Personal Cybersecurity Services';
+        let servicesHeading = {{ services_headings | safe }};
 
         quotationBtns.forEach((btn, index) => {
             btn.addEventListener('click', e => {
@@ -675,35 +584,102 @@
                         </div>
                         </div>`;
 
-                let formName = allForms[index];
-                let formUrl = `/pcs_services_form/${formName}`;
+                fetchData(`${mainOrigin}/api/bcs/sub_service/${btn.id}`)
+                    .then(function (data) {
+                        previewForm.removeChild(document.getElementById('progress'));
 
-                fetchForm(formUrl).then(function (data) {
-                    previewForm.innerHTML = previewForm.innerHTML + data;
-                    previewForm.removeChild(document.getElementById('progress'));
-                    if (formJsAdded)
-                        document.body.removeChild(document.getElementById('form-js'));
+                        let list = '<div class="col-md-4 sub-services shadow"> <h5 class="fw-bold">Choose your services:</h5>';
+                        let form = `<form method="POST" enctype="multipart/form-data">{% csrf_token %}<input type='hidden' id='service_name' value='' name='service_name'/>`
+                        data.forEach((option, index) => {
+                            list += `<div class="form-check">
+                    <input class="form-check-input sub-services-check" type="checkbox" name="" id="sub-${option.id}" data-index="${index}" data-title="${option.title}" data-id="${option.id}">
+                    <label class="form-check-label" for="sub-${option.id}">${index + 1}. ${option.title}</label>
+                </div>`;
+                            previewForm.innerHTML = '<div class="row mx-0">' + list + '</div>' + '<div class="col-md-8 d-none form-container"><h5 class="fw-bold text-center border-bottom border-gray p-2">Please Provide Necessary Informations:</h5>' + form + '<div class="information-form"></div><button type="submit" class="submit-btn btn btn-navy mt-3">Submit</button></form> </div>';
 
-                    var formScript = document.createElement('script');
+                        });
+                        document.getElementById('service_name').value = mainHeading.textContent.trim();
 
-                    formScript.setAttribute('src', "{%static ''%}tfjs/user_panel/pcs/forms.js");
-                    formScript.setAttribute('id', "form-js");
-                    formJsAdded = true;
-                    document.body.appendChild(formScript);
-                    dropdown(bootstrap);
-
-                }).catch(function (err) {
+                        addHtml()
+                    }).catch(function (err) {
                     console.log(err)
-                })
+                });
 
+                const addHtml = () => {
+                    const allServices = document.querySelectorAll('.sub-services-check');
+                    const formContainer = document.querySelector('.form-container');
+                    const formC = document.querySelector('.form-container form');
+                    const informationForm = document.querySelector('.information-form');
+                    allServices.forEach((check, index) => {
+                        check.addEventListener('change', e => {
+                            if (check.checked) {
+                                document.querySelector('.form-container').classList.remove('d-none');
+                                optionId = e.target.getAttribute("data-id")
+                                optionIndex = e.target.getAttribute("data-index")
+                                optionTitle = check.getAttribute("data-title")
+                                const div = document.createElement("div")
+                                div.setAttribute("id", `sub-${optionId}-input`)
+                                let inputFields = '';
+                                // informationForm.children[optionIndex]
+                                formC.insertAdjacentHTML('beforebegin', `<p id="progress">Loading...</p>`);
+                                fetchData(`${mainOrigin}/api/bcs/sub_service_input/${optionId}`).then(function (fields) {
+                                    formContainer.removeChild(document.getElementById("progress"))
+                                    inputFields += `<div class="mt-5"data-position="${optionIndex}">  <h6 class="heading">${optionTitle}</h6>`;
+                                    fields.forEach(field => {
+
+                                        if (field.inputfield.type === 'select') {
+                                            fetchData(`${mainOrigin}/api/bcs/choice_field/${field.inputfield.id}`)
+                                                .then(function (data) {
+                                                    inputFields += `<label for="input-${field.inputfield.id}.${optionId}">${field.inputfield.placeholder}</label>`;
+                                                    inputFields += `<select required id="input-${field.inputfield.id}.${optionId}" name="${field.id}" class="form-select">`;
+                                                    data[0].choice_field.forEach(choice => {
+                                                        inputFields += ` <option value="${choice.choices}">${choice.choices}</option>`;
+                                                    });
+
+                                                    inputFields += '</select>';
+                                                    inputFields += `</div>`;
+                                                    div.innerHTML = inputFields;
+                                                    informationForm.insertBefore(div, informationForm.children[optionIndex]);
+                                                }).catch(function (err) {
+                                                console.log(err)
+                                            });
+
+                                            {#console.log("select ")#}
+                                        } else {
+                                            inputFields += `<label for="input-${field.inputfield.id}.${optionId}">${field.inputfield.placeholder}</label>`;
+                                            inputFields += `<input class="form-control" type="${field.inputfield.type}" required
+                                        id="input-${field.inputfield.id}.${optionId}" name="${field.id}" placeholder="Type here">`;
+                                            inputFields += `</div>`;
+                                            div.innerHTML = inputFields;
+                                            informationForm.insertBefore(div, informationForm.children[optionIndex]);
+                                        }
+
+                                    });
+
+                                }).catch(function (err) {
+                                    console.log(err)
+                                });
+                            } else {
+                                informationForm.removeChild(document.getElementById(`sub-${e.target.getAttribute("data-id")}-input`))
+                                if (Array.from(document.querySelectorAll('.sub-services .form-check-input')).every(checkbox => checkbox.checked == false))
+                                    document.querySelector('.form-container').classList.add('d-none');
+
+                            }
+                        })
+                    });
+                }
             })
         });
 
-        function fetchForm(formUrl) {
+        function fetchData(formUrl) {
             return new Promise(function (resolve, reject) {
                 $.ajax({
                     url: formUrl,
                     type: 'get',
+                    xhrFields: {
+                        withCredentials: true
+                     },
+                     crossDomain: true,
                     dataType: 'json',
                     success: function (data) {
                         resolve(data) // Resolve promise and go to then()
@@ -715,48 +691,21 @@
             });
         }
 
-        let showInputField = (target, id) => {
-            if (target.children[0].checked)
-                document.getElementById(id).classList.remove('d-none');
-            else
-                document.getElementById(id).classList.add('d-none');
-        }
-        let takeOthersPlatformInput = (id, visible) => {
-            if (visible)
-                document.getElementById(id).classList.toggle('d-none');
-            else
-                document.getElementById(id).classList.add('d-none');
+        allBtn = Array.from(allBtn);
+        //get another view button from more services
+        if (document.querySelector('.more-services #pcs-preview-btn'))
+            allBtn.push(document.querySelector('.more-services #pcs-preview-btn'));
 
-        }
-
-        let noOfServer = (id) => {
-            document.getElementById(id).classList.toggle('d-none');
-        }
-
-        let takeApiInfo = (id, visible) => {
-            if (visible)
-                document.querySelector(id).classList.remove('d-none');
-            else
-                document.querySelector(id).classList.add('d-none');
-
-        }
-        let hostedWebsite = (id, visible) => {
-            if (visible)
-                document.querySelector(id).classList.remove('d-none');
-            else
-                document.querySelector(id).classList.add('d-none');
-
-        }
 
         allBtn.forEach((btn, index) => {
             btn.addEventListener('click', () => {
+                console.log(btn.classList[0], document.querySelector(`div.${btn.classList[0]}`))
                 servicesContent.classList.add('d-none');
-                previewServiceInfos[index].classList.remove('d-none');
+                document.querySelector(`div.${btn.classList[0]}`).classList.remove('d-none');
                 backBtn.classList.remove('d-none');
                 document.body.scrollTop = 0;
                 document.documentElement.scrollTop = 0;
-                mainHeading.textContent = servicesHeading[index];
-
+                mainHeading.textContent = document.querySelector(`div.${btn.classList[0]}`).children[0].textContent.split('-')[0];
             });
         });
 
@@ -765,58 +714,66 @@
             previewServiceInfos.forEach(form => {
                 form.classList.add('d-none');
             });
-            backBtn.classList.add('d-none');
             previewForm.classList.add('d-none');
-            mainHeading.textContent = mainHeadingText;
+            backBtn.classList.add('d-none');
+
             document.body.scrollTop = 10;
+            mainHeading.textContent = mainHeadingText;
+            conciergeCybersecurity.classList.remove('d-none');
+            subscriptionPackages.classList.add('d-none');
+            invitationContainer.classList.add('d-none');
         }
 
         backBtn.addEventListener('click', backBtnChanges);
 
         document.body.addEventListener('keydown', (e) => {
-            if (e.key == 'Backspace') {
+            if (e.key == 'Backspace' && e.target.tagName != 'INPUT') {
                 backBtnChanges();
             }
         });
 
-        // more script for hack recovery service
-        function divHide(index) {
-            if (acTypeDiv[index].children[0].classList.contains('main-input'))
-                return;
-            quesDiv[index].style.overflow = "hidden";
-            acTypeDiv[index].style.maxHeight = null;
-            acTypeDiv[index].style.opacity = 0;
+        let conciergeCybersecurity = document.getElementById('concierge-cybersecurity');
+        let subscriptionPackages = document.getElementById('subscription-packages');
+        let invitationContainer = document.querySelector('.invitation-container');
 
-            quesDiv[index].children[quesDiv[index].children.length - 1].style.transform =
-                "rotate(0deg)";
-        }
+        document.getElementById('subscription-package-btn').addEventListener('click', () => {
+            conciergeCybersecurity.classList.add('d-none');
+            subscriptionPackages.classList.remove('d-none');
 
-        function divShow(index) {
-            quesDiv[index].style.overflow = "show";
-            acTypeDiv[index].style.maxHeight = acTypeDiv[index].scrollHeight + 15 + "px";
-            acTypeDiv[index].style.opacity = 1;
-            quesDiv[index].children[quesDiv[index].children.length - 1].style.transform =
-                "rotate(180deg)";
-        }
+        });
 
-        function listDelete(list) {
-            let listArray = [];
-            for (let i = 0; i < more_account.children.length; i++) {
-                listArray.push(more_account.children[i]);
-            }
-            let position = listArray.indexOf(list.parentElement);
-            more_account.removeChild(list.parentElement);
-            quesArray.splice(position, 1);
-        }
 
-        let quesDiv, quesTitle, acTypeDiv, selectedAc, mainInput, quesAccount, quesInput, quesCategory,
-            mainQuesCategory, initSelect, finalQues;
-        // form script
-        let g_form, selected_account, account_name, final_ques, general_ques, general_ques_title, more_account,
-            account_close, errorTxt;
-        let quesObj = [];
-        let =
-        quesArray = [];
-        let error = 0;
+        document.querySelectorAll('.preview-service-info .package button').forEach(btn => {
+            btn.addEventListener('click', e => {
+                subscriptionPackages.classList.add('d-none');
+                document.querySelector('.invitation-container #package-name').textContent = e.target.parentNode.children[0].textContent;
+                invitationContainer.classList.remove('d-none');
+            });
+        });
+
+        let input = document.getElementById('train-employee-input');
+        document.getElementById('train-employee-btn').addEventListener('click', () => {
+            input.classList.toggle('d-none');
+            input.focus();
+        });
+        input.addEventListener('keyup', (e) => {
+            e.target.value = e.target.value.replace(/[^0-9]/gi, "");
+        });
+
+        document.getElementById('employee-program-btn').addEventListener('click', (e) => {
+            let trainInput = document.getElementById('employee-program-input');
+            trainInput.classList.toggle('d-none');
+            trainInput.focus();
+        });
+        document.getElementById('employee-number-btn').addEventListener('click', (e) => {
+            let numberInput = document.getElementById('employee-number-input');
+            numberInput.classList.toggle('d-none');
+            numberInput.focus();
+        });
+
+
+        document.getElementById('subscriptionDetailBtn').addEventListener('click', () => {
+            console.log('click hoisie')
+        })
     </script>
 {% endblock customjs %}

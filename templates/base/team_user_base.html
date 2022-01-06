@@ -1,4 +1,5 @@
 <!DOCTYPE html> {% load static %}
+{% load hosts %}
 <html lang="en">
 
 <head>
@@ -43,12 +44,12 @@
                             </a>
                             <ul class="dropdown-menu border-0 shadow" aria-labelledby="navbarDropdown">
                                 <li>
-                                    <a class="dropdown-item text-center" href="{% url 'bcs_app:bcs_user_settings' %}">
+                                    <a class="dropdown-item text-center" href="{% host_url 'user_profile' %}">
                                         <i class="icofont-ui-user me-2"></i> My Profile</a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item text-center" href="{% url 'bcs_app:bcs_user_settings' %}">
-                                        <i class="icofont-edit me-2"></i> Edit Profile
+                                    <a class="dropdown-item text-center" href="{% host_url 'change_password' %}">
+                                        <i class="icofont-edit me-2"></i> Change Password
                                     </a>
                                 </li>
                             </ul>
@@ -169,7 +170,7 @@
             </div>
 
             <div class="p-3 p-md-4 pb-2 text-center text-white ">
-                <p class="pt-4 border-top border-light">Copyright &copy; 2021 Techforing Ltd.
+                <p class="pt-4 border-top border-light">Copyright &copy; 2022 Techforing Ltd.
                 </p>
             </div>
         </footer>
@@ -196,7 +197,7 @@
         </div>
 
         <div class="p-3 p-md-4 pb-2 text-center text-white ">
-            <p class="pt-4 border-top border-light">Copyright &copy; 2021 Techforing Ltd.
+            <p class="pt-4 border-top border-light">Copyright &copy; 2022 Techforing Ltd.
             </p>
         </div>
     </footer>

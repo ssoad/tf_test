@@ -24,6 +24,11 @@
         {% block title %} {% endblock title %}
     </title>
     <link rel="icon" href="{% static '' %}tfimg/user_panel/Techforing-Icon.png" type="image/x-icon"/>
+    <script>
+        let mainOrigin = location.origin;
+        if(!location.origin.includes('127.0.0.1') && !location.origin.includes('localhost'))
+            mainOrigin = 'https://main.techforing.com';
+    </script>
 </head>
 
 <body>
@@ -108,6 +113,7 @@
                             <span class="nav-text">Events and webinars</span>
                         </a>
                     </li>
+                    {% comment %}
                     <li data-tootik="My profile" data-tootik-conf="right">
                         <span class="nav-link dropdown-btn dropdown-toggle" id="navbarDropdown" role="button"
                               data-bs-toggle="dropdown" aria-expanded="false">
@@ -122,6 +128,7 @@
                             </li>
                         </ul>
                     </li>
+                    {% endcomment %}
                     <li data-tootik="support" data-tootik-conf="right">
                         <span href="" class="nav-link dropdown-btn dropdown-toggle" id="supportDropdown" role="button"
                               data-bs-toggle="dropdown" aria-expanded="false">
@@ -131,8 +138,8 @@
                         <ul class="dropdown-container " aria-labelledby="supportDropdown">
                             <li><a class="dropdown-item nav-link" href="{% host_url 'main_admin_support_view' %}">My
                                 Staff(Admin View)</a></li>
-                            <li><a class="dropdown-item nav-link" href="{% host_url 'main_admin_stuff_view' %}">My
-                                Staff(Stuff View)</a></li>
+                            {% comment %}<li><a class="dropdown-item nav-link" href="{% host_url 'main_admin_stuff_view' %}">My
+                                Staff(Stuff View)</a></li>{% endcomment %}
                             <li><a class="dropdown-item nav-link" href="{% host_url 'main_admin_all_tickets' %}">All
                                 Tickets</a></li>
                         </ul>
@@ -163,6 +170,9 @@
                         </a>
                     </li>
                 {% endif %}
+                <button class="btn menu-expand-btn btn-outline-navy mt-3 mx-auto d-block">
+                    <i class="icofont-long-arrow-left"></i> Close
+                </button>
 
             </ul>
             <!-- nav links ends here -->
@@ -197,7 +207,7 @@
         </a>
     </div>
     <div class="p-3 p pb-2 text-center text-white ">
-        <p>Copyright © 2021 Techforing Ltd.
+        <p>Copyright © 2022 Techforing Ltd.
         </p>
     </div>
 </footer>

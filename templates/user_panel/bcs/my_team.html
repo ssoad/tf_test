@@ -2,7 +2,9 @@
 {% block headercss %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+    {% comment %} <link rel="stylesheet" href="https://npmcdn.com/tootik@1.0.2/css/tootik.min.css"> {% endcomment %}
     <style>
+        body { padding-right: 0 !important }
         .profile-details {
             margin-block: 1rem;
         }
@@ -29,19 +31,66 @@
         .img-change:hover {
             visibility: visible;
         }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            opacity: 1;
+            z-index: 0;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 140px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 150%;
+            left: 50%;
+            margin-left: -75px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #555 transparent transparent transparent;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .alert-dismissible .btn-close {
+            top: -7px
+        }
     </style>
 
-{% endblock headercss %} {% block title %} My Team {% endblock title %} {% block content %}
-
+{% endblock headercss %}
+{% block title %} My Team {% endblock title %}
+{% block content %}
     <div class="team-container">
         <div class="company-profile">
             <div class="pt-3 border-bottom border-gray pb-2 align-items-center">
                 <div class="d-flex justify-content-between align-items-center">
                     <h3 class="fw-bold mb-0">Your Business Profile</h3>
-                    <button class="btn btn-lg bg-navy" data-bs-toggle="modal" data-bs-target="#infoChangeModal"
-                            data-tootik="Edit Business" data-tootik-conf="left">
-                        <i class="fa fa-pencil"></i>
-                    </button>
+                    {% if request.user.business_user.privilege != 'general_staff' %}
+                        <button class="btn btn-lg bg-navy" data-bs-toggle="modal" data-bs-target="#infoChangeModal"
+                                data-tootik="Edit Business" data-tootik-conf="left">
+                            <i class="fa fa-pencil"></i>
+                        </button>
+                    {% endif %}
                 </div>
                 <div class="profile-details row">
                     <div class="col-md-3 align-items-center justify-content-center d-flex">
@@ -49,15 +98,28 @@
                              style="width: fit-content">
                             <img src="{{ current_business.business.company_logo.url }}"
                                  class="rounded-circle p-1 company-logo" alt="">
-                            <div data-tootik="Change Logo"
-                                 class="img-change overlay position-absolute top-0 start-0 bottom-0 end-0 w-100 h-100 m-auto d-flex align-items-center justify-content-center rounded-circle"
-                                 data-bs-toggle="modal" data-bs-target="#imageChangeModal"
-                                 style="background: #00000033; cursor: pointer"><i class="fa fa-camera"></i></div>
+                            {% if request.user.business_user.privilege != 'general_staff' %}
+                                <div data-tootik="Change Logo"
+                                     class="img-change overlay position-absolute top-0 start-0 bottom-0 end-0 w-100 h-100 m-auto d-flex align-items-center justify-content-center rounded-circle"
+                                     data-bs-toggle="modal" data-bs-target="#imageChangeModal"
+                                     style="background: #00000033; cursor: pointer"><i class="fa fa-camera"></i></div>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="col-md-9">
                         <div class="company-detail d-grid align-items-center">
-                            <h4>{{ current_business.business.company_name }}</h4>
+                            <h4>{{ current_business.business.company_name }}
+
+                                <input type="text" class="d-none key" id="myInput"
+                                       value="{{ current_business.business.unique_id }}"
+                                       disabled/>
+                                <div class="tooltip">
+                                    <span onclick="myFunction()" onmouseout="outFunc()" style="cursor: pointer">
+                                      <span class="tooltiptext" id="myTooltip">Copy Business Key</span>
+                                      <i class="fa fa-copy text-primary fs-5"></i>
+                                    </span>
+                                </div>
+                            </h4>
                             <div class="row mx-0">
                                 <div class="col ps-0">
                                     <p class="mb-1">Company
@@ -74,64 +136,74 @@
                                     <p class="mb-1">Address: {{ current_business.business.address }}</p>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Modal -->
-        <div class="modal fade" id="imageChangeModal" tabindex="-1" aria-labelledby="imageChangeModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="imageChangeModalLabel">Change Company Logo</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        {% if request.user.business_user.privilege != 'general_staff' %}
+            <!-- Modal -->
+            <div class="modal fade" id="imageChangeModal" tabindex="-1" aria-labelledby="imageChangeModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="imageChangeModalLabel">Change Company Logo</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {{ image_form|crispy }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-navy" name="img-btn">Upload</button>
+                        </div>
+                        </form>
                     </div>
-                    <div class="modal-body">
-                        <form method="POST" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            {{ image_form|crispy }}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-navy" name="img-btn">Upload</button>
-                    </div>
-                    </form>
                 </div>
             </div>
-        </div>
-        <!-- Modal -->
-        <div class="modal fade" id="infoChangeModal" tabindex="-1" aria-labelledby="infoChangeModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="infoChangeModalLabel">Change Company Information</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <!-- Modal -->
+            <div class="modal fade" id="infoChangeModal" tabindex="-1" aria-labelledby="infoChangeModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="infoChangeModalLabel">Change Company Information</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {{ info_form|crispy }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-navy" name="info-btn">Update</button>
+                        </div>
+                        </form>
                     </div>
-                    <div class="modal-body">
-                        <form method="POST" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            {{ info_form|crispy }}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-navy" name="info-btn">Update</button>
-                    </div>
-                    </form>
                 </div>
             </div>
-        </div>
+        {% endif %}
+
         <section class="team-statistics mb-5">
-            <div class="pt-3 border-bottom border-gray pb-2 d-flex justify-content-between align-items-center">
-                <h4 class="fw-bold mb-0">Your team</h4>
-                <button data-bs-toggle="modal" data-bs-target="#addNew" class="btn btn-lg bg-navy">
-                    <i class="fa fa-plus-circle"></i>
-                    Invite User
-                </button>
-            </div>
-            <div class="py-5 gap-4 row px-4">
+            {% if request.user.business_user.privilege != 'general_staff' %}
+                {% if success %}
+                    <div id="liveAlertPlaceholderSuccess"></div>
+                {% endif %}
+                {% if message %}
+                    <div id="liveAlertPlaceholder"></div>
+                {% endif %}
+                <div class="pt-3 border-bottom border-gray pb-2 d-flex justify-content-between align-items-center">
+                    <h4 class="fw-bold mb-0">Your team</h4>
+                    <button data-bs-toggle="modal" data-bs-target="#addNew" class="btn btn-lg bg-navy">
+                        <i class="fa fa-plus-circle"></i>
+                        Invite User
+                    </button>
+                </div>
+            {% endif %}
+
+            {% comment %}<div class="py-5 gap-4 row px-4">
                 {% for employee in current_business.business.business_business.all %}
                     <div class="col-md-3">
                         <div class="card rounded-5 shadow" style="background: #182a5915;">
@@ -153,13 +225,17 @@
                                             <a href="#" class="btn btn-navy" data-tootik="View Profile"><i
                                                     class="fa fa-user-o"></i></a>
                                             {% if current_business.business.business_business.count > 1 %}
-                                                <a href="#" class="btn btn-navy" data-tootik="Edit Position"><i
-                                                        class="fa fa-pencil"></i></a>
-                                                <a href="{% host_url 'bcs_user_team_member_delete' %}{{ employee.id }}"
-                                                   class="btn btn-navy" data-tootik="Remove Employee"><i
-                                                        class="fa fa-trash-o"></i></a>
-                                            {% endif %}
+                                                {% if request.user.business_user.privilege != 'general_staff' %}
+                                                    <a href="#" class="btn btn-navy" data-tootik="Edit Position"><i
+                                                            class="fa fa-pencil"></i></a>
+                                                    <a href="
 
+
+                                                            {% host_url 'bcs_user_team_member_delete' %}{{ employee.id }}"
+                                                       class="btn btn-navy" data-tootik="Remove Employee"><i
+                                                            class="fa fa-trash-o"></i></a>
+                                                {% endif %}
+                                            {% endif %}
                                         </div>
                                     </div>
 
@@ -168,9 +244,106 @@
                         </div>
                     </div>
                 {% endfor %}
-            </div>
+            </div>{% endcomment %}
+
+            <section class="mt-5">
+                <table id="myTable" class="display mt-5 table text-center border border-gray">
+                    <thead class="border border-gray">
+                    <tr class="fw-bold text-navy border border-gray">
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Position</th>
+                        <th>Permissions</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for employee in current_business.business.business_business.all %}
+                        <tr>
+                            <td>{{ employee.user.full_name }}</td>
+                            <td>{{ employee.user.email }}</td>
+                            <td>{{ employee.position }}</td>
+                            <td>{{ employee.privilege|capitalize }}</td>
+                            <td>
+                                <a href="{% host_url 'bcs_user_my_team_user' %}{{ employee.id }}"
+                                   class="btn btn-outline-navy btn-sm" data-tootik="View Profile"><i
+                                        class="fa fa-user-o"></i></a>
+
+                                {% if current_business.business.business_business.count > 1 %}
+                                    {% if request.user.business_user.privilege != 'general_staff' %}
+                                        {% if employee.privilege == 'admin' %}
+                                            {% if admins > 1 %}
+                                                <button data-tootik="Edit" id="{{ employee.id }}"
+                                                        class="detail-btn btn btn-outline-navy btn-sm"
+                                                        data-bs-toggle="modal" data-bs-target="#employeeDetail">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+                                                <a data-tootik="Delete" href="{% host_url 'bcs_user_team_member_delete' %}{{ employee.id }}"
+                                                   class="del-btn btn btn-outline-danger btn-sm">
+                                                    <i class="bi bi-trash"></i>
+                                                </a>
+                                            {% endif %}
+                                        {% else %}
+                                            <button data-tootik="Edit" id="{{ employee.id }}"
+                                                    class="detail-btn btn btn-outline-navy btn-sm"
+                                                    data-bs-toggle="modal" data-bs-target="#employeeDetail">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                            <a data-tootik="Delete" href="{% host_url 'bcs_user_team_member_delete' %}{{ employee.id }}"
+                                               class="del-btn btn btn-outline-danger btn-sm">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        {% endif %}
+
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Modal -->
+            {% if request.user.business_user.privilege != 'general_staff' %}
+                <div class="modal fade" id="employeeDetail" tabindex="-1" aria-labelledby="employeeDetail-Label"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="employeeDetail-Label">Change Employee Privilege</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <form onsubmit="updatePrivilege(event)" action="" method="POST">
+                                <div class="modal-body">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="designation" class="form-label">Designation</label>
+                                        <input type="text" class="form-control" id="designation">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="privilege" class="form-label">Privilege</label>
+                                        <select id="privilege" class="form-select" aria-label="Default select example">
+                                            <option value="admin">Admin</option>
+                                            <option value="general_admin">General Admin</option>
+                                            <option value="general_staff">General Staff</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-navy">Update</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
             <div class="modal fade" id="addNew" tabindex="-1" aria-labelledby="trainingModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content border-0 bg-main">
                         <div class="modal-header border-0">
                             <button type="button" class="btn-close rounded-circle bg-green" data-bs-dismiss="modal"
@@ -178,45 +351,29 @@
                         </div>
                         <div class="modal-body px-5 pb-5">
                             <h4 class="px-3 fw-bold text-center">Invite Members for Your Team</h4>
-                            <h5 class="text-green text-center">You can invite 15(max.) colleagues as per quotation</h5>
 
-                            <h5 class="mt-3">Email(Required):</h5>
-                            <form action="/email_invitation/" method="post" onkeydown="return event.key != 'Enter';">
+                            {% comment %} <form action="" method="POST" onkeydown="return event.key != 'Enter';">
+                                {% csrf_token %}
+                                <input type="email" name="email" class="form-control" placeholder="User Email">
+                                <button type="submit" class="mt-4 btn bg-navy p-1 px-3" name="inv-btn">INVITE</button>
+                            </form> {% endcomment %}
+                            <form onsubmit="submitForm(event)" id="invite-form" method="POST"
+                                  onkeydown="return event.key != 'Enter';">
                                 {% csrf_token %}
                                 <div class="email-container d-flex flex-wrap justify-content-start align-items-start align-content-start border border-dark fs-7 p-2 h-200p">
-                                    <div class="email">
-                                        <span>salekin.techforing@gmail.com <span
-                                                class="remove-email">&Cross;</span></span>
-                                    </div>
                                     <div class="h-25p">
                                         <input autocomplete="off" class="email-input" maxlength="30" type="email"
                                                placeholder="Type an email">
                                         <button type="button" class="add-email btn p-0"><i
                                                 class="icofont-plus-circle"></i></button>
                                     </div>
-                                </div>
-
-                                <h6 class="mt-3 fw-bold">Set Level:</h6>
-                                <div class="mt-2 d-flex flex-wrap flex-md-nowrap justify-content-between align-items-center">
-                                    <div class="form-check">
-                                        <input required class="form-check-input" type="radio" name="level" id="level1"
-                                               value="">
-                                        <label class="form-check-label" for="level1">Standard</label>
+                                    <div id="validationEmail" class="invalid-feedback">
+                                        Please choose a valid email.
                                     </div>
-                                    <div class="form-check">
-                                        <input required class="form-check-input" type="radio" name="level" id="level2"
-                                               value="">
-                                        <label class="form-check-label" for="level2">Administrator</label>
-                                    </div>
-
-                                    <select class="form-select w-50" aria-label="Default select example">
-                                        <option selected disabled>Give Access To (Service)</option>
-                                        <option value="1">Crime Investigation</option>
-                                        <option value="2">Open Source Intelligence</option>
-                                        <option value="3">Hack Recovery</option>
-                                    </select>
                                 </div>
-                                <button type="submit" class="mt-4 btn bg-navy p-1 px-3">INVITE</button>
+                                <input type="text" name="email" class="all-emails" hidden>
+                                <input type="hidden" name="inv-btn">
+                                <button type="submit" class="mt-4 btn bg-navy p-1 px-3" name="inv-btn">INVITE</button>
                             </form>
                         </div>
                     </div>
@@ -224,20 +381,89 @@
             </div>
         </section>
     </div>
-{% endblock content %} {% block customjs %}
+{% endblock content %}
 
-    <script src="{% static '' %}tfjs/user_panel/team/chart.js"></script>
+{% block customjs %}
     <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
             integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <script>
+
+        document.querySelector('#employeeDetail .modal-body');
+        document.querySelectorAll('.detail-btn').forEach(btn => {
+            btn.addEventListener('click', e => {
+
+                {% comment %} document.querySelector('#employeeDetail  form .modal-body').insertAdjacentHTML('beforebegin',
+                `<input type="hidden" value="${btn.parentNode.parentNode.children[1].textContent}">`); {% endcomment %}
+
+                document.querySelector('#employeeDetail form .modal-body').insertAdjacentHTML('beforebegin',
+                    `<input type="hidden" id="apiId" value="${btn.id}">`);
+
+                fetch(`${location.origin}/api/bcs/team_permission/${btn.id}/`)
+                    .then(res => res.json())
+                    .then(data => {
+                        document.getElementById('designation').value = data.position;
+                        document.querySelectorAll('#privilege option').forEach(option => {
+                            if (option.value === data.privilege)
+                                option.selected = true;
+                            else
+                                option.selected = false;
+                        })
+                    });
+
+            });
+        });
+
+        const updatePrivilege = e => {
+            e.preventDefault();
+            const csrf_token = document.querySelector("#employeeDetail form input[name='csrfmiddlewaretoken']").value;
+            let apiId = document.getElementById('apiId').value;
+
+            let privileges = document.getElementById("privilege");
+            let selectedPrivilege = privileges.options[privileges.selectedIndex].value;
+            let designation = document.getElementById("designation").value;
+
+            fetch(`${location.origin}/api/bcs/team_permission/${apiId}/`, {
+                headers: {
+                    'Content-type': 'application/json',
+                    'X-CSRFToken': csrf_token,
+                },
+                method: 'PATCH',
+                body: JSON.stringify({position: designation, privilege: selectedPrivilege}),
+
+            })
+                .then(res => {
+                    //if(res.statusText === 'OK')
+                    location.reload();
+                });
+
+        }
+
+        let validateEmail = document.getElementById('validationEmail');
+        const submitForm = e => {
+            e.preventDefault();
+
+            if (document.querySelectorAll('#invite-form .email-container .email').length > 0) {
+                let allEmails = '';
+                document.querySelectorAll('#invite-form .email-container .email').forEach(email => {
+                    allEmails += ' ' + email.children[0].textContent.split(' ')[0];
+                })
+                document.querySelector('.all-emails').value = allEmails;
+                e.target.submit()
+            } else {
+                console.log(validateEmail)
+                validateEmail.style.display = 'block';
+            }
+
+
+        }
         let emailInput = document.querySelector('.team-statistics .email-input');
         document.querySelector('.team-statistics .email-container').addEventListener('click', () => {
             emailInput.focus();
         });
 
         function ValidateEmail(email) {
-            let validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+            let validRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return email.match(validRegex) ? true : false;
         }
 
@@ -275,6 +501,7 @@
             }
         });
         emailInput.addEventListener('keyup', (e) => {
+            validateEmail.style.display = 'none';
             if (e.key != 'Enter') {
                 if (ValidateEmail(e.target.value)) {
                     e.target.style.backgroundColor = '#28a745';
@@ -308,5 +535,45 @@
                 "order": []
             });
         });
+    </script>
+    <script>
+        function myFunction() {
+            var copyText = document.getElementById("myInput");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(copyText.value);
+
+            var tooltip = document.getElementById("myTooltip");
+            tooltip.innerHTML = "Copied";
+        }
+
+        function outFunc() {
+            var tooltip = document.getElementById("myTooltip");
+            tooltip.innerHTML = "Copy Business Key";
+        }
+    </script>
+    <script>
+        var alertPlaceholder = document.getElementById('liveAlertPlaceholder')
+
+        function alert(message, type) {
+            var wrapper = document.createElement('div')
+            wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+
+            alertPlaceholder.append(wrapper)
+        }
+
+        alert('{{ message }}', 'danger')
+    </script>
+    <script>
+        var alertPlaceholder = document.getElementById('liveAlertPlaceholderSuccess')
+
+        function alert(message, type) {
+            var wrapper = document.createElement('div')
+            wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+
+            alertPlaceholder.append(wrapper)
+        }
+
+        alert('{{ success }}', 'success')
     </script>
 {% endblock customjs %}

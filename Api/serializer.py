@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from Blog import models
 from BusinessSecurity import models as bcsmodels
+from Academy import models as coursemodels
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -59,14 +60,27 @@ class BlogFilterSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class FeatureSubscriptionsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = bcsmodels.SubscriptionFeatures
+        fields = '__all__'
+
+
 class PackageListSerializer(serializers.ModelSerializer):
-    feature_subscription = serializers.StringRelatedField(many=True)
+    # feature_subscription = serializers.StringRelatedField(many=True)
+    feature_subscription = FeatureSubscriptionsSerializer(many=True)
     service_name = serializers.CharField(source='service_id.service_title')
+    product_id = serializers.CharField(source='service_id.product_id')
 
     class Meta:
         model = bcsmodels.SubscriptionBasedPackage
-        fields = ['id', 'service_id', 'service_name', 'package_name', 'servers', 'websites', 'workstations', 'duration',
-                  'duration_type', 'feature_subscription', 'price', ]
+        fields = '__all__'
+
+
+class SubscriptionServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = bcsmodels.SubscriptionServices
+        fields = '__all__'
 
 
 class ServiceSerializer(serializers.ModelSerializer):
@@ -108,3 +122,127 @@ class UserSubServiceOrderSerializer(serializers.ModelSerializer):
         model = bcsmodels.Order
         fields = '__all__'
         # depth = 2
+
+
+class TeamPermissionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = bcsmodels.UsersBusiness
+        fields = ['position', 'privilege']
+
+
+class ServiceTFSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = bcsmodels.Service
+        fields = ['is_subscription_based']
+
+
+class BCSAdminDashboardChartSerializer(serializers.ModelSerializer):
+    service = ServiceTFSerializer(many=False, read_only=True)
+
+    class Meta:
+        model = bcsmodels.Order
+        fields = '__all__'
+        depth = 1
+
+    def to_representation(self, instance):
+        data = super(BCSAdminDashboardChartSerializer, self).to_representation(instance)
+        user = data.get('user')
+        user.pop('password')
+        return data
+
+
+class SubServiceInputFieldSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = bcsmodels.SubServiceInput
+        fields = ['inputfield']
+        depth = 1
+
+
+class UserSubserviceInputSerializer(serializers.ModelSerializer):
+    question = SubServiceInputFieldSerializer(source='inputfield')
+
+    class Meta:
+        model = bcsmodels.UserSubserviceInput
+        fields = ['id', 'question', 'inputinfo']
+        depth = 2
+
+
+class SubscriptionSerializer(serializers.ModelSerializer):
+    order_details = UserSubserviceInputSerializer(source='subserviceinput', many=True)
+    order_price = serializers.CharField(source='orderprice_order.price')
+
+    class Meta:
+        model = bcsmodels.Order
+        fields = ['id', 'service', 'order_details', 'order_price', 'order_status']
+        depth = 2
+
+    def to_representation(self, instance):
+        data = super(SubscriptionSerializer, self).to_representation(instance)
+        service = data.get('service')
+        service.pop('category_choice')
+        service.pop('service_icon')
+        service.pop('short_description')
+        service.pop('service_header')
+        service.pop('service_body')
+        service.pop('service_footer')
+        service.pop('has_sub_service')
+        service.pop('is_subscription_based')
+        service.pop('total_customer')
+        return data
+
+
+class SubscriptionOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = bcsmodels.SubscriptionOrder
+        fields = '__all__'
+
+
+class PCSCoursePurchaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = coursemodels.CoursePurchase
+        fields = '__all__'
+        extra_kwargs = {
+            'user': {'read_only': True}
+        }
+
+
+class BCSCourseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = coursemodels.BCSCourse
+        fields = '__all__'
+
+
+class BCSCourseFeatureSubscriptionsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = coursemodels.PackageFeatures
+        fields = '__all__'
+
+
+class BCSCoursePackageListSerializer(serializers.ModelSerializer):
+    # packagefeature_coursepackage = serializers.StringRelatedField(many=True)
+    packagefeature_coursepackage = BCSCourseFeatureSubscriptionsSerializer(many=True)
+    course = serializers.CharField(source='service_id.course_name')
+
+    # product_id = serializers.CharField(source='service_id.product_id')
+
+    class Meta:
+        model = coursemodels.CoursePackage
+        fields = '__all__'
+
+
+class CollectiveNotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = bcsmodels.Notification
+        fields = '__all__'
+
+
+class IndividualSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.User
+        fields = ['email']
+
+
+class BusinessSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = bcsmodels.Business
+        fields = ['company_name']

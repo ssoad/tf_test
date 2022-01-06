@@ -1,5 +1,12 @@
-{% extends 'base/bcs_admin_base.html' %} {% load static %} {% load my_filter %} {% load hosts %} {% block title %}
-    Services {% endblock title %} {% block content %}
+{% extends 'base/bcs_admin_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load my_filter %}
+{% load hosts %}
+{% block title %}
+    Services
+{% endblock title %}
+{% block content %}
     <style>
         form label{
             text-transform: capitalize;
@@ -646,13 +653,13 @@
                         let list = '<div class="col-md-4 sub-services shadow"> <h5 class="fw-bold">Choose your services:</h5>';
                         let form = `<form method="POST" onsubmit="return check_validity();" enctype="multipart/form-data">{% csrf_token %}
                         <input type='hidden' id='service_name' value='' name='service_name'/>
-                        <input type='hidden' id='customer' value='' name='customer'/>`;
+                        <input type='hidden' id='customer' value='' name='customer'/>{{ order_price_form|crispy }}`;
                         data.forEach((option, index) => {
                             list += `<div class="form-check">
                     <input class="form-check-input sub-services-check" type="checkbox" name="" id="sub-${option.id}" data-index="${index}" data-title="${option.title}" data-id="${option.id}">
                     <label class="form-check-label" for="sub-${option.id}">${index + 1}. ${option.title}</label>
                 </div>`;
-                            previewForm.innerHTML = '<div class="row mx-0">' + list + '</div>' + '<div class="col-md-8 d-none form-container"><h5 class="fw-bold text-center border-bottom border-gray p-2">Please Provide Necessary Informations:</h5>' + form + '<div class="information-form"></div><button type="submit" class="submit-btn btn btn-navy mt-3">Submit</button></form> </div>';
+                            previewForm.innerHTML = '<div class="row mx-0">' + list + '</div>' + '<div class="col-md-8 d-none form-container"><h5 class="fw-bold text-center border-bottom border-gray p-2">Please Provide Necessary Informations:</h5>' + form + '<div class="information-form"></div><button type="submit" class="submit-btn btn bg-navy mt-3">Submit</button></form> </div>';
 
                         });
 

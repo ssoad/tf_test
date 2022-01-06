@@ -6,11 +6,9 @@
     <main>
         <div class="d-flex justify-content-between align-items-center pb-5">
             <h3>{{ message }} List</h3>
-            {% if not admin %}
-                {% if message == 'Quotations' %}
+                {% if message == 'Orders' %}
                     <a href="{% host_url 'bcs_admin_new_order' %}" class="btn btn-primary">Create New Order</a>
                 {% endif %}
-            {% endif %}
 
         </div>
 
@@ -37,6 +35,10 @@
                         <td><p class="badge bg-primary">{{ order.order_status|capitalize }}</p></td>
                     {% elif order.order_status == 'assigned' %}
                         <td><p class="badge bg-secondary">{{ order.order_status|capitalize }}</p></td>
+                    {% elif order.order_status == 'agreed_to_quotation' %}
+                        <td><p class="badge bg-success">{{ order.order_status|capitalize }}</p></td>
+                    {% elif order.order_status == 'agreed_to_nda_nca' %}
+                        <td><p class="badge bg-success">{{ order.order_status|capitalize }}</p></td>
                     {% elif order.order_status == 'attending' %}
                         <td><p class="badge bg-warning text-dark">{{ order.order_status|capitalize }}</p></td>
                     {% elif order.order_status == 'on_progress' %}

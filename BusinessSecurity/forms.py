@@ -1,7 +1,9 @@
 from django import forms
 from BusinessSecurity import models
-from Academy.models import Course, duration, Section, Content
+from Academy.models import Course, duration, Section, Content, PackageFeatures, CoursePackage, CoursePurchase
 from django.db.models import Q
+from phonenumber_field.formfields import PhoneNumberField
+from phonenumber_field.widgets import PhoneNumberPrefixWidget
 
 
 class AddServiceCategoryForm(forms.ModelForm):
@@ -13,7 +15,7 @@ class AddServiceCategoryForm(forms.ModelForm):
 
 class AddServiceForm(forms.ModelForm):
     category = forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-select'}),
-                                      queryset=models.ServiceCategory.objects.all())
+                                      queryset=models.ServiceCategory.objects.filter(category_choice='bcs'))
 
     # assign_to = forms.ModelChoiceField(widget=forms.SelectMultiple(attrs={'class': 'form-select js-example-basic-multiple'}), queryset=models.User.objects.filter(is_sales=True))
 
@@ -21,8 +23,22 @@ class AddServiceForm(forms.ModelForm):
 
     class Meta:
         model = models.Service
-        fields = ['category', 'service_icon', 'service_title', 'short_description',
-                  'is_subscription_based', 'service_header', 'service_body', 'service_footer', ]
+        fields = ['category', 'service_icon', 'service_title', 'short_description', 'service_header', 'service_body',
+                  'service_footer', ]
+
+
+class AddSubscriptionServiceForm(forms.ModelForm):
+    category = forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-select'}),
+                                      queryset=models.ServiceCategory.objects.filter(category_choice='bcs'))
+
+    # assign_to = forms.ModelChoiceField(widget=forms.SelectMultiple(attrs={'class': 'form-select js-example-basic-multiple'}), queryset=models.User.objects.filter(is_sales=True))
+
+    # service_icon = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = models.SubscriptionServices
+        fields = ['category', 'service_icon', 'service_title', 'short_description', 'service_header', 'service_body',
+                  'service_footer', ]
 
 
 class AddForm(forms.ModelForm):
@@ -32,8 +48,9 @@ class AddForm(forms.ModelForm):
 
 
 class AddSubServiceForm(forms.ModelForm):
-    service = forms.ModelChoiceField(queryset=models.Service.objects.filter(has_sub_service=True),
-                                     widget=forms.Select(attrs={'class': 'form-select'}))
+    service = forms.ModelChoiceField(
+        queryset=models.Service.objects.filter(has_sub_service=True, category_choice='bcs'),
+        widget=forms.Select(attrs={'class': 'form-select'}))
 
     class Meta:
         model = models.SubService
@@ -54,16 +71,17 @@ class CreateBusinessForm(forms.ModelForm):
     class Meta:
         model = models.Business
         fields = '__all__'
-        exclude = ['unique_id', ]
+        exclude = ['unique_id', 'company_logo']
 
 
 class AddPackageForm(forms.ModelForm):
-    service_id = forms.ModelChoiceField(
-        queryset=models.Service.objects.filter(is_subscription_based=True))
+    # service_id = forms.ModelChoiceField(
+    #     queryset=models.SubscriptionServices.objects.filter(category_choice='bcs'))
 
     class Meta:
         model = models.SubscriptionBasedPackage
         fields = '__all__'
+        exclude = ['package_id']
 
 
 class AddPackageFeatureForm(forms.ModelForm):
@@ -76,8 +94,8 @@ class AddPackageFeatureForm(forms.ModelForm):
 
 class AddIndividualPackageFeatureForm(forms.ModelForm):
     class Meta:
-        model = models.SubscriptionFeatures
-        fields = ['feature_name', ]
+        model = PackageFeatures
+        fields = ['feature_name', 'feature']
 
 
 class EventCreateForm(forms.ModelForm):
@@ -93,11 +111,19 @@ class EventCreateForm(forms.ModelForm):
 
 class OrderPriceForm(forms.ModelForm):
     class Meta:
-        model = models.Order
-        fields = ['price', 'payment_method']
+        model = models.OrderPrice
+        fields = ['price', 'currency', 'payment_method']
         widgets = {
+            'currency': forms.Select(attrs={'class': 'form-select'}),
             'payment_method': forms.Select(attrs={'class': 'form-select'})
         }
+
+
+class QuotationForm(forms.ModelForm):
+    class Meta:
+        model = models.Quotation
+        # fields = '__all__'
+        exclude = ['category_choice', 'order', 'agree_to_quotation', 'agree_to_nda_nca']
 
 
 class OrderAssignForm(forms.ModelForm):
@@ -119,7 +145,7 @@ class TicketCreateForm(forms.ModelForm):
         model = models.Ticket
         fields = ['ticket_title', 'ticket_category',
                   'ticket_description', 'ticket_attachment']
-        # exclude = ['ticket_type', 'ticket_status']
+        # exclude = ['category_choice', 'ticket_status']
 
 
 class TicketCommentForm(forms.ModelForm):
@@ -151,3 +177,11 @@ class AssignToServiceForm(forms.ModelForm):
         widgets = {
             'service': forms.SelectMultiple(attrs={'class': 'js-example-basic-multiple'})
         }
+
+
+class NotificationForm(forms.ModelForm):
+    # category_choice = forms.ChoiceField(label='Select Target Users', choices=models.category_choice)
+
+    class Meta:
+        model = models.Notification
+        fields = '__all__'

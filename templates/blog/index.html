@@ -62,14 +62,28 @@
                     <h5 class="title">{{post.title}}</h5>
                 </a>
                 <div class="position-relative">
-                    <span class=" p-0 me-5 text-green ">
+                    <span class=" p-0 me-3 text-green ">
                         <i class=" bi bi-calendar "></i>
                         {{post.date|date}}
                     </span>
-                    <span class="p-0 me-5 text-green" title="Reading Time">
+                    <span class="p-0 me-3 text-green" title="Reading Time">
                         <i class="bi bi-stopwatch"></i>
                         {{post.reading_time}}
                     </span>
+                    
+                            {% if post.id not in reading_lists %}
+                            <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}"
+                                class="p-0 me-3 text-green" title="Add Reading List">
+                                <i class="bi bi-plus-circle"></i>
+                                Add
+                            </a>
+                        {% else %}
+                        <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}"
+                            class="p-0 me-3 text-danger" title="Remove From Reading List">
+                            <i class="bi bi-dash-circle"></i>
+                            Remove
+                        </a>
+                        {% endif %}
                 </div>
                 <p class="mt-2">{{post.short_description}}</p>
             </div>
@@ -77,13 +91,13 @@
         </div>
         <div class="col-md-6 pe-md-0">
             {% for post in case_studies %} {% if forloop.counter != 1 %}
-            <div class="row {% if forloop.counter != 2 %}mt-3{% endif %} mx-0 bg-lightnavy">
-                <div class="col-12 col-md-5 p-2 d-flex align-items-center" data-tootik="{{post.title}}" data-tootik-conf="top">
+            <div class="row {% if forloop.counter != 2 %}mt-3{% endif %} mx-0 bg-lightnavy" data-tootik="{{post.title}}" data-tootik-conf="top">
+                <div class="col-12 col-md-5 p-2 d-flex align-items-center">
                     <img src="{{post.feature_image.url}}" class="img-fluid " alt="... ">
                 </div>
                 <div class="col-12 col-md-7 py-2 ps-md-0 pe-1 d-flex align-items-center">
                     <div>
-                        <a href="{% host_url 'case_studies' host 'blog' %}{{post.post_url}}">
+                        <a href="{% host_url 'articles' host 'blog' %}{{post.post_url}}">
                             <h6 class="fw-bold">{{post.title|truncatechars:68}}</h6>
                         </a>
                         <div class="info-area">
@@ -95,8 +109,24 @@
                                 <i class="bi bi-stopwatch"></i>
                                 {{post.reading_time}}
                             </span>
+                                            
+                                {% if post.id not in reading_lists %}
+                                <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}"
+                                    class="p-0 me-3 text-green" title="Add Reading List">
+                                    <i class="bi bi-plus-circle"></i>
+                                    Add
+                                </a>
+                            {% else %}
+                            <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}"
+                                class="p-0 me-3 text-danger" title="Remove From Reading List">
+                                <i class="bi bi-dash-circle"></i>
+                                Remove
+                            </a>
+                            {% endif %}
                             
-                        <p class="mt-1 mb-0 fs-7 lh-sm">{{post.short_description|truncatechars:92}}</p>
+                        </div>
+                        <p class="mt-1 mb-0 fs-7 lh-sm">{{post.short_description|truncatechars:92}}
+                        </p>
                     </div>
                 </div>
             </div>
@@ -129,6 +159,20 @@
                         <i class="bi bi-stopwatch"></i>
                         {{post.reading_time}}
                     </span>
+
+                {% if post.id not in reading_lists %}
+                    <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}"
+                        class="p-0 me-3 text-green" title="Add Reading List">
+                        <i class="bi bi-plus-circle"></i>
+                        Add
+                    </a>
+                {% else %}
+                <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}"
+                    class="p-0 me-3 text-danger" title="Remove From Reading List">
+                    <i class="bi bi-dash-circle"></i>
+                    Remove
+                </a>
+                {% endif %}
                     
                 </div>
                 <p class="mt-2">{{post.short_description}}</p>
@@ -155,6 +199,20 @@
                                 <i class="bi bi-stopwatch"></i>
                                 {{post.reading_time}}
                             </span>
+                                            
+                                {% if post.id not in reading_lists %}
+                                <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}"
+                                    class="p-0 me-3 text-green" title="Add Reading List">
+                                    <i class="bi bi-plus-circle"></i>
+                                    Add
+                                </a>
+                            {% else %}
+                            <a href="{% host_url 'add_to_reading_list' host 'blog' %}{{ post.id }}"
+                                class="p-0 me-3 text-danger" title="Remove From Reading List">
+                                <i class="bi bi-dash-circle"></i>
+                                Remove
+                            </a>
+                            {% endif %}
                             
                         </div>
                         <p class="mt-1 mb-0 fs-7 lh-sm">{{post.short_description|truncatechars:92}}
@@ -167,36 +225,6 @@
     </div>
 </section>
 
-<!-- get updates form  -->
-<h5 class=" get-update-heading ">
-    <i class=" bi bi-envelope px-2 "></i>
-</h5>
-<section class=" get-updates mb-5 shadow-sm py-3 bg-gray rounded ">
-    <div class=" row mx-0 align-items-center ">
-        <div class=" col-md-5 ">
-            <h4 class=" fw-bold ">Get Updates</h4>
-            <h5 class=" text-secondary ">Sign up to receive the latest news</h5>
-
-        </div>
-        <div class=" col-md-7 ">
-            <div class=" get-updates ">
-                <form class=" row ">
-                    <div class=" col-md-auto ">
-                        <label for=" name ">Name</label>
-                        <input type=" text " class=" form-control " id=" name " placeholder=" Enter your name ">
-                    </div>
-                    <div class=" col-md-auto ">
-                        <label for=" email ">Email Address</label>
-                        <input type=" email " class=" form-control " id=" email " placeholder=" Enter your email address ">
-                    </div>
-                    <div class=" col-auto d-flex align-items-end mt-3 mt-lg-0 ">
-                        <button type=" submit " class=" btn btn-navy py-2 ">Subscribe <i
-                                class=" bi bi-arrow-right "></i></button>
-                    </div>
-                </form>
-            </div>
-        </div>
-</section>
 
 {% endblock content %} {% block customjs %}
 <script src=" https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

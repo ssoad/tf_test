@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, HttpResponseRedirect, reverse, Ht
 from Account import models, forms
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
 
 
 # Create your views here.
@@ -65,24 +66,50 @@ def profileView(request):
     def userFunc():
         form = forms.InterestForm(instance=interests)
         if not current_user.phone_number \
+                or not current_user.address_one \
+                or not current_user.city \
+                or not current_user.zipcode \
                 or not current_user.country \
                 or not current_user.birth_date \
                 or not current_user.gender:
 
-            form = forms.CountryPhoneForm(instance=current_user)
-            message = 'Fill your information below.'
-            success = 'Your Email is verified. Please Provide These Information:'
-            if request.POST:
-                form = forms.CountryPhoneForm(request.POST, instance=current_user)
-                if form.is_valid():
-                    form.save()
-                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
-            context = {
-                'form': form,
-                'message': message,
-                'success': success,
-            }
-            return render(request, 'account/profile-info-add.html', context)
+            if not current_user.phone_number \
+                    or not current_user.country \
+                    or not current_user.birth_date \
+                    or not current_user.gender:
+                form = forms.CountryPhoneForm(instance=current_user)
+                message = 'Fill your information below.'
+                success = 'Please provide these information:'
+                if request.POST:
+                    form = forms.CountryPhoneForm(request.POST, instance=current_user)
+                    if form.is_valid():
+                        form.save()
+                        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                context = {
+                    'form': form,
+                    'message': message,
+                    'success': success,
+                    'title': 'Basic Info',
+                }
+                return render(request, 'account/profile-info-add.html', context)
+            elif not current_user.address_one \
+                    or not current_user.city \
+                    or not current_user.zipcode:
+                form = forms.AddressForm(instance=current_user)
+                message = 'Fill your information below.'
+                success = 'Please provide these information:'
+                if request.POST:
+                    form = forms.AddressForm(request.POST, instance=current_user)
+                    if form.is_valid():
+                        form.save()
+                        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                context = {
+                    'form': form,
+                    'message': message,
+                    'success': success,
+                    'title': 'Basic Info',
+                }
+                return render(request, 'account/profile-info-add.html', context)
         else:
             if request.method == 'POST':
                 form = forms.InterestForm(request.POST, instance=interests)
@@ -101,6 +128,7 @@ def profileView(request):
                 message = 'Email Unverified. Please Check your Email Inbox/Spam Folder for Verification Link'
                 context = {
                     'message': message,
+                    'title': 'Confirm Email',
                 }
                 return render(request, 'account/profile-info-add.html', context)
             else:
@@ -171,6 +199,8 @@ def profileView(request):
 def profileEdit(request):
     info_forms = forms.ProfileInfoForm(instance=request.user)
     img_forms = forms.ProfilePictureForm(instance=request.user)
+    interests = models.Interest.objects.get(user=request.user)
+    int_forms = forms.InterestForm(instance=interests)
     if request.method == 'POST':
         if 'info-btn' in request.POST:
             info_forms = forms.ProfileInfoForm(request.POST, instance=request.user)
@@ -182,11 +212,32 @@ def profileEdit(request):
             if img_forms.is_valid():
                 img_forms.save()
                 return redirect('user_profile')
+        elif 'int-btn' in request.POST:
+            int_forms = forms.InterestForm(request.POST, instance=interests)
+            if int_forms.is_valid():
+                int_forms.save()
+                return redirect('user_profile')
     context = {
         'info_forms': info_forms,
         'img_forms': img_forms,
+        'int_forms': int_forms,
     }
     return render(request, 'account/profile_edit.html', context)
+
+
+@login_required
+def passwordChangeView(request):
+    form = PasswordChangeForm(user=request.user)
+    if request.method == 'POST':
+        form = PasswordChangeForm(data=request.POST, user=request.user)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('user_profile'))
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'account/change_password.html', context)
 
 
 @login_required

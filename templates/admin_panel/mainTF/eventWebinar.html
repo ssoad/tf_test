@@ -12,27 +12,35 @@
     <section class="event-count mb-5">
         <div class="container">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="event-info bg-primary-25">
-                        <h3>Active Events</h3>
+                        <h3>Total Events</h3>
                         <p class="display-6 fw-bolder">
-                            <i class="bi bi-calendar2-check"></i> 20
+                            <i class="bi bi-calendar2-check"></i> {{ events.count }}
                         </p>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="event-info bg-primary-50">
                         <h3>Previous Events</h3>
                         <p class="display-6 fw-bolder">
-                            <i class="bi bi-calendar2-check"></i> 15
+                            <i class="bi bi-calendar2-check"></i> {{ previous.count }}
                         </p>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="event-info bg-saphire">
                         <h3>Upcoming Events</h3>
                         <p class="display-6 fw-bolder">
-                            <i class="bi bi-calendar2-check"></i> 50
+                            <i class="bi bi-calendar2-check"></i> {{ active.count }}
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="event-info bg-saphire">
+                        <h3>Canceled Events</h3>
+                        <p class="display-6 fw-bolder">
+                            <i class="bi bi-calendar2-check"></i> {{ canceled.count }}
                         </p>
                     </div>
                 </div>
@@ -64,23 +72,23 @@
                         </button>
                     </div>
                 </div>
-                <div class="align-self-center filter-by">
+                {% comment %}<div class="align-self-center filter-by">
                     <select name="" id="filter" style="padding: .5rem 1rem;">
                         <option value="" class="disabled" disabled>Filter</option>
                         <option value="status">By Status</option>
                         <option value="medium">By Medium</option>
                     </select>
-                </div>
+                </div>{% endcomment %}
                 <div class=" align-self-center addEvent">
                     <button class="btn createEventBtn bg-saphire rounded-0 text-white" data-bs-toggle="modal"
                             data-bs-target="#exampleModal">
                         Add new event <i class="bi bi-plus-circle-fill"></i>
                     </button>
                 </div>
-                <div class="date-filter">
+                {% comment %}<div class="align-self-center date-filter">
                     <!-- date picker -->
                     <input type="text" id="daterange" class="drp-selected" value="Select date" name="date"/>
-                </div>
+                </div>{% endcomment %}
             </div>
             <div class="row">
                 <div class="col-lg-12">

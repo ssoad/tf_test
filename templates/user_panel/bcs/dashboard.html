@@ -1,18 +1,20 @@
-{% extends 'base/bcs_user_base.html' %} {% load static %}
+{% extends 'base/bcs_user_base.html' %}
+{% load static %}
 {% load my_filter %}
-{% load hosts %} {% block title %} Dashboard {% endblock title %}
+{% load hosts %}
+{% block title %} Dashboard {% endblock title %}
 {% block headercss %}
     <style>
-    tbody, td, tfoot, th, thead, tr {
-        border-style: none !important;
-    }
+        tbody, td, tfoot, th, thead, tr {
+            border-style: none !important;
+        }
     </style>
- {% endblock headercss %}
+{% endblock headercss %}
 {% block content %}
     <div class="dashboard-container overflow-hidden ps-md-2">
         <section class="dashboard-heading">
             <h3 class="fw-bold">Hello, {{ user.full_name }}</h3>
-            <h4>This is what we got for you today</h4>
+            <h4>This is what we got for your company {{ user.business_user.business }} today</h4>
         </section>
         <section class="orders mt-4">
             <h4 class="fw-bold border-bottom border-gray pb-14p mb-4">My Last Two Orders</h4>
@@ -98,7 +100,7 @@
                                                 <tr>
                                                     {% ifchanged %}
                                                         <td>{{ service.inputfield.subservice }}</td>
-                                                        {% else %}
+                                                    {% else %}
                                                         <td class="invisible">{{ service.inputfield.subservice }}</td>
                                                     {% endifchanged %}
                                                     <td>
@@ -125,7 +127,119 @@
                 {% endif %}
 
             </div>
+        </section>
 
+    <section class="orders mt-4">
+            <h4 class="fw-bold border-bottom border-gray pb-14p mb-4">My Last Two Subscriptions</h4>
+            <div class="row gy-3 gx-3 d-flex justify-content-between align-items-center mx-0">
+                {% if orders.exists %}
+                    {% for order in orders %}
+                        <div class="col-sm-12 col-w-45 bg-white p-2 rounded-3 shadow p-3">
+                            <h5 class="fw-bold">{{ order.service.service_title }}</h5>
+                            <div class="row d-flex justify-content-center align-items-center">
+                                <div class="col-md-8">
+                                    <h6 class="fw-light">Purchase Date: <span class="fw-bold fs-6">&nbsp;
+                                        {{ order.order_date }}</span>
+                                    </h6>
+                                    <h6 class="fw-light d-flex justify-content-between mb-0">
+                                        <button class="btn view-btn px-0" data-bs-toggle="modal"
+                                                data-bs-target="#invoiceModal-{{ order.id }}">View Invoice
+                                        </button>
+                                        <div class="d-block d-md-none bg-navy btn-sm text-white px-3 py-2">
+                                            {{ order.order_status|capitalize }}
+                                        </div>
+                                    </h6>
+                                </div>
+                                <div class="d-none d-md-flex col-4 justify-content-end align-items-center">
+                                    <div class="bg-navy btn-sm text-white px-3 py-2">{{ order.order_status|capitalize }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--Modal-->
+                        <div class="modal fade" id="invoiceModal-{{ order.id }}" tabindex="-1"
+                             aria-labelledby="exampleModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title fw-bold" id="exampleModalLabel">Invoice</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body invoice" id="invoice">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <h6>TechForing Ltd.</h6>
+                                                <h6>Tel.: 01XXXXXXXXX</h6>
+                                            </div>
+                                            <div>
+                                                <button onclick="generatePDF(this);"
+                                                        class="invoice-btn btn btn-outline-danger py-1 px-3">Download
+                                                    Invoice
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <!-- <h4 class="mt-3 text-center fw-bold">Invoice</h4> -->
+                                        <div class="mt-5 d-flex justify-content-between">
+                                            <div class="user-info">
+                                                <h6>To</h6>
+                                                <h6>{{ order.user.business_user.business.company_name }}</h6>
+                                                <h6>Tel.: {{ order.user.business_user.business.phone_number }}</h6>
+                                            </div>
+                                            <div class="invoice-info">
+                                                <h6>Invoice #{{ order.id }}</h6>
+                                                <h6><span class="fw-bold">Issue Date:</span> {{ order.order_date|date }}
+                                                </h6>
+                                                <h6><span class="fw-bold">Issue Time:</span> {{ order.order_date|time }}
+                                                </h6>
+                                                <h6><span
+                                                        class="fw-bold">Payment Method:</span> {{ order.payment_method|capitalize }}
+                                                </h6>
+                                            </div>
+                                        </div>
+
+                                        <table class="mt-2 table border border-dark text-center">
+                                            <thead>
+                                            <tr>
+                                                <th>Item</th>
+                                                <th>Description</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for service in order.subserviceinput.all %}
+
+                                                <tr>
+                                                    {% ifchanged %}
+                                                        <td>{{ service.inputfield.subservice }}</td>
+                                                    {% else %}
+                                                        <td class="invisible">{{ service.inputfield.subservice }}</td>
+                                                    {% endifchanged %}
+                                                    <td>
+                                                        {{ service.inputfield.inputfield.placeholder }}: {{ service.inputinfo }}
+                                                    </td>
+                                                </tr>
+
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                        <h6 class="text-end">Total: ${{ order.price }}</h6>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn bg-navy" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class='text-center py-4'>No Subscription Found
+                        <a class="btn btn-outline-navy btn-sm"
+                           href="{% host_url 'bcs_user_services' %}">Get One</a></div>
+                {% endif %}
+
+            </div>
         </section>
 
         <!-- reading list  -->
@@ -147,6 +261,7 @@
 
                         <div class="col-6 col-lg-2 d-flex justify-content-center align-items-center">
                             <a href="
+
 
 
 
@@ -179,6 +294,29 @@
 
         </section>
 
+        <section class="notification mt-5">
+            <h4 class="fw-bold border-bottom border-gray pb-3 mb-4">Latest Notifications</h4>
+            {% if notifications.exists %}
+                <div class="notifications-container p-2">
+                {% for notification in notifications %}
+                <div class="row notification mt-2">
+                    <div class="row py-2 align-items-center">
+                        <div class="col-2 icon icon-bg-blue">
+                            <i class="icofont-bell-alt"></i>
+                        </div>
+                        <div class="col-10">
+                            <h6>{{ notification.notification }} </h6>
+                            <i class="icofont-clock-time"></i> {{ notification.notification_time }}
+                        </div>
+                    </div>
+            </div>
+                {% endfor %}
+            {% else %}
+                <div class='text-center py-4'>No Notification Found.</div>
+            {% endif %}
+        </section>
+{% comment %}
+
         <section class="subscription mt-5 mb-3">
             <h3 class="fw-bold border-bottom border-gray pb-3 mb-4">Subscription</h3>
             <div class="row gy-3 gx-3 d-flex justify-content-between align-items-center mx-0">
@@ -205,60 +343,66 @@
                 </div>
             </div>
         </section>
+{% endcomment %}
 
         <section class="events mt-5 mb-3">
             <h3 class="fw-bold border-bottom border-gray pb-3 mb-4">Upcoming Events</h3>
             <div class="row mx-0 gy-3 gy-lg-0 justify-content-between">
-                {% for event in events %}
-                    <div class="col-12  px-0 px-md-2">
-                        <div class="card shadow rounded-3">
-                            <div class="row g-0">
-                                <div class="col-md-6">
-                                    <img src="{% static '' %}tfimg/user_panel/webinar.jpg"
-                                         class="img-fluid rounded-start h-100" alt="...">
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="card-body">
-                                        <h5 class="card-title fw-bold fs-5x">{{ event.event_name }}
-                                        </h5>
-                                        <p class="card-text lh-sm">{{ event.event_description|safe }}
-                                        </p>
-                                        <table class="table">
-                                            <tbody>
-                                            <tr>
-                                                <td class="fw-bold">Speaker:</td>
-                                                <td class="ps-2">{{ event.speaker }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <i class="icofont-ui-calendar"></i>
-                                                    <span class="fw-bold">Date:</span>
-                                                </td>
-                                                <td class="ps-2">{{ event.date_field }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <i class="icofont-clock-time"></i>
-                                                    <span class="fw-bold">Time:</span>
-                                                </td>
-                                                <td class="ps-2">{{ event.time_field }}</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                        {% if event.id not in registered_event %}
+                {% if events.exists %}
+                    {% for event in events %}
+                        <div class="col-12  px-0 px-md-2">
+                            <div class="card shadow rounded-3">
+                                <div class="row g-0">
+                                    <div class="col-md-6">
+                                        <img src="{% static '' %}tfimg/user_panel/webinar.jpg"
+                                             class="img-fluid rounded-start h-100" alt="...">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card-body">
+                                            <h5 class="card-title fw-bold fs-5x">{{ event.event_name }}
+                                            </h5>
+                                            <p class="card-text lh-sm">{{ event.event_description|safe }}
+                                            </p>
+                                            <table class="table">
+                                                <tbody>
+                                                <tr>
+                                                    <td class="fw-bold">Speaker:</td>
+                                                    <td class="ps-2">{{ event.speaker }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <i class="icofont-ui-calendar"></i>
+                                                        <span class="fw-bold">Date:</span>
+                                                    </td>
+                                                    <td class="ps-2">{{ event.date_field }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <i class="icofont-clock-time"></i>
+                                                        <span class="fw-bold">Time:</span>
+                                                    </td>
+                                                    <td class="ps-2">{{ event.time_field }}</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                            {% if event.id not in registered_event %}
 
-                                            <a href="{% host_url 'bcs_user_event_register' id=event.id %}"
-                                               class="d-block mx-auto btn btn-sm bg-navy text-white px-4 py-1 mt-2">Register</a>
-                                        {% else %}
-                                            <a href="{% host_url 'bcs_user_event_register' id=event.id %}"
-                                               class="d-block mx-auto btn btn-sm bg-navy text-white px-4 py-1 mt-2">Unregister</a>
-                                        {% endif %}
+                                                <a href="{% host_url 'bcs_user_event_register' id=event.id %}"
+                                                   class="d-block mx-auto btn btn-sm bg-navy text-white px-4 py-1 mt-2">Register</a>
+                                            {% else %}
+                                                <a href="{% host_url 'bcs_user_event_register' id=event.id %}"
+                                                   class="d-block mx-auto btn btn-sm bg-navy text-white px-4 py-1 mt-2">Unregister</a>
+                                            {% endif %}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                {% else %}
+                    <div class='text-center py-4'>No Event Found</div>
+                {% endif %}
+
             </div>
         </section>
     </div>
@@ -316,12 +460,13 @@
 
         let activeState = 0;
 
-        updateActiveRow('right');
-        next.addEventListener('click', () => {
+        if(document.querySelectorAll('.reading-list .row').length > 0)
+            updateActiveRow('right');
+        next?.addEventListener('click', () => {
             activeState += 2;
             updateActiveRow('right');
         });
-        prev.addEventListener('click', () => {
+        prev?.addEventListener('click', () => {
             activeState -= 2;
             updateActiveRow('left');
         });

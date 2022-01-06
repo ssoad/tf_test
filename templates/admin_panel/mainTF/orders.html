@@ -14,6 +14,7 @@
                 <th>service</th>
                 <th>user</th>
                 <th>status</th>
+                <th>type</th>
                 <th>assigned to</th>
                 <th>View</th>
             </tr>
@@ -23,7 +24,7 @@
                 <tr>
                     <td>{{ forloop.counter }}</td>
                     <td>{{ order.id }}</td>
-                    <td>{{ order.service }}</td>
+                    <td>{{ order.service.service_title }}</td>
                     <td>{{ order.user }}</td>
                     {% if order.order_status == 'new' %}
                         <td><p class="badge bg-primary">{{ order.order_status|capitalize }}</p></td>
@@ -38,6 +39,7 @@
                     {% elif order.order_status == 'canceled' %}
                         <td><p class="badge bg-danger">{{ order.order_status|capitalize }}</p></td>
                     {% endif %}
+                    <td>{{ order.service.category_choice|upper }}</td>
                     <td>
                         {% if order.orderstaff_order.count < 1 %}
                             None
