@@ -3,11 +3,14 @@ $(document).ready(function () {
     $("#notification-table").DataTable({
         scrollY: "210px",
         scrollCollapse: true,
-        paging: false,
-        searching: false,
         info: false,
+        "order": [],
         "initComplete": function(settings, json) {
             $('body').find('.dataTables_scrollBody').addClass("scrollbar");
+        },
+        oLanguage: {
+            sSearch: `<i class="bi bi-search"></i>`,
+            sSearchPlaceholder: "Search...",
         },
     });
 });
