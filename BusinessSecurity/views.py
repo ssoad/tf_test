@@ -810,7 +810,7 @@ def userNotificationsView(request):
             return HttpResponse("You don't have permission to view this page")
         else:
             notifications = models.Notification.objects.filter(
-                category_choice='bcs').order_by('-notification_time')
+                Q(category_choice='bcs') | Q(category_choice__iexact=request.user.business_user.business.company_name)).order_by('-notification_time')
             context = {
                 'notifications': notifications
             }
@@ -1070,6 +1070,7 @@ def mainAdminOrdersDetailView(request, id):
 def mainAdminNotificationView(request):
     form = forms.NotificationForm()
     notifications = models.Notification.objects.all().order_by('-notification_time')
+
     if 'instant-btn' in request.POST:
         form = forms.NotificationForm(request.POST)
         if form.is_valid():

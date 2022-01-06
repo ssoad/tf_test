@@ -426,7 +426,7 @@ def userEventsView(request):
 @login_required
 def userNotificationsView(request):
     notifications = models.Notification.objects.filter(
-        category_choice='pcs').order_by('-notification_time')
+        Q(category_choice='pcs') | Q(category_choice=request.user.email)).order_by('-notification_time')
     context = {
         'notifications': notifications
     }

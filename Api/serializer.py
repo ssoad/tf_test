@@ -240,3 +240,9 @@ class IndividualSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.User
         fields = ['email']
+
+
+class BusinessSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = bcsmodels.Business
+        fields = ['company_name']

@@ -53,6 +53,7 @@ urlpatterns = [
 
     path('main/collective/', views.CollectiveApiView.as_view(), name='collective'),
     path('main/individual/', views.IndividualApiView.as_view(), name='individual'),
+    path('main/business/', views.BusinessApiView.as_view(), name='business'),
     path('main/interest/', views.InterestApiView.as_view(), name='interest'),
     path('main/collective_notification/', views.CollectiveNotificationApiView.as_view(), name='collective_notification'),
 ]

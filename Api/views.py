@@ -676,6 +676,20 @@ class IndividualApiView(generics.ListAPIView):
         })
 
 
+class BusinessApiView(generics.ListAPIView):
+    permission_classes = [apipermissions.IsMainAdmin]
+    serializer_class = serializer.BusinessSerializer
+
+    def list(self, request, *args, **kwargs):
+        company_name = bcsmodels.Business.objects.all()
+        ser = self.get_serializer(company_name, many=True)
+        datas = []
+        for email in ser.data:
+            datas.append(email['company_name'])
+        return Response({
+            'response': datas
+        })
+
 class InterestApiView(generics.ListAPIView):
     permission_classes = [apipermissions.IsMainAdmin]
 
