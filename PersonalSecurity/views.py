@@ -8,6 +8,7 @@ from PersonalSecurity import forms as pcsforms
 from django.db.models import Q
 from django.core.files.storage import FileSystemStorage
 from Blog.models import ReadingList, Post
+from Account import models as accountmodels
 
 
 # Create your views here.
@@ -425,6 +426,12 @@ def userEventsView(request):
 
 @login_required
 def userNotificationsView(request):
+    emails = models.User.objects.filter(email=request.user.email).values_list('email', flat=True)
+    print(emails)
+    fields = [field.name for field in accountmodels.Interest._meta.get_fields() if field.name != 'id' and field.name != 'user']
+    for field in fields:
+        interests = accountmodels.Interest.objects.filter(user=request.user).values_list(f'{field}', flat=True)
+        print(interests)
     notifications = models.Notification.objects.filter(
         Q(category_choice='pcs') | Q(category_choice=request.user.email)).order_by('-notification_time')
     context = {
