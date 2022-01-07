@@ -99,10 +99,9 @@ class AddIndividualPackageFeatureForm(forms.ModelForm):
 
 
 class EventCreateForm(forms.ModelForm):
-    date_field = forms.DateTimeField(
-        widget=forms.DateTimeInput(attrs={'type': 'date'}))
-    time_field = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'time'}),
-                                     input_formats=['%H:%M', '%I:%M%p', '%I:%M %p'])
+    date_time = forms.DateTimeField(input_formats=['%Y/%m/%d %H:%M'])
+    # time_field = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'time'}),
+    #                                  input_formats=['%H:%M', '%I:%M%p', '%I:%M %p'])
 
     class Meta:
         model = models.Events

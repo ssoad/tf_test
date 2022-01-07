@@ -75,28 +75,34 @@
                                 </div>
                                 <div class="col-auto ">
                                     <h6>
+                                        <i class="icofont-calendar"></i>
+                                        <span class="fw-bold mx-2 ">Timezone:</span>
+                                        <span class="eventDate">{{ event.timezone }}</span>
+                                    </h6>
+                                    <h6>
                                         <i class="icofont-ui-calendar"></i>
                                         <span class="fw-bold mx-2 ">Date:</span>
-                                        <span class="eventDate">{{ event.date_field }}</span>
+                                        <span class="eventDate">{{ event.date_time|date }}</span>
                                     </h6>
                                     <h6>
                                         <i class="mt-3 icofont-clock-time"></i>
-                                        <span class="fw-bold mx-2">Time:</span>{{ event.time_field }}
+                                        <span class="fw-bold mx-2">Time:</span>{{ event.date_time|time }}
                                     </h6>
                                 </div>
                                 <div class="col-auto">
-
+                                    <a href="{{ event.address }}" target="_blank"
+                                       class="btn btn-sm bg-navy ms-0 ms-md-4 text-white px-3 py-2 ">Visit Now</a>
+                                    {% comment %}
                                     {% if event.status == 'active' %}
                                         {% if event.id not in registered_event %}
-
                                             <a href="{% host_url 'bcs_user_event_register' id=event.id %}"
                                                class="btn btn-sm bg-navy ms-0 ms-md-4 text-white px-3 py-2 ">Register</a>
                                         {% else %}
                                             <a href="{% host_url 'bcs_user_event_register' id=event.id %}"
                                                class="btn btn-sm bg-navy ms-0 ms-md-4 text-white px-3 py-2 ">Unregister</a>
                                         {% endif %}
-
                                     {% endif %}
+                                {% endcomment %}
                                 </div>
                             </div>
                         </div>

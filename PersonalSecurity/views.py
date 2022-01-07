@@ -184,7 +184,7 @@ def ticketDetailView(request):
 @login_required
 def userDashboardView(request):
     events = models.Events.objects.filter(
-        status='active', category='for_personal_security')
+        status='active', category='for_personal_security').order_by('-created_date')
     registered_event = models.RegisteredEvents.objects.filter(
         user=request.user).values_list('event', flat=True)
     orders = models.Order.objects.filter(
@@ -418,7 +418,7 @@ def userEventsView(request):
     registered_event = models.RegisteredEvents.objects.filter(
         user=request.user).values_list('event', flat=True)
     events = models.Events.objects.filter(category='for_personal_security',
-                                          registered_event_event__user=request.user)
+                                          registered_event_event__user=request.user).order_by('-created_date')
     context = {
         'events': events,
         'registered_event': registered_event,

@@ -773,8 +773,12 @@ def userEventsView(request):
     elif request.user.is_bcs:
         registered_event = models.RegisteredEvents.objects.filter(
             user=request.user).values_list('event', flat=True)
+
+        business_user = models.UsersBusiness.objects.get(user=request.user)
+
         events = models.Events.objects.filter(category='for_business_security',
-                                              registered_event_event__user=request.user)
+                                              registered_event_event__user__business_user=business_user)
+
         context = {
             'events': events,
             'registered_event': registered_event,
@@ -1105,7 +1109,7 @@ def mainAdminNotificationDeleteView(request, id):
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminEventsView(request):
     form = forms.EventCreateForm()
-    events = models.Events.objects.all()
+    events = models.Events.objects.all().order_by('-created_date')
     if request.method == 'POST':
         form = forms.EventCreateForm(request.POST)
         if form.is_valid():
