@@ -1,11 +1,18 @@
-{% extends 'base/bcs_user_base.html' %} {% load static %}
-{% load hosts %}{% load crispy_forms_tags %} {% load my_filter %} {% block title %} Support {% endblock title %}
+{% extends 'base/bcs_user_base.html' %}
+{% load static %}
+{% load hosts %}
+{% load crispy_forms_tags %}
+{% load my_filter %}
+{% block title %}
+    Support
+{% endblock title %}
+
 {% block headercss %}
     <!-- data table css -->
     <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css"/>
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css"/>
 
-    <link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/bcsTF/order.css"/>
+    <link rel="stylesheet" href="{% static 'tfcss/admin_panel/bcsTF/order.css' %}"/>
     <style>
         /* data table pagination style */
 
@@ -45,7 +52,6 @@
 {% endblock headercss %}
 
 {% block content %}
-
     <section class="container" id="ticket-list">
         <div id="liveAlertPlaceholder"></div>
         <div class="d-flex justify-content-end mb-5">

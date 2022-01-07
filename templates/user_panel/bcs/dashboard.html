@@ -305,7 +305,7 @@
                             <i class="icofont-bell-alt"></i>
                         </div>
                         <div class="col-10">
-                            <h6>{{ notification.notification }} </h6>
+                            <h6>{{ notification.notification|safe }} </h6>
                             <i class="icofont-clock-time"></i> {{ notification.notification_time }}
                         </div>
                     </div>
@@ -316,14 +316,12 @@
             {% endif %}
         </section>
 {% comment %}
-
         <section class="subscription mt-5 mb-3">
             <h3 class="fw-bold border-bottom border-gray pb-3 mb-4">Subscription</h3>
             <div class="row gy-3 gx-3 d-flex justify-content-between align-items-center mx-0">
                 <div class="col-sm-12 col-w-45 bg-white p-2 rounded-3 shadow p-3">
                     <h5 class="fw-bold">PLUG & PLAY PROGRAM</h5>
                     <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
-
                     <table class="w-50">
                         <tbody>
                         <tr>
@@ -354,7 +352,7 @@
                             <div class="card shadow rounded-3">
                                 <div class="row g-0">
                                     <div class="col-md-6">
-                                        <img src="{% static '' %}tfimg/user_panel/webinar.jpg"
+                                        <img src="{% static 'tfimg/user_panel/webinar.jpg' %}"
                                              class="img-fluid rounded-start h-100" alt="...">
                                     </div>
                                     <div class="col-md-6">
@@ -371,28 +369,42 @@
                                                 </tr>
                                                 <tr>
                                                     <td>
+                                                        <i class="icofont-calendar"></i>
+                                                        <span class="fw-bold">Timezone:</span>
+                                                    </td>
+                                                    <td class="ps-2">{{ event.timezone }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
                                                         <i class="icofont-ui-calendar"></i>
                                                         <span class="fw-bold">Date:</span>
                                                     </td>
-                                                    <td class="ps-2">{{ event.date_field }}</td>
+                                                    <td class="ps-2">{{ event.date_time|date }}</td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         <i class="icofont-clock-time"></i>
                                                         <span class="fw-bold">Time:</span>
                                                     </td>
-                                                    <td class="ps-2">{{ event.time_field }}</td>
+                                                    <td class="ps-2">{{ event.date_time|time }}</td>
                                                 </tr>
                                                 </tbody>
                                             </table>
+                                        {% if event.id not in registered_event %}
+                                                <a href="{% host_url 'bcs_user_event_register' id=event.id %}"
+                                                   class="d-block mx-auto btn btn-sm bg-navy text-white px-4 py-1 mt-2">Interested</a>
+                                            {% else %}
+                                                <p class="d-block mx-auto text-center px-4 py-1 mt-2">Registered</p>
+                                            {% endif %}
+                                        {% comment %}
                                             {% if event.id not in registered_event %}
-
                                                 <a href="{% host_url 'bcs_user_event_register' id=event.id %}"
                                                    class="d-block mx-auto btn btn-sm bg-navy text-white px-4 py-1 mt-2">Register</a>
                                             {% else %}
                                                 <a href="{% host_url 'bcs_user_event_register' id=event.id %}"
                                                    class="d-block mx-auto btn btn-sm bg-navy text-white px-4 py-1 mt-2">Unregister</a>
                                             {% endif %}
+                                        {% endcomment %}
                                         </div>
                                     </div>
                                 </div>

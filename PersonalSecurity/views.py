@@ -1,3 +1,5 @@
+import datetime
+
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect, reverse, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from Academy.models import Course, Section, Content, CourseCategory
@@ -8,6 +10,7 @@ from PersonalSecurity import forms as pcsforms
 from django.db.models import Q
 from django.core.files.storage import FileSystemStorage
 from Blog.models import ReadingList, Post
+from Account import models as accountmodels
 
 
 # Create your views here.
@@ -171,9 +174,20 @@ def openTicketView(request):
     return render(request, 'user_panel/pcs/ticket.html', context)
 
 
-def ticketDetailView(request):
+def ticketDetailView(request, id):
+    ticket = models.Ticket.objects.get(id=id)
+    commentform = forms.TicketCommentForm()
+    if request.method == 'POST':
+        commentform = forms.TicketCommentForm(request.POST)
+        if commentform.is_valid():
+            comment = commentform.save(commit=False)
+            comment.user = request.user
+            comment.ticket = ticket
+            comment.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
-
+        'ticket': ticket,
+        'commentform': commentform,
     }
     return render(request, 'user_panel/pcs/ticket_detail.html', context)
 
@@ -181,7 +195,7 @@ def ticketDetailView(request):
 @login_required
 def userDashboardView(request):
     events = models.Events.objects.filter(
-        status='active', category='for_personal_security')
+        status='active', category='for_personal_security').order_by('-created_date')
     registered_event = models.RegisteredEvents.objects.filter(
         user=request.user).values_list('event', flat=True)
     orders = models.Order.objects.filter(
@@ -415,7 +429,7 @@ def userEventsView(request):
     registered_event = models.RegisteredEvents.objects.filter(
         user=request.user).values_list('event', flat=True)
     events = models.Events.objects.filter(category='for_personal_security',
-                                          registered_event_event__user=request.user)
+                                          registered_event_event__user=request.user).order_by('-created_date')
     context = {
         'events': events,
         'registered_event': registered_event,
@@ -425,10 +439,37 @@ def userEventsView(request):
 
 @login_required
 def userNotificationsView(request):
-    notifications = models.Notification.objects.filter(
-        Q(category_choice='pcs') | Q(category_choice=request.user.email)).order_by('-notification_time')
+    # emails = models.User.objects.filter(email=request.user.email).values_list('email', flat=True)
+    # print(emails)
+    notis = []
+    fields = [field.name for field in accountmodels.Interest._meta.get_fields() if field.name != 'id' and field.name != 'user']
+
+    for field in fields:
+        interests = accountmodels.Interest.objects.filter(user=request.user).values_list(f'{field}', flat=True)
+        # print(interests.values(f'{field}')[0].keys())
+        # print(interests)
+        if interests[0]:
+            for key in interests.values(f'{field}')[0]:
+                # print(f"{key}")
+                notifications = models.Notification.objects.filter(
+                    Q(Q(category_choice='pcs') | Q(category_choice=request.user.email) | Q(category_choice=key))).order_by('-notification_time')
+                # print(notifications)
+                notis.append(notifications)
+    new_notifications = []
+    all_notifications = []
+    for notification in notis:
+        for notific in notification:
+            if notific.notification_time.date() == datetime.datetime.today().date():
+                if notific not in new_notifications:
+                    new_notifications.append(notific)
+            elif notific.notification_time.date() != datetime.datetime.today().date():
+                if notific not in all_notifications:
+                    all_notifications.append(notific)
+    # print(all_notifications)
+
     context = {
-        'notifications': notifications
+        'notifications': new_notifications,
+        'all_notifications': all_notifications,
     }
     return render(request, 'user_panel/pcs/notifications.html', context)
 

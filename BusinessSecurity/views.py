@@ -11,6 +11,7 @@ from Academy.models import Course, Section, Content, CourseCategory, BCSCourse, 
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.core.files.storage import FileSystemStorage
+import datetime
 
 
 # Create your views here.
@@ -772,8 +773,12 @@ def userEventsView(request):
     elif request.user.is_bcs:
         registered_event = models.RegisteredEvents.objects.filter(
             user=request.user).values_list('event', flat=True)
+
+        business_user = models.UsersBusiness.objects.get(user=request.user)
+
         events = models.Events.objects.filter(category='for_business_security',
-                                              registered_event_event__user=request.user)
+                                              registered_event_event__user__business_user=business_user)
+
         context = {
             'events': events,
             'registered_event': registered_event,
@@ -811,8 +816,19 @@ def userNotificationsView(request):
         else:
             notifications = models.Notification.objects.filter(
                 Q(category_choice='bcs') | Q(category_choice__iexact=request.user.business_user.business.company_name)).order_by('-notification_time')
+
+            new_notifications = []
+            all_notifications = []
+            for notification in notifications:
+                if notification.notification_time.date() == datetime.datetime.today().date():
+                    if notification not in new_notifications:
+                        new_notifications.append(notification)
+                elif notification.notification_time.date() != datetime.datetime.today().date():
+                    if notification not in all_notifications:
+                        all_notifications.append(notification)
             context = {
-                'notifications': notifications
+                'notifications': new_notifications,
+                'all_notifications': all_notifications,
             }
             return render(request, 'user_panel/bcs/notifications.html', context)
 
@@ -1093,7 +1109,7 @@ def mainAdminNotificationDeleteView(request, id):
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminEventsView(request):
     form = forms.EventCreateForm()
-    events = models.Events.objects.all()
+    events = models.Events.objects.all().order_by('-created_date')
     if request.method == 'POST':
         form = forms.EventCreateForm(request.POST)
         if form.is_valid():

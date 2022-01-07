@@ -5,6 +5,7 @@ import uuid
 from phonenumber_field.modelfields import PhoneNumberField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from timezone_field import TimeZoneField
 
 
 # Create your models here.
@@ -284,12 +285,19 @@ ticket_status = (
     ('closed', 'Closed'),
 )
 
+issue_category = (
+    ('technical_issue', 'Technical Issue'),
+    ('billing_issue', 'Billing Issue'),
+    ('service_issue', 'Service Issue'),
+)
+
 
 class Ticket(models.Model):
     category_choice = models.CharField(choices=category_choice, max_length=255)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='ticket_user')
     ticket_category = models.CharField(max_length=255, verbose_name='Category')
+    issue_category = models.CharField(max_length=255, choices=issue_category)
     ticket_title = models.CharField(max_length=255, verbose_name='Title')
     ticket_description = HTMLField(verbose_name='Description')
     ticket_attachment = models.ImageField(
@@ -474,10 +482,12 @@ class Events(models.Model):
     speaker = models.CharField(max_length=264)
     category = models.CharField(choices=category_list, max_length=264)
     address = models.CharField(max_length=264)
-    date_field = models.DateField()
-    time_field = models.TimeField()
+    timezone = TimeZoneField(choices_display='WITH_GMT_OFFSET', default='Europe/London')
+    date_time = models.DateTimeField()
+    # time_field = models.TimeField()
     status = models.CharField(choices=status_list, max_length=264)
     event_description = HTMLField(max_length=5000)
+    created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.event_name

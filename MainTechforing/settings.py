@@ -80,6 +80,9 @@ INSTALLED_APPS = [
 
     # Cors
     'corsheaders',
+
+    # Timezone
+    'timezone_field',
 ]
 
 # Django-Rest-Framework Settings

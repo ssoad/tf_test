@@ -4,6 +4,7 @@ from django.shortcuts import render
 from Api import serializer
 from rest_framework import generics
 from Blog import models
+from Account import models as accountmodel
 from BusinessSecurity import models as bcsmodels
 from Academy import models as coursemodels
 from rest_framework import permissions, pagination, filters
@@ -690,12 +691,12 @@ class BusinessApiView(generics.ListAPIView):
             'response': datas
         })
 
+
 class InterestApiView(generics.ListAPIView):
     permission_classes = [apipermissions.IsMainAdmin]
 
     def list(self, request, *args, **kwargs):
+
         return Response({
-            'response': ['Risk Assessment', 'Incident Response', 'Cyber Crime Investigation',
-                         'Open Source Intelligent', 'Hack Recovery', 'Virus Removal', 'Digital Forensic',
-                         'Digital Integration']
+            'response': [field.name for field in accountmodel.Interest._meta.get_fields() if field.name != 'id' and field.name != 'user']
         })

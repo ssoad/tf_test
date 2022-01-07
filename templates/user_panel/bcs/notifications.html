@@ -5,15 +5,15 @@
         <h4 class="pt-2 fw-bold border-bottom border-gray pb-14p">Your Notifications
         </h4>
 
-        <div class="row d-flex justify-content-between px-2">
-            <div class="col-auto d-flex">
-                <h6 class="fw-light bg-navy py-2 px-4 rounded today">24 Aug</h6>
+        {% if all_notifications|length > 0 or notifications|length > 0 %}
+            <div class="row d-flex justify-content-between px-2">
+                <div class="col-auto d-flex">
+                    <h6 class="fw-light bg-navy py-2 px-4 rounded today">24 Aug</h6>
+                </div>
             </div>
-        </div>
-        {% if notifications.exists %}
-            <div class="notifications-container px-md-4 mt-4">
-                <div class="new">
-                    {% for notification in notifications %}
+            {% for notification in notifications %}
+                <div class="notifications-container px-md-4 mt-4">
+                    <div class="new">
                         <div class="row notification mt-2">
                             <div class="row py-2 align-items-center">
                                 <div class="col-2 icon icon-bg-blue">
@@ -25,14 +25,34 @@
                                 </div>
                             </div>
                         </div>
-                    {% endfor %}
+                    </div>
                 </div>
-
+            {% endfor %}
+            <div class="row d-flex justify-content-between px-2 mt-5">
+                <div class="col-auto d-flex">
+                    <h6 class="fw-light bg-navy py-2 px-4 rounded">Previous Notifications</h6>
+                </div>
             </div>
+            {% for notification in all_notifications %}
+                <div class="notifications-container px-md-4 mt-4">
+                    <div class="new">
+                        <div class="row notification mt-2">
+                            <div class="row py-2 align-items-center">
+                                <div class="col-2 icon icon-bg-blue">
+                                    <i class="icofont-bell-alt"></i>
+                                </div>
+                                <div class="col-10">
+                                    <h6>{{ notification.notification|safe }} </h6>
+                                    <i class="icofont-clock-time"></i> {{ notification.notification_time }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
         {% else %}
             <h3 class="text-center text-gray my-5 py-5 h-100">No Notification Found!</h3>
         {% endif %}
-
     </section>
 {% endblock content %} {% block customjs %}
     <script>

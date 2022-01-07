@@ -23,6 +23,7 @@ urlpatterns = [
     path('site_map/', views.siteMapView, name='site_map'),
     path('open_ticket/', views.openTicketView, name='open_ticket'),
     path('ticket_detail/', views.ticketDetailView, name='ticket_detail'),
+    path('ticket_detail/<id>/', views.ticketDetailView, name='ticket_detail'),
 
     # user panel
     path('pcs_user_dashboard/', views.userDashboardView, name='pcs_user_dashboard'),
