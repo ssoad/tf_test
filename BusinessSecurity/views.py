@@ -11,6 +11,7 @@ from Academy.models import Course, Section, Content, CourseCategory, BCSCourse, 
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.core.files.storage import FileSystemStorage
+import datetime
 
 
 # Create your views here.
@@ -811,8 +812,19 @@ def userNotificationsView(request):
         else:
             notifications = models.Notification.objects.filter(
                 Q(category_choice='bcs') | Q(category_choice__iexact=request.user.business_user.business.company_name)).order_by('-notification_time')
+
+            new_notifications = []
+            all_notifications = []
+            for notification in notifications:
+                if notification.notification_time.date() == datetime.datetime.today().date():
+                    if notification not in new_notifications:
+                        new_notifications.append(notification)
+                elif notification.notification_time.date() != datetime.datetime.today().date():
+                    if notification not in all_notifications:
+                        all_notifications.append(notification)
             context = {
-                'notifications': notifications
+                'notifications': new_notifications,
+                'all_notifications': all_notifications,
             }
             return render(request, 'user_panel/bcs/notifications.html', context)
 

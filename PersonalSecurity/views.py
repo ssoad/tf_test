@@ -1,3 +1,5 @@
+import datetime
+
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect, reverse, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from Academy.models import Course, Section, Content, CourseCategory
@@ -426,16 +428,37 @@ def userEventsView(request):
 
 @login_required
 def userNotificationsView(request):
-    emails = models.User.objects.filter(email=request.user.email).values_list('email', flat=True)
-    print(emails)
+    # emails = models.User.objects.filter(email=request.user.email).values_list('email', flat=True)
+    # print(emails)
+    notis = []
     fields = [field.name for field in accountmodels.Interest._meta.get_fields() if field.name != 'id' and field.name != 'user']
+
     for field in fields:
         interests = accountmodels.Interest.objects.filter(user=request.user).values_list(f'{field}', flat=True)
-        print(interests)
-    notifications = models.Notification.objects.filter(
-        Q(category_choice='pcs') | Q(category_choice=request.user.email)).order_by('-notification_time')
+        # print(interests.values(f'{field}')[0].keys())
+        # print(interests)
+        if interests[0]:
+            for key in interests.values(f'{field}')[0]:
+                # print(f"{key}")
+                notifications = models.Notification.objects.filter(
+                    Q(Q(category_choice='pcs') | Q(category_choice=request.user.email) | Q(category_choice=key))).order_by('-notification_time')
+                # print(notifications)
+                notis.append(notifications)
+    new_notifications = []
+    all_notifications = []
+    for notification in notis:
+        for notific in notification:
+            if notific.notification_time.date() == datetime.datetime.today().date():
+                if notific not in new_notifications:
+                    new_notifications.append(notific)
+            elif notific.notification_time.date() != datetime.datetime.today().date():
+                if notific not in all_notifications:
+                    all_notifications.append(notific)
+    # print(all_notifications)
+
     context = {
-        'notifications': notifications
+        'notifications': new_notifications,
+        'all_notifications': all_notifications,
     }
     return render(request, 'user_panel/pcs/notifications.html', context)
 
