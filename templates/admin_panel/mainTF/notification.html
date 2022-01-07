@@ -5,7 +5,7 @@
 {% block title %} Notifications
 {% endblock title %}
 {% block headercss %}
-    <link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/mainTF/notification.css"/>
+    <link rel="stylesheet" href="{% static 'tfcss/admin_panel/mainTF/notification.css' %}"/>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
     <style>
         #notification-table_filter {
@@ -157,9 +157,12 @@
             categoryChoice = document.getElementById('id_category_choice');
             if (e.target.value !== 'date_range') {
                 fetch(`${mainOrigin}/api/main/${e.target.value}/`)
-                    .then(res => res.json())
-                    .then(data => {
-                        let categoryField = `<select id="id_category_choice" class="form-control" name="category_choice">`;
+                .then(res => res.json())
+                .then(data => {
+                    document.querySelector('#daterange').remove()
+                    const daterangeLabel = document.querySelector("#div_id_category_choice label")
+                    daterangeLabel.textContent="Category choice*"
+                    let categoryField = `<select id="id_category_choice" class="form-control" name="category_choice">`;
                         data.response.forEach(option => {
                             categoryField += `<option value="${option.toLowerCase()}">${option}</option>`;
                         });
@@ -170,12 +173,23 @@
                     })
             }
             else {
-
+                document.querySelector('.select2').remove()
+                const daterange = document.querySelector("#div_id_category_choice")
+                const daterangeLabel = document.querySelector("#div_id_category_choice label")
+                daterangeLabel.textContent="Select a Date range*"
+                const dateInput = document.createElement("input")
+                dateInput.setAttribute("type", "text")
+                dateInput.setAttribute("name", "datetimes")
+                dateInput.setAttribute("id", "daterange")
+                dateInput.setAttribute("class", "form-select")
+                dateInput.setAttribute("name", "date_range")
+                daterange.appendChild(dateInput)
+                $('#daterange').daterangepicker({
+    opens: 'right'
+  }, function(start, end, label) {
+    console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+  });
             }
         });
-        {#$(document).ready(function() {#}
-        {#    document.getElementById('id_category_choice').outerHTML = ``;#}
-        {#        $('#id_category_choice').select2();#}
-        {#    });#}
     </script>
 {% endblock customjs %}
