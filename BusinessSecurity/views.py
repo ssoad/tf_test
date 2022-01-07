@@ -12,7 +12,19 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.core.files.storage import FileSystemStorage
 import datetime
+from django.utils.dateparse import parse_date
+from django.utils.formats import get_format
 
+
+def date_parser(date_str):
+    """Parse date from string by DATE_INPUT_FORMATS of current language"""
+    for item in get_format('DATE_INPUT_FORMATS'):
+        try:
+            return datetime.datetime.strptime(date_str, item).date()
+        except (ValueError, TypeError):
+            continue
+
+    return None
 
 # Create your views here.
 def superuser_permission_check(user):
@@ -1088,10 +1100,23 @@ def mainAdminNotificationView(request):
     notifications = models.Notification.objects.all().order_by('-notification_time')
 
     if 'instant-btn' in request.POST:
-        form = forms.NotificationForm(request.POST)
-        if form.is_valid():
-            form.save()
+        if 'date_range' not in request.POST:
+            form = forms.NotificationForm(request.POST)
+            if form.is_valid():
+                # form.save()
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        elif 'date_range' in request.POST:
+            print(request.POST)
+            input_date = request.POST.get('date_range')
+            start_date = input_date.split(' - ')[0]
+            end_date = input_date.split(' - ')[1]
+            users = models.User.objects.filter(date_joined__gte=datetime.datetime.strptime(start_date, '%m/%d/%Y').date(),
+                                               date_joined__lte=datetime.datetime.strptime(end_date, '%m/%d/%Y').date())
+            print(users)
+            print(date_parser(start_date))
+            # print(start_date, end_date)
             return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
     context = {
         'form': form,
         'notifications': notifications,
