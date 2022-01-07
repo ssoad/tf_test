@@ -174,9 +174,20 @@ def openTicketView(request):
     return render(request, 'user_panel/pcs/ticket.html', context)
 
 
-def ticketDetailView(request):
+def ticketDetailView(request, id):
+    ticket = models.Ticket.objects.get(id=id)
+    commentform = forms.TicketCommentForm()
+    if request.method == 'POST':
+        commentform = forms.TicketCommentForm(request.POST)
+        if commentform.is_valid():
+            comment = commentform.save(commit=False)
+            comment.user = request.user
+            comment.ticket = ticket
+            comment.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
-
+        'ticket': ticket,
+        'commentform': commentform,
     }
     return render(request, 'user_panel/pcs/ticket_detail.html', context)
 

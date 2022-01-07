@@ -1,6 +1,13 @@
-{% extends 'base/bcs_user_base.html' %} {% load static %} {% block title %} Ticket View {% endblock title %}
-{% block headercss %} {% endblock headercss %} {% block content %}
+{% extends 'base/bcs_user_base.html' %}
+{% load static %}
+{% block title %}
+    Ticket View
+{% endblock title %}
+{% block headercss %}
 
+{% endblock headercss %}
+
+{% block content %}
     <section class="px-3">
         <h5 class="fw-bold">TICKET {{ ticket.id }}</h5>
         <h6 class="fw-bold"><span class="text-green">Submitted on: </span>{{ ticket.ticket_date }}</h6>
@@ -55,6 +62,8 @@
             {% endif %}
         {% endif %}
     </section>
+{% endblock content %}
 
+{% block customjs %}
 
-{% endblock content %} {% block customjs %} {% endblock customjs %}
+{% endblock customjs %}

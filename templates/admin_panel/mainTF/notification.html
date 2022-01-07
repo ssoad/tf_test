@@ -6,35 +6,40 @@
 {% endblock title %}
 {% block headercss %}
     <link rel="stylesheet" href="{% static '' %}tfcss/admin_panel/mainTF/notification.css"/>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
     <style>
         #notification-table_filter {
             margin-bottom: 2rem;
             float: right;
             width: 60%;
         }
+
         #notification-table_filter label {
             padding: 0.5rem 1rem;
             width: 100%;
             border: 1px solid #707070;
         }
+
         #notification-table_length label {
             display: flex;
             align-items: center;
             gap: 1rem;
             width: 26%;
         }
+
         #notification-table_length .form-select {
             width: 200px;
         }
+
         #notification-table_filter input {
             display: inline !important;
             border-color: transparent;
             width: 90%;
             padding: 0 0.75rem;
         }
+
         @media (min-width: 1000px) {
-            .notification-table{
+            .notification-table {
                 width: 1106px !important;
             }
         }
@@ -51,6 +56,7 @@
                     <option value="business">Business</option>
                     <option value="collective">Collective</option>
                     <option value="interest">Interest</option>
+                    <option value="date_range">Date Range</option>
                 </select>
                 <form action="" method="POST">
                     {% csrf_token %}
@@ -133,39 +139,43 @@
     <script src="{% static 'tfjs/admin_panel/mainTF/notification.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
-     let categoryChoice = document.getElementById('id_category_choice');
-    fetch(`${mainOrigin}/api/main/individual/`)
-        .then(res=>res.json())
-        .then(data=> {
-            let categoryField = `<select id="id_category_choice" class="form-control" name="category_choice">`;
-            data.response.forEach(option=>{
-                categoryField+= `<option value="${option.toLowerCase().replace(' ','_')}">${option}</option>`;
-            });
-            categoryField+='</select>';
-            categoryChoice.outerHTML = categoryField;
+        let categoryChoice = document.getElementById('id_category_choice');
+        fetch(`${mainOrigin}/api/main/individual/`)
+            .then(res => res.json())
+            .then(data => {
+                let categoryField = `<select id="id_category_choice" class="form-control" name="category_choice">`;
+                data.response.forEach(option => {
+                    categoryField += `<option value="${option.toLowerCase().replace(' ', '_')}">${option}</option>`;
+                });
+                categoryField += '</select>';
+                categoryChoice.outerHTML = categoryField;
 
-            $('#id_category_choice').select2();
-        })
+                $('#id_category_choice').select2();
+            })
 
-    document.getElementById('notification_type').addEventListener('change',e=>{
-         categoryChoice = document.getElementById('id_category_choice');
+        document.getElementById('notification_type').addEventListener('change', e => {
+            categoryChoice = document.getElementById('id_category_choice');
+            if (e.target.value !== 'date_range') {
+                fetch(`${mainOrigin}/api/main/${e.target.value}/`)
+                    .then(res => res.json())
+                    .then(data => {
+                        let categoryField = `<select id="id_category_choice" class="form-control" name="category_choice">`;
+                        data.response.forEach(option => {
+                            categoryField += `<option value="${option.toLowerCase()}">${option}</option>`;
+                        });
+                        categoryField += '</select>';
+                        categoryChoice.outerHTML = categoryField;
 
-        fetch(`${mainOrigin}/api/main/${e.target.value}/`)
-        .then(res=>res.json())
-        .then(data=> {
-            let categoryField = `<select id="id_category_choice" class="form-control" name="category_choice">`;
-            data.response.forEach(option=>{
-                categoryField+= `<option value="${option.toLowerCase()}">${option}</option>`;
-            });
-            categoryField+='</select>';
-            categoryChoice.outerHTML = categoryField;
+                        $('#id_category_choice').select2();
+                    })
+            }
+            else {
 
-            $('#id_category_choice').select2();
-        })
-    });
-    {#$(document).ready(function() {#}
-    {#    document.getElementById('id_category_choice').outerHTML = ``;#}
-    {#        $('#id_category_choice').select2();#}
-    {#    });#}
+            }
+        });
+        {#$(document).ready(function() {#}
+        {#    document.getElementById('id_category_choice').outerHTML = ``;#}
+        {#        $('#id_category_choice').select2();#}
+        {#    });#}
     </script>
 {% endblock customjs %}

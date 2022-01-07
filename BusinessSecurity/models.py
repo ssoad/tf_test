@@ -285,12 +285,19 @@ ticket_status = (
     ('closed', 'Closed'),
 )
 
+issue_category = (
+    ('technical_issue', 'Technical Issue'),
+    ('billing_issue', 'Billing Issue'),
+    ('service_issue', 'Service Issue'),
+)
+
 
 class Ticket(models.Model):
     category_choice = models.CharField(choices=category_choice, max_length=255)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='ticket_user')
     ticket_category = models.CharField(max_length=255, verbose_name='Category')
+    issue_category = models.CharField(max_length=255, choices=issue_category)
     ticket_title = models.CharField(max_length=255, verbose_name='Title')
     ticket_description = HTMLField(verbose_name='Description')
     ticket_attachment = models.ImageField(
