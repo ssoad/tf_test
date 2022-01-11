@@ -1103,17 +1103,20 @@ def mainAdminNotificationView(request):
         if 'date_range' not in request.POST:
             form = forms.NotificationForm(request.POST)
             if form.is_valid():
-                # form.save()
+                form.save()
                 return HttpResponseRedirect(request.META['HTTP_REFERER'])
         elif 'date_range' in request.POST:
-            print(request.POST)
+            notification = request.POST.get('notification')
             input_date = request.POST.get('date_range')
             start_date = input_date.split(' - ')[0]
             end_date = input_date.split(' - ')[1]
             users = models.User.objects.filter(date_joined__gte=datetime.datetime.strptime(start_date, '%m/%d/%Y').date(),
                                                date_joined__lte=datetime.datetime.strptime(end_date, '%m/%d/%Y').date())
-            print(users)
-            print(date_parser(start_date))
+            # print(users)
+            for user in users:
+                note = models.Notification.objects.create(category_choice=user.email, notification=notification)
+                note.save()
+            # print(date_parser(start_date))
             # print(start_date, end_date)
             return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
