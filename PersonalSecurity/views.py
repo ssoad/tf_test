@@ -2,6 +2,8 @@ import datetime
 
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect, reverse, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.utils import timezone
+
 from Academy.models import Course, Section, Content, CourseCategory
 from Academy.forms import PCSCourseCreateForm, SectionCreateForm, ContentCreateForm, CourseCategoryCreateForm
 from django.core.paginator import Paginator
@@ -463,8 +465,9 @@ def userNotificationsView(request):
                 if notific not in new_notifications:
                     new_notifications.append(notific)
             elif notific.notification_time.date() != datetime.datetime.today().date():
-                if notific not in all_notifications:
-                    all_notifications.append(notific)
+                if notific.notification_time.date() < datetime.datetime.today().date():
+                    if notific not in all_notifications:
+                        all_notifications.append(notific)
     # print(all_notifications)
 
     context = {

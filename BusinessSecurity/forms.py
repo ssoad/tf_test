@@ -4,6 +4,7 @@ from Academy.models import Course, duration, Section, Content, PackageFeatures, 
 from django.db.models import Q
 from phonenumber_field.formfields import PhoneNumberField
 from phonenumber_field.widgets import PhoneNumberPrefixWidget
+from django.utils import timezone, dateformat
 
 
 class AddServiceCategoryForm(forms.ModelForm):
@@ -180,6 +181,7 @@ class AssignToServiceForm(forms.ModelForm):
 
 class NotificationForm(forms.ModelForm):
     # category_choice = forms.ChoiceField(label='Select Target Users', choices=models.category_choice)
+    notification_time = forms.DateTimeField(input_formats=['%Y/%m/%d %H:%M'], widget=forms.TextInput(attrs={'value': dateformat.format(timezone.now(), 'Y/m/d H:i')}))
 
     class Meta:
         model = models.Notification

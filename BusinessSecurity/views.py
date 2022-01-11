@@ -836,8 +836,9 @@ def userNotificationsView(request):
                     if notification not in new_notifications:
                         new_notifications.append(notification)
                 elif notification.notification_time.date() != datetime.datetime.today().date():
-                    if notification not in all_notifications:
-                        all_notifications.append(notification)
+                    if notification.notification_time.date() < datetime.datetime.today().date():
+                        if notification not in all_notifications:
+                            all_notifications.append(notification)
             context = {
                 'notifications': new_notifications,
                 'all_notifications': all_notifications,

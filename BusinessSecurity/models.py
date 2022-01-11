@@ -512,5 +512,5 @@ class RegisteredEvents(models.Model):
 class Notification(models.Model):
     category_choice = models.CharField(max_length=255)
     notification = HTMLField()
-    notification_time = models.DateTimeField(auto_now_add=True)
+    notification_time = models.DateTimeField()
     # date_time = models.DateTimeField()

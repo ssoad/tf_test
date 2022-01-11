@@ -157,26 +157,37 @@
             categoryChoice = document.getElementById('id_category_choice');
             if (e.target.value !== 'date_range') {
                 fetch(`${mainOrigin}/api/main/${e.target.value}/`)
-                .then(res => res.json())
-                .then(data => {
-                    document.querySelector('#daterange').remove()
-                    const daterangeLabel = document.querySelector("#div_id_category_choice label")
-                    daterangeLabel.textContent="Category choice*"
-                    let categoryField = `<select id="id_category_choice" class="form-control" name="category_choice">`;
-                        data.response.forEach(option => {
-                            categoryField += `<option value="${option.toLowerCase()}">${option}</option>`;
-                        });
-                        categoryField += '</select>';
-                        categoryChoice.outerHTML = categoryField;
+                    .then(res => res.json())
+                    .then(data => {
+                        if (document.querySelector('#daterange')) {
+                            document.querySelector('#daterange').remove()
+                            const daterangeLabel = document.querySelector("#div_id_category_choice label")
+                            daterangeLabel.textContent = "Category choice*"
+                            let categoryField = `<select id="id_category_choice" class="form-control" name="category_choice">`;
+                            data.response.forEach(option => {
+                                categoryField += `<option value="${option.toLowerCase()}">${option}</option>`;
+                            });
+                            categoryField += '</select>';
+                            categoryChoice.outerHTML = categoryField;
 
-                        $('#id_category_choice').select2();
+                            $('#id_category_choice').select2();
+                        } else {
+                            let categoryField = `<select id="id_category_choice" class="form-control" name="category_choice">`;
+                            data.response.forEach(option => {
+                                categoryField += `<option value="${option.toLowerCase()}">${option}</option>`;
+                            });
+                            categoryField += '</select>';
+                            categoryChoice.outerHTML = categoryField;
+
+                            $('#id_category_choice').select2();
+                        }
+
                     })
-            }
-            else {
+            } else {
                 document.querySelector('.select2').remove()
                 const daterange = document.querySelector("#div_id_category_choice")
                 const daterangeLabel = document.querySelector("#div_id_category_choice label")
-                daterangeLabel.textContent="Select a Date range*"
+                daterangeLabel.textContent = "Select a Date range*"
                 const dateInput = document.createElement("input")
                 dateInput.setAttribute("type", "text")
                 dateInput.setAttribute("name", "datetimes")
@@ -185,11 +196,16 @@
                 dateInput.setAttribute("name", "date_range")
                 daterange.appendChild(dateInput)
                 $('#daterange').daterangepicker({
-    opens: 'right'
-  }, function(start, end, label) {
-    console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
-  });
+                    opens: 'right'
+                }, function (start, end, label) {
+                    console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+                });
             }
+        });
+    </script>
+    <script>
+        $(function () {
+            $("#id_notification_time").datetimepicker();
         });
     </script>
 {% endblock customjs %}
