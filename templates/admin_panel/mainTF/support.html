@@ -179,19 +179,29 @@
                                 <a href="{% host_url 'main_admin_user' %}{{ admin.id }}" target="_blank"
                                    class="staff-link">{{ admin.full_name }}</a>
                             </td>
-                            {% if admin.is_sales %}
-                                <td>Sales</td>
-                            {% elif admin.is_blogger %}
-                                <td>Blogger</td>
-                            {% elif admin.is_bcs_head %}
-                                <td>BCS Head</td>
-                            {% elif admin.is_pcs_head %}
-                                <td>PCS Head</td>
-                            {% elif admin.is_superuser %}
-                                <td>Superuser</td>
-                            {% endif %}
+                            <td>
 
-                            <td><a href="">Edit</a></td>
+                                {% if admin.is_sales %}
+                                    <p>Sales</p>
+                                {% endif %}
+                                {% if admin.is_blogger %}
+                                    <p>Blogger</p>
+                                {% endif %}
+                                {% if admin.is_bcs_head %}
+                                    <p>BCS Head</p>
+                                {% endif %}
+                                {% if admin.is_pcs_head %}
+                                    <p>PCS Head</p>
+                                {% endif %}
+                                {% if admin.is_superuser %}
+                                    <p>Superuser</p>
+                                {% endif %}
+                            </td>
+                            {% if not admin.is_superuser %}
+                                <td><a href="{% host_url 'main_admin_user_edit' %}{{ admin.id }}">Edit</a></td>
+                            {% else %}
+                                <td></td>
+                            {% endif %}
                             <td><a href="{% host_url 'main_admin_support_delete_view' id=admin.id %}">Delete</a></td>
                         </tr>
                     {% endfor %}
@@ -237,7 +247,8 @@
             </div>
         </div>
     </main>
-{% endblock content %} {% block customjs %}
+{% endblock content %}
+{% block customjs %}
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         // In your Javascript (external .js resource or <script> tag)
@@ -261,11 +272,11 @@
         $('.admin_type').on('select2:select', function (e) {
             let data = e.params.data;
 
-            ($(this).select2('data')).forEach(item=>{
-                if(item.id == 'sales') {
+            ($(this).select2('data')).forEach(item => {
+                if (item.id == 'sales') {
                     document.querySelectorAll('.select2-selection__rendered li').forEach(li => {
-                        if(li.title!='Sales')
-                            li.outerHTML='';
+                        if (li.title != 'Sales')
+                            li.outerHTML = '';
                     })
                 }
             })
@@ -278,7 +289,6 @@
                 $(this).val(null).trigger('change');
                 $(this).val('sales').trigger('change');
                 $('.admin_type  option[value!="sales"]').prop('disabled', true);
-
 
 
                 if (!document.querySelector('.servicesList')) {
@@ -301,9 +311,7 @@
             }
 
 
-
         });
-
 
     </script>
 {% endblock customjs %}

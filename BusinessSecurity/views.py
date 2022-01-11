@@ -26,6 +26,7 @@ def date_parser(date_str):
 
     return None
 
+
 # Create your views here.
 def superuser_permission_check(user):
     return user.is_staff and user.is_superuser and user.is_active
@@ -549,7 +550,7 @@ def userOrderDetailsView(request, id):
                     }
                     return render(request, 'user_panel/bcs/order_detail.html', context)
                 else:
-                   return HttpResponse("You don't have permission to view this page")
+                    return HttpResponse("You don't have permission to view this page")
             except:
                 return HttpResponse("You don't have permission to view this page")
 
@@ -617,8 +618,6 @@ def orderRejectView(request, id):
             return HttpResponseRedirect(request.META['HTTP_REFERER'])
         except:
             return HttpResponse("You don't have permission to view this page")
-
-
 
 
 @login_required
@@ -827,7 +826,9 @@ def userNotificationsView(request):
             return HttpResponse("You don't have permission to view this page")
         else:
             notifications = models.Notification.objects.filter(
-                Q(category_choice='bcs') | Q(category_choice__iexact=request.user.business_user.business.company_name)).order_by('-notification_time')
+                Q(category_choice='bcs') | Q(
+                    category_choice__iexact=request.user.business_user.business.company_name)).order_by(
+                '-notification_time')
 
             new_notifications = []
             all_notifications = []
@@ -1111,8 +1112,9 @@ def mainAdminNotificationView(request):
             input_date = request.POST.get('date_range')
             start_date = input_date.split(' - ')[0]
             end_date = input_date.split(' - ')[1]
-            users = models.User.objects.filter(date_joined__gte=datetime.datetime.strptime(start_date, '%m/%d/%Y').date(),
-                                               date_joined__lte=datetime.datetime.strptime(end_date, '%m/%d/%Y').date())
+            users = models.User.objects.filter(
+                date_joined__gte=datetime.datetime.strptime(start_date, '%m/%d/%Y').date(),
+                date_joined__lte=datetime.datetime.strptime(end_date, '%m/%d/%Y').date())
             # print(users)
             for user in users:
                 note = models.Notification.objects.create(category_choice=user.email, notification=notification)
@@ -1255,6 +1257,33 @@ def mainAdminProfileView(request, id):
         'current_user': current_user,
     }
     return render(request, 'admin_panel/mainTF/profile.html', context)
+
+
+@user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def mainAdminSupportEditView(request, id):
+    current_user = User.objects.get(id=id)
+    admin_list = User.objects.filter(is_staff=True)
+    user_lists = User.objects.filter(is_staff=False)
+    sales = User.objects.filter(is_sales=True)
+    blogger = User.objects.filter(is_blogger=True)
+    bcs_head = User.objects.filter(is_bcs_head=True)
+    pcs_head = User.objects.filter(is_pcs_head=True)
+    form = forms.AssignToServiceForm(instance=current_user)
+
+
+    context = {
+        'support_edit': 'support_edit',
+        'current_user': current_user,
+        'admin_list': admin_list,
+        'sales': sales,
+        'blogger': blogger,
+        'bcs_head': bcs_head,
+        'pcs_head': pcs_head,
+        'user_lists': user_lists,
+        'form': form,
+    }
+
+    return render(request, 'admin_panel/mainTF/editForm.html', context)
 
 
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
