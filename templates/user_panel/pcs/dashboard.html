@@ -14,6 +14,19 @@
     .readings a{
         color: #151331
     }
+    .carousel-control-prev,
+    .carousel-control-next {
+        margin-top: 150px;
+      }
+    .carousel-control-prev,
+    .carousel-control-next {
+        background-color: rgb(21, 19, 49, .5);
+        border-radius: 50%;
+        width:50px;
+        height:50px;
+        padding:12px
+      }
+}
 </style>
     <div class="dashboard-container overflow-hidden">
         <section class="dashboard-heading">
@@ -211,70 +224,82 @@
             <h3 class="fw-bold border-bottom border-gray pb-3 mb-4">Upcoming Events</h3>
             <div class="row mx-0 gy-3 gy-lg-0 justify-content-between">
                 {% if events.exists %}
-                    {% for event in events %}
-                        <div class="col-12  px-0 px-md-2">
-                            <div class="card shadow rounded-3">
-                                <div class="row g-0">
-                                    <div class="col-md-6">
-                                        <img src="{% static 'tfimg/user_panel/webinar.jpg' %}"
-                                             class="img-fluid rounded-start h-100" alt="...">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="card-body">
-                                            <h5 class="card-title fw-bold fs-5x">{{ event.event_name }}
-                                            </h5>
-                                            <p class="card-text lh-sm">{{ event.event_description|safe }}
-                                            </p>
-                                            <table class="table">
-                                                <tbody>
-                                                <tr>
-                                                    <td class="fw-bold">Speaker:</td>
-                                                    <td class="ps-2">{{ event.speaker }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <i class="icofont-calendar"></i>
-                                                        <span class="fw-bold">Timezone:</span>
-                                                    </td>
-                                                    <td class="ps-2">{{ event.timezone }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <i class="icofont-ui-calendar"></i>
-                                                        <span class="fw-bold">Date:</span>
-                                                    </td>
-                                                    <td class="ps-2">{{ event.date_time|date }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <i class="icofont-clock-time"></i>
-                                                        <span class="fw-bold">Time:</span>
-                                                    </td>
-                                                    <td class="ps-2">{{ event.date_time|time }}</td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                            {% if event.id not in registered_event %}
-                                                <a href="{% host_url 'bcs_user_event_register' id=event.id %}"
-                                                   class="d-block mx-auto btn btn-sm bg-navy text-white px-4 py-1 mt-2">Interested</a>
-                                            {% else %}
-                                                <p class="d-block mx-auto text-center px-4 py-1 mt-2">Registered</p>
-                                            {% endif %}
-                                        {% comment %}
-                                            {% if event.id not in registered_event %}
-                                                <a href="{% host_url 'bcs_user_event_register' id=event.id %}"
-                                                   class="d-block mx-auto btn btn-sm bg-navy text-white px-4 py-1 mt-2">Register</a>
-                                            {% else %}
-                                                <a href="{% host_url 'bcs_user_event_register' id=event.id %}"
-                                                   class="d-block mx-auto btn btn-sm bg-navy text-white px-4 py-1 mt-2">Unregister</a>
-                                            {% endif %}
-                                        {% endcomment %}
-                                        </div>
-                                    </div>
+                <div id="carouselExampleControls" class="carousel slide" data-bs-touch="true" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                {% for event in events %}
+                <div class="col-12 carousel-item  {% if forloop.first %} active{% endif %} px-0 px-md-2">
+                    <div class="card shadow rounded-3">
+                        <div class="row g-0">
+                            <div class="col-md-6">
+                                <img src="{% static 'tfimg/user_panel/webinar.jpg' %}"
+                                     class="img-fluid rounded-start h-100" alt="...">
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card-body">
+                                    <h5 class="card-title fw-bold fs-5x">{{ event.event_name }}
+                                    </h5>
+                                    <p class="card-text lh-sm">{{ event.event_description|safe }}
+                                    </p>
+                                    <table class="table">
+                                        <tbody>
+                                        <tr>
+                                            <td class="fw-bold">Speaker:</td>
+                                            <td class="ps-2">{{ event.speaker }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <i class="icofont-calendar"></i>
+                                                <span class="fw-bold">Timezone:</span>
+                                            </td>
+                                            <td class="ps-2">{{ event.timezone }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <i class="icofont-ui-calendar"></i>
+                                                <span class="fw-bold">Date:</span>
+                                            </td>
+                                            <td class="ps-2">{{ event.date_time|date }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <i class="icofont-clock-time"></i>
+                                                <span class="fw-bold">Time:</span>
+                                            </td>
+                                            <td class="ps-2">{{ event.date_time|time }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                {% if event.id not in registered_event %}
+                                        <a href="{% host_url 'bcs_user_event_register' id=event.id %}"
+                                           class="d-block mx-auto btn btn-sm bg-navy text-white px-4 py-1 mt-2">Interested</a>
+                                    {% else %}
+                                        <p class="d-block mx-auto text-center px-4 py-1 mt-2">Registered</p>
+                                    {% endif %}
+                                {% comment %}
+                                    {% if event.id not in registered_event %}
+                                        <a href="{% host_url 'bcs_user_event_register' id=event.id %}"
+                                           class="d-block mx-auto btn btn-sm bg-navy text-white px-4 py-1 mt-2">Register</a>
+                                    {% else %}
+                                        <a href="{% host_url 'bcs_user_event_register' id=event.id %}"
+                                           class="d-block mx-auto btn btn-sm bg-navy text-white px-4 py-1 mt-2">Unregister</a>
+                                    {% endif %}
+                                {% endcomment %}
                                 </div>
                             </div>
                         </div>
-                    {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Next</span>
+                    </button>
+                  </div>
                 {% else %}
                     <div class='text-center py-4'>No Event Found</div>
                 {% endif %}
