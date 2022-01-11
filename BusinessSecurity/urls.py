@@ -92,6 +92,8 @@ urlpatterns = [
          name='main_admin_support_view'),
     path('main_admin_user/', views.mainAdminProfileView, name='main_admin_user'),
     path('main_admin_user/<id>/', views.mainAdminProfileView, name='main_admin_user'),
+    path('main_admin_user_edit/', views.mainAdminSupportEditView, name='main_admin_user_edit'),
+    path('main_admin_user_edit/<id>/', views.mainAdminSupportEditView, name='main_admin_user_edit'),
     path('main_admin_support_delete_view/<id>/', views.mainAdminSupportDeleteView,
          name='main_admin_support_delete_view'),
     path('main_admin_stuff_view/', views.mainAdminSupportStuffView,
