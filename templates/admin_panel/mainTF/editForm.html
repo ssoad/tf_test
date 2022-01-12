@@ -55,10 +55,7 @@
                 if (document.querySelector('.servicesList'))
                     document.querySelector('.servicesList').outerHTML = '';
             } else {
-                $(this).val(null).trigger('change');
-                $(this).val('sales').trigger('change');
                 $('.admin_type  option[value!="sales"]').prop('disabled', true);
-
 
                 if (!document.querySelector('.servicesList')) {
                     document.querySelector('#employeeAddForm button[type="submit"]').insertAdjacentHTML('beforebegin', '<div class="servicesList">' + services + '</div>');
