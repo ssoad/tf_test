@@ -1262,14 +1262,55 @@ def mainAdminProfileView(request, id):
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminSupportEditView(request, id):
     current_user = User.objects.get(id=id)
+    current_service_assigned = models.ServiceAssigned.objects.get(user=current_user)
     admin_list = User.objects.filter(is_staff=True)
     user_lists = User.objects.filter(is_staff=False)
     sales = User.objects.filter(is_sales=True)
     blogger = User.objects.filter(is_blogger=True)
     bcs_head = User.objects.filter(is_bcs_head=True)
     pcs_head = User.objects.filter(is_pcs_head=True)
-    form = forms.AssignToServiceForm(instance=current_user)
+    form = forms.AssignToServiceForm(instance=current_service_assigned)
 
+    if request.method == 'POST':
+
+        if 'sales' in request.POST.getlist('user_permission'):
+            current_user.is_staff = True
+            current_user.is_sales = True
+
+            current_user.is_blogger = False
+            current_user.is_bcs_head = False
+            current_user.is_pcs_head = False
+
+            form = forms.AssignToServiceForm(request.POST, instance=current_service_assigned)
+            if form.is_valid():
+                assigned = form.save(commit=False)
+                assigned.user = current_user
+                for service_id in request.POST.getlist('service'):
+                    service = models.Service.objects.get(id=service_id)
+                    tracking = models.Tracking.objects.get_or_create(
+                        service=service)
+                    person = tracking[0].persons
+                    if str(current_user.id) not in person.split(','):
+                        tracking[0].persons = f'{person},{current_user.id}'
+                        tracking[0].save()
+                assigned.save()
+                form.save_m2m()
+                current_user.save()
+        else:
+            for item in request.POST.getlist('user_permission'):
+                if 'blogger' in request.POST.getlist('user_permission'):
+                    current_user.is_staff = True
+                    current_user.is_blogger = True
+                    current_user.save()
+                if 'bcs_head' in request.POST.getlist('user_permission'):
+                    current_user.is_staff = True
+                    current_user.is_bcs_head = True
+                    current_user.save()
+                if 'pcs_head' in request.POST.getlist('user_permission'):
+                    current_user.is_staff = True
+                    current_user.is_pcs_head = True
+                    current_user.save()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
     context = {
         'support_edit': 'support_edit',
