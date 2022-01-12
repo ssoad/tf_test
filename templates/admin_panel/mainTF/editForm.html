@@ -48,6 +48,23 @@
         </script>
         <script>
             let services = `{{ form|crispy }}`;
+            let initVal = $('.admin_type').val()[0];
+            if (initVal !== 'sales') {
+                $('.admin_type option[value="sales"]').prop('disabled', true);
+
+                if (document.querySelector('.servicesList'))
+                    document.querySelector('.servicesList').outerHTML = '';
+            } else {
+                $(this).val(null).trigger('change');
+                $(this).val('sales').trigger('change');
+                $('.admin_type  option[value!="sales"]').prop('disabled', true);
+
+
+                if (!document.querySelector('.servicesList')) {
+                    document.querySelector('#employeeAddForm button[type="submit"]').insertAdjacentHTML('beforebegin', '<div class="servicesList">' + services + '</div>');
+                    $('.js-example-basic-multiple').select2()
+                }
+            }
 
             $('.admin_type').on('select2:select', function (e) {
                 let data = e.params.data;
