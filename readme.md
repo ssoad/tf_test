@@ -14,7 +14,7 @@ py -m venv venv
 ```
 ### Activate Virtual Environment (for cmd)
 ```commandline
-cd venv/Scripts/activate
+venv\Scripts\activate
 ```
 ### Install requirements
 ```commandline
