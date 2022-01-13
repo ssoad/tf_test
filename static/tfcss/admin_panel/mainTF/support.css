@@ -88,10 +88,6 @@
    background-color: #4566a031;
 }
 
-.shadow-table thead {
-    padding: 50px auto;
-}
-
 .shadow-table tbody tr:nth-child(odd)>td {
    background-color: #4566a03f;
 }
