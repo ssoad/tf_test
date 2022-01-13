@@ -57,26 +57,43 @@
     width: 100%;
     margin-block: 10px;
     border-collapse: separate;
-    border-spacing: 0px 15px;
+    border-spacing: 0px 1px;
     overflow-x: auto;
     white-space: nowrap;
 }
 
 .shadow-table .head-row th {
     text-align: center;
-    padding: 0px 0px 0px 10px;
+    /* padding: 0px 0px 0px 10px; */
     font-weight: 500;
 }
 
 .shadow-table .data-row {
     -webkit-box-shadow: 0px 1px 6px rgb(0 0 0 / 35%);
     box-shadow: 0px 1px 6px rgb(0 0 0 / 35%);
-    border-radius: 3px;
+    border-radius: 5px;
 }
 
 .shadow-table td {
     text-align: center;
     padding: 10px 0px 10px 10px;
+}
+
+.shadow-table tbody tr>td {
+    font-size: 16px;
+}
+
+.shadow-table tbody tr:nth-child(even)>td, 
+.shadow-table thead {
+   background-color: #4566a031;
+}
+
+.shadow-table thead {
+    padding: 50px auto;
+}
+
+.shadow-table tbody tr:nth-child(odd)>td {
+   background-color: #4566a03f;
 }
 
 .support-table .active {

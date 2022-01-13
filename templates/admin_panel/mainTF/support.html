@@ -163,7 +163,7 @@
                 </button>
             </div>
             <div class="table-container">
-                <table class="shadow-table">
+                <table id="data-table" class="shadow-table table table-hover">
                     <thead>
                     <tr class="head-row">
                         <th>Name</th>
@@ -259,6 +259,9 @@
             $('.admin_type').select2({
                 dropdownParent: $("#exampleModal")
             })
+
+            
+            $('#data-table').DataTable();
         });
 
     </script>
