@@ -1358,7 +1358,7 @@ def mainAdminSupportEditView(request, id):
                 if 'pcs_head' not in request.POST.getlist('user_permission'):
                     current_user.is_pcs_head = False
                     current_user.save()
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(reverse('main_admin_support_view'))
 
     context = {
         'support_edit': 'support_edit',
