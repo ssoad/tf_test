@@ -13,7 +13,8 @@
             width: 30%;
             border-radius: 0
         }
-        #div_id_phone_number .select2-selection--single{
+
+        #div_id_phone_number .select2-selection--single {
             height: 40px
         }
 
@@ -91,7 +92,7 @@
                     {% csrf_token %}
                     <div class="d-flex justify-content-center flex-column">
                         {% if form.errors %}
-                        <div class="text-danger">{{ form.errors }}</div>
+                            <div class="text-danger">{{ form.errors }}</div>
                         {% endif %}
                         {{ form|crispy }}
                     </div>
@@ -105,25 +106,25 @@
         </div>
     </div>
 {% endblock content %} {% block customjs %}
-{#    <script>#}
-{##}
-{#        window.onload = function () {#}
-{#            let selected;#}
-{#            let country = document.getElementById('id_country');#}
-{#            $(document).ready(function () {#}
-{#                $('.countryselectwidget').select2();#}
-{#                $('.phoneprefixselect').select2();#}
-{##}
-{#                $('.phoneprefixselect').on('select2:select', function (e) {#}
-{#                    selected = e.params.data.text;#}
-{#                    country.value = selected.slice(0, selected.indexOf('+')).trim();#}
-{#                });#}
-{#            });#}
-{##}
-{#            if (country.style.display === 'none') {#}
-{#                country.parentNode.parentNode.style.display = 'none'#}
-{#            }#}
-{#        }#}
-{##}
-{#    </script>#}
+        <script>
+
+            window.onload = function () {
+                let selected;
+                let country = document.getElementById('id_country');
+                $(document).ready(function () {
+                    $('.countryselectwidget').select2();
+                    $('.phoneprefixselect').select2();
+
+                    $('.phoneprefixselect').on('select2:select', function (e) {
+                        selected = e.params.data.text;
+                        country.value = selected.slice(0, selected.indexOf('+')).trim();
+                    });
+                });
+
+                if (country.style.display === 'none') {
+                    country.parentNode.parentNode.style.display = 'none'
+                }
+            }
+
+        </script>
 {% endblock customjs %}
