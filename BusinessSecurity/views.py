@@ -337,7 +337,7 @@ def createBusinessView(request):
                     user_business = models.UsersBusiness.objects.create(user=current_user, business=business,
                                                                         position='staff', privilege='general_staff')
                     user_business.save()
-                    return HttpResponseRedirect(reverse('bcs_user_dashboard'))
+                    return HttpResponseRedirect(reverse('bcs_user_my_team'))
                 except:
                     message = 'Wrong Business Key'
                     context = {
@@ -351,7 +351,7 @@ def createBusinessView(request):
         }
         return render(request, 'user_panel/bcs/redirection.html', context)
     else:
-        return HttpResponseRedirect(reverse('bcs_user_my_team'))
+        return HttpResponseRedirect(reverse('bcs_user_dashboard'))
 
 
 @login_required
