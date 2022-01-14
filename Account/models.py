@@ -44,7 +44,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     address_one = models.CharField(max_length=255, blank=True)
     address_two = models.CharField(max_length=255, blank=True)
     city = models.CharField(max_length=255, blank=True)
-    zipcode = models.IntegerField(null=True, blank=True)
+    zipcode = models.CharField(max_length=255, null=True, blank=True)
     country = models.CharField(
         verbose_name="Country", max_length=50, blank=True)
     profile_pic = models.ImageField(

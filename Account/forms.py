@@ -138,7 +138,7 @@ class AddressForm(forms.ModelForm):
     address_one = forms.CharField(required=True)
     address_two = forms.CharField(required=False)
     city = forms.CharField(required=True)
-    zipcode = forms.IntegerField(required=True)
+    # zipcode = forms.IntegerField(required=True)
     country = forms.CharField(required=True)
 
     class Meta:

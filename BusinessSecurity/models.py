@@ -428,7 +428,7 @@ class Business(models.Model):
     address_one = models.CharField(max_length=255)
     address_two = models.CharField(max_length=255, blank=True)
     city = models.CharField(max_length=255)
-    zipcode = models.IntegerField()
+    zipcode = models.CharField(max_length=255)
     country = models.CharField(max_length=255)
     business_size = models.IntegerField(
         default=10, verbose_name='Number of Employees')
