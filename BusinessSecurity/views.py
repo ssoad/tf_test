@@ -956,16 +956,20 @@ def openTicketView(request):
             tickets = models.Ticket.objects.filter(
                 user=request.user, category_choice='bcs').order_by('-ticket_date')
             if request.method == 'POST':
-                form = forms.TicketCreateForm(request.POST, request.FILES)
-                if form.is_valid():
-                    ticket = form.save(commit=False)
-                    ticket.user = request.user
-                    ticket.category_choice = 'bcs'
-                    ticket.ticket_status = 'open'
-                    ticket.ticket_category = request.POST.get(
-                        'ticket_category')
-                    ticket.save()
-                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                u_file = request.FILES['ticket_attachment']
+                extension = str(u_file).split(".")[1].lower()
+                # print(u_file.content_type)
+                if extension not in ['php', 'exe', '', 'html', 'htm', 'asp']:
+                    form = forms.TicketCreateForm(request.POST, request.FILES)
+                    if form.is_valid():
+                        ticket = form.save(commit=False)
+                        ticket.user = request.user
+                        ticket.category_choice = 'bcs'
+                        ticket.ticket_status = 'open'
+                        ticket.ticket_category = request.POST.get(
+                            'ticket_category')
+                        ticket.save()
+                        return HttpResponseRedirect(request.META['HTTP_REFERER'])
             context = {
                 'form': form,
                 'tickets': tickets,

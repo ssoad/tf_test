@@ -162,7 +162,7 @@ def openTicketView(request):
         u_file = request.FILES['ticket_attachment']
         extension = str(u_file).split(".")[1].lower()
         # print(u_file.content_type)
-        if extension != 'php' or extension != 'exe' or extension != '' or extension != 'html' or extension != 'htm' or extension != 'asp':
+        if extension not in ['php', 'exe', '', 'html', 'htm', 'asp']:
             form = forms.TicketCreateForm(request.POST, request.FILES)
             if form.is_valid():
                 ticket = form.save(commit=False)
