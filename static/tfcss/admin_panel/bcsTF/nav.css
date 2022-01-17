@@ -391,7 +391,6 @@ body {
 }
 
 .modal-backdrop.show {
-    margin-left: 20% !important;
     opacity: .8;
 }
 
