@@ -1303,13 +1303,13 @@ def pcsAdminOrdersDetailView(request, id):
                     f'Price Set for order ID: {current_order.id}',
                     f'Price: {current_order.orderprice_order.price} {current_order.orderprice_order.currency} '
                     f'has been set for your order ID: {current_order.id} '
-                    f'Please visit: {request.get_host()}/pcs_user_order_details/{current_order.id}/ for more info',
+                    f'Please visit: https://pcs.techforing.com/pcs_user_order_details/{current_order.id}/ for more info',
                     'admin@techforing.com',
                     [current_order.user.email],
                     fail_silently=False,
                 )
                 notification = models.Notification.objects.create(category_choice=current_order.user.email,
-                                                                  notification=f'Price Set for Order ID: {current_order.id} <a href="http://{request.get_host()}/pcs_user_order_details/{current_order.id}/" '
+                                                                  notification=f'Price Set for Order ID: {current_order.id} <a href="https://pcs.techforing.com/pcs_user_order_details/{current_order.id}/" '
                                                                                f'target="_blank" class="btn '
                                                                                f'btn-success">Visit Now</a>',
                                                                   notification_time=timezone.now())
@@ -1331,7 +1331,7 @@ def pcsAdminOrdersDetailView(request, id):
                     fail_silently=False,
                 )
                 notification = models.Notification.objects.create(category_choice=current_order.user.email,
-                                                                  notification=f'Quotation Set for Order ID: {current_order.id} <a href="http://{request.get_host()}/pcs_user_order_details/{current_order.id}/" '
+                                                                  notification=f'Quotation Set for Order ID: {current_order.id} <a href="https://pcs.techforing.com/pcs_user_order_details/{current_order.id}/" '
                                                                                f'target="_blank" class="btn '
                                                                                f'btn-success">Visit Now</a>',
                                                                   notification_time=timezone.now())
@@ -1373,7 +1373,7 @@ def pcsAdminOrdersDetailView(request, id):
                         fail_silently=False,
                     )
                     notification = models.Notification.objects.create(category_choice=current_order.user.email,
-                                                                      notification=f'Price Set for Order ID: {current_order.id} <a href="http://{request.get_host()}/pcs_user_order_details/{current_order.id}/" '
+                                                                      notification=f'Price Set for Order ID: {current_order.id} <a href="https://pcs.techforing.com/pcs_user_order_details/{current_order.id}/" '
                                                                                    f'target="_blank" class="btn '
                                                                                    f'btn-success">Visit Now</a>',
                                                                       notification_time=timezone.now())
@@ -1386,17 +1386,17 @@ def pcsAdminOrdersDetailView(request, id):
                     quotation_form.save()
                     send_mail(
                         f'Quotation Set for order ID: {current_order.id}',
-                        f'NDA: {request.get_host()}{current_order.quotation_order.nda.url} '
-                        f'NCA: {request.get_host()}{current_order.quotation_order.nca.url} '
+                        f'NDA: https://main.techforing.com/{current_order.quotation_order.nda.url} '
+                        f'NCA: https://main.techforing.com/{current_order.quotation_order.nca.url} '
                         f'has been set for your order ID: {current_order.id} '
-                        f'Please sign them and submit a copy to {request.get_host()}/pcs_user_order_details/{current_order.id}/ '
-                        f'Please visit: {request.get_host()}/pcs_user_order_details/{current_order.id}/ for more info',
+                        f'Please sign them and submit a copy to https://pcs.techforing.com/pcs_user_order_details/{current_order.id}/ '
+                        f'Please visit: https://pcs.techforing.com/pcs_user_order_details/{current_order.id}/ for more info',
                         'admin@techforing.com',
                         [current_order.user.email],
                         fail_silently=False,
                     )
                     notification = models.Notification.objects.create(category_choice=current_order.user.email,
-                                                                      notification=f'Quotation Set for Order ID: {current_order.id} <a href="http://{request.get_host()}/pcs_user_order_details/{current_order.id}/" '
+                                                                      notification=f'Quotation Set for Order ID: {current_order.id} <a href="https://pcs.techforing.com/pcs_user_order_details/{current_order.id}/" '
                                                                                    f'target="_blank" class="btn '
                                                                                    f'btn-success">Visit Now</a>',
                                                                       notification_time=timezone.now())
