@@ -1321,11 +1321,11 @@ def pcsAdminOrdersDetailView(request, id):
                 quotation_form.save()
                 send_mail(
                     f'Quotation Set for order ID: {current_order.id}',
-                    f'NDA: {request.get_host()}{current_order.quotation_order.nda.url} '
-                    f'NCA: {request.get_host()}{current_order.quotation_order.nca.url} '
+                    f'NDA: https://main.techforing.com/{current_order.quotation_order.nda.url} '
+                    f'NCA: https://main.techforing.com/{current_order.quotation_order.nca.url} '
                     f'has been set for your order ID: {current_order.id} '
-                    f'Please sign them and submit a copy to {request.get_host()}/pcs_user_order_details/{current_order.id}/ '
-                    f'Please visit: {request.get_host()}/pcs_user_order_details/{current_order.id}/ for more info',
+                    f'Please sign them and submit a copy to https://pcs.techforing.com/pcs_user_order_details/{current_order.id}/ '
+                    f'Please visit: https://pcs.techforing.com/pcs_user_order_details/{current_order.id}/ for more info',
                     'admin@techforing.com',
                     [current_order.user.email],
                     fail_silently=False,
