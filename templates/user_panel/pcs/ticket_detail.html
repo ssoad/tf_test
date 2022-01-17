@@ -21,6 +21,14 @@
         <div class="row">
             <h6 class="fw-bold mb-3">Attachment</h6>
             <img src="{{ ticket.ticket_attachment.url }}" alt="ticket" style="width: 250px; height: 150px">
+            <div>
+                <a class="btn btn-sm btn-navy mt-2" href="{{ ticket.ticket_attachment.url }}" download="{{ ticket.ticket_attachment.url }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
+                    </svg>
+                    Download Attachment
+                </a>
+            </div>
         </div>
 
         {% if ticket.ticketcomment_ticket.all.count < 1 %}
