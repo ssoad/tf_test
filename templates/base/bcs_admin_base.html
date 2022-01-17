@@ -270,6 +270,12 @@
                         </a>
                     </li>
                     <div class="div"></div>
+                    <li data-tootik="Tickets" data-tootik-conf="right">
+                        <a href="{% host_url 'bcs_admin_all_tickets' %}" class="nav-link">
+                            <i class="icofont-life-buoy"></i> <span class="nav-text">Tickets</span>
+                        </a>
+                    </li>
+                    <div class="div"></div>
                 {% endif %}
                 <button class="btn menu-expand-btn btn-outline-navy mt-3 mx-auto d-block">
                     <i class="icofont-long-arrow-left"></i> Close
@@ -281,7 +287,9 @@
     <!-- sidebar section ends here -->
 </header>
 
-{% block content %} {% endblock content %}
+{% block content %}
+
+ {% endblock content %}
 <footer id="footer-small" class="footer footer-shrink mt-5 py-4 position-sticky top-100">
     <div class="d-flex justify-content-center">
         <a href="{% host_url 'policy' %}" class="me-5">PRIVACY POLICY</a>

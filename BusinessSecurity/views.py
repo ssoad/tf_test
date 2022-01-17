@@ -58,6 +58,11 @@ def bcs_admin_permission_check_order(user):
     except:
         return user.is_staff and user.is_superuser
 
+def ticket_admin(user):
+    try:
+        return user.is_staff and user.is_superuser or user.is_bcs_head or user.is_pcs_head or user.is_sales
+    except:
+        return user.is_staff and user.is_superuser
 
 def indexView(request):
     context = {
@@ -1457,7 +1462,8 @@ def mainAdminTicketsDetailView(request, id):
     return render(request, 'admin_panel/mainTF/ticket_detail.html', context)
 
 
-@login_required
+@user_passes_test(ticket_admin, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
 def ticketOpenCloseView(request, id):
     current_ticket = models.Ticket.objects.get(id=id)
     if current_ticket.ticket_status == 'open':
@@ -2542,7 +2548,7 @@ def bcsAdminOrderCanceledView(request, id):
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminTicketsView(request):
     tickets = models.Ticket.objects.filter(category_choice='bcs')
     context = {
@@ -2551,7 +2557,7 @@ def bcsAdminTicketsView(request):
     return render(request, 'admin_panel/bcsTF/allTickets.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminTicketsDetailView(request, id):
     ticket = models.Ticket.objects.get(id=id)
     commentform = forms.TicketCommentForm()

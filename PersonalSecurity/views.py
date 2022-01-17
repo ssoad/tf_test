@@ -1425,7 +1425,7 @@ def pcsAdminOrderCanceledView(request, id):
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-@user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+@user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def pcsAdminTicketsView(request):
     tickets = models.Ticket.objects.filter(category_choice='pcs')
     context = {
@@ -1434,7 +1434,7 @@ def pcsAdminTicketsView(request):
     return render(request, 'admin_panel/pcsTF/allTickets.html', context)
 
 
-@user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+@user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def pcsAdminTicketsDetailView(request, id):
     ticket = models.Ticket.objects.get(id=id)
     commentform = forms.TicketCommentForm()
