@@ -13,6 +13,7 @@ from django.db.models import Q
 from django.core.files.storage import FileSystemStorage
 from Blog.models import ReadingList, Post
 from Account import models as accountmodels
+from django.core.mail import send_mail
 
 
 # Create your views here.
@@ -1297,9 +1298,44 @@ def pcsAdminOrdersDetailView(request, id):
                 current_order.save()
                 # new_staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
                 form.save()
+
+                send_mail(
+                    f'Price Set for order ID: {current_order.id}',
+                    f'Price: {current_order.orderprice_order.price} {current_order.orderprice_order.currency} '
+                    f'has been set for your order ID: {current_order.id} '
+                    f'Please visit: {request.get_host()}/pcs_user_order_details/{current_order.id}/ for more info',
+                    'admin@techforing.com',
+                    [current_order.user.email],
+                    fail_silently=False,
+                )
+                notification = models.Notification.objects.create(category_choice=current_order.user.email,
+                                                                  notification=f'Price Set for Order ID: {current_order.id} <a href="http://{request.get_host()}/pcs_user_order_details/{current_order.id}/" '
+                                                                               f'target="_blank" class="btn '
+                                                                               f'btn-success">Visit Now</a>',
+                                                                  notification_time=timezone.now())
+                notification.save()
                 return HttpResponseRedirect(request.META['HTTP_REFERER'])
             if quotation_form.is_valid():
+                current_order.order_status = 'attending'
+                current_order.save()
                 quotation_form.save()
+                send_mail(
+                    f'Quotation Set for order ID: {current_order.id}',
+                    f'NDA: {request.get_host()}{current_order.quotation_order.nda.url} '
+                    f'NCA: {request.get_host()}{current_order.quotation_order.nca.url} '
+                    f'has been set for your order ID: {current_order.id} '
+                    f'Please sign them and submit a copy to {request.get_host()}/pcs_user_order_details/{current_order.id}/ '
+                    f'Please visit: {request.get_host()}/pcs_user_order_details/{current_order.id}/ for more info',
+                    'admin@techforing.com',
+                    [current_order.user.email],
+                    fail_silently=False,
+                )
+                notification = models.Notification.objects.create(category_choice=current_order.user.email,
+                                                                  notification=f'Quotation Set for Order ID: {current_order.id} <a href="http://{request.get_host()}/pcs_user_order_details/{current_order.id}/" '
+                                                                               f'target="_blank" class="btn '
+                                                                               f'btn-success">Visit Now</a>',
+                                                                  notification_time=timezone.now())
+                notification.save()
                 return HttpResponseRedirect(request.META['HTTP_REFERER'])
         context = {
             'current_order': current_order,
@@ -1311,25 +1347,60 @@ def pcsAdminOrdersDetailView(request, id):
         try:
             current_order = models.Order.objects.get(
                 id=id, orderstaff_order__staff=request.user)
+            current_price = models.OrderPrice.objects.get(order=current_order)
             current_quotation = models.Quotation.objects.get(
                 order=current_order)
-            form = forms.OrderPriceForm(instance=current_order)
+            form = forms.OrderPriceForm(instance=current_price)
             quotation_form = forms.QuotationForm(instance=current_quotation)
             if request.method == 'POST':
                 form = forms.OrderPriceForm(
-                    request.POST, instance=current_order)
+                    request.POST, instance=current_price)
                 quotation_form = forms.QuotationForm(
                     files=request.FILES, data=request.POST, instance=current_quotation)
                 if form.is_valid():
                     current_order.order_status = 'on_progress'
+                    current_order.save()
                     # new_staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
                     form.save()
+
+                    send_mail(
+                        f'Price Set for order ID: {current_order.id}',
+                        f'Price: {current_order.orderprice_order.price} {current_order.orderprice_order.currency} '
+                        f'has been set for your order ID: {current_order.id} '
+                        f'Please visit: {request.get_host()}/pcs_user_order_details/{current_order.id}/ for more info',
+                        'admin@techforing.com',
+                        [current_order.user.email],
+                        fail_silently=False,
+                    )
+                    notification = models.Notification.objects.create(category_choice=current_order.user.email,
+                                                                      notification=f'Price Set for Order ID: {current_order.id} <a href="http://{request.get_host()}/pcs_user_order_details/{current_order.id}/" '
+                                                                                   f'target="_blank" class="btn '
+                                                                                   f'btn-success">Visit Now</a>',
+                                                                      notification_time=timezone.now())
+                    notification.save()
                     return HttpResponseRedirect(request.META['HTTP_REFERER'])
                 if quotation_form.is_valid():
                     current_order.order_status = 'attending'
                     current_order.save()
                     # new_staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
                     quotation_form.save()
+                    send_mail(
+                        f'Quotation Set for order ID: {current_order.id}',
+                        f'NDA: {request.get_host()}{current_order.quotation_order.nda.url} '
+                        f'NCA: {request.get_host()}{current_order.quotation_order.nca.url} '
+                        f'has been set for your order ID: {current_order.id} '
+                        f'Please sign them and submit a copy to {request.get_host()}/pcs_user_order_details/{current_order.id}/ '
+                        f'Please visit: {request.get_host()}/pcs_user_order_details/{current_order.id}/ for more info',
+                        'admin@techforing.com',
+                        [current_order.user.email],
+                        fail_silently=False,
+                    )
+                    notification = models.Notification.objects.create(category_choice=current_order.user.email,
+                                                                      notification=f'Quotation Set for Order ID: {current_order.id} <a href="http://{request.get_host()}/pcs_user_order_details/{current_order.id}/" '
+                                                                                   f'target="_blank" class="btn '
+                                                                                   f'btn-success">Visit Now</a>',
+                                                                      notification_time=timezone.now())
+                    notification.save()
                     return HttpResponseRedirect(request.META['HTTP_REFERER'])
             context = {
                 'current_order': current_order,

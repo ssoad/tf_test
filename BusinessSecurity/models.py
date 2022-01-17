@@ -420,7 +420,7 @@ privilege = (
 
 class Business(models.Model):
     industry_type = models.CharField(max_length=264, choices=industry_type)
-    company_name = models.CharField(max_length=264)
+    company_name = models.CharField(max_length=264, unique=True)
     company_logo = models.ImageField(upload_to='company/', default='company/default.jpg')
     website = models.URLField(max_length=264, default='https://')
     phone_number = models.CharField(max_length=24, verbose_name='Company Phone Number')
