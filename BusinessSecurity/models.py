@@ -300,7 +300,7 @@ class Ticket(models.Model):
     issue_category = models.CharField(max_length=255, choices=issue_category)
     ticket_title = models.CharField(max_length=255, verbose_name='Title')
     ticket_description = HTMLField(verbose_name='Description')
-    ticket_attachment = models.ImageField(
+    ticket_attachment = models.FileField(
         verbose_name='Attachment', upload_to='ticket/')
     ticket_status = models.CharField(max_length=255, choices=ticket_status)
     ticket_date = models.DateTimeField(auto_now_add=True)
