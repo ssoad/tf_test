@@ -189,7 +189,7 @@ order_status = (
     ('new', 'New'),
     ('assigned', 'Assigned'),
     ('attending', 'Attending'),
-    ('agreed_to_quotation', 'Agreed To Quotation'),
+    ('uploaded', 'Uploaded'),
     ('agreed_to_nda_nca', 'Agreed To NDA/NCA'),
     ('disagreed', 'Disagreed'),
     ('on_progress', 'On Progress'),
@@ -233,8 +233,18 @@ class Quotation(models.Model):
     # quotation = models.FileField(upload_to='quotation/', blank=True, null=True)
     quotation_info = HTMLField(blank=True, null=True)
     extra_field = models.CharField(max_length=255, blank=True, null=True)
-    agree_to_quotation = models.CharField(choices=agreement, default='disagree', max_length=255)
-    agree_to_nda_nca = models.CharField(choices=agreement, default='disagree', max_length=255)
+    agreement = models.CharField(choices=agreement, default='disagree', max_length=255)
+
+    # agree_to_quotation = models.CharField(choices=agreement, default='disagree', max_length=255)
+    # agree_to_nda_nca = models.CharField(choices=agreement, default='disagree', max_length=255)
+
+
+class QuotationAgreement(models.Model):
+    quotation = models.OneToOneField(Quotation, on_delete=models.CASCADE, related_name='quotation_agreement_quotation')
+    user_nda = models.FileField(upload_to='nda/uploaded/', blank=True, null=True, verbose_name='Upload NDA')
+    user_nca = models.FileField(upload_to='nca/uploaded/', blank=True, null=True, verbose_name='Upload NCA')
+    message = HTMLField(blank=True, null=True)
+    agreement = models.CharField(verbose_name='Agree to NDA/NCA', choices=agreement, max_length=255)
 
 
 currency = (

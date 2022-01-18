@@ -227,6 +227,7 @@ def userReadingListView(request):
     }
     return render(request, 'user_panel/pcs/reading_list.html', context)
 
+
 @login_required
 def addToReadingListView(request, id):
     current_post = Post.objects.get(id=id)
@@ -238,6 +239,7 @@ def addToReadingListView(request, id):
     else:
         is_saved.delete()
     return HttpResponseRedirect(reverse('pcs_user_reading_list'))
+
 
 @login_required
 def userServicesView(request):
@@ -336,7 +338,7 @@ def userQuotationsHistoryView(request):
     #     Q(user=request.user, category_choice='pcs') & Q(
     #         Q(order_status='new') | Q(order_status='attending') | Q(order_status='assigned'))).order_by(
     #     '-order_date')
-    quotations = models.Quotation.objects.filter(Q(order__user=request.user) & Q(
+    quotations = models.Quotation.objects.filter(Q(order__user=request.user, order__category_choice='pcs') & Q(
         Q(order__order_status='new') | Q(order__order_status='attending')
         | Q(order__order_status='agreed_to_quotation') | Q(order__order_status='agreed_to_nda_nca')
         | Q(order__order_status='assigned'))).order_by('-order__order_date')
@@ -366,8 +368,38 @@ def userOrderDetailsView(request, id):
     try:
         current_order = models.Order.objects.get(
             user=request.user, id=id, category_choice='pcs')
+        try:
+            current_quotation = models.Quotation.objects.get(order=current_order)
+            current_agreement = models.QuotationAgreement.objects.get(quotation=current_quotation)
+            form = forms.QuotationAgreementForm(instance=current_agreement)
+            if request.method == 'POST':
+                form = forms.QuotationAgreementForm(data=request.POST, files=request.FILES, instance=current_agreement)
+                if form.is_valid():
+                    quotation = form.save(commit=False)
+                    quotation.quotation = current_quotation
+                    quotation.save()
+                    if quotation.agreement == 'agree':
+                        current_quotation.agreement = 'agree'
+                        current_quotation.save()
+
+                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        except:
+            current_quotation = models.Quotation.objects.get(order=current_order)
+            form = forms.QuotationAgreementForm()
+            if request.method == 'POST':
+                form = forms.QuotationAgreementForm(data=request.POST, files=request.FILES)
+                if form.is_valid():
+                    quotation = form.save(commit=False)
+                    quotation.quotation = current_quotation
+                    quotation.save()
+                    if quotation.agreement == 'agree':
+                        current_quotation.agreement = 'agree'
+                        current_quotation.save()
+
+                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
         context = {
             'current_order': current_order,
+            'form': form,
         }
         return render(request, 'user_panel/pcs/order_detail.html', context)
     except:
@@ -449,7 +481,8 @@ def userNotificationsView(request):
     # emails = models.User.objects.filter(email=request.user.email).values_list('email', flat=True)
     # print(emails)
     notis = []
-    fields = [field.name for field in accountmodels.Interest._meta.get_fields() if field.name != 'id' and field.name != 'user']
+    fields = [field.name for field in accountmodels.Interest._meta.get_fields() if
+              field.name != 'id' and field.name != 'user']
 
     for field in fields:
         interests = accountmodels.Interest.objects.filter(user=request.user).values_list(f'{field}', flat=True)
@@ -459,7 +492,8 @@ def userNotificationsView(request):
             for key in interests.values(f'{field}')[0]:
                 # print(f"{key}")
                 notifications = models.Notification.objects.filter(
-                    Q(Q(category_choice='pcs') | Q(category_choice=request.user.email) | Q(category_choice=key))).order_by('-notification_time')
+                    Q(Q(category_choice='pcs') | Q(category_choice=request.user.email) | Q(
+                        category_choice=key))).order_by('-notification_time')
                 # print(notifications)
                 notis.append(notifications)
     new_notifications = []
@@ -1342,6 +1376,11 @@ def pcsAdminOrdersDetailView(request, id):
                                                                                f'btn-success">Visit Now</a>',
                                                                   notification_time=timezone.now())
                 notification.save()
+                try:
+                    current_quotation_agreement = models.QuotationAgreement.objects.get(quotation=current_quotation)
+                    current_quotation_agreement.delete()
+                except:
+                    pass
                 return HttpResponseRedirect(request.META['HTTP_REFERER'])
         context = {
             'current_order': current_order,
@@ -1407,6 +1446,11 @@ def pcsAdminOrdersDetailView(request, id):
                                                                                    f'btn-success">Visit Now</a>',
                                                                       notification_time=timezone.now())
                     notification.save()
+                    try:
+                        current_quotation_agreement = models.QuotationAgreement.objects.get(quotation=current_quotation)
+                        current_quotation_agreement.delete()
+                    except:
+                        pass
                     return HttpResponseRedirect(request.META['HTTP_REFERER'])
             context = {
                 'current_order': current_order,
@@ -1502,7 +1546,8 @@ def pcsAdminOrderCanceledView(request, id):
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-@user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+@user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
 def pcsAdminTicketsView(request):
     tickets = models.Ticket.objects.filter(category_choice='pcs')
     context = {
@@ -1511,7 +1556,8 @@ def pcsAdminTicketsView(request):
     return render(request, 'admin_panel/pcsTF/allTickets.html', context)
 
 
-@user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+@user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
 def pcsAdminTicketsDetailView(request, id):
     ticket = models.Ticket.objects.get(id=id)
     commentform = forms.TicketCommentForm()

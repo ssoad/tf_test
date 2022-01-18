@@ -101,6 +101,7 @@ class AddIndividualPackageFeatureForm(forms.ModelForm):
 
 class EventCreateForm(forms.ModelForm):
     date_time = forms.DateTimeField(input_formats=['%Y/%m/%d %H:%M'])
+
     # time_field = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'time'}),
     #                                  input_formats=['%H:%M', '%I:%M%p', '%I:%M %p'])
 
@@ -123,7 +124,14 @@ class QuotationForm(forms.ModelForm):
     class Meta:
         model = models.Quotation
         # fields = '__all__'
-        exclude = ['category_choice', 'order', 'agree_to_quotation', 'agree_to_nda_nca']
+        exclude = ['category_choice', 'order', 'agreement']
+
+
+class QuotationAgreementForm(forms.ModelForm):
+
+    class Meta:
+        model = models.QuotationAgreement
+        exclude = ['quotation']
 
 
 class OrderAssignForm(forms.ModelForm):
@@ -147,7 +155,6 @@ class TicketCreateForm(forms.ModelForm):
         fields = ['ticket_title', 'ticket_category', 'issue_category',
                   'ticket_description', 'ticket_attachment']
         # exclude = ['category_choice', 'ticket_status']
-
 
 
 class TicketCommentForm(forms.ModelForm):
@@ -183,7 +190,8 @@ class AssignToServiceForm(forms.ModelForm):
 
 class NotificationForm(forms.ModelForm):
     # category_choice = forms.ChoiceField(label='Select Target Users', choices=models.category_choice)
-    notification_time = forms.DateTimeField(input_formats=['%Y/%m/%d %H:%M'], widget=forms.TextInput(attrs={'value': dateformat.format(timezone.now(), 'Y/m/d H:i')}))
+    notification_time = forms.DateTimeField(input_formats=['%Y/%m/%d %H:%M'], widget=forms.TextInput(
+        attrs={'value': dateformat.format(timezone.now(), 'Y/m/d H:i')}))
 
     class Meta:
         model = models.Notification
