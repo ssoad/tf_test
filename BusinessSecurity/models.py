@@ -513,4 +513,5 @@ class Notification(models.Model):
     category_choice = models.CharField(max_length=255)
     notification = HTMLField()
     notification_time = models.DateTimeField()
+    is_read = models.BooleanField(default=False)
     # date_time = models.DateTimeField()

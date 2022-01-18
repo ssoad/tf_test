@@ -17,6 +17,7 @@ from django.core.files.storage import FileSystemStorage
 import datetime
 from django.utils.dateparse import parse_date
 from django.utils.formats import get_format
+from Blog.models import Post
 
 
 def date_parser(date_str):
@@ -382,11 +383,13 @@ def userDashboardView(request):
             orders = models.Order.objects.filter(
                 Q(user__business_user__business=current_business, category_choice='bcs') & ~Q(
                     Q(order_status='new') | Q(order_status='attending'))).order_by('-order_date')[:2]
+            posts = Post.objects.all().order_by('date')[:2]
             context = {
                 'events': events,
                 'registered_event': registered_event,
                 'orders': orders,
                 'notifications': notifications,
+                'posts': posts,
             }
             return render(request, 'user_panel/bcs/dashboard.html', context)
 
@@ -852,6 +855,12 @@ def userNotificationsView(request):
                 'notifications': new_notifications,
                 'all_notifications': all_notifications,
             }
+            for n in all_notifications:
+                n.is_read = True
+                n.save()
+            for n in new_notifications:
+                n.is_read = True
+                n.save()
             return render(request, 'user_panel/bcs/notifications.html', context)
 
 

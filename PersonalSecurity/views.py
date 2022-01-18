@@ -479,6 +479,12 @@ def userNotificationsView(request):
         'notifications': new_notifications,
         'all_notifications': all_notifications,
     }
+    for n in all_notifications:
+        n.is_read = True
+        n.save()
+    for n in new_notifications:
+        n.is_read = True
+        n.save()
     return render(request, 'user_panel/pcs/notifications.html', context)
 
 

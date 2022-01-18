@@ -21,7 +21,7 @@
     <link rel="icon" href="{% static '' %}tfimg/user_panel/Techforing-Icon.png" type="image/x-icon"/>
     <script>
         let mainOrigin = location.origin;
-        if(!location.origin.includes('127.0.0.1') && !location.origin.includes('localhost'))
+        if (!location.origin.includes('127.0.0.1') && !location.origin.includes('localhost'))
             mainOrigin = 'https://main.techforing.com';
     </script>
 </head>
@@ -88,7 +88,10 @@
         </li>
         <li data-tootik="Notifications" data-tootik-conf="right">
             <a href="{% host_url 'pcs_user_notifications' host 'mysecurity' %}">
-                <i class="icofont-notification"></i>
+                <div class="icon position-relative">
+                    <i class="icofont-notification"></i>
+                    <div class="position-absolute top-0 badge badge-danger rounded-pill bg-danger">{{ pcs_notification }}</div>
+                </div>
                 <span>Notifications</span>
             </a>
         </li>
@@ -114,16 +117,17 @@
             <a class="navbar-brand pt-2 ms-4 d-lg-none" href="/">
                 <img src="{% static '' %}tfimg/user_panel/logo.png" width="125" height="60" alt="Logo">
             </a>
-             
+
             <button class="sidebar-toggler btn px-3 d-block d-lg-none" type="button"
-                                data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
-                                aria-controls="offcanvasExample">
-                                <span class="navbar-toggler-icon"></span>
-                        </button>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
+                    aria-controls="offcanvasExample">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <img class="rounded-circle" src="{{ user.profile_pic.url }}"
-                width="40" height="40" alt="">
-              </button>
+                     width="40" height="40" alt="">
+            </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center fw-bolder">
                     {% if user.business_user.privilege != 'general_staff' %}
@@ -162,7 +166,7 @@
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        
+
                     </li>
                 </ul>
             </div>

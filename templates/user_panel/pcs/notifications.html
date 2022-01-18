@@ -14,7 +14,7 @@
             {% for notification in notifications %}
                 <div class="notifications-container px-md-4 mt-4">
                     <div class="new">
-                        <div class="row notification mt-2">
+                        <div class="row notification mt-2" style="{% if notification.is_read == False %} background: rgba(255,229,119,0.64) {% endif %}">
                             <div class="row py-2 align-items-center">
                                 <div class="col-2 icon icon-bg-blue">
                                     <i class="icofont-bell-alt"></i>
@@ -36,7 +36,7 @@
             {% for notification in all_notifications %}
                 <div class="notifications-container px-md-4 mt-4">
                     <div class="new">
-                        <div class="row notification mt-2">
+                        <div class="row notification mt-2" style="{% if notification.is_read == False %} background: rgba(255,229,119,0.64) {% endif %}">
                             <div class="row py-2 align-items-center">
                                 <div class="col-2 icon icon-bg-blue">
                                     <i class="icofont-bell-alt"></i>
