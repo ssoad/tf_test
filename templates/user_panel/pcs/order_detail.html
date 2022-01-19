@@ -168,8 +168,18 @@
                                         </div>
                                         <div class="modal-body invoice" id="invoice">
                                             {{ current_order.quotation_order.quotation_info|safe }}
-                                            {{ current_order.quotation_order.nda.url }}
-                                            {{ current_order.quotation_order.nca.url }}
+                                            <a class="btn btn-sm btn-navy mt-2" href="{{ current_order.quotation_order.nda.url }}" download="{{ current_order.quotation_order.nda.url }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+                                                    <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
+                                                </svg>
+                                                Download NDA
+                                            </a>
+                                            <a class="btn btn-sm btn-navy mt-2" href="{{ current_order.quotation_order.nca.url }}" download="{{ current_order.quotation_order.nca.url }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+                                                    <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
+                                                </svg>
+                                                Download NCA
+                                            </a>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn bg-navy" data-bs-dismiss="modal">Close
@@ -196,8 +206,18 @@
                                         </div>
                                         <div class="modal-body invoice" id="invoice">
                                             {{ current_order.quotation_order.quotation_info|safe }}
-                                            {{ current_order.quotation_order.nda.url }}
-                                            {{ current_order.quotation_order.nca.url }}
+                                            <a class="btn btn-sm btn-navy mt-2" href="{{ current_order.quotation_order.nda.url }}" download="{{ current_order.quotation_order.nda.url }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+                                                    <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
+                                                </svg>
+                                                Download NDA
+                                            </a>
+                                            <a class="btn btn-sm btn-navy mt-2" href="{{ current_order.quotation_order.nca.url }}" download="{{ current_order.quotation_order.nca.url }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+                                                    <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
+                                                </svg>
+                                                Download NCA
+                                            </a>
                                         </div>
                                         <form action="" method="POST" enctype="multipart/form-data">
                                             {{ form.media }}
