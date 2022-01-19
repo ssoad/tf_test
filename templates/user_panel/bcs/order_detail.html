@@ -50,9 +50,7 @@
                                 <span class="badge bg-primary">{{ current_order.order_status|capitalize }}</span>
                             {% elif current_order.order_status == 'assigned' %}
                                 <span class="badge bg-secondary">{{ current_order.order_status|capitalize }}</span>
-                            {% elif current_order.order_status == 'agreed_to_quotation' %}
-                                <span class="badge bg-success">{{ current_order.order_status|capitalize }}</span>
-                            {% elif current_order.order_status == 'agreed_to_nda_nca' %}
+                            {% elif current_order.order_status == 'agree' %}
                                 <span class="badge bg-success">{{ current_order.order_status|capitalize }}</span>
                             {% elif current_order.order_status == 'disagreed' %}
                                 <span class="badge bg-danger">{{ current_order.order_status|capitalize }}</span>
@@ -66,7 +64,7 @@
                                 <span class="badge bg-danger">{{ current_order.order_status|capitalize }}</span>
                             {% endif %}
                         </p>
-                        {% if current_order.quotation_order.agree_to_quotation == 'agree' and current_order.quotation_order.agree_to_nda_nca == 'agree' %}
+                        {% if current_order.quotation_order.agreement == 'agree' %}
                             <button class="btn view-btn bg-navy btn-outline-light" data-bs-toggle="modal"
                                     data-bs-target="#invoiceModal-{{ current_order.id }}">View Invoice
                             </button>
@@ -168,6 +166,18 @@
                                         </div>
                                         <div class="modal-body invoice" id="invoice">
                                             {{ current_order.quotation_order.quotation_info|safe }}
+                                            <a class="btn btn-sm btn-navy mt-2" href="{{ current_order.quotation_order.nda.url }}" download="{{ current_order.quotation_order.nda.url }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-circle-fill" viewBox="0 0 16 16">
+                                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+                                                  </svg>
+                                                Download NDA
+                                            </a>
+                                            <a class="btn btn-sm btn-navy mt-2" href="{{ current_order.quotation_order.nca.url }}" download="{{ current_order.quotation_order.nca.url }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-circle-fill" viewBox="0 0 16 16">
+                                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+                                                  </svg>
+                                                Download NCA
+                                            </a>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn bg-navy" data-bs-dismiss="modal">Close
@@ -177,66 +187,7 @@
                                 </div>
                             </div>
 
-                            <button class="btn view-btn bg-navy btn-outline-light" data-bs-toggle="modal"
-                                    data-bs-target="#ndancaModal-{{ current_order.id }}">View NDA/NCA
-                            </button>
-                            <!-- Modal -->
-                            <div class="modal fade text-dark" id="ndancaModal-{{ current_order.id }}" tabindex="-1"
-                                 aria-labelledby="exampleModalLabel"
-                                 aria-hidden="true">
-                                <div class="modal-dialog modal-xl">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title fw-bold" id="exampleModalLabel">View NDA/NCA</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body invoice" id="invoice">
-                                            {{ current_order.quotation_order.nda.url }}
-                                            {{ current_order.quotation_order.nda.url }}
-                                            {{ current_order.quotation_order.extra_field }}
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn bg-navy" data-bs-dismiss="modal">Close
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% elif current_order.quotation_order.agree_to_quotation == 'disagree' %}
-                            <button class="btn view-btn bg-navy btn-outline-light" data-bs-toggle="modal"
-                                    data-bs-target="#quotationModal-{{ current_order.id }}">View Quotation
-                            </button>
-                            <!-- Modal -->
-                            <div class="modal fade text-dark" id="quotationModal-{{ current_order.id }}" tabindex="-1"
-                                 aria-labelledby="exampleModalLabel"
-                                 aria-hidden="true">
-                                <div class="modal-dialog modal-xl">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title fw-bold" id="exampleModalLabel">Quotation</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body invoice" id="invoice">
-                                            {{ current_order.quotation_order.quotation_info|safe }}
-                                        </div>
-                                        <div class="d-flex gap-3 justify-content-end me-3">
-                                            <a href="
-                                                    {% host_url 'bcs_user_order_reject' %}{{ current_order.id }}"
-                                               class="btn btn-danger">Reject</a>
-                                            <a href="
-                                                    {% host_url 'bcs_user_accept_quotation' %}{{ current_order.id }}"
-                                               class="btn btn-success">Accept</a>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn bg-navy" data-bs-dismiss="modal">Close
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% elif current_order.quotation_order.agree_to_nda_nca == 'disagree' %}
+                        {% elif current_order.quotation_order.agreement == 'disagree' %}
                             <button class="btn view-btn bg-navy btn-outline-light" data-bs-toggle="modal"
                                     data-bs-target="#quotationModal-{{ current_order.id }}">View Quotation
                             </button>
@@ -266,6 +217,13 @@
                                                 Download NCA
                                             </a>
                                         </div>
+                                        <form class="px-3" action="" method="POST" enctype="multipart/form-data">
+                                            {{ form.media }}
+                                            {{ form|crispy }}
+                                            {% csrf_token %}
+                                            <button type="submit" class="my-3 btn btn-navy">SUBMIT</button>
+                                        </form>
+
                                         <div class="modal-footer">
                                             <button type="button" class="btn bg-navy" data-bs-dismiss="modal">Close
                                             </button>
@@ -274,48 +232,6 @@
                                 </div>
                             </div>
 
-                            <button class="btn view-btn bg-navy btn-outline-light" data-bs-toggle="modal"
-                                    data-bs-target="#ndancaModal-{{ current_order.id }}">View NDA/NCA
-                            </button>
-                            <!-- Modal -->
-                            <div class="modal fade text-dark" id="ndancaModal-{{ current_order.id }}" tabindex="-1"
-                                 aria-labelledby="exampleModalLabel"
-                                 aria-hidden="true">
-                                <div class="modal-dialog modal-xl">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title fw-bold" id="exampleModalLabel">View NDA/NCA</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body invoice" id="invoice">
-                                            <a class="btn btn-sm btn-navy mt-2" href="{{ current_order.quotation_order.nda.url }}" download="{{ current_order.quotation_order.nda.url }}">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-circle-fill" viewBox="0 0 16 16">
-                                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
-                                                  </svg>
-                                                Download NDA
-                                            </a>
-                                            <a class="btn btn-sm btn-navy mt-2" href="{{ current_order.quotation_order.nca.url }}" download="{{ current_order.quotation_order.nca.url }}">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-circle-fill" viewBox="0 0 16 16">
-                                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
-                                                  </svg>
-                                                Download NCA
-                                            </a>
-                                            {{ current_order.quotation_order.extra_field }}
-                                        </div>
-                                        <div class="d-flex gap-3 justify-content-end me-3">
-                                            <a href="{% host_url 'bcs_user_order_reject' %}{{ current_order.id }}"
-                                               class="btn btn-danger">Reject</a>
-                                            <a href="{% host_url 'bcs_user_accept_nda_nca' %}{{ current_order.id }}"
-                                               class="btn btn-success">Accept</a>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn bg-navy" data-bs-dismiss="modal">Close
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         {% endif %}
 
                     </div>

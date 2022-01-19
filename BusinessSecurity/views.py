@@ -556,8 +556,39 @@ def userOrderDetailsView(request, id):
                 order = models.Order.objects.get(id=id, category_choice='bcs')
                 if order.user.business_user.business == request.user.business_user.business:
                     current_order = models.Order.objects.get(id=id, category_choice='bcs')
+                    try:
+                        current_quotation = models.Quotation.objects.get(order=current_order)
+                        current_agreement = models.QuotationAgreement.objects.get(quotation=current_quotation)
+                        form = forms.QuotationAgreementForm(instance=current_agreement)
+                        if request.method == 'POST':
+                            form = forms.QuotationAgreementForm(data=request.POST, files=request.FILES,
+                                                                instance=current_agreement)
+                            if form.is_valid():
+                                quotation = form.save(commit=False)
+                                quotation.quotation = current_quotation
+                                quotation.save()
+                                if quotation.agreement == 'agree':
+                                    current_quotation.agreement = 'agree'
+                                    current_quotation.save()
+
+                                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                    except:
+                        current_quotation = models.Quotation.objects.get(order=current_order)
+                        form = forms.QuotationAgreementForm()
+                        if request.method == 'POST':
+                            form = forms.QuotationAgreementForm(data=request.POST, files=request.FILES)
+                            if form.is_valid():
+                                quotation = form.save(commit=False)
+                                quotation.quotation = current_quotation
+                                quotation.save()
+                                if quotation.agreement == 'agree':
+                                    current_quotation.agreement = 'agree'
+                                    current_quotation.save()
+
+                                return HttpResponseRedirect(request.META['HTTP_REFERER'])
                     context = {
                         'current_order': current_order,
+                        'form': form,
                     }
                     return render(request, 'user_panel/bcs/order_detail.html', context)
                 else:
@@ -2472,6 +2503,11 @@ def bcsAdminOrdersDetailView(request, id):
                                  f'btn-success">Visit Now</a>',
                     notification_time=timezone.now())
                 notification.save()
+                try:
+                    current_quotation_agreement = models.QuotationAgreement.objects.get(quotation=current_quotation)
+                    current_quotation_agreement.delete()
+                except:
+                    pass
                 return HttpResponseRedirect(request.META['HTTP_REFERER'])
         context = {
             'current_order': current_order,
@@ -2537,6 +2573,11 @@ def bcsAdminOrdersDetailView(request, id):
                                      f'btn-success">Visit Now</a>',
                         notification_time=timezone.now())
                     notification.save()
+                    try:
+                        current_quotation_agreement = models.QuotationAgreement.objects.get(quotation=current_quotation)
+                        current_quotation_agreement.delete()
+                    except:
+                        pass
                     return HttpResponseRedirect(request.META['HTTP_REFERER'])
             context = {
                 'current_order': current_order,

@@ -241,10 +241,10 @@ class Quotation(models.Model):
 
 class QuotationAgreement(models.Model):
     quotation = models.OneToOneField(Quotation, on_delete=models.CASCADE, related_name='quotation_agreement_quotation')
+    agreement = models.CharField(verbose_name='Agree to NDA/NCA', choices=agreement, max_length=255)
     user_nda = models.FileField(upload_to='nda/uploaded/', blank=True, null=True, verbose_name='Upload NDA')
     user_nca = models.FileField(upload_to='nca/uploaded/', blank=True, null=True, verbose_name='Upload NCA')
     message = HTMLField(blank=True, null=True)
-    agreement = models.CharField(verbose_name='Agree to NDA/NCA', choices=agreement, max_length=255)
 
 
 currency = (

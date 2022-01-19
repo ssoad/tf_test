@@ -49,9 +49,7 @@
                                 <span class="badge bg-primary">{{ current_order.order_status|capitalize }}</span>
                             {% elif current_order.order_status == 'assigned' %}
                                 <span class="badge bg-secondary">{{ current_order.order_status|capitalize }}</span>
-                            {% elif current_order.order_status == 'agreed_to_quotation' %}
-                                <span class="badge bg-success">{{ current_order.order_status|capitalize }}</span>
-                            {% elif current_order.order_status == 'agreed_to_nda_nca' %}
+                            {% elif current_order.order_status == 'agree' %}
                                 <span class="badge bg-success">{{ current_order.order_status|capitalize }}</span>
                             {% elif current_order.order_status == 'disagreed' %}
                                 <span class="badge bg-danger">{{ current_order.order_status|capitalize }}</span>
@@ -219,11 +217,11 @@
                                                 Download NCA
                                             </a>
                                         </div>
-                                        <form action="" method="POST" enctype="multipart/form-data">
+                                        <form class="px-3" action="" method="POST" enctype="multipart/form-data">
                                             {{ form.media }}
                                             {{ form|crispy }}
                                             {% csrf_token %}
-                                            <button type="submit" class="btn btn-navy">SUBMIT</button>
+                                            <button type="submit" class="my-3 btn btn-navy">SUBMIT</button>
                                         </form>
 
                                         <div class="modal-footer">
