@@ -169,7 +169,7 @@
                                         <div class="modal-body invoice" id="invoice">
                                             {{ current_order.quotation_order.quotation_info|safe }}
                                             {{ current_order.quotation_order.nda.url }}
-                                            {{ current_order.quotation_order.nda.url }}
+                                            {{ current_order.quotation_order.nca.url }}
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn bg-navy" data-bs-dismiss="modal">Close
@@ -197,7 +197,7 @@
                                         <div class="modal-body invoice" id="invoice">
                                             {{ current_order.quotation_order.quotation_info|safe }}
                                             {{ current_order.quotation_order.nda.url }}
-                                            {{ current_order.quotation_order.nda.url }}
+                                            {{ current_order.quotation_order.nca.url }}
                                         </div>
                                         <form action="" method="POST" enctype="multipart/form-data">
                                             {{ form.media }}
