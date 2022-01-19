@@ -456,6 +456,17 @@ def orderRejectView(request, id):
 
 
 @login_required
+def subscriptionPayment(request, id):
+    current_package = models.SubscriptionBasedPackage.objects.get(id=id)
+
+    context = {
+        'current_package': current_package,
+    }
+
+    return render(request, 'user_panel/pcs/subscription_payment.html', context)
+
+
+@login_required
 def userSubscriptionsView(request):
     context = {
 
@@ -702,6 +713,7 @@ def pcsAdminSubscriptionServiceView(request):
         if form.is_valid():
             service = form.save(commit=False)
             service.category_choice = 'pcs'
+            service.product_id = request.POST.get('product_id')
             service.save()
             # for sale_id in request.POST.getlist('sales'):
             #     current_sales = models.User.objects.get(id=sale_id)
@@ -884,6 +896,7 @@ def pcsAdminSubscriptionPack(request):
         form = pcsforms.AddPackageForm(request.POST)
         if form.is_valid():
             package = form.save(commit=False)
+            package.package_id = request.POST.get('package_id')
 
             package.save()
             for feature_name, feature in zip(feature_names, features):

@@ -27,7 +27,8 @@
                 </div>
                 <hr>
                 {{ course.long_description|safe }}
-                <a href="{% host_url 'pcs_user_course_payment' host 'mysecurity' %}{{ course.id }}" class="btn btn-navy">Buy Course</a>
+                <a href="{% host_url 'pcs_user_course_payment' host 'mysecurity' %}{{ course.id }}"
+                   class="btn btn-navy">Buy Course</a>
                 <div class="mt-5 course-info">
                     <div class="accordion accordion-flush" id="accordionFlushExample">
                         {% for section in sections %}
@@ -76,7 +77,6 @@
                                                                 Preview
                                                             </button>
                                                         {% endif %}
-
                                                     </td>
                                                 </tr>
                                             {% endfor %}

@@ -36,6 +36,7 @@ class AddPackageForm(forms.ModelForm):
     class Meta:
         model = models.SubscriptionBasedPackage
         fields = '__all__'
+        exclude = ['package_id']
 
 
 class AddSubServiceForm(forms.ModelForm):

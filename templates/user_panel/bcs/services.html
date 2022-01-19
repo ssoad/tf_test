@@ -889,7 +889,7 @@
         document.querySelectorAll('.subscriptionDetailBtn').forEach(btn => {
             btn.addEventListener('click', e => {
                 packageDetails.innerHTML = '';
-                fetch(`${mainOrigin}/api/bcs/package/${btn.id}/`,{
+                fetch(`${mainOrigin}/api/bcs/package/${btn.id}/`, {
                     credentials: 'include'
                 })
                     .then(response => response.json())

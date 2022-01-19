@@ -48,6 +48,10 @@ urlpatterns = [
     path('pcs_user_order_reject/<id>/', views.orderRejectView, name='pcs_user_order_reject'),
 
     path('pcs_user_subscriptions/', views.userSubscriptionsView, name='pcs_user_subscriptions'),
+    path('pcs_subscription_payment/', views.subscriptionPayment,
+         name='pcs_subscription_payment'),
+    path('pcs_subscription_payment/<id>/', views.subscriptionPayment,
+         name='pcs_subscription_payment'),
     path('pcs_user_events/', views.userEventsView, name='pcs_user_events'),
     path('pcs_user_notifications/', views.userNotificationsView, name='pcs_user_notifications'),
     path('pcs_user_settings/', views.userSettingsView, name='pcs_user_settings'),
