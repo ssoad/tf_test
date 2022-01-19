@@ -270,6 +270,35 @@
 {% endblock content %}
 {% block customjs %}
     <script>
+        {% comment %} 
+            Hide on Initial Load
+        {% endcomment %}
+        $("#div_id_user_nda").addClass("d-none");
+        $("#div_id_user_nca").addClass("d-none");
+        $("#div_id_message").addClass("d-none");
+
+        {% comment %} 
+            Change on value change
+        {% endcomment %}
+        $("#div_id_agreement").change(function() {
+            if($('#div_id_agreement option:selected').val() === "agree"){
+                $("#div_id_user_nda").removeClass("d-none");
+                $("#div_id_user_nca").removeClass("d-none");
+                $("#div_id_message").removeClass("d-none");
+            }
+            else if($('#div_id_agreement option:selected').val() === "disagree"){
+                $("#div_id_user_nda").addClass("d-none");
+                $("#div_id_user_nca").addClass("d-none");
+                $("#div_id_message").removeClass("d-none");
+            }
+            else {
+                $("#div_id_user_nda").addClass("d-none");
+                $("#div_id_user_nca").addClass("d-none");
+                $("#div_id_message").addClass("d-none");
+            }
+          });
+    </script>
+    <script>
         console.log(document.querySelectorAll('.card-title.trash').length)
         document.querySelectorAll('.card-title.trash').forEach(elem => {
             elem.parentNode.parentNode.parentNode.outerHTML = '';
