@@ -597,10 +597,42 @@ class SubscriptionApiView(generics.ListAPIView):
 class SubscriptionOrderView(generics.CreateAPIView):
     serializer_class = serializer.SubscriptionOrderSerializer
     queryset = bcsmodels.SubscriptionOrder
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user, is_active=True)
+
+    def create(self, request, *args, **kwargs):
+        subscription_service = request.data['subscription_service']
+        subscription_package = request.data['subscription_package']
+        try:
+            check_existing_order = bcsmodels.SubscriptionOrder.objects.get(user=self.request.user,
+                                                                           subscription_service=subscription_service,
+                                                                           subscription_package=subscription_package,
+                                                                           is_active=True)
+            return Response({'response': 'You have already Subscribed to this Package'})
+        except:
+            ser = self.get_serializer(data=request.data)
+            ser.is_valid(raise_exception=True)
+            self.perform_create(ser)
+            return Response(ser.data)
+
+
+class SubscriptionPurchaseCheckApiView(generics.ListAPIView):
+    queryset = bcsmodels.SubscriptionOrder
+    permission_classes = [permissions.IsAuthenticated]
+
+    def list(self, request, *args, **kwargs):
+        purchased_list = bcsmodels.SubscriptionOrder.objects.filter(user=self.request.user).values_list(
+            'subscription_package_id',
+            flat=True)
+        # print(purchased_list)
+        return Response({'result': purchased_list})
 
 
 class PCSCoursePurchaseCheckApiView(generics.ListAPIView):
     queryset = coursemodels.CoursePurchase
+    permission_classes = [permissions.IsAuthenticated]
 
     def list(self, request, *args, **kwargs):
         purchased_list = coursemodels.CoursePurchase.objects.filter(user=self.request.user).values_list('course_id',
@@ -612,6 +644,7 @@ class PCSCoursePurchaseCheckApiView(generics.ListAPIView):
 class PCSCoursePurchaseApiView(generics.CreateAPIView):
     serializer_class = serializer.PCSCoursePurchaseSerializer
     queryset = coursemodels.CoursePurchase.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -696,7 +729,7 @@ class InterestApiView(generics.ListAPIView):
     permission_classes = [apipermissions.IsMainAdmin]
 
     def list(self, request, *args, **kwargs):
-
         return Response({
-            'response': [field.name for field in accountmodel.Interest._meta.get_fields() if field.name != 'id' and field.name != 'user']
+            'response': [field.name for field in accountmodel.Interest._meta.get_fields() if
+                         field.name != 'id' and field.name != 'user']
         })

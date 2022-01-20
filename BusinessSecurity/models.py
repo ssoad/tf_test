@@ -378,14 +378,14 @@ class SubscriptionOrder(models.Model):
                                              related_name='subscriptionorder_subscriptionservice')
     subscription_package = models.ForeignKey(SubscriptionBasedPackage, on_delete=models.CASCADE,
                                              related_name='subscriptionorder_subscriptionpackage')
-    paypal_email = models.EmailField()
-    paypal_id = models.CharField(max_length=255)
-    paypal_user_name = models.CharField(max_length=255)
-    payment_id = models.CharField(max_length=255)
-    create_time = models.DateTimeField()
-    update_time = models.DateTimeField()
+    # paypal_email = models.EmailField()
+    paypal_order_id = models.CharField(max_length=255)
+    # paypal_user_name = models.CharField(max_length=255)
+    paypal_subscription_id = models.CharField(max_length=255)
+    create_time = models.DateTimeField(auto_now_add=True)
     amount = models.IntegerField()
-    currency = models.CharField(max_length=255)
+    # currency = models.CharField(max_length=255)
+    category_choice = models.CharField(choices=category_choice, max_length=255)
 
     is_active = models.BooleanField(default=False)
 

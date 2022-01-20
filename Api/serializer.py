@@ -195,6 +195,14 @@ class SubscriptionOrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = bcsmodels.SubscriptionOrder
         fields = '__all__'
+        extra_kwargs = {
+            'user': {
+                'read_only': True
+            },
+            'is_active': {
+                'read_only': True
+            }
+        }
 
 
 class PCSCoursePurchaseSerializer(serializers.ModelSerializer):

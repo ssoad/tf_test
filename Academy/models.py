@@ -157,7 +157,6 @@ class CoursePackage(models.Model):
         return f'{self.package_name} - {self.service_id}'
 
 
-
 class PackageFeatures(models.Model):
     package = models.ForeignKey(
         CoursePackage, on_delete=models.CASCADE, related_name='packagefeature_coursepackage')
@@ -170,14 +169,13 @@ class PackageFeatures(models.Model):
         return f'{self.feature_name} - {self.feature}'
 
 
-
 class CourseOrder(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,
                              related_name='courseorder_user')
     course = models.ForeignKey(BCSCourse, on_delete=models.CASCADE,
-                                             related_name='courseorder_bcscourse')
+                               related_name='courseorder_bcscourse')
     course_package = models.ForeignKey(CoursePackage, on_delete=models.CASCADE,
-                                             related_name='courseorder_coursepackage')
+                                       related_name='courseorder_coursepackage')
     paypal_email = models.EmailField()
     paypal_id = models.CharField(max_length=255)
     paypal_user_name = models.CharField(max_length=255)

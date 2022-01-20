@@ -383,11 +383,14 @@ def userDashboardView(request):
             orders = models.Order.objects.filter(
                 Q(user__business_user__business=current_business, category_choice='bcs') & ~Q(
                     Q(order_status='new') | Q(order_status='attending'))).order_by('-order_date')[:2]
+            subscriptions = models.SubscriptionOrder.objects.filter(user__business_user__business=current_business, is_active=True, category_choice='bcs')
+
             posts = Post.objects.all().order_by('date')[:2]
             context = {
                 'events': events,
                 'registered_event': registered_event,
                 'orders': orders,
+                'subscriptions': subscriptions,
                 'notifications': notifications,
                 'posts': posts,
             }

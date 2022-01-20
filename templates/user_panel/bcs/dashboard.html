@@ -8,7 +8,7 @@
         tbody, td, tfoot, th, thead, tr {
             border-style: none !important;
         }
-        
+
         .readings img {
             width: 180px;
             height: 100px;
@@ -158,32 +158,42 @@
         <section class="orders mt-4">
             <h4 class="fw-bold border-bottom border-gray pb-14p mb-4">My Last Two Subscriptions</h4>
             <div class="row gy-3 gx-3 d-flex justify-content-between align-items-center mx-0">
-                {% if orders.exists %}
-                    {% for order in orders %}
+                {% if subscriptions.exists %}
+                    {% for order in subscriptions %}
                         <div class="col-sm-12 col-w-45 bg-white p-2 rounded-3 shadow p-3">
-                            <h5 class="fw-bold">{{ order.service.service_title }}</h5>
+                            <h5 class="fw-bold">{{ order.subscription_service.service_title }}</h5>
                             <div class="row d-flex justify-content-center align-items-center">
                                 <div class="col-md-8">
                                     <h6 class="fw-light">Purchase Date: <span class="fw-bold fs-6">&nbsp;
-                                        {{ order.order_date }}</span>
+                                        {{ order.create_time }}</span>
                                     </h6>
                                     <h6 class="fw-light d-flex justify-content-between mb-0">
                                         <button class="btn view-btn px-0" data-bs-toggle="modal"
-                                                data-bs-target="#invoiceModal-{{ order.id }}">View Invoice
+                                                data-bs-target="#subscriptionsinvoiceModal-{{ order.id }}">View Invoice
                                         </button>
                                         <div class="d-block d-md-none bg-navy btn-sm text-white px-3 py-2">
-                                            {{ order.order_status|capitalize }}
+                                            {% if order.is_active == True %}
+                                                Active
+                                            {% else %}
+                                                Inactive
+                                            {% endif %}
                                         </div>
                                     </h6>
                                 </div>
                                 <div class="d-none d-md-flex col-4 justify-content-end align-items-center">
-                                    <div class="bg-navy btn-sm text-white px-3 py-2">{{ order.order_status|capitalize }}</div>
+                                    <div class="bg-navy btn-sm text-white px-3 py-2">
+                                        {% if order.is_active == True %}
+                                            Active
+                                        {% else %}
+                                            Inactive
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <!--Modal-->
-                        <div class="modal fade" id="invoiceModal-{{ order.id }}" tabindex="-1"
+                        <div class="modal fade" id="subscriptionsinvoiceModal-{{ order.id }}" tabindex="-1"
                              aria-labelledby="exampleModalLabel"
                              aria-hidden="true">
                             <div class="modal-dialog modal-xl">
@@ -294,6 +304,8 @@
 
 
 
+
+
                                     {% host_url reading_list.post.category|replacespace host 'blog' %}{{ reading_list.post.post_url }}"
                                target="_blank" class="btn btn-sm bg-navy text-white px-2 py-2">Read Full</a>
                         </div>
@@ -348,7 +360,7 @@
             {% endif %}
 
         </section>
-{% comment %}
+        {% comment %}
         <section class="notification mt-5">
             <h4 class="fw-bold border-bottom border-gray pb-3 mb-4">Latest Notifications</h4>
             {% if notifications.exists %}
