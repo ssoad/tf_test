@@ -623,7 +623,7 @@ class SubscriptionPurchaseCheckApiView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def list(self, request, *args, **kwargs):
-        purchased_list = bcsmodels.SubscriptionOrder.objects.filter(user=self.request.user).values_list(
+        purchased_list = bcsmodels.SubscriptionOrder.objects.filter(user=self.request.user, is_active=True).values_list(
             'subscription_package_id',
             flat=True)
         # print(purchased_list)
