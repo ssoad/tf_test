@@ -8,7 +8,6 @@
 
         <div class="mt-4 mb-5 subscription-list d-flex flex-column align-items-start">
             {% for service in services %}
-                {{ service.id }}
                 <button class="btn border-0 fs-5" data-bs-toggle="modal"
                         data-bs-target="#{{ service.service_title|replacespace }}">{{ service.service_title|upper }}</button>
             {% endfor %}
@@ -26,7 +25,7 @@
                         </div>
                         <div class="modal-body p-5 text-center">
                             <h4 class="fw-bold">First you need to make an one time purchase for
-                                your {{ service.service_title|upper }} service only then you will be eligible for
+                                your {{ service.service_title|capitalize }} service only then you will be eligible for
                                 monthly subscription</h4>
                             <a href="{% host_url 'bcs_user_services' %}" class="btn fs-5 mt-3 text-green">Please go
                                 to the
