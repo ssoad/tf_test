@@ -8,7 +8,7 @@
 
         <div class="mt-4 mb-5 subscription-list d-flex flex-column align-items-start">
             {% for service in services %}
-                <button class="btn border-0 fs-5" data-bs-toggle="modal"
+                <button class="btn border-0 fs-5" onclick="handleSubscriptionNotice({{service.id}})" data-bs-toggle="modal"
                         data-bs-target="#{{ service.service_title|replacespace }}">{{ service.service_title|upper }}</button>
             {% endfor %}
         </div>
@@ -23,13 +23,18 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                         </div>
-                        <div class="modal-body p-5 text-center">
+                        <div class="modal-body p-5 text-center" id="noPurchaseNotice" >
                             <h4 class="fw-bold">First you need to make an one time purchase for
                                 your {{ service.service_title|capitalize }} service only then you will be eligible for
                                 monthly subscription</h4>
                             <a href="{% host_url 'bcs_user_services' %}" class="btn fs-5 mt-3 text-green">Please go
                                 to the
                                 service menu</a>
+                        </div>
+                        <div class="modal-body p-5 text-center" id="showSubscriptionDetails" >
+                            {% comment %} 
+                            TODO: will show subscriptions when found
+                            {% endcomment %}
                         </div>
                     </div>
                 </div>
@@ -664,7 +669,7 @@
                     <div class="modal-header border-0">
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body p-5 text-center">
+                    <div class="modal-body p-5 text-center" >
                         <h4 class="fw-bold">First you need to make an one time purchase for your employee data & privacy
                             only then you will be eligible for monthly subscription</h4>
                         <a href="{% host_url 'bcs_user_services' %}" class="btn fs-5 mt-3 text-green">Please go to the
@@ -695,6 +700,50 @@
     </div>
 
 {% endblock content %} {% block customjs %}
+    <script>
+        const handleSubscriptionNotice = id => {
+            fetch(`${mainOrigin}/api/subscription_order_check/`)
+            .then(res=> res.json())
+            .then(data=>{
+                const subscribed = data?.result?.find( el => el === id)
+                if(subscribed){
+                    $("#noPurchaseNotice").addClass("d-none");
+                    $("#showSubscriptionDetails").removeClass("d-none");
+                    fetch(`${mainOrigin}/api/bcs/package/${id}/`, {
+                        credentials: 'include'
+                    })
+                    .then(response => response.json())
+                    .then(result =>{
+                        const subscription = result[0];
+                        const div = document.createElement("div")
+                        div.classList.add("package", "bg-lightgreen", "shadow", "p-3", "rounded", "col-md-4", "me-2", "d-flex", "flex-column", "justify-content-between")
+                        divHtml = `<h3 class="fw-bold fs-4">${subscription?.service_name}</h3> <div>`
+                            subscription?.feature_subscription?.map((item, index) => {
+                                divHtml += `<div class="info-btn">
+                                <p class="mb-0">
+                                <i class="bi bi-box"></i> ${item.feature_name}
+                                </p>
+                                <p class="mb-0 fw-bold">${item.feature}</p>
+                                </div>`
+                            })
+                            divHtml += `<div class="mt-2 info-btn">
+                            <p class="mb-0">
+                            <i class="icofont-tag"></i> Price
+                            </p>
+                            <p class="mb-0 fw-bold">${subscription?.price}$ <span class="fw-bolder">/${subscription?.duration_type}</span>
+                            </p>
+                            </div>
+                            </div>`
+                            $("#showSubscriptionDetails").html(divHtml);
+                    })
+                }
+                else{
+                    $("#noPurchaseNotice").removeClass("d-none");
+                    $("#showSubscriptionDetails").addClass("d-none");
+                }
+            })
+        }
+    </script>
     <script>
         let activeState = 1;
         let main = document.querySelector('.package-details .row');
