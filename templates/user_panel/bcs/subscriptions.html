@@ -8,7 +8,7 @@
 
         <div class="mt-4 mb-5 subscription-list d-flex flex-column align-items-start">
             {% for service in services %}
-                <button class="btn border-0 fs-5" data-bs-toggle="modal"
+                <button class="btn border-0 fs-5" onclick="handleSubscriptionNotice({{service.id}})" data-bs-toggle="modal"
                         data-bs-target="#{{ service.service_title|replacespace }}">{{ service.service_title|upper }}</button>
             {% endfor %}
         </div>
@@ -23,13 +23,18 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                         </div>
-                        <div class="modal-body p-5 text-center">
+                        <div class="modal-body p-5 text-center" id="noPurchaseNotice" >
                             <h4 class="fw-bold">First you need to make an one time purchase for
                                 your {{ service.service_title|capitalize }} service only then you will be eligible for
                                 monthly subscription</h4>
                             <a href="{% host_url 'bcs_user_services' %}" class="btn fs-5 mt-3 text-green">Please go
                                 to the
                                 service menu</a>
+                        </div>
+                        <div class="modal-body p-5 text-center" id="showSubscriptions" >
+                            {% comment %} 
+                            TODO: will show subscriptions when found
+                            {% endcomment %}
                         </div>
                     </div>
                 </div>
@@ -664,7 +669,7 @@
                     <div class="modal-header border-0">
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body p-5 text-center">
+                    <div class="modal-body p-5 text-center" >
                         <h4 class="fw-bold">First you need to make an one time purchase for your employee data & privacy
                             only then you will be eligible for monthly subscription</h4>
                         <a href="{% host_url 'bcs_user_services' %}" class="btn fs-5 mt-3 text-green">Please go to the
@@ -695,6 +700,26 @@
     </div>
 
 {% endblock content %} {% block customjs %}
+    <script>
+        const handleSubscriptionNotice = id => {
+            fetch(`${mainOrigin}/api/subscription_order_check/`)
+            .then(res=> res.json())
+            .then(data=>{
+                const subscribed = data?.result?.find( el => el === id)
+                if(subscribed){
+                    $("#noPurchaseNotice").addClass("d-none");
+                    $("#showSubscriptions").removeClass("d-none");
+                    {% comment %} 
+                    TODO: Add stuffs to do here on finding subscription
+                    {% endcomment %}
+                }
+                else{
+                    $("#noPurchaseNotice").removeClass("d-none");
+                    $("#showSubscriptions").addClass("d-none");
+                }
+            })
+        }
+    </script>
     <script>
         let activeState = 1;
         let main = document.querySelector('.package-details .row');
