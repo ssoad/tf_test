@@ -31,7 +31,7 @@
                                 to the
                                 service menu</a>
                         </div>
-                        <div class="modal-body p-5 text-center" id="showSubscriptions" >
+                        <div class="modal-body p-5 text-center" id="showSubscriptionDetails" >
                             {% comment %} 
                             TODO: will show subscriptions when found
                             {% endcomment %}
@@ -708,14 +708,38 @@
                 const subscribed = data?.result?.find( el => el === id)
                 if(subscribed){
                     $("#noPurchaseNotice").addClass("d-none");
-                    $("#showSubscriptions").removeClass("d-none");
-                    {% comment %} 
-                    TODO: Add stuffs to do here on finding subscription
-                    {% endcomment %}
+                    $("#showSubscriptionDetails").removeClass("d-none");
+                    fetch(`${mainOrigin}/api/bcs/package/${id}/`, {
+                        credentials: 'include'
+                    })
+                    .then(response => response.json())
+                    .then(result =>{
+                        const subscription = result[0];
+                        const div = document.createElement("div")
+                        div.classList.add("package", "bg-lightgreen", "shadow", "p-3", "rounded", "col-md-4", "me-2", "d-flex", "flex-column", "justify-content-between")
+                        divHtml = `<h3 class="fw-bold fs-4">${subscription?.service_name}</h3> <div>`
+                            subscription?.feature_subscription?.map((item, index) => {
+                                divHtml += `<div class="info-btn">
+                                <p class="mb-0">
+                                <i class="bi bi-box"></i> ${item.feature_name}
+                                </p>
+                                <p class="mb-0 fw-bold">${item.feature}</p>
+                                </div>`
+                            })
+                            divHtml += `<div class="mt-2 info-btn">
+                            <p class="mb-0">
+                            <i class="icofont-tag"></i> Price
+                            </p>
+                            <p class="mb-0 fw-bold">${subscription?.price}$ <span class="fw-bolder">/${subscription?.duration_type}</span>
+                            </p>
+                            </div>
+                            </div>`
+                            $("#showSubscriptionDetails").html(divHtml);
+                    })
                 }
                 else{
                     $("#noPurchaseNotice").removeClass("d-none");
-                    $("#showSubscriptions").addClass("d-none");
+                    $("#showSubscriptionDetails").addClass("d-none");
                 }
             })
         }
