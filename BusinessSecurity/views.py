@@ -858,7 +858,10 @@ def userEventRegisterView(request, id):
                     user=request.user, event=current_event)
             else:
                 is_register.delete()
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            try:
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            except:
+                return HttpResponseRedirect(reverse('pcs_user_dashboard'))
 
 
 @login_required
