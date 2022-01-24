@@ -31,10 +31,10 @@
                                 to the
                                 service menu</a>
                         </div>
-                        <div class="modal-body p-5 text-center" id="showSubscriptionDetails" >
-                            {% comment %} 
-                            TODO: will show subscriptions when found
-                            {% endcomment %}
+                        <div class="modal-body p-5 text-center">
+                            <div class="row g-3" id="showSubscriptionDetails" >
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -714,11 +714,14 @@
                     })
                     .then(response => response.json())
                     .then(result =>{
-                        const subscription = result[0];
-                        const div = document.createElement("div")
-                        div.classList.add("package", "bg-lightgreen", "shadow", "p-3", "rounded", "col-md-4", "me-2", "d-flex", "flex-column", "justify-content-between")
-                        divHtml = `<h3 class="fw-bold fs-4">${subscription?.service_name}</h3> <div>`
-                            subscription?.feature_subscription?.map((item, index) => {
+                        let divHtml;
+                        result.map(subscription => {
+                            const container = document.createElement("div")
+                            const div = document.createElement("div")
+                            container.classList.add("col-md-4")
+                            div.classList.add("package", "bg-lightgreen", "shadow", "p-3", "rounded", "col-md-12", "d-flex", "flex-column", "justify-content-between")
+                            divHtml = `<h3 class="fw-bold fs-4">${subscription.package_name}</h3> <div>`
+                            subscription.feature_subscription?.map((item, index) => {
                                 divHtml += `<div class="info-btn">
                                 <p class="mb-0">
                                 <i class="bi bi-box"></i> ${item.feature_name}
@@ -730,11 +733,18 @@
                             <p class="mb-0">
                             <i class="icofont-tag"></i> Price
                             </p>
-                            <p class="mb-0 fw-bold">${subscription?.price}$ <span class="fw-bolder">/${subscription?.duration_type}</span>
+                            <p class="mb-0 fw-bold">${subscription.price}$ <span class="fw-bolder">/${subscription.duration_type}</span>
                             </p>
                             </div>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                            <button class="mt-3 btn bg-navy px-5 py-1 ${!(subscription.id === id) && "d-none"}">Cancel</button>
+                            <a href="{% host_url 'pcs_subscription_payment' %}${subscription.id}" class="mt-3 btn bg-navy px-5 py-1 ${(subscription.id === id) && "d-none"}">Subscribe</a>
                             </div>`
-                            $("#showSubscriptionDetails").html(divHtml);
+                            div.innerHTML = divHtml;
+                            container.appendChild(div)
+                            $("#showSubscriptionDetails").append(container);
+                        })
                     })
                 }
                 else{
