@@ -813,13 +813,7 @@ def userSubscriptionsView(request):
     elif request.user.is_bcs:
         if request.user.business_user.privilege == 'general_staff':
             return HttpResponse("You don't have permission to view this page")
-        else:
-            services = models.SubscriptionServices.objects.filter(
-                category_choice='bcs')
-            context = {
-                'services': services,
-            }
-            return render(request, 'user_panel/bcs/subscriptions.html', context)
+
 
 
 @login_required
@@ -849,19 +843,7 @@ def userEventRegisterView(request, id):
     elif request.user.is_bcs:
         if request.user.business_user.privilege == 'general_staff':
             return HttpResponse("You don't have permission to view this page")
-        else:
-            current_event = models.Events.objects.get(id=id)
-            is_register = models.RegisteredEvents.objects.filter(
-                user=request.user, event=current_event)
-            if not is_register:
-                models.RegisteredEvents.objects.get_or_create(
-                    user=request.user, event=current_event)
-            else:
-                is_register.delete()
-            try:
-                return HttpResponseRedirect(request.META['HTTP_REFERER'])
-            except:
-                return HttpResponseRedirect(reverse('pcs_user_dashboard'))
+
 
 
 @login_required
