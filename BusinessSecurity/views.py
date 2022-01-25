@@ -806,6 +806,22 @@ def subscriptionPayment(request, id):
 
 
 @login_required
+def subscriptionCancelView(request, id):
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+    else:
+        current_package = models.SubscriptionBasedPackage.objects.get(id=id)
+        current_order = models.SubscriptionOrder.objects.get(
+            user__business_user__business=request.user.business_user.business,
+            subscription_package=current_package,
+            is_active=True
+        )
+        current_order.is_active = False
+        current_order.save()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@login_required
 def userSubscriptionsView(request):
     if not request.user.is_bcs:
         return HttpResponseRedirect(reverse('create_business'))

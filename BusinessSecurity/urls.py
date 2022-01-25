@@ -139,6 +139,8 @@ urlpatterns = [
          name='bcs_subscription_payment'),
     path('bcs_subscription_payment/<id>/', views.subscriptionPayment,
          name='bcs_subscription_payment'),
+    path('bcs_subscription_cancel/<id>/', views.subscriptionCancelView, name='bcs_subscription_cancel'),
+    path('bcs_subscription_cancel/', views.subscriptionCancelView, name='bcs_subscription_cancel'),
     path('bcs_user_events/', views.userEventsView, name='bcs_user_events'),
     path('bcs_user_event_register/<id>/',
          views.userEventRegisterView, name='bcs_user_event_register'),

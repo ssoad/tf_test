@@ -740,7 +740,7 @@
                             </div>
                             <div class="d-flex justify-content-center">
                             <a href="{% host_url 'pcs_subscription_payment' %}${subscription.id}" class="mt-3 btn bg-navy px-5 py-1 ${(subscription.id === id) && "d-none"}">Subscribe</a>
-                            <a href="{% host_url 'pcs_subscription_payment' %}${subscription.id}" class="mt-3 btn btn-danger px-5 py-1 ${!(subscription.id === id) && "d-none"}">Cancel</a>
+                            <a href="{% host_url 'bcs_subscription_cancel' %}${subscription.id}" class="mt-3 btn btn-danger px-5 py-1 ${!(subscription.id === id) && "d-none"}">Cancel</a>
                             </div>`
                             div.innerHTML = divHtml;
                             container.appendChild(div)
