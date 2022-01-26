@@ -30,7 +30,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                         </div>
-                        <div class="modal-body p-5 text-center" id="noPurchaseNotice" >
+                        <div class="modal-body p-5 text-center noPurchaseNotice" >
                             <h4 class="fw-bold">First you need to make an one time purchase for
                                 your {{ service.service_title|capitalize }} service only then you will be eligible for
                                 monthly subscription</h4>
@@ -39,7 +39,7 @@
                                 service menu</a>
                         </div>
                         <div class="modal-body p-5 text-center">
-                            <div class="row g-3" id="showSubscriptionDetails" >
+                            <div class="row g-3 showSubscriptionDetails" >
 
                             </div>
                         </div>
@@ -467,9 +467,9 @@
                             const subscribedPackages = data.result;
                             const purchaseAvailable = packagesList.filter(package => subscribedPackages.includes(package.id));
                             if (purchaseAvailable.length) {
-                                $("#noPurchaseNotice").addClass("d-none");
-                                $("#showSubscriptionDetails").removeClass("d-none");
-                                $("#showSubscriptionDetails").empty();
+                                $(".noPurchaseNotice").addClass("d-none");
+                                $(".showSubscriptionDetails").empty();
+                                $(".showSubscriptionDetails").removeClass("d-none");
                                 let divHtml;
                                 packagesList.map(subscription => {
                                     const container = document.createElement("div")
@@ -499,11 +499,11 @@
                                 </div>`
                                     div.innerHTML = divHtml;
                                     container.appendChild(div)
-                                    $("#showSubscriptionDetails").append(container);
+                                    $(".showSubscriptionDetails").append(container);
                                 })
                             } else {
-                                $("#noPurchaseNotice").removeClass("d-none");
-                                $("#showSubscriptionDetails").addClass("d-none");
+                                $(".noPurchaseNotice").removeClass("d-none");
+                                $(".showSubscriptionDetails").addClass("d-none");
                             }
                         })
                 })
