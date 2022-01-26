@@ -468,8 +468,10 @@ def subscriptionPayment(request, id):
 
 @login_required
 def userSubscriptionsView(request):
+    services = models.SubscriptionServices.objects.filter(
+        category_choice='pcs')
     context = {
-
+        'services': services,
     }
     return render(request, 'user_panel/pcs/subscriptions.html', context)
 

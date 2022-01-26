@@ -1,5 +1,7 @@
+import base64
 import itertools
 
+import requests
 from django.shortcuts import render
 from Api import serializer
 from rest_framework import generics
@@ -599,6 +601,35 @@ class SubscriptionOrderView(generics.CreateAPIView):
     queryset = bcsmodels.SubscriptionOrder
     permission_classes = [permissions.IsAuthenticated]
 
+    def cancelSubscriptions(self):
+        """
+        Cancelling Previous Subscriptions
+        """
+        username = 'AfTmv1E8P0HbJCkRMtm7s_07rqkJCGvp4WufOBxLWUl5AFujlsqmn6WdpMZo-nQr-yKVTnogZOQYgLnl'
+        password = 'EOsLHpTI748BbKSwcWlQpgmuJZXyudRnJP50Gc8H5Anf8VnDfk8FtEtRYwJ_iU1T9sgH5DOv53BuqeyH'
+        busername = str(base64.b64encode(bytes(username, 'utf-8')))[1:].replace("'", "").replace("=", '')
+        bpassword = str(base64.b64encode(bytes(password, 'utf-8')))[1:].replace("'", "")
+        bearer = f"Basic {busername}6{bpassword}"
+
+        bcs_packages = bcsmodels.SubscriptionBasedPackage.objects.filter(
+            service_id__category_choice='bcs').values_list(
+            'id')
+        user_orders = bcsmodels.SubscriptionOrder.objects.filter(
+            user__business_user__business=self.request.user.business_user.business,
+            subscription_package__in=bcs_packages,
+            is_active=True
+        )
+        for current_order in user_orders:
+            current_order.is_active = False
+            current_order.save()
+            url = f'https://api.sandbox.paypal.com/v1/billing/subscriptions/{current_order.paypal_subscription_id}/cancel'
+            headers = {
+                'Content-type': 'application/json',
+                'Authorization': bearer
+            }
+            r = requests.post(url, headers=headers)
+            print(r.status_code)
+
     def perform_create(self, serializer):
         serializer.save(user=self.request.user, is_active=True)
 
@@ -612,6 +643,10 @@ class SubscriptionOrderView(generics.CreateAPIView):
                                                                            is_active=True)
             return Response({'response': 'You have already Subscribed to this Package'})
         except:
+            self.cancelSubscriptions()
+            """
+            Creating new Subscription
+            """
             ser = self.get_serializer(data=request.data)
             ser.is_valid(raise_exception=True)
             self.perform_create(ser)
