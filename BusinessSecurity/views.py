@@ -813,15 +813,6 @@ def subscriptionCancelView(request, id):
     if not request.user.is_bcs:
         return HttpResponseRedirect(reverse('create_business'))
     else:
-        # current_package = models.SubscriptionBasedPackage.objects.get(id=id)
-        # current_order = models.SubscriptionOrder.objects.get(
-        #     user__business_user__business=request.user.business_user.business,
-        #     subscription_package=current_package,
-        #     is_active=True
-        # )
-        # current_order.is_active = False
-        # current_order.save()
-
         username = 'AfTmv1E8P0HbJCkRMtm7s_07rqkJCGvp4WufOBxLWUl5AFujlsqmn6WdpMZo-nQr-yKVTnogZOQYgLnl'
         password = 'EOsLHpTI748BbKSwcWlQpgmuJZXyudRnJP50Gc8H5Anf8VnDfk8FtEtRYwJ_iU1T9sgH5DOv53BuqeyH'
         busername = str(base64.b64encode(bytes(username, 'utf-8')))[1:].replace("'", "").replace("=", '')
@@ -832,6 +823,7 @@ def subscriptionCancelView(request, id):
         current_order = models.SubscriptionOrder.objects.get(
             user__business_user__business=request.user.business_user.business,
             subscription_package=current_package,
+            category_choice='bcs',
             is_active=True
         )
 

@@ -601,7 +601,7 @@ class SubscriptionOrderView(generics.CreateAPIView):
     queryset = bcsmodels.SubscriptionOrder
     permission_classes = [permissions.IsAuthenticated]
 
-    def cancelSubscriptions(self):
+    def cancelSubscriptions(self, subscription_service):
         """
         Cancelling Previous Subscriptions
         """
@@ -617,6 +617,7 @@ class SubscriptionOrderView(generics.CreateAPIView):
         user_orders = bcsmodels.SubscriptionOrder.objects.filter(
             user__business_user__business=self.request.user.business_user.business,
             subscription_package__in=bcs_packages,
+            subscription_service=subscription_service,
             is_active=True
         )
         for current_order in user_orders:
@@ -643,7 +644,7 @@ class SubscriptionOrderView(generics.CreateAPIView):
                                                                            is_active=True)
             return Response({'response': 'You have already Subscribed to this Package'})
         except:
-            self.cancelSubscriptions()
+            self.cancelSubscriptions(subscription_service)
             """
             Creating new Subscription
             """

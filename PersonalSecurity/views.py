@@ -1,5 +1,7 @@
+import base64
 import datetime
 
+import requests
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect, reverse, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils import timezone
@@ -465,6 +467,32 @@ def subscriptionPayment(request, id):
 
     return render(request, 'user_panel/pcs/subscription_payment.html', context)
 
+@login_required
+def subscriptionCancelView(request, id):
+    username = 'AfTmv1E8P0HbJCkRMtm7s_07rqkJCGvp4WufOBxLWUl5AFujlsqmn6WdpMZo-nQr-yKVTnogZOQYgLnl'
+    password = 'EOsLHpTI748BbKSwcWlQpgmuJZXyudRnJP50Gc8H5Anf8VnDfk8FtEtRYwJ_iU1T9sgH5DOv53BuqeyH'
+    busername = str(base64.b64encode(bytes(username, 'utf-8')))[1:].replace("'", "").replace("=", '')
+    bpassword = str(base64.b64encode(bytes(password, 'utf-8')))[1:].replace("'", "")
+    bearer = f"Basic {busername}6{bpassword}"
+
+    current_package = models.SubscriptionBasedPackage.objects.get(id=id)
+    current_order = models.SubscriptionOrder.objects.get(
+        user=request.user,
+        subscription_package=current_package,
+        category_choice='pcs',
+        is_active=True
+    )
+
+    current_order.is_active = False
+    current_order.save()
+    url = f'https://api.sandbox.paypal.com/v1/billing/subscriptions/{current_order.paypal_subscription_id}/cancel'
+    headers = {
+        'Content-type': 'application/json',
+        'Authorization': bearer
+    }
+    r = requests.post(url, headers=headers)
+    print(r.status_code)
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 @login_required
 def userSubscriptionsView(request):

@@ -52,6 +52,8 @@ urlpatterns = [
          name='pcs_subscription_payment'),
     path('pcs_subscription_payment/<id>/', views.subscriptionPayment,
          name='pcs_subscription_payment'),
+    path('pcs_subscription_cancel/<id>/', views.subscriptionCancelView, name='pcs_subscription_cancel'),
+    path('pcs_subscription_cancel/', views.subscriptionCancelView, name='pcs_subscription_cancel'),
     path('pcs_user_events/', views.userEventsView, name='pcs_user_events'),
     path('pcs_user_notifications/', views.userNotificationsView, name='pcs_user_notifications'),
     path('pcs_user_settings/', views.userSettingsView, name='pcs_user_settings'),
