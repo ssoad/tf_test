@@ -601,7 +601,7 @@ class SubscriptionOrderView(generics.CreateAPIView):
     queryset = bcsmodels.SubscriptionOrder
     permission_classes = [permissions.IsAuthenticated]
 
-    def cancelSubscriptions(self, subscription_service):
+    def cancelSubscriptions(self, subscription_service, category_choice):
         """
         Cancelling Previous Subscriptions
         """
@@ -611,25 +611,45 @@ class SubscriptionOrderView(generics.CreateAPIView):
         bpassword = str(base64.b64encode(bytes(password, 'utf-8')))[1:].replace("'", "")
         bearer = f"Basic {busername}6{bpassword}"
 
-        bcs_packages = bcsmodels.SubscriptionBasedPackage.objects.filter(
-            service_id__category_choice='bcs').values_list(
+        packages = bcsmodels.SubscriptionBasedPackage.objects.filter(
+            service_id__category_choice=category_choice).values_list(
             'id')
-        user_orders = bcsmodels.SubscriptionOrder.objects.filter(
-            user__business_user__business=self.request.user.business_user.business,
-            subscription_package__in=bcs_packages,
-            subscription_service=subscription_service,
-            is_active=True
-        )
-        for current_order in user_orders:
-            current_order.is_active = False
-            current_order.save()
-            url = f'https://api.sandbox.paypal.com/v1/billing/subscriptions/{current_order.paypal_subscription_id}/cancel'
-            headers = {
-                'Content-type': 'application/json',
-                'Authorization': bearer
-            }
-            r = requests.post(url, headers=headers)
-            print(r.status_code)
+        if category_choice == 'pcs':
+            user_orders = bcsmodels.SubscriptionOrder.objects.filter(
+                # user__business_user__business=self.request.user.business_user.business,
+                user=self.request.user,
+                subscription_package__in=packages,
+                subscription_service=subscription_service,
+                is_active=True
+            )
+            for current_order in user_orders:
+                current_order.is_active = False
+                current_order.save()
+                url = f'https://api.sandbox.paypal.com/v1/billing/subscriptions/{current_order.paypal_subscription_id}/cancel'
+                headers = {
+                    'Content-type': 'application/json',
+                    'Authorization': bearer
+                }
+                r = requests.post(url, headers=headers)
+                print(r.status_code)
+        elif category_choice == 'bcs':
+            user_orders = bcsmodels.SubscriptionOrder.objects.filter(
+                user__business_user__business=self.request.user.business_user.business,
+                # user=self.request.user,
+                subscription_package__in=packages,
+                subscription_service=subscription_service,
+                is_active=True
+            )
+            for current_order in user_orders:
+                current_order.is_active = False
+                current_order.save()
+                url = f'https://api.sandbox.paypal.com/v1/billing/subscriptions/{current_order.paypal_subscription_id}/cancel'
+                headers = {
+                    'Content-type': 'application/json',
+                    'Authorization': bearer
+                }
+                r = requests.post(url, headers=headers)
+                print(r.status_code)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user, is_active=True)
@@ -637,21 +657,39 @@ class SubscriptionOrderView(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         subscription_service = request.data['subscription_service']
         subscription_package = request.data['subscription_package']
-        try:
-            check_existing_order = bcsmodels.SubscriptionOrder.objects.get(user=self.request.user,
-                                                                           subscription_service=subscription_service,
-                                                                           subscription_package=subscription_package,
-                                                                           is_active=True)
-            return Response({'response': 'You have already Subscribed to this Package'})
-        except:
-            self.cancelSubscriptions(subscription_service)
-            """
-            Creating new Subscription
-            """
-            ser = self.get_serializer(data=request.data)
-            ser.is_valid(raise_exception=True)
-            self.perform_create(ser)
-            return Response(ser.data)
+        category_choice = request.data['category_choice']
+        if category_choice == 'pcs':
+            try:
+                check_existing_order = bcsmodels.SubscriptionOrder.objects.get(user=self.request.user,
+                                                                               subscription_service=subscription_service,
+                                                                               subscription_package=subscription_package,
+                                                                               is_active=True)
+                return Response({'response': 'You have already Subscribed to this Package'})
+            except:
+                self.cancelSubscriptions(subscription_service, 'pcs')
+                """
+                Creating new Subscription
+                """
+                ser = self.get_serializer(data=request.data)
+                ser.is_valid(raise_exception=True)
+                self.perform_create(ser)
+                return Response(ser.data)
+        elif category_choice == 'bcs':
+            try:
+                check_existing_order = bcsmodels.SubscriptionOrder.objects.get(user__business_user__business=self.request.user.business_user.business,
+                                                                               subscription_service=subscription_service,
+                                                                               subscription_package=subscription_package,
+                                                                               is_active=True)
+                return Response({'response': 'You have already Subscribed to this Package'})
+            except:
+                self.cancelSubscriptions(subscription_service, 'bcs')
+                """
+                Creating new Subscription
+                """
+                ser = self.get_serializer(data=request.data)
+                ser.is_valid(raise_exception=True)
+                self.perform_create(ser)
+                return Response(ser.data)
 
 
 class SubscriptionPurchaseCheckApiView(generics.ListAPIView):

@@ -824,6 +824,7 @@ def subscriptionCancelView(request, id):
             user__business_user__business=request.user.business_user.business,
             subscription_package=current_package,
             category_choice='bcs',
+            subscription_service=current_package.service_id,
             is_active=True
         )
 

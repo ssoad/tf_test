@@ -467,6 +467,7 @@ def subscriptionPayment(request, id):
 
     return render(request, 'user_panel/pcs/subscription_payment.html', context)
 
+
 @login_required
 def subscriptionCancelView(request, id):
     username = 'AfTmv1E8P0HbJCkRMtm7s_07rqkJCGvp4WufOBxLWUl5AFujlsqmn6WdpMZo-nQr-yKVTnogZOQYgLnl'
@@ -480,6 +481,7 @@ def subscriptionCancelView(request, id):
         user=request.user,
         subscription_package=current_package,
         category_choice='pcs',
+        subscription_service=current_package.service_id,
         is_active=True
     )
 
@@ -493,6 +495,7 @@ def subscriptionCancelView(request, id):
     r = requests.post(url, headers=headers)
     print(r.status_code)
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
 
 @login_required
 def userSubscriptionsView(request):
