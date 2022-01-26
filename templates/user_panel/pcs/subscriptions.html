@@ -19,6 +19,34 @@
                         data-bs-target="#{{ service.service_title|replacespace }}">{{ service.service_title|upper }}</button>
             {% endfor %}
         </div>
+        {% for service in services %}
+            <!-- Modal -->
+            <div class="modal fade" id="{{ service.service_title|replacespace }}" tabindex="-1"
+                 aria-labelledby="trainingModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header border-0">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body p-5 text-center" id="noPurchaseNotice" >
+                            <h4 class="fw-bold">First you need to make an one time purchase for
+                                your {{ service.service_title|capitalize }} service only then you will be eligible for
+                                monthly subscription</h4>
+                            <a href="{% host_url 'bcs_user_services' %}" class="btn fs-5 mt-3 text-green">Please go
+                                to the
+                                service menu</a>
+                        </div>
+                        <div class="modal-body p-5 text-center">
+                            <div class="row g-3" id="showSubscriptionDetails" >
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
 
         {% comment %}
     <div class="border-bottom border-gray pb-1">
@@ -481,7 +509,7 @@
                 })
         }
     </script>
-    <script>
+    {% comment %} <script>
         let activeState = 1;
         let main = document.querySelector('.package-details .row');
         let packages = document.querySelectorAll('.package-details .row .package');
@@ -512,5 +540,5 @@
                 activeState++;
             }
         });
-    </script>
+    </script> {% endcomment %}
 {% endblock customjs %}
