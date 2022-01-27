@@ -34,7 +34,7 @@
             <p class="border-top py-3">No Comment Yet</p>
         {% else %}
             <div class="conversation mt-5 border border-secondary p-3">
-                <h6 class="fw-bold">Solution:</h6>
+                <h6 class="fw-bold">Response:</h6>
                 {% for comment in ticket.ticketcomment_ticket.all %}
                     {% if user == comment.user %}
                         <div class="d-flex shadow-sm bg-lightgreen p-2 mb-3 justify-content-between">

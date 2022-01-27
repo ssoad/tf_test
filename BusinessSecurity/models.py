@@ -202,6 +202,7 @@ payment_method = (
     ('bank_check', 'Bank Check'),
     ('card', 'Card'),
     ('cash', 'Cash'),
+    ('wire_transfer', 'Wire Transfer'),
 )
 
 
@@ -248,9 +249,9 @@ class QuotationAgreement(models.Model):
 
 
 currency = (
-    ('euro', 'EURO'),
-    ('pound', 'POUND'),
-    ('dollar', 'DOLLAR'),
+    ('euro', 'EURO €'),
+    ('pound', 'POUND £'),
+    ('usd', 'USD $'),
 )
 
 
