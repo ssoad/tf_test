@@ -40,9 +40,13 @@ def NotificationCount(request):
                         if notific.notification_time.date() < datetime.datetime.today().date():
                             if notific not in all_notifications:
                                 all_notifications.append(notific)
+            bcs_admin_notification = models.AdminNotification.objects.filter(category_choice='bcs', is_read=False)
+            pcs_admin_notification = models.AdminNotification.objects.filter(category_choice='pcs', is_read=False)
             return {
                 'bcs_notification': bcs_notifications.count(),
                 'pcs_notification': len(all_notifications)+len(new_notifications),
+                'bcs_admin_notification': bcs_admin_notification.count(),
+                'pcs_admin_notification': pcs_admin_notification.count(),
             }
         except:
             notis = []

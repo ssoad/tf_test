@@ -31,7 +31,7 @@
     <link rel="icon" href="{% static 'tfimg/user_panel/Techforing-Icon.png' %}" type="image/x-icon"/>
     <script>
         let mainOrigin = location.origin;
-        if(!location.origin.includes('127.0.0.1') && !location.origin.includes('localhost'))
+        if (!location.origin.includes('127.0.0.1') && !location.origin.includes('localhost'))
             mainOrigin = 'https://main.techforing.com';
     </script>
 </head>
@@ -156,7 +156,10 @@
                     </li>
                     <li data-tootik="Notifications" data-tootik-conf="right">
                         <a href="{% host_url 'pcs_admin_notifications' host 'mysecurity' %}" class="nav-link active">
-                            <i class="icofont-notification"></i>
+                            <div class="position-relative">
+                                <i class="icofont-notification"></i>
+                                <div class="position-absolute end-0 top-0 badge badge-danger rounded-pill bg-danger">{{ pcs_admin_notification }}</div>
+                            </div>
                             <span class="nav-text">Notifications</span>
                         </a>
                     </li>
@@ -253,7 +256,10 @@
                     </li>
                     <li data-tootik="Notifications" data-tootik-conf="right">
                         <a href="{% host_url 'pcs_admin_notifications' host 'mysecurity' %}" class="nav-link active">
-                            <i class="icofont-notification"></i>
+                            <div class="position-relative">
+                                <i class="icofont-notification"></i>
+                                <div class="position-absolute end-0 top-0 badge badge-danger rounded-pill bg-danger">{{ pcs_admin_notification }}</div>
+                            </div>
                             <span class="nav-text">Notifications</span>
                         </a>
                     </li>

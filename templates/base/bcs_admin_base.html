@@ -31,7 +31,7 @@
     <link rel="icon" href="{% static 'tfimg/user_panel/Techforing-Icon.png' %}" type="image/x-icon"/>
     <script>
         let mainOrigin = location.origin;
-        if(!location.origin.includes('127.0.0.1') && !location.origin.includes('localhost'))
+        if (!location.origin.includes('127.0.0.1') && !location.origin.includes('localhost'))
             mainOrigin = 'https://main.techforing.com';
     </script>
 </head>
@@ -133,12 +133,14 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item nav-link" href="{% host_url 'bcs_admin_subscription_services' %}">
+                                <a class="dropdown-item nav-link"
+                                   href="{% host_url 'bcs_admin_subscription_services' %}">
                                     Subscription Services
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item nav-link" href="{% host_url 'bcs_admin_subscription_packages' %}">
+                                <a class="dropdown-item nav-link"
+                                   href="{% host_url 'bcs_admin_subscription_packages' %}">
                                     Subscription Packages
                                 </a>
                             </li>
@@ -152,13 +154,17 @@
                                     Sub Services
                                 </a>
                             </li>
-                           
+
                         </ul>
                     </li>
                     <div class="div"></div>
                     <li data-tootik="Notifications" data-tootik-conf="right">
                         <a href="{% host_url 'bcs_admin_notifications' %}" class="nav-link">
-                            <i class="icofont-notification"></i> <span class="nav-text">Notifications</span>
+                            <div class="position-relative">
+                                <i class="icofont-notification"></i>
+                                <div class="position-absolute end-0 top-0 badge badge-danger rounded-pill bg-danger">{{ bcs_admin_notification }}</div>
+                            </div>
+                            <span class="nav-text">Notifications</span>
                         </a>
                     </li>
                     <div class="div"></div>
@@ -285,7 +291,11 @@
                     <div class="div"></div>
                     <li data-tootik="Notifications" data-tootik-conf="right">
                         <a href="{% host_url 'bcs_admin_notifications' %}" class="nav-link">
-                            <i class="icofont-notification"></i> <span class="nav-text">Notifications</span>
+                            <div class="position-relative">
+                                <i class="icofont-notification"></i>
+                                <div class="position-absolute end-0 top-0 badge badge-danger rounded-pill bg-danger">{{ bcs_admin_notification }}</div>
+                            </div>
+                            <span class="nav-text">Notifications</span>
                         </a>
                     </li>
                     <div class="div"></div>
@@ -302,7 +312,7 @@
 
 {% block content %}
 
- {% endblock content %}
+{% endblock content %}
 <footer id="footer-small" class="footer footer-shrink mt-5 py-4 position-sticky top-100">
     <div class="d-flex justify-content-center">
         <a href="{% host_url 'policy' %}" class="me-5">PRIVACY POLICY</a>

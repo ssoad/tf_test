@@ -300,6 +300,10 @@ def userServicesView(request):
             order_staff = models.OrderStaff.objects.create(
                 staff=current_staff, order=order[0])
             order_staff.save()
+        notification = models.AdminNotification.objects.create(category_choice='pcs',
+                                                               user=request.user,
+                                                               notification=f'Got a New Quotation. ID: {order[0].id} <a href="https://pcs.techforing.com/pcs_user_order_details/{order[0].id}/" target="_blank" class="btn btn-success">Visit Now</a>')
+        notification.save()
         return render(request, 'user_panel/pcs/thanks.html')
     context = {
         'service_category': service_category,
@@ -383,6 +387,17 @@ def userOrderDetailsView(request, id):
                     if quotation.agreement == 'agree':
                         current_quotation.agreement = 'agree'
                         current_quotation.save()
+                        notification = models.AdminNotification.objects.create(category_choice='pcs',
+                                                                               user=request.user,
+                                                                               notification=f'User Agreed on NDA/NCA. '
+                                                                                            f'ID: {current_quotation.order.id} <a href="https://pcs.techforing.com/pcs_user_order_details/{current_quotation.order.id}/" target="_blank" class="btn btn-success">Visit Now</a>')
+                        notification.save()
+                    else:
+                        notification = models.AdminNotification.objects.create(category_choice='pcs',
+                                                                               user=request.user,
+                                                                               notification=f'User Disagreed on '
+                                                                                            f'NDA/NCA. ID: {current_quotation.order.id} <a href="https://pcs.techforing.com/pcs_user_order_details/{current_quotation.order.id}/" target="_blank" class="btn btn-success">Visit Now</a>')
+                        notification.save()
 
                     return HttpResponseRedirect(request.META['HTTP_REFERER'])
         except:
@@ -986,10 +1001,7 @@ def pcsAdminUserInterest(request):
 
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/')
 def adminNotificationsView(request):
-    notifications = models.Notification.objects.filter(
-        Q(category_choice='pcs') | Q(
-            category_choice__iexact=request.user.business_user.business.company_name)).order_by(
-        '-notification_time')
+    notifications = models.AdminNotification.objects.filter(category_choice='pcs').order_by('-notification_time')
 
     new_notifications = []
     all_notifications = []
@@ -1005,12 +1017,12 @@ def adminNotificationsView(request):
         'notifications': new_notifications,
         'all_notifications': all_notifications,
     }
-    # for n in all_notifications:
-    #     n.is_read = True
-    #     n.save()
-    # for n in new_notifications:
-    #     n.is_read = True
-    #     n.save()
+    for n in all_notifications:
+        n.is_read = True
+        n.save()
+    for n in new_notifications:
+        n.is_read = True
+        n.save()
     return render(request, 'admin_panel/pcsTF/notifications.html', context)
 
 def pcsAdminTraining(request):

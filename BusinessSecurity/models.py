@@ -526,3 +526,14 @@ class Notification(models.Model):
     notification_time = models.DateTimeField()
     is_read = models.BooleanField(default=False)
     # date_time = models.DateTimeField()
+
+
+class AdminNotification(models.Model):
+    category_choice = models.CharField(max_length=255, choices=category_choice)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='admin_notification_user', blank=True,
+                             null=True)
+    business = models.ForeignKey(Business, on_delete=models.CASCADE, related_name='admin_notification_business',
+                                 blank=True, null=True)
+    notification = HTMLField()
+    notification_time = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)

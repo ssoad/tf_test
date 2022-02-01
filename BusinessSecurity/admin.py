@@ -39,3 +39,4 @@ admin.site.register(models.TicketStaff)
 admin.site.register(models.TicketComment)
 
 admin.site.register(models.Notification)
+admin.site.register(models.AdminNotification)

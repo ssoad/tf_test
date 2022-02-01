@@ -466,6 +466,11 @@ def userServicesView(request):
                     order_staff = models.OrderStaff.objects.create(
                         staff=current_staff, order=order[0])
                     order_staff.save()
+
+                notification = models.AdminNotification.objects.create(category_choice='bcs',
+                                                                       business=request.user.business_user.business,
+                                                                       notification=f'Got a New Quotation. ID: {order[0].id} <a href="https://main.techforing.com/bcs_user_order_details/{order[0].id}/" target="_blank" class="btn btn-success">Visit Now</a>')
+                notification.save()
                 return render(request, 'user_panel/bcs/thanks.html')
             context = {
                 'service_category': service_category,
@@ -2043,10 +2048,7 @@ def bcsAdminSingleUserInterest(request, id):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def adminNotificationsView(request):
-    notifications = models.Notification.objects.filter(
-        Q(category_choice='bcs') | Q(
-            category_choice__iexact=request.user.business_user.business.company_name)).order_by(
-        '-notification_time')
+    notifications = models.AdminNotification.objects.filter(category_choice='bcs').order_by('-notification_time')
 
     new_notifications = []
     all_notifications = []
@@ -2062,12 +2064,12 @@ def adminNotificationsView(request):
         'notifications': new_notifications,
         'all_notifications': all_notifications,
     }
-    # for n in all_notifications:
-    #     n.is_read = True
-    #     n.save()
-    # for n in new_notifications:
-    #     n.is_read = True
-    #     n.save()
+    for n in all_notifications:
+        n.is_read = True
+        n.save()
+    for n in new_notifications:
+        n.is_read = True
+        n.save()
     return render(request, 'admin_panel/bcsTF/notifications.html', context)
 
 
