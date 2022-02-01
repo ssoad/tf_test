@@ -2041,6 +2041,35 @@ def bcsAdminSingleUserInterest(request, id):
     }
     return render(request, 'admin_panel/bcsTF/editForm.html', context)
 
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+def adminNotificationsView(request):
+    notifications = models.Notification.objects.filter(
+        Q(category_choice='bcs') | Q(
+            category_choice__iexact=request.user.business_user.business.company_name)).order_by(
+        '-notification_time')
+
+    new_notifications = []
+    all_notifications = []
+    for notification in notifications:
+        if notification.notification_time.date() == datetime.datetime.today().date():
+            if notification not in new_notifications:
+                new_notifications.append(notification)
+        elif notification.notification_time.date() != datetime.datetime.today().date():
+            if notification.notification_time.date() < datetime.datetime.today().date():
+                if notification not in all_notifications:
+                    all_notifications.append(notification)
+    context = {
+        'notifications': new_notifications,
+        'all_notifications': all_notifications,
+    }
+    # for n in all_notifications:
+    #     n.is_read = True
+    #     n.save()
+    # for n in new_notifications:
+    #     n.is_read = True
+    #     n.save()
+    return render(request, 'admin_panel/bcsTF/notifications.html', context)
+
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def bcsAdminTrainingCategoryView(request):

@@ -153,6 +153,12 @@
                             </li>
                         </ul>
                     </li>
+                    <li data-tootik="Notifications" data-tootik-conf="right">
+                        <a href="{% host_url 'pcs_admin_individual_users' host 'mysecurity' %}" class="nav-link active">
+                            <i class="icofont-notification"></i>
+                            <span class="nav-text">Notifications</span>
+                        </a>
+                    </li>
                     <li data-tootik="Users" data-tootik-conf="right">
                         <a href="{% host_url 'pcs_admin_individual_users' host 'mysecurity' %}" class="nav-link active">
                             <i class="bi bi-people-fill"></i>
@@ -242,6 +248,12 @@
                     <li data-tootik="Tickets" data-tootik-conf="right">
                         <a href="{% host_url 'pcs_admin_all_tickets' host 'mysecurity' %}" class="nav-link">
                             <i class="icofont-life-buoy"></i> <span class="nav-text">Tickets</span>
+                        </a>
+                    </li>
+                    <li data-tootik="Notifications" data-tootik-conf="right">
+                        <a href="{% host_url 'pcs_admin_individual_users' host 'mysecurity' %}" class="nav-link active">
+                            <i class="icofont-notification"></i>
+                            <span class="nav-text">Notifications</span>
                         </a>
                     </li>
                 {% endif %}

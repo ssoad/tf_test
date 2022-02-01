@@ -225,6 +225,8 @@ urlpatterns = [
     # path('bcs_admin_user_interest/', views.bcsAdminUserInterest, name='bcs_admin_user_interest'),
     path('bcs_admin_single_user_interest/<id>/', views.bcsAdminSingleUserInterest,
          name='bcs_admin_single_user_interest'),
+    path('bcs_admin_notifications/', views.adminNotificationsView,
+         name='bcs_admin_notifications'),
     path('bcs_admin_training_category/', views.bcsAdminTrainingCategoryView, name='bcs_admin_training_category'),
     path('bcs_admin_training_category_edit/', views.bcsAdminTrainingCategoryEditView,
          name='bcs_admin_training_category_edit'),
