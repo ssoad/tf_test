@@ -119,6 +119,8 @@ urlpatterns = [
     path('pcs_admin_list/', views.pcsAdminList, name='pcs_admin_list'),
     path('pcs_admin_profile/', views.pcsAdminProfile, name='pcs_admin_profile'),
     path('pcs_admin_user_interest/', views.pcsAdminUserInterest, name='pcs_admin_user_interest'),
+    path('pcs_admin_notifications/', views.adminNotificationsView,
+         name='pcs_admin_notifications'),
     path('pcs_admin_training_category/', views.pcsAdminTrainingCategoryView, name='pcs_admin_training_category'),
     path('pcs_admin_training_category_edit/', views.pcsAdminTrainingCategoryEditView,
          name='pcs_admin_training_category_edit'),
