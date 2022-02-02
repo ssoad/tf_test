@@ -89,7 +89,7 @@
 <script>
     // File formats
     const videoFormats = ['mp4','webm','m4v','ogv','avi'];
-    const imageFormats = ['apng', 'avif','gif','jpeg','png','svg','webp'];
+    const imageFormats = ['apng', 'avif','gif','jpeg','jpg','png','svg','webp','bmp'];
     const audioFormats = ['mp3','wav','ogg'];
 
     $( document ).ready(function() {
@@ -97,7 +97,7 @@
         const container = document.createElement("div");
         container.style.width = "400px";
         const fileName = `{{ticket.ticket_attachment.url}}`
-        const extentionType = fileName.split(/[#?]/)[0].split('.').pop().trim();
+        const extentionType = fileName.split(/[#?]/)[0].split('.').pop().trim().toLowerCase();
 
         if(videoFormats.includes(extentionType)){
             container.innerHTML=`
