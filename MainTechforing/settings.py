@@ -205,7 +205,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_hosts.middleware.HostsResponseMiddleware',  # for django-host
 ]
-X_FRAME_OPTIONS = 'SAMEORIGIN'
 # For Development
 SESSION_COOKIE_DOMAIN = '127.0.0.1'
 SESSION_COOKIE_NAME = 'techforingsessionid'
