@@ -37,21 +37,37 @@
                 <h6 class="fw-bold">Response:</h6>
                 {% for comment in ticket.ticketcomment_ticket.all %}
                     {% if user == comment.user %}
-                        <div class="d-flex shadow-sm bg-lightgreen p-2 mb-3 justify-content-between">
-                            <div class="d-flex align-items-center pe-3">
-                                <p>{{ comment.comment|safe }}</p>
-                            </div>
-                            <img src="{{ comment.user.profile_pic.url }}"
-                                 style="width: 40px;height: 40px;border-radius: 50%;object-fit: cover;" alt="">
-                        </div>
-                    {% elif user != comment.user %}
-                        <div class="d-flex shadow-sm bg-lightgreen p-2 mb-3 justify-content-between">
-                            <img src="{{ comment.user.profile_pic.url }}"
-                                 style="width: 40px;height: 40px;border-radius: 50%;object-fit: cover;" alt="">
-                            <div class="d-flex align-items-center ps-3">
+                    <div class="d-flex p-2 mb-3 justify-content-end">
+                        <div style="max-width: 60%" class="py-2 px-4 lh-1 shadow-sm bg-lightgreen rounded-3 d-flex justify-content-end">
+                            <div class="ms-auto">
+                                <div class="d-flex lh-1 pt-3">
+                                    <span class="fw-bold">{{ comment.user.full_name }}</span>
+                                    <span class="mx-2">|</span>
+                                    <span class="">{{ comment.comment_date }}</span>
+                                </div>
                                 <p>{{ comment.comment|safe }}</p>
                             </div>
                         </div>
+                        <div class="d-flex justify-content-center align-items-end mx-2">
+                            <img src="{{ comment.user.profile_pic.url }}"
+                            style="width: 65px;height: 65px;border-radius: 50%;object-fit: cover;" alt="">
+                        </div>
+                    </div>
+                {% elif user != comment.user %}
+                    <div class="d-flex p-2 mb-3 justify-content-start">
+                        <div class="d-flex justify-content-center align-items-end mx-2">
+                            <img src="{{ comment.user.profile_pic.url }}"
+                            style="width: 65px;height: 65px;border-radius: 50%;object-fit: cover;" alt="">
+                        </div>
+                        <div style="max-width: 60%" class="py-2 px-4 lh-1 shadow-sm bg-navy rounded-3" >
+                            <div class="d-flex lh-1 pt-3">
+                                <span class="fw-bold">{{ comment.user.full_name }}</span>
+                                <span class="mx-2">|</span>
+                                <span class="">{{ comment.comment_date }}</span>
+                            </div>
+                            <p>{{ comment.comment|safe }}</p>
+                        </div>
+                    </div>
                     {% endif %}
                 {% endfor %}
             </div>
