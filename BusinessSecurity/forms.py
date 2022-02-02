@@ -82,7 +82,7 @@ class AddPackageForm(forms.ModelForm):
     class Meta:
         model = models.SubscriptionBasedPackage
         fields = '__all__'
-        exclude = ['package_id']
+        exclude = ['package_id', 'category_choice']
 
 
 class AddPackageFeatureForm(forms.ModelForm):

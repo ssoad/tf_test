@@ -37,6 +37,13 @@ def pcs_admin_permission_check_order(user):
         return user.is_staff and user.is_superuser
 
 
+def ticket_admin(user):
+    try:
+        return user.is_staff and user.is_superuser or user.is_bcs_head or user.is_pcs_head or user.is_sales
+    except:
+        return user.is_staff and user.is_superuser
+
+
 def personalSecurityView(request):
     context = {
 
@@ -944,6 +951,7 @@ def pcsAdminSubscriptionPack(request):
         form = pcsforms.AddPackageForm(request.POST)
         if form.is_valid():
             package = form.save(commit=False)
+            package.category_choice = 'pcs'
             package.package_id = request.POST.get('package_id')
 
             package.save()
@@ -999,6 +1007,7 @@ def pcsAdminProfile(request):
 def pcsAdminUserInterest(request):
     return render(request, 'admin_panel/pcsTF/userInterest.html')
 
+
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/')
 def adminNotificationsView(request):
     notifications = models.AdminNotification.objects.filter(category_choice='pcs').order_by('-notification_time')
@@ -1024,6 +1033,7 @@ def adminNotificationsView(request):
         n.is_read = True
         n.save()
     return render(request, 'admin_panel/pcsTF/notifications.html', context)
+
 
 def pcsAdminTraining(request):
     return render(request, 'admin_panel/pcsTF/training.html')
@@ -1660,3 +1670,17 @@ def pcsAdminTicketsDetailView(request, id):
         'commentform': commentform,
     }
     return render(request, 'admin_panel/pcsTF/ticket_detail.html', context)
+
+
+@user_passes_test(ticket_admin, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
+def ticketOpenCloseView(request, id):
+    current_ticket = models.Ticket.objects.get(id=id)
+    if current_ticket.ticket_status == 'open':
+        current_ticket.ticket_status = 'closed'
+        current_ticket.save()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    elif current_ticket.ticket_status == 'closed':
+        current_ticket.ticket_status = 'open'
+        current_ticket.save()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])

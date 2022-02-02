@@ -268,6 +268,7 @@ urlpatterns = [
     path('bcs_admin_quotations/', views.bcsAdminQuotationsView,
          name='bcs_admin_quotations'),
     path('bcs_admin_orders/', views.bcsAdminOrdersView, name='bcs_admin_orders'),
+    path('bcs_admin_subscriptions/', views.bcsAdminSubscriptionView, name='bcs_admin_subscriptions'),
     path('bcs_admin_new_order/', views.bcsAdminNewOrdersView,
          name='bcs_admin_new_order'),
     path('bcs_admin_order_detail/', views.bcsAdminOrdersDetailView,

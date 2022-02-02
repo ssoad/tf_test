@@ -1881,6 +1881,7 @@ def bcsAdminSubscriptionPack(request):
         form = forms.AddPackageForm(request.POST)
         if form.is_valid():
             package = form.save(commit=False)
+            package.category_choice = 'bcs'
             package.package_id = request.POST.get('package_id')
 
             package.save()
@@ -2373,6 +2374,35 @@ def bcsAdminOrdersView(request):
         }
         return render(request, 'admin_panel/bcsTF/orders.html', context)
 
+
+@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
+def bcsAdminSubscriptionView(request):
+    if request.user.is_sales:
+        orders = models.SubscriptionOrder.objects.filter(is_active=True).order_by('-create_time')
+        # orders = models.Order.objects.filter(
+        #     Q(orderstaff_order__staff=request.user) & ~Q(
+        #         Q(order_status='new') | Q(order_status='attending')
+        #         | Q(order_status='agreed_to_quotation') | Q(order_status='agreed_to_nda_nca')
+        #         | Q(order_status='assigned'))).order_by(
+        #     '-order_date')
+        context = {
+            'orders': orders,
+            'message': 'Orders',
+        }
+        return render(request, 'admin_panel/bcsTF/orders.html', context)
+    else:
+        orders = models.Order.objects.filter(
+            Q(category_choice='bcs') & ~Q(
+                Q(order_status='new') | Q(order_status='attending')
+                | Q(order_status='agreed_to_quotation') | Q(order_status='agreed_to_nda_nca')
+                | Q(order_status='assigned'))).order_by(
+            '-order_date')
+        context = {
+            'orders': orders,
+            'message': 'Orders',
+        }
+        return render(request, 'admin_panel/bcsTF/orders.html', context)
 
 @user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
                   redirect_field_name='/account/profile/')

@@ -81,9 +81,9 @@
                         <td>{{ ticket.ticket_date }}</td>
                         <td>
                             {% if ticket.ticket_status == 'open' %}
-                                <a href="{% host_url 'tickets_status_change' %}{{ ticket.id }}" class="btn btn-primary">Close</a>
+                                <a href="{% host_url 'ticket_status_change' host 'mysecurity' %}{{ ticket.id }}" class="btn btn-primary">Close</a>
                             {% else %}
-                                <a href="{% host_url 'tickets_status_change' %}{{ ticket.id }}" class="btn btn-primary">Open</a>
+                                <a href="{% host_url 'ticket_status_change' host 'mysecurity' %}{{ ticket.id }}" class="btn btn-primary">Open</a>
                             {% endif %}
                         </td>
                     </tr>

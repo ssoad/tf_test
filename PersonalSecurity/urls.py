@@ -107,6 +107,10 @@ urlpatterns = [
     path('pcs_admin_all_tickets/', views.pcsAdminTicketsView, name='pcs_admin_all_tickets'),
     path('pcs_admin_tickets_detail/', views.pcsAdminTicketsDetailView, name='pcs_admin_tickets_detail'),
     path('pcs_admin_tickets_detail/<id>', views.pcsAdminTicketsDetailView, name='pcs_admin_tickets_detail'),
+    path('ticket_status_change/', views.ticketOpenCloseView,
+         name='ticket_status_change'),
+    path('ticket_status_change/<id>/',
+         views.ticketOpenCloseView, name='ticket_status_change'),
 
     path('pcs_admin_revenue/', views.pcsAdminRevenue, name='pcs_admin_revenue'),
     path('pcs_admin_subscriptions/', views.pcsAdminSubscriptionList, name='pcs_admin_subscriptions'),

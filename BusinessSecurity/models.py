@@ -340,6 +340,7 @@ class TicketComment(models.Model):
 
 
 class SubscriptionBasedPackage(models.Model):
+    category_choice = models.CharField(max_length=255, choices=category_choice)
     service_id = models.ForeignKey(SubscriptionServices, on_delete=models.CASCADE,
                                    related_name='package_subscription_service')
     package_id = models.CharField(max_length=255, blank=True)
@@ -349,6 +350,7 @@ class SubscriptionBasedPackage(models.Model):
     duration_type = models.CharField(
         choices=duration_type, max_length=264, default='month')
     price = models.IntegerField()
+    max_user = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return f'{self.package_name} - {self.service_id}'
