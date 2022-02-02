@@ -148,7 +148,7 @@ class OrderAssignForm(forms.ModelForm):
 class TicketCreateForm(forms.ModelForm):
     ticket_category = forms.Field(
         widget=forms.Select(attrs={'class': 'form-select'}))
-    ticket_attachment = forms.FileField(widget=forms.FileInput(attrs={'accept': '*'}))
+    ticket_attachment = forms.FileField(widget=forms.FileInput(attrs={'accept': 'image/*,video/*,audio/*,.pdf,.csv'}))
 
     class Meta:
         model = models.Ticket

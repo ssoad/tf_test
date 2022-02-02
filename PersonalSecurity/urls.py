@@ -111,7 +111,7 @@ urlpatterns = [
 
     path('pcs_admin_all_tickets/', views.pcsAdminTicketsView, name='pcs_admin_all_tickets'),
     path('pcs_admin_tickets_detail/', views.pcsAdminTicketsDetailView, name='pcs_admin_tickets_detail'),
-    path('pcs_admin_tickets_detail/<id>', views.pcsAdminTicketsDetailView, name='pcs_admin_tickets_detail'),
+    path('pcs_admin_tickets_detail/<id>/', views.pcsAdminTicketsDetailView, name='pcs_admin_tickets_detail'),
     path('ticket_status_change/', views.ticketOpenCloseView,
          name='ticket_status_change'),
     path('ticket_status_change/<id>/',

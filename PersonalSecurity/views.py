@@ -181,6 +181,10 @@ def openTicketView(request):
                 ticket.ticket_status = 'open'
                 ticket.ticket_category = request.POST.get('ticket_category')
                 ticket.save()
+                notification = models.AdminNotification.objects.create(category_choice='pcs',
+                                                                       business=request.user.business_user.business,
+                                                                       notification=f'New Ticket Created. <a href="https://main.techforing.com/mysecurity/pcs_admin_tickets_detail/{ticket.id}/" target="_blank" class="btn btn-success">Visit Now</a>')
+                notification.save()
                 return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
         'form': form,
@@ -200,6 +204,10 @@ def ticketDetailView(request, id):
             comment.user = request.user
             comment.ticket = ticket
             comment.save()
+            notification = models.AdminNotification.objects.create(category_choice='pcs',
+                                                                   business=request.user.business_user.business,
+                                                                   notification=f'New Comment on Ticket. <a href="https://main.techforing.com/mysecurity/pcs_admin_tickets_detail/{ticket.id}/" target="_blank" class="btn btn-success">Visit Now</a>')
+            notification.save()
             return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
         'ticket': ticket,
@@ -1717,7 +1725,7 @@ def pcsAdminOrderCanceledView(request, id):
 @user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/',
                   redirect_field_name='/account/profile/')
 def pcsAdminTicketsView(request):
-    tickets = models.Ticket.objects.filter(category_choice='pcs')
+    tickets = models.Ticket.objects.filter(category_choice='pcs').order_by('-ticket_date')
     context = {
         'tickets': tickets,
     }
@@ -1736,6 +1744,13 @@ def pcsAdminTicketsDetailView(request, id):
             comment.user = request.user
             comment.ticket = ticket
             comment.save()
+            notification = models.Notification.objects.create(
+                category_choice=ticket.user.email,
+                notification=f'New Reply on Ticket. <a href="https://pcs.techforing.com/ticket_detail/{ticket.id}/" '
+                             f'target="_blank" class="btn '
+                             f'btn-success">Visit Now</a>',
+                notification_time=timezone.now())
+            notification.save()
             return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
         'ticket': ticket,

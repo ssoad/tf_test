@@ -1063,6 +1063,10 @@ def openTicketView(request):
                         ticket.ticket_category = request.POST.get(
                             'ticket_category')
                         ticket.save()
+                        notification = models.AdminNotification.objects.create(category_choice='bcs',
+                                                                               business=request.user.business_user.business,
+                                                                               notification=f'New Ticket Created. <a href="https://main.techforing.com/bcs_admin_tickets_detail/{ticket.id}/" target="_blank" class="btn btn-success">Visit Now</a>')
+                        notification.save()
                         return HttpResponseRedirect(request.META['HTTP_REFERER'])
             context = {
                 'form': form,
@@ -1088,6 +1092,10 @@ def ticketDetailView(request, id):
                     comment.user = request.user
                     comment.ticket = ticket
                     comment.save()
+                    notification = models.AdminNotification.objects.create(category_choice='bcs',
+                                                                           business=request.user.business_user.business,
+                                                                           notification=f'New Comment on Ticket. <a href="https://main.techforing.com/bcs_admin_tickets_detail/{ticket.id}/" target="_blank" class="btn btn-success">Visit Now</a>')
+                    notification.save()
                     return HttpResponseRedirect(request.META['HTTP_REFERER'])
             context = {
                 'ticket': ticket,
@@ -2818,7 +2826,7 @@ def bcsAdminOrderCanceledView(request, id):
 
 @user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminTicketsView(request):
-    tickets = models.Ticket.objects.filter(category_choice='bcs')
+    tickets = models.Ticket.objects.filter(category_choice='bcs').order_by('-ticket_date')
     context = {
         'tickets': tickets,
     }
@@ -2836,6 +2844,13 @@ def bcsAdminTicketsDetailView(request, id):
             comment.user = request.user
             comment.ticket = ticket
             comment.save()
+            notification = models.Notification.objects.create(
+                category_choice=ticket.user.business_user.business.company_name,
+                notification=f'New Reply on Ticket. <a href="https://main.techforing.com/ticket_details/{ticket.id}/" '
+                             f'target="_blank" class="btn '
+                             f'btn-success">Visit Now</a>',
+                notification_time=timezone.now())
+            notification.save()
             return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
         'ticket': ticket,
