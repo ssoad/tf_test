@@ -184,6 +184,22 @@
                     </div>
                 </div>
             </div>
+            <!-- Modal -->
+            <div class="modal fade" id="employeePermission" tabindex="-1" aria-labelledby="employeePermissionLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="employeePermission">Change Access Information</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-navy" name="info-btn">Update</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         {% endif %}
 
         <section class="team-statistics mb-5">
@@ -270,6 +286,11 @@
                                         class="fa fa-user-o"></i></a>
 
                                 {% if current_business.business.business_business.count > 1 %}
+                                <button data-tootik="Change access permissions" id="{{ employee.id }}"
+                                        class="detail-btn btn btn-outline-navy btn-sm"
+                                        data-bs-toggle="modal" data-bs-target="#employeePermission">
+                                        <i class="icofont-unlock"></i>
+                                </button>
                                     {% if request.user.business_user.privilege != 'general_staff' %}
                                         {% if employee.privilege == 'admin' %}
                                             {% if admins > 1 %}
