@@ -300,7 +300,7 @@ urlpatterns = [
          name='bcs_admin_all_tickets'),
     path('bcs_admin_tickets_detail/', views.bcsAdminTicketsDetailView,
          name='bcs_admin_tickets_detail'),
-    path('bcs_admin_tickets_detail/<id>', views.bcsAdminTicketsDetailView,
+    path('bcs_admin_tickets_detail/<id>/', views.bcsAdminTicketsDetailView,
          name='bcs_admin_tickets_detail'),
 
     # team invidual user panel
