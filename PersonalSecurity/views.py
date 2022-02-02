@@ -16,7 +16,7 @@ from django.core.files.storage import FileSystemStorage
 from Blog.models import ReadingList, Post
 from Account import models as accountmodels
 from django.core.mail import send_mail
-from django.views.decorators.clickjacking import xframe_options_sameorigin
+from django.views.decorators.clickjacking import xframe_options_exempt
 
 
 # Create your views here.
@@ -194,7 +194,7 @@ def openTicketView(request):
     }
     return render(request, 'user_panel/pcs/ticket.html', context)
 
-@xframe_options_sameorigin
+@xframe_options_exempt
 @login_required
 def ticketDetailView(request, id):
     ticket = models.Ticket.objects.get(id=id)
@@ -1734,7 +1734,7 @@ def pcsAdminTicketsView(request):
     return render(request, 'admin_panel/pcsTF/allTickets.html', context)
 
 
-@xframe_options_sameorigin
+@xframe_options_exempt
 @user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/',
                   redirect_field_name='/account/profile/')
 def pcsAdminTicketsDetailView(request, id):
