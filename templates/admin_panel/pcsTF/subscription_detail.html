@@ -54,7 +54,6 @@
         <div class="container-fluid mb-5 px-5">
             <h4 class="mt-3 fw-bolder services-type">{{ current_order.subscription_package.package_name }}</h4>
             <div class="package bg-lightgreen shadow p-3 rounded px-5">
-
                 {% for package in current_order.subscription_package.feature_subscription.all %}
                     <div class="info-btn d-flex justify-content-between">
                         <p class="mb-3">

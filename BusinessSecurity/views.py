@@ -2387,14 +2387,14 @@ def bcsAdminOrdersView(request):
                   redirect_field_name='/account/profile/')
 def bcsAdminSubscriptionView(request):
     if request.user.is_sales:
-        orders = models.SubscriptionOrder.objects.filter(is_active=True, category_choice='bcs').order_by('-create_time')
+        orders = models.SubscriptionOrder.objects.filter(category_choice='bcs').order_by('-create_time')
         context = {
             'orders': orders,
             'message': 'Subscriptions',
         }
         return render(request, 'admin_panel/bcsTF/orders.html', context)
     else:
-        orders = models.SubscriptionOrder.objects.filter(is_active=True, category_choice='bcs').order_by('-create_time')
+        orders = models.SubscriptionOrder.objects.filter(category_choice='bcs').order_by('-create_time')
         context = {
             'orders': orders,
             'message': 'Subscriptions',

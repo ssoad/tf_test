@@ -632,6 +632,13 @@ class SubscriptionOrderView(generics.CreateAPIView):
                 }
                 r = requests.post(url, headers=headers)
                 print(r.status_code)
+            notification = bcsmodels.AdminNotification.objects.create(category_choice='pcs',
+                                                                      user=self.request.user,
+                                                                      notification=f'User has cancelled the '
+                                                                                   f'subs'
+                                                                                   f'cription for '
+                                                                                   f'{current_order.subscription_service.service_title}')
+            notification.save()
         elif category_choice == 'bcs':
             user_orders = bcsmodels.SubscriptionOrder.objects.filter(
                 user__business_user__business=self.request.user.business_user.business,
@@ -650,6 +657,13 @@ class SubscriptionOrderView(generics.CreateAPIView):
                 }
                 r = requests.post(url, headers=headers)
                 print(r.status_code)
+            notification = bcsmodels.AdminNotification.objects.create(category_choice='bcs',
+                                                                      business=self.request.user.business_user.business,
+                                                                      notification=f'User has cancelled the '
+                                                                                   f'subs'
+                                                                                   f'cription for '
+                                                                                   f'{current_order.subscription_service.service_title}')
+            notification.save()
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user, is_active=True)
@@ -673,13 +687,22 @@ class SubscriptionOrderView(generics.CreateAPIView):
                 ser = self.get_serializer(data=request.data)
                 ser.is_valid(raise_exception=True)
                 self.perform_create(ser)
+                subscription_id = request.data['paypal_subscription_id']
+                user_subscribed = bcsmodels.SubscriptionOrder.objects.get(paypal_subscription_id=subscription_id)
+
+                notification = bcsmodels.AdminNotification.objects.create(category_choice='pcs',
+                                                                          user=self.request.user,
+                                                                          notification=f'New Subscription. '
+                                                                                       f'<a href="https://pcs.techforing.com/pcs_admin_subscription_detail/{user_subscribed.id}/" target="_blank" class="btn btn-success">Visit Now</a>')
+                notification.save()
                 return Response(ser.data)
         elif category_choice == 'bcs':
             try:
-                check_existing_order = bcsmodels.SubscriptionOrder.objects.get(user__business_user__business=self.request.user.business_user.business,
-                                                                               subscription_service=subscription_service,
-                                                                               subscription_package=subscription_package,
-                                                                               is_active=True)
+                check_existing_order = bcsmodels.SubscriptionOrder.objects.get(
+                    user__business_user__business=self.request.user.business_user.business,
+                    subscription_service=subscription_service,
+                    subscription_package=subscription_package,
+                    is_active=True)
                 return Response({'response': 'You have already Subscribed to this Package'})
             except:
                 self.cancelSubscriptions(subscription_service, 'bcs')
@@ -689,6 +712,14 @@ class SubscriptionOrderView(generics.CreateAPIView):
                 ser = self.get_serializer(data=request.data)
                 ser.is_valid(raise_exception=True)
                 self.perform_create(ser)
+                subscription_id = request.data['paypal_subscription_id']
+                user_subscribed = bcsmodels.SubscriptionOrder.objects.get(paypal_subscription_id=subscription_id)
+
+                notification = bcsmodels.AdminNotification.objects.create(category_choice='bcs',
+                                                                          business=self.request.user.business_user.business,
+                                                                          notification=f'New Subscription. '
+                                                                                       f'<a href="https://main.techforing.com/bcs_admin_subscription_detail/{user_subscribed.id}/" target="_blank" class="btn btn-success">Visit Now</a>')
+                notification.save()
                 return Response(ser.data)
 
 
