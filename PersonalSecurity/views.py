@@ -1725,7 +1725,7 @@ def pcsAdminOrderCanceledView(request, id):
 @user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/',
                   redirect_field_name='/account/profile/')
 def pcsAdminTicketsView(request):
-    tickets = models.Ticket.objects.filter(category_choice='pcs')
+    tickets = models.Ticket.objects.filter(category_choice='pcs').order_by('-ticket_date')
     context = {
         'tickets': tickets,
     }
