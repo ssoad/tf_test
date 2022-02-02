@@ -147,14 +147,15 @@
             `
             previewContainer.append(container)
         }
-        {% comment %} else if (extentionType === "pdf"){
+        else if (extentionType === "pdf"){
+            container.style.width = "50%";
+            container.style.height = "300px";
             container.innerHTML=`
-            <object data="myfile.pdf" type="application/pdf" width="100%" height="100%">
-                <p>Alternative text - include a link <a href="${fileName}">to the PDF!</a></p>
-            </object>
+            <iframe class="w-100 h-100" src="{{ticket.ticket_attachment.url}}">
+            </iframe>
             `
             previewContainer.append(container)
-        } {% endcomment %}
+        }
         
       });
 </script>
