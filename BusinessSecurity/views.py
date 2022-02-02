@@ -21,6 +21,7 @@ import datetime
 from django.utils.dateparse import parse_date
 from django.utils.formats import get_format
 from Blog.models import Post
+from django.views.decorators.clickjacking import xframe_options_sameorigin
 
 
 def date_parser(date_str):
@@ -1074,7 +1075,8 @@ def openTicketView(request):
             }
             return render(request, 'user_panel/bcs/ticket.html', context)
 
-
+@xframe_options_sameorigin
+@login_required
 def ticketDetailView(request, id):
     if not request.user.is_bcs:
         return HttpResponseRedirect(reverse('create_business'))
@@ -2832,7 +2834,7 @@ def bcsAdminTicketsView(request):
     }
     return render(request, 'admin_panel/bcsTF/allTickets.html', context)
 
-
+@xframe_options_sameorigin
 @user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminTicketsDetailView(request, id):
     ticket = models.Ticket.objects.get(id=id)
