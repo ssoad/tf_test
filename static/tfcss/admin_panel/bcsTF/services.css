@@ -242,6 +242,16 @@ ol li {
     cursor: default;
 }
 
+.btn-navy {
+    background-color: #182f59;
+    color: white;
+}
+
+.btn-navy:hover {
+    border: 1px solid #182f59;
+    color: #182f59;
+    background-color: white;
+}
 
 /*----------------------------
 Services page end

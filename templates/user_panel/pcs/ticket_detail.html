@@ -23,7 +23,6 @@
             <div id="ticketAttachmentPreview" >
                 
             </div>
-            {% comment %} <img src="{{ ticket.ticket_attachment.url }}" alt="ticket" style="width: 250px; height: 150px"> {% endcomment %}
             <div>
                 <a class="btn btn-sm btn-navy mt-2" href="{{ ticket.ticket_attachment.url }}" download="{{ ticket.ticket_attachment.url }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-circle-fill" viewBox="0 0 16 16">
@@ -94,19 +93,6 @@
 
 {% block customjs %}
 <script>
-    function getFileType(file) {
-
-        if(file.type.match('image.*'))
-          return 'image';
-      
-        if(file.type.match('video.*'))
-          return 'video';
-      
-        if(file.type.match('audio.*'))
-          return 'audio';
-      
-        return 'other';
-      }
     // File formats
     const videoFormats = ['mp4','webm','m4v','ogv','avi'];
     const imageFormats = ['apng', 'avif','gif','jpeg','png','svg','webp'];
