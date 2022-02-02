@@ -92,9 +92,14 @@ urlpatterns = [
 
     path('pcs_admin_quotations/', views.pcsAdminQuotationsView, name='pcs_admin_quotations'),
     path('pcs_admin_orders/', views.pcsAdminOrdersView, name='pcs_admin_orders'),
+    path('pcs_admin_subscriptions/', views.pcsAdminSubscriptionView, name='pcs_admin_subscriptions'),
     path('pcs_admin_new_order/', views.pcsAdminNewOrdersView, name='pcs_admin_new_order'),
     path('pcs_admin_order_detail/', views.pcsAdminOrdersDetailView, name='pcs_admin_order_detail'),
     path('pcs_admin_order_detail/<id>/', views.pcsAdminOrdersDetailView, name='pcs_admin_order_detail'),
+    path('pcs_admin_subscription_detail/', views.pcsAdminSubscriptionDetailView,
+         name='pcs_admin_subscription_detail'),
+    path('pcs_admin_subscription_detail/<id>/',
+         views.pcsAdminSubscriptionDetailView, name='pcs_admin_subscription_detail'),
     path('pcs_admin_order_new/', views.pcsAdminOrderNewView, name='pcs_admin_order_new'),
     path('pcs_admin_order_new/<id>/', views.pcsAdminOrderNewView, name='pcs_admin_order_new'),
     path('pcs_admin_order_attending/', views.pcsAdminOrderAttendingView, name='pcs_admin_order_attending'),
@@ -113,7 +118,7 @@ urlpatterns = [
          views.ticketOpenCloseView, name='ticket_status_change'),
 
     path('pcs_admin_revenue/', views.pcsAdminRevenue, name='pcs_admin_revenue'),
-    path('pcs_admin_subscriptions/', views.pcsAdminSubscriptionList, name='pcs_admin_subscriptions'),
+    # path('pcs_admin_subscriptions/', views.pcsAdminSubscriptionList, name='pcs_admin_subscriptions'),
     path('pcs_admin_subscription_packages/', views.pcsAdminSubscriptionPack, name='pcs_admin_subscription_packages'),
     path('pcs_admin_reading_list/', views.pcsAdminReadingList, name='pcs_admin_reading_list'),
     path('pcs_admin_sub_services/', views.pcsAdminSubService, name='pcs_admin_sub_services'),

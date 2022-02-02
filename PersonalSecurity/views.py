@@ -1274,6 +1274,25 @@ def pcsAdminOrdersView(request):
 
 @user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/',
                   redirect_field_name='/account/profile/')
+def pcsAdminSubscriptionView(request):
+    if request.user.is_sales:
+        orders = models.SubscriptionOrder.objects.filter(is_active=True, category_choice='pcs').order_by('-create_time')
+        context = {
+            'orders': orders,
+            'message': 'Subscriptions',
+        }
+        return render(request, 'admin_panel/pcsTF/orders.html', context)
+    else:
+        orders = models.SubscriptionOrder.objects.filter(is_active=True, category_choice='pcs').order_by('-create_time')
+        context = {
+            'orders': orders,
+            'message': 'Subscriptions',
+        }
+        return render(request, 'admin_panel/pcsTF/orders.html', context)
+
+
+@user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
 def pcsAdminNewOrdersView(request):
     if request.user.is_superuser:
         service_category = models.ServiceCategory.objects.filter(category_choice='pcs')
@@ -1554,6 +1573,59 @@ def pcsAdminOrdersDetailView(request, id):
                 'quotation_form': quotation_form,
             }
             return render(request, 'admin_panel/pcsTF/order_detail.html', context)
+        except:
+            return HttpResponse("You don't have permission to view this page!")
+
+
+@user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
+def pcsAdminSubscriptionDetailView(request, id):
+    if request.user.is_superuser or request.user.is_pcs_head:
+        current_order = models.SubscriptionOrder.objects.get(id=id)
+
+        # send_mail(
+        #     f'Price Set for order ID: {current_order.id}',
+        #     f'has been set for your order ID: {current_order.id} '
+        #     f'Please visit: https://main.techforing.com/bcs_user_subscription_details/{current_order.id}/ for more info',
+        #     'admin@techforing.com',
+        #     [current_order.user.business_user.business.email],
+        #     fail_silently=False,
+        # )
+        # notification = models.Notification.objects.create(category_choice=current_order.user.business_user.business.company_name,
+        #                                                   notification=f'Price Set for Order ID: {current_order.id} <a href="https://main.techforing.com/bcs_user_order_details/{current_order.id}/" '
+        #                                                                f'target="_blank" class="btn '
+        #                                                                f'btn-success">Visit Now</a>',
+        #                                                   notification_time=timezone.now())
+        # notification.save()
+
+        context = {
+            'current_order': current_order,
+        }
+        return render(request, 'admin_panel/pcsTF/subscription_detail.html', context)
+    else:
+        try:
+            current_order = models.SubscriptionOrder.objects.get(id=id)
+
+            # send_mail(
+            #     f'Price Set for order ID: {current_order.id}',
+            #     f'has been set for your order ID: {current_order.id} '
+            #     f'Please visit: https://main.techforing.com/bcs_user_subscription_details/{current_order.id}/ for more info',
+            #     'admin@techforing.com',
+            #     [current_order.user.business_user.business.email],
+            #     fail_silently=False,
+            # )
+            # notification = models.Notification.objects.create(
+            #     category_choice=current_order.user.business_user.business.company_name,
+            #     notification=f'Price Set for Order ID: {current_order.id} <a href="https://main.techforing.com/bcs_user_order_details/{current_order.id}/" '
+            #                  f'target="_blank" class="btn '
+            #                  f'btn-success">Visit Now</a>',
+            #     notification_time=timezone.now())
+            # notification.save()
+
+            context = {
+                'current_order': current_order,
+            }
+            return render(request, 'admin_panel/pcsTF/subscription_detail.html', context)
         except:
             return HttpResponse("You don't have permission to view this page!")
 

@@ -2379,28 +2379,17 @@ def bcsAdminOrdersView(request):
                   redirect_field_name='/account/profile/')
 def bcsAdminSubscriptionView(request):
     if request.user.is_sales:
-        orders = models.SubscriptionOrder.objects.filter(is_active=True).order_by('-create_time')
-        # orders = models.Order.objects.filter(
-        #     Q(orderstaff_order__staff=request.user) & ~Q(
-        #         Q(order_status='new') | Q(order_status='attending')
-        #         | Q(order_status='agreed_to_quotation') | Q(order_status='agreed_to_nda_nca')
-        #         | Q(order_status='assigned'))).order_by(
-        #     '-order_date')
+        orders = models.SubscriptionOrder.objects.filter(is_active=True, category_choice='bcs').order_by('-create_time')
         context = {
             'orders': orders,
-            'message': 'Orders',
+            'message': 'Subscriptions',
         }
         return render(request, 'admin_panel/bcsTF/orders.html', context)
     else:
-        orders = models.Order.objects.filter(
-            Q(category_choice='bcs') & ~Q(
-                Q(order_status='new') | Q(order_status='attending')
-                | Q(order_status='agreed_to_quotation') | Q(order_status='agreed_to_nda_nca')
-                | Q(order_status='assigned'))).order_by(
-            '-order_date')
+        orders = models.SubscriptionOrder.objects.filter(is_active=True, category_choice='bcs').order_by('-create_time')
         context = {
             'orders': orders,
-            'message': 'Orders',
+            'message': 'Subscriptions',
         }
         return render(request, 'admin_panel/bcsTF/orders.html', context)
 
@@ -2687,6 +2676,58 @@ def bcsAdminOrdersDetailView(request, id):
                 'quotation_form': quotation_form,
             }
             return render(request, 'admin_panel/bcsTF/order_detail.html', context)
+        except:
+            return HttpResponse("You don't have permission to view this page!")
+
+@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
+def bcsAdminSubscriptionDetailView(request, id):
+    if request.user.is_superuser or request.user.is_bcs_head:
+        current_order = models.SubscriptionOrder.objects.get(id=id)
+
+        # send_mail(
+        #     f'Price Set for order ID: {current_order.id}',
+        #     f'has been set for your order ID: {current_order.id} '
+        #     f'Please visit: https://main.techforing.com/bcs_user_subscription_details/{current_order.id}/ for more info',
+        #     'admin@techforing.com',
+        #     [current_order.user.business_user.business.email],
+        #     fail_silently=False,
+        # )
+        # notification = models.Notification.objects.create(category_choice=current_order.user.business_user.business.company_name,
+        #                                                   notification=f'Price Set for Order ID: {current_order.id} <a href="https://main.techforing.com/bcs_user_order_details/{current_order.id}/" '
+        #                                                                f'target="_blank" class="btn '
+        #                                                                f'btn-success">Visit Now</a>',
+        #                                                   notification_time=timezone.now())
+        # notification.save()
+
+        context = {
+            'current_order': current_order,
+        }
+        return render(request, 'admin_panel/bcsTF/subscription_detail.html', context)
+    else:
+        try:
+            current_order = models.SubscriptionOrder.objects.get(id=id)
+
+            # send_mail(
+            #     f'Price Set for order ID: {current_order.id}',
+            #     f'has been set for your order ID: {current_order.id} '
+            #     f'Please visit: https://main.techforing.com/bcs_user_subscription_details/{current_order.id}/ for more info',
+            #     'admin@techforing.com',
+            #     [current_order.user.business_user.business.email],
+            #     fail_silently=False,
+            # )
+            # notification = models.Notification.objects.create(
+            #     category_choice=current_order.user.business_user.business.company_name,
+            #     notification=f'Price Set for Order ID: {current_order.id} <a href="https://main.techforing.com/bcs_user_order_details/{current_order.id}/" '
+            #                  f'target="_blank" class="btn '
+            #                  f'btn-success">Visit Now</a>',
+            #     notification_time=timezone.now())
+            # notification.save()
+
+            context = {
+                'current_order': current_order,
+            }
+            return render(request, 'admin_panel/bcsTF/subscription_detail.html', context)
         except:
             return HttpResponse("You don't have permission to view this page!")
 
