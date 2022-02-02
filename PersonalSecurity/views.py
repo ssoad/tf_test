@@ -1284,14 +1284,14 @@ def pcsAdminOrdersView(request):
                   redirect_field_name='/account/profile/')
 def pcsAdminSubscriptionView(request):
     if request.user.is_sales:
-        orders = models.SubscriptionOrder.objects.filter(is_active=True, category_choice='pcs').order_by('-create_time')
+        orders = models.SubscriptionOrder.objects.filter(category_choice='pcs').order_by('-create_time')
         context = {
             'orders': orders,
             'message': 'Subscriptions',
         }
         return render(request, 'admin_panel/pcsTF/orders.html', context)
     else:
-        orders = models.SubscriptionOrder.objects.filter(is_active=True, category_choice='pcs').order_by('-create_time')
+        orders = models.SubscriptionOrder.objects.filter(category_choice='pcs').order_by('-create_time')
         context = {
             'orders': orders,
             'message': 'Subscriptions',
