@@ -151,7 +151,7 @@
             container.style.width = "50%";
             container.style.height = "300px";
             container.innerHTML=`
-            <iframe class="w-100 h-100" src="{{ticket.ticket_attachment.url}}">
+            <iframe class="w-100 h-100" src="${fileName}">
             </iframe>
             `
             previewContainer.append(container)
