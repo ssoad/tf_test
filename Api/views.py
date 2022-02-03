@@ -862,7 +862,7 @@ class SubscriptionTeamAccessApiView(generics.ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         ser = self.get_serializer(data=request.data)
         data = ser.is_valid(raise_exception=True)
-        business = bcsmodels.UsersBusiness.objects.get(user__email=request.data.get('user'))
+        business = bcsmodels.UsersBusiness.objects.get(user_id=request.data.get('user'))
 
         if self.request.user.business_user.business == business.business:
             self.perform_create(ser)
