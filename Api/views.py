@@ -632,7 +632,7 @@ class SubscriptionOrderView(generics.CreateAPIView):
                 }
                 r = requests.post(url, headers=headers)
                 print(r.status_code)
-            try:
+            if user_orders.exists():
                 notification = bcsmodels.AdminNotification.objects.create(category_choice='pcs',
                                                                           user=self.request.user,
                                                                           notification=f'User has cancelled the '
@@ -640,8 +640,7 @@ class SubscriptionOrderView(generics.CreateAPIView):
                                                                                        f'cription for '
                                                                                        f'{current_order.subscription_service.service_title}')
                 notification.save()
-            except:
-                print('')
+
         elif category_choice == 'bcs':
             user_orders = bcsmodels.SubscriptionOrder.objects.filter(
                 user__business_user__business=self.request.user.business_user.business,
@@ -660,7 +659,7 @@ class SubscriptionOrderView(generics.CreateAPIView):
                 }
                 r = requests.post(url, headers=headers)
                 print(r.status_code)
-            try:
+            if user_orders.exists():
                 notification = bcsmodels.AdminNotification.objects.create(category_choice='bcs',
                                                                           business=self.request.user.business_user.business,
                                                                           notification=f'User has cancelled the '
@@ -668,8 +667,7 @@ class SubscriptionOrderView(generics.CreateAPIView):
                                                                                        f'cription for '
                                                                                        f'{current_order.subscription_service.service_title}')
                 notification.save()
-            except:
-                print('')
+
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user, is_active=True)
