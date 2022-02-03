@@ -668,7 +668,6 @@ class SubscriptionOrderView(generics.CreateAPIView):
                                                                                        f'{current_order.subscription_service.service_title}')
                 notification.save()
 
-
     def perform_create(self, serializer):
         serializer.save(user=self.request.user, is_active=True)
 
@@ -852,3 +851,27 @@ class SubscriptionTeamOrderApiView(generics.ListAPIView):
         business = self.request.user.business_user.business
         return bcsmodels.SubscriptionOrder.objects.filter(user__business_user__business=business, category_choice='bcs')
 
+
+class SubscriptionTeamAccessApiView(generics.ListCreateAPIView):
+    serializer_class = serializer.SubscriptionTeamAccessSerializer
+    permission_classes = [apipermissions.IsTeamAdmin]
+
+    def perform_create(self, serializer):
+        serializer.save(business=self.request.user.business_user.business)
+
+    def create(self, request, *args, **kwargs):
+        ser = self.get_serializer(data=request.data)
+        data = ser.is_valid(raise_exception=True)
+        business = bcsmodels.UsersBusiness.objects.get(user__email=request.data.get('user'))
+
+        if self.request.user.business_user.business == business.business:
+            self.perform_create(ser)
+            return Response(ser.data)
+        else:
+            return Response({
+                'response': 'User is not in your business'
+            })
+
+    def get_queryset(self):
+        business = self.request.user.business_user.business
+        return bcsmodels.SubscriptionTeam.objects.filter(business=business)

@@ -271,4 +271,18 @@ class SubscriptionTeamOrderSerializer(serializers.ModelSerializer):
         model = bcsmodels.SubscriptionOrder
         fields = ['subscription_service', 'subscription_package', 'max_user', 'total_user', 'is_active']
 
-    # def to_representation(self, instance):
+
+class SubscriptionTeamAccessSerializer(serializers.ModelSerializer):
+    # current_business = bcsmodels.Business.objects.get(business_business__user=)
+
+    subscription_order = serializers.SlugRelatedField(
+        queryset=bcsmodels.SubscriptionOrder.objects.filter(category_choice='bcs', is_active=True), slug_field='id')
+    user = serializers.SlugRelatedField(queryset=bcsmodels.User.objects.filter(is_bcs=True), slug_field='email')
+
+    class Meta:
+        model = bcsmodels.SubscriptionTeam
+        fields = "__all__"
+
+        extra_kwargs = {
+            'business': {'read_only': True}
+        }

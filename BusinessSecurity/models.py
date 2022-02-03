@@ -401,11 +401,6 @@ class SubscriptionOrder(models.Model):
         return f'{self.user} - {self.subscription_service} - {self.subscription_package} - {self.is_active}'
 
 
-class SubscriptionTeam(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='subscriptionteam_user')
-    subscription_order = models.ForeignKey(SubscriptionOrder, on_delete=models.CASCADE,
-                                           related_name='subscriptionteam_subscriptionorder')
-
 
 class UserAllowed(models.Model):
     user = models.ForeignKey(
@@ -585,3 +580,10 @@ class TeamSubscriptionInput(models.Model):
     inputfield = models.ForeignKey(
         SubscriptionInput, on_delete=models.CASCADE, related_name='inputfield_subscriptioninput')
     inputinfo = models.CharField(max_length=255)
+
+
+class SubscriptionTeam(models.Model):
+    business = models.ForeignKey(Business, on_delete=models.CASCADE, related_name='subscriptionteam_business')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='subscriptionteam_user')
+    subscription_order = models.ForeignKey(SubscriptionOrder, on_delete=models.CASCADE,
+                                           related_name='subscriptionteam_subscriptionorder')
