@@ -269,7 +269,7 @@ class SubscriptionTeamOrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = bcsmodels.SubscriptionOrder
-        fields = ['subscription_service', 'subscription_package', 'max_user', 'total_user', 'is_active']
+        fields = ['id', 'subscription_service', 'subscription_package', 'max_user', 'total_user', 'is_active']
 
 
 class SubscriptionTeamAccessSerializer(serializers.ModelSerializer):
@@ -277,7 +277,7 @@ class SubscriptionTeamAccessSerializer(serializers.ModelSerializer):
 
     subscription_order = serializers.SlugRelatedField(
         queryset=bcsmodels.SubscriptionOrder.objects.filter(category_choice='bcs', is_active=True), slug_field='id')
-    user = serializers.SlugRelatedField(queryset=bcsmodels.User.objects.filter(is_bcs=True), slug_field='email')
+    user = serializers.SlugRelatedField(queryset=bcsmodels.User.objects.filter(is_bcs=True), slug_field='id')
 
     class Meta:
         model = bcsmodels.SubscriptionTeam
