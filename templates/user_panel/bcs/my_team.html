@@ -194,37 +194,19 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="px-3" >
-                            <table class="table">
+                            <table class="table text-center">
                                 <thead>
                                   <tr>
                                     <th scope="col">Service Name</th>
+                                    <th scope="col">Package Name</th>
                                     <th scope="col">Max User</th>
                                     <th scope="col">Total User</th>
                                     <th scope="col">Action</th>
                                   </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="updatePermissionTable" >
                                 {% comment %} 
-                                    Loop start
-                                {% endcomment %}
-                                  <tr>
-                                    <th scope="row">Test Service 1</th>
-                                    <td>10</td>
-                                    <td>7</td>
-                                    <td>
-                                        <button style="width: 150px; height: 35px" type="button" class="btn btn-outline-navy">Give Access</button>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">Test Service 2</th>
-                                    <td>10</td>
-                                    <td>5</td>
-                                    <td>
-                                        <button style="width: 150px; height: 35px" type="button" class="btn btn-outline-danger">Remove Access</button>
-                                    </td>
-                                  </tr>
-                                {% comment %} 
-                                    Loop end
+                                    Fill data from script
                                 {% endcomment %}
                                 </tbody>
                               </table>
@@ -240,12 +222,7 @@
 
         <section class="team-statistics mb-5">
             {% if request.user.business_user.privilege != 'general_staff' %}
-                {% if success %}
-                    <div id="liveAlertPlaceholderSuccess"></div>
-                {% endif %}
-                {% if message %}
-                    <div id="liveAlertPlaceholder"></div>
-                {% endif %}
+                <div id="liveAlertPlaceholder"></div>
                 <div class="pt-3 border-bottom border-gray pb-2 d-flex justify-content-between align-items-center">
                     <h4 class="fw-bold mb-0">Your team</h4>
                     <button data-bs-toggle="modal" data-bs-target="#addNew" class="btn btn-lg bg-navy">
@@ -321,8 +298,8 @@
                                    class="btn btn-outline-navy btn-sm" data-tootik="View Profile"><i
                                         class="fa fa-user-o"></i></a>
                                 <button data-tootik="Change access permissions" id="{{ employee.id }}"
-                                        class="detail-btn btn btn-outline-navy btn-sm"
-                                        data-bs-toggle="modal" data-bs-target="#employeePermission">
+                                        class="detail-btn btn btn-outline-navy btn-sm employeePermissionUpdate"
+                                        data-bs-toggle="modal" data-bs-target="#employeePermission" onclick="handlePermissionAccess({{employee.id}})" >
                                         <i class="icofont-unlock"></i>
                                 </button>
 
@@ -445,6 +422,32 @@
             integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <script>
+
+        const handlePermissionAccess = id =>{
+
+            fetch(`${mainOrigin}/api/bcs/puchased_subscriptions/`, {
+                credentials: 'include',
+            })
+            .then((response) => response.json())
+            .then(data=>{
+                const container = $(`#updatePermissionTable`);
+                container.empty();
+                data.forEach(service=>{
+                    const tableRow = document.createElement("tr");
+                    if(service.is_active){
+                    tableRow.innerHTML += `
+                    <th scope="row">${service.subscription_service}</th>
+                    <td>${service.subscription_package}</td>
+                    <td>${service.max_user}</td>
+                    <td>${service.total_user}</td>
+                    <td>
+                        <button style="width: 150px; height: 35px" type="button" class="btn btn-outline-navy">Give Access</button>
+                    </td>
+                    `}
+                    container.append(tableRow);
+                })
+            })
+        }
 
         document.querySelector('#employeeDetail .modal-body');
         document.querySelectorAll('.detail-btn').forEach(btn => {
@@ -610,27 +613,20 @@
         }
     </script>
     <script>
-        var alertPlaceholder = document.getElementById('liveAlertPlaceholder')
-
+        var alertPlaceholder = document.getElementById('liveAlertPlaceholder');
         function alert(message, type) {
             var wrapper = document.createElement('div')
             wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
-
+            
             alertPlaceholder.append(wrapper)
         }
 
-        alert('{{ message }}', 'danger')
-    </script>
-    <script>
-        var alertPlaceholder = document.getElementById('liveAlertPlaceholderSuccess')
-
-        function alert(message, type) {
-            var wrapper = document.createElement('div')
-            wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
-
-            alertPlaceholder.append(wrapper)
-        }
-
+        {% if success %}
         alert('{{ success }}', 'success')
+        {% endif %}
+        
+        {% if message %}
+        alert('{{ message }}', 'danger')
+        {% endif %}
     </script>
 {% endblock customjs %}
