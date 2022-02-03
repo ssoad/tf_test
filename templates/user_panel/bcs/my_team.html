@@ -193,6 +193,42 @@
                             <h5 class="modal-title" id="employeePermission">Change Access Information</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
+                        <div class="px-3" >
+                            <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">Service Name</th>
+                                    <th scope="col">Max User</th>
+                                    <th scope="col">Total User</th>
+                                    <th scope="col">Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                {% comment %} 
+                                    Loop start
+                                {% endcomment %}
+                                  <tr>
+                                    <th scope="row">Test Service 1</th>
+                                    <td>10</td>
+                                    <td>7</td>
+                                    <td>
+                                        <button style="width: 150px; height: 35px" type="button" class="btn btn-outline-navy">Give Access</button>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">Test Service 2</th>
+                                    <td>10</td>
+                                    <td>5</td>
+                                    <td>
+                                        <button style="width: 150px; height: 35px" type="button" class="btn btn-outline-danger">Remove Access</button>
+                                    </td>
+                                  </tr>
+                                {% comment %} 
+                                    Loop end
+                                {% endcomment %}
+                                </tbody>
+                              </table>
+                        </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-navy" name="info-btn">Update</button>
                         </div>
@@ -284,13 +320,13 @@
                                 <a href="{% host_url 'bcs_user_my_team_user' %}{{ employee.id }}"
                                    class="btn btn-outline-navy btn-sm" data-tootik="View Profile"><i
                                         class="fa fa-user-o"></i></a>
-
-                                {% if current_business.business.business_business.count > 1 %}
                                 <button data-tootik="Change access permissions" id="{{ employee.id }}"
                                         class="detail-btn btn btn-outline-navy btn-sm"
                                         data-bs-toggle="modal" data-bs-target="#employeePermission">
                                         <i class="icofont-unlock"></i>
                                 </button>
+
+                                {% if current_business.business.business_business.count > 1 %}
                                     {% if request.user.business_user.privilege != 'general_staff' %}
                                         {% if employee.privilege == 'admin' %}
                                             {% if admins > 1 %}
