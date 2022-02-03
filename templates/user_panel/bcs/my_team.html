@@ -297,9 +297,9 @@
                                 <a href="{% host_url 'bcs_user_my_team_user' %}{{ employee.id }}"
                                    class="btn btn-outline-navy btn-sm" data-tootik="View Profile"><i
                                         class="fa fa-user-o"></i></a>
-                                <button data-tootik="Change access permissions" id="{{ employee.id }}"
-                                        class="detail-btn btn btn-outline-navy btn-sm employeePermissionUpdate"
-                                        data-bs-toggle="modal" data-bs-target="#employeePermission" onclick="handlePermissionAccess({{employee.id}})" >
+                                <button data-tootik="Change access permissions" id=""
+                                        class="btn btn-outline-navy btn-sm employeePermissionUpdate"
+                                        data-bs-toggle="modal" data-bs-target="#employeePermission" onclick="handlePermissionAccess({{employee.user.id}})" >
                                         <i class="icofont-unlock"></i>
                                 </button>
 
@@ -445,6 +445,7 @@
         }
 
         const handlePermissionAccess = id =>{
+            console.log(id)
             fetch(`${mainOrigin}/api/bcs/puchased_subscriptions/`, {
                 credentials: 'include',
             })
