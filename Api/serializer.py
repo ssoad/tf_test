@@ -254,3 +254,21 @@ class BusinessSerializer(serializers.ModelSerializer):
     class Meta:
         model = bcsmodels.Business
         fields = ['company_name']
+
+
+class SubscriptionTeamOrderSerializer(serializers.ModelSerializer):
+    subscription_service = serializers.CharField(source='subscription_service.service_title')
+    subscription_package = serializers.CharField(source='subscription_package.package_name')
+    max_user = serializers.IntegerField(source='subscription_package.max_user')
+    # total_user = serializers.SerializerMethodField('_checked')
+    total_user = serializers.IntegerField(source='total_count')
+
+    # def _checked(self, filters):
+    #     total = getattr(filters, 'total_count')
+    #     return total
+
+    class Meta:
+        model = bcsmodels.SubscriptionOrder
+        fields = ['subscription_service', 'subscription_package', 'max_user', 'total_user', 'is_active']
+
+    # def to_representation(self, instance):

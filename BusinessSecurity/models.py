@@ -355,6 +355,7 @@ class SubscriptionBasedPackage(models.Model):
     def __str__(self):
         return f'{self.package_name} - {self.service_id}'
 
+
     class Meta:
         verbose_name_plural = 'Subscription Based Packages'
 
@@ -392,8 +393,18 @@ class SubscriptionOrder(models.Model):
 
     is_active = models.BooleanField(default=False)
 
+    @property
+    def total_count(self):
+        return self.subscriptionteam_subscriptionorder.filter(subscription_order_id=self.id).count()
+
     def __str__(self):
         return f'{self.user} - {self.subscription_service} - {self.subscription_package} - {self.is_active}'
+
+
+class SubscriptionTeam(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='subscriptionteam_user')
+    subscription_order = models.ForeignKey(SubscriptionOrder, on_delete=models.CASCADE,
+                                           related_name='subscriptionteam_subscriptionorder')
 
 
 class UserAllowed(models.Model):

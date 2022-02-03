@@ -632,13 +632,16 @@ class SubscriptionOrderView(generics.CreateAPIView):
                 }
                 r = requests.post(url, headers=headers)
                 print(r.status_code)
-            notification = bcsmodels.AdminNotification.objects.create(category_choice='pcs',
-                                                                      user=self.request.user,
-                                                                      notification=f'User has cancelled the '
-                                                                                   f'subs'
-                                                                                   f'cription for '
-                                                                                   f'{current_order.subscription_service.service_title}')
-            notification.save()
+            try:
+                notification = bcsmodels.AdminNotification.objects.create(category_choice='pcs',
+                                                                          user=self.request.user,
+                                                                          notification=f'User has cancelled the '
+                                                                                       f'subs'
+                                                                                       f'cription for '
+                                                                                       f'{current_order.subscription_service.service_title}')
+                notification.save()
+            except:
+                print('')
         elif category_choice == 'bcs':
             user_orders = bcsmodels.SubscriptionOrder.objects.filter(
                 user__business_user__business=self.request.user.business_user.business,
@@ -657,13 +660,16 @@ class SubscriptionOrderView(generics.CreateAPIView):
                 }
                 r = requests.post(url, headers=headers)
                 print(r.status_code)
-            notification = bcsmodels.AdminNotification.objects.create(category_choice='bcs',
-                                                                      business=self.request.user.business_user.business,
-                                                                      notification=f'User has cancelled the '
-                                                                                   f'subs'
-                                                                                   f'cription for '
-                                                                                   f'{current_order.subscription_service.service_title}')
-            notification.save()
+            try:
+                notification = bcsmodels.AdminNotification.objects.create(category_choice='bcs',
+                                                                          business=self.request.user.business_user.business,
+                                                                          notification=f'User has cancelled the '
+                                                                                       f'subs'
+                                                                                       f'cription for '
+                                                                                       f'{current_order.subscription_service.service_title}')
+                notification.save()
+            except:
+                print('')
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user, is_active=True)
@@ -838,3 +844,13 @@ class InterestApiView(generics.ListAPIView):
             'response': [field.name for field in accountmodel.Interest._meta.get_fields() if
                          field.name != 'id' and field.name != 'user']
         })
+
+
+class SubscriptionTeamOrderApiView(generics.ListAPIView):
+    serializer_class = serializer.SubscriptionTeamOrderSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        business = self.request.user.business_user.business
+        return bcsmodels.SubscriptionOrder.objects.filter(user__business_user__business=business, category_choice='bcs')
+

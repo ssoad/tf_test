@@ -23,6 +23,7 @@ admin.site.register(models.Order)
 admin.site.register(models.Quotation)
 admin.site.register(models.QuotationAgreement)
 admin.site.register(models.SubscriptionOrder)
+admin.site.register(models.SubscriptionTeam)
 admin.site.register(models.OrderPrice)
 admin.site.register(models.OrderStaff)
 
