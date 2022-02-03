@@ -422,9 +422,29 @@
             integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <script>
+        {% comment %} console.log(tmp) {% endcomment %}
+        const handleButtonAction = (serviceId, userId) => {
+            const csrf_token = document.querySelector("#employeeDetail form input[name='csrfmiddlewaretoken']").value;
+            const payload = {
+                subscription_order: serviceId,
+                user: userId
+            }
+            fetch(`${mainOrigin}/api/bcs/subscription_team/` , {
+                method: 'POST',
+                credentials: 'include',
+                body: JSON.stringify(payload),
+                headers: {
+                    'Content-type': 'application/json',
+                    'X-CSRFToken': csrf_token,
+                }
+            })
+            .then((response) => response.json())
+            .then(data=>{
+                console.log(data)
+            })
+        }
 
         const handlePermissionAccess = id =>{
-
             fetch(`${mainOrigin}/api/bcs/puchased_subscriptions/`, {
                 credentials: 'include',
             })
@@ -441,7 +461,14 @@
                     <td>${service.max_user}</td>
                     <td>${service.total_user}</td>
                     <td>
-                        <button style="width: 150px; height: 35px" type="button" class="btn btn-outline-navy">Give Access</button>
+                        <button 
+                            style="width: 150px; height: 35px" 
+                            type="button" 
+                            class="btn btn-outline-navy"
+                            onclick="handleButtonAction(${service.id},${id})"
+                            >
+                                Give Access
+                            </button>
                     </td>
                     `}
                     container.append(tableRow);
