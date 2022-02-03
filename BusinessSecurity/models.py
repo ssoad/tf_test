@@ -539,3 +539,38 @@ class AdminNotification(models.Model):
     notification = HTMLField()
     notification_time = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
+
+
+"""
+Subscription Input Sections
+Admin will create form for subscription services
+Where team member of business can insert their info
+"""
+
+
+class SubscriptionField(models.Model):
+    subscriptionservice = models.ForeignKey(
+        SubscriptionServices, on_delete=models.CASCADE, related_name='subscriptionservice_service', unique=True,
+        blank=True, null=True)
+    fields = models.ManyToManyField(
+        InputFields, related_name='subscriptionservice_inputfields', through='SubscriptionInput')
+
+
+class SubscriptionInput(models.Model):
+    subscription_field = models.ForeignKey(
+        SubscriptionField, on_delete=models.CASCADE, related_name='subscriptioninput_subscriptionfield')
+    inputfield = models.ForeignKey(
+        InputFields, on_delete=models.CASCADE, related_name='subscriptioninput_inputfield')
+
+    # input_value = models.CharField(max_length=264, blank=True, null=True)
+
+    class Meta:
+        db_table = 'BusinessSecurity_subscriptionfield_inputfields'
+
+
+class TeamSubscriptionInput(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='team_subscription_input')
+    inputfield = models.ForeignKey(
+        SubscriptionInput, on_delete=models.CASCADE, related_name='inputfield_subscriptioninput')
+    inputinfo = models.CharField(max_length=255)

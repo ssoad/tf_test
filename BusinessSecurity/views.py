@@ -23,7 +23,6 @@ from django.utils.formats import get_format
 from Blog.models import Post
 
 
-
 def date_parser(date_str):
     """Parse date from string by DATE_INPUT_FORMATS of current language"""
     for item in get_format('DATE_INPUT_FORMATS'):
@@ -66,11 +65,13 @@ def bcs_admin_permission_check_order(user):
     except:
         return user.is_staff and user.is_superuser
 
+
 def ticket_admin(user):
     try:
         return user.is_staff and user.is_superuser or user.is_bcs_head or user.is_pcs_head or user.is_sales
     except:
         return user.is_staff and user.is_superuser
+
 
 def indexView(request):
     context = {
@@ -387,7 +388,8 @@ def userDashboardView(request):
             orders = models.Order.objects.filter(
                 Q(user__business_user__business=current_business, category_choice='bcs') & ~Q(
                     Q(order_status='new') | Q(order_status='attending'))).order_by('-order_date')[:2]
-            subscriptions = models.SubscriptionOrder.objects.filter(user__business_user__business=current_business, is_active=True, category_choice='bcs')
+            subscriptions = models.SubscriptionOrder.objects.filter(user__business_user__business=current_business,
+                                                                    is_active=True, category_choice='bcs')
 
             posts = Post.objects.all().order_by('date')[:2]
             context = {
@@ -1074,6 +1076,7 @@ def openTicketView(request):
                 'tickets': tickets,
             }
             return render(request, 'user_panel/bcs/ticket.html', context)
+
 
 @login_required
 def ticketDetailView(request, id):
@@ -1796,6 +1799,49 @@ def bcsAdminSubServiceEditView(request, id):
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def bcsAdminSubscriptionFieldView(request):
+    sub_services = models.SubscriptionServices.objects.filter(
+        category_choice='bcs')
+
+    context = {
+        'sub_services': sub_services,
+    }
+    return render(request, 'admin_panel/bcsTF/subscriptionFields.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def bcsAdminSubscriptionFieldEditView(request, id):
+    current_subscription_service = models.SubscriptionServices.objects.get(id=id)
+    try:
+        current_subscription = models.SubscriptionField.objects.get(subscriptionservice=current_subscription_service)
+        form = forms.AddSubscriptionFieldsForm(instance=current_subscription)
+
+        if request.method == 'POST':
+            form = forms.AddSubscriptionFieldsForm(
+                request.POST, instance=current_subscription)
+            if form.is_valid():
+                subscription_form = form.save(commit=True)
+                subscription_form.subscriptionservice = current_subscription_service
+                subscription_form.save()
+                return HttpResponseRedirect(reverse('bcs_admin_subscription_fields'))
+    except:
+        form = forms.AddSubscriptionFieldsForm()
+
+        if request.method == 'POST':
+            form = forms.AddSubscriptionFieldsForm(request.POST)
+            if form.is_valid():
+                subscription_form = form.save(commit=True)
+                subscription_form.subscriptionservice = current_subscription_service
+                subscription_form.save()
+                return HttpResponseRedirect(reverse('bcs_admin_subscription_fields'))
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'admin_panel/bcsTF/subscriptionField.html', context)
+
+
+@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsSubServiceFormView(request):
     form = forms.AddForm()
     form_lists = models.InputFields.objects.all()
@@ -2055,6 +2101,7 @@ def bcsAdminSingleUserInterest(request, id):
         'form': form,
     }
     return render(request, 'admin_panel/bcsTF/editForm.html', context)
+
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
 def adminNotificationsView(request):
@@ -2402,6 +2449,7 @@ def bcsAdminSubscriptionView(request):
         }
         return render(request, 'admin_panel/bcsTF/orders.html', context)
 
+
 @user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
                   redirect_field_name='/account/profile/')
 def bcsAdminNewOrdersView(request):
@@ -2573,11 +2621,12 @@ def bcsAdminOrdersDetailView(request, id):
                     [current_order.user.business_user.business.email],
                     fail_silently=False,
                 )
-                notification = models.Notification.objects.create(category_choice=current_order.user.business_user.business.company_name,
-                                                                  notification=f'Price Set for Order ID: {current_order.id} <a href="https://main.techforing.com/bcs_user_order_details/{current_order.id}/" '
-                                                                               f'target="_blank" class="btn '
-                                                                               f'btn-success">Visit Now</a>',
-                                                                  notification_time=timezone.now())
+                notification = models.Notification.objects.create(
+                    category_choice=current_order.user.business_user.business.company_name,
+                    notification=f'Price Set for Order ID: {current_order.id} <a href="https://main.techforing.com/bcs_user_order_details/{current_order.id}/" '
+                                 f'target="_blank" class="btn '
+                                 f'btn-success">Visit Now</a>',
+                    notification_time=timezone.now())
                 notification.save()
 
                 return HttpResponseRedirect(request.META['HTTP_REFERER'])
@@ -2687,6 +2736,7 @@ def bcsAdminOrdersDetailView(request, id):
             return render(request, 'admin_panel/bcsTF/order_detail.html', context)
         except:
             return HttpResponse("You don't have permission to view this page!")
+
 
 @user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
                   redirect_field_name='/account/profile/')
@@ -2825,7 +2875,8 @@ def bcsAdminOrderCanceledView(request, id):
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
 def bcsAdminTicketsView(request):
     tickets = models.Ticket.objects.filter(category_choice='bcs').order_by('-ticket_date')
     context = {
@@ -2834,7 +2885,8 @@ def bcsAdminTicketsView(request):
     return render(request, 'admin_panel/bcsTF/allTickets.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
 def bcsAdminTicketsDetailView(request, id):
     ticket = models.Ticket.objects.get(id=id)
     commentform = forms.TicketCommentForm()

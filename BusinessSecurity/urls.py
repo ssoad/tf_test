@@ -197,6 +197,10 @@ urlpatterns = [
          name='bcs_admin_sub_services_form_delete'),
     path('bcs_admin_sub_services_form_edit/<id>/', views.bcsAdminSubServiceFormEditView,
          name='bcs_admin_sub_services_form_edit'),
+    path('bcs_admin_subscription_fields/', views.bcsAdminSubscriptionFieldView,
+         name='bcs_admin_subscription_fields'),
+    path('bcs_admin_subscription_fields_edit/<id>/',
+        views.bcsAdminSubscriptionFieldEditView, name='bcs_admin_subscription_fields_edit'),
 
     # bcs admin panel
     path('bcs_admin_subscription_packages/', views.bcsAdminSubscriptionPack,

@@ -62,6 +62,20 @@ class AddSubServiceForm(forms.ModelForm):
         }
 
 
+class AddSubscriptionFieldsForm(forms.ModelForm):
+    # subscriptionservice = forms.ModelChoiceField(
+    #     queryset=models.SubscriptionServices.objects.filter(category_choice='bcs'),
+    #     widget=forms.Select(attrs={'class': 'form-select'}), required=False)
+
+    class Meta:
+        model = models.SubscriptionField
+        fields = '__all__'
+        widgets = {
+            'fields': forms.SelectMultiple(attrs={'class': 'form-select js-example-basic-multiple'})
+        }
+        exclude = ['subscriptionservice']
+
+
 class CreateBusinessForm(forms.ModelForm):
     position = forms.CharField(widget=forms.TextInput(
         attrs={'placeholder': 'Enter Your Designation'}))
@@ -128,7 +142,6 @@ class QuotationForm(forms.ModelForm):
 
 
 class QuotationAgreementForm(forms.ModelForm):
-
     class Meta:
         model = models.QuotationAgreement
         exclude = ['quotation']

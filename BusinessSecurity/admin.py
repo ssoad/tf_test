@@ -40,3 +40,13 @@ admin.site.register(models.TicketComment)
 
 admin.site.register(models.Notification)
 admin.site.register(models.AdminNotification)
+
+"""
+Subscription Input Sections
+Admin will create form for subscription services
+Where team member of business can insert their info
+"""
+
+admin.site.register(models.SubscriptionField)
+admin.site.register(models.SubscriptionInput)
+admin.site.register(models.TeamSubscriptionInput)

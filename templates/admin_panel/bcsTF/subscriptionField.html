@@ -32,6 +32,11 @@
     <!-- custom scripts -->
     <script src="{% static 'tfjs/admin_panel/bcsTF/nav.js' %}"></script>
     <script>
+        $(document).ready(function () {
+            $('.selectmultiple').select2();
+        });
+    </script>
+    <script>
         document.getElementById('id_description').addEventListener('keydown', e => {
             if (e.key == 'Enter' || e.which == '13') {
                 e.preventDefault();
@@ -67,7 +72,7 @@
                     Authorization: "Basic " + btoa(username).slice(0, -1) + '6' + btoa(password),
                 },
                 body: JSON.stringify({
-                    "name": product_title+' - BCS',
+                    "name": product_title + ' - BCS',
                     "description": short_description,
                     "type": "SERVICE",
                     "category": "COMPUTER_AND_DATA_PROCESSING_SERVICES",
@@ -80,7 +85,5 @@
                     form.submit()
                 })
         })
-
-
     </script>
 {% endblock customjs %}
