@@ -786,6 +786,69 @@ def bcsUserTeamFormView(request, id):
             current_subscription_team = models.SubscriptionTeam.objects.get(business=business, user=request.user, subscription_order=current_subscription_order)
             field_id = current_subscription_team.subscription_order.subscription_service.subscriptionservice_service.id
 
+            # Form Submit
+            print(request.POST)
+            if request.method == 'POST':
+                data_list = request.POST
+                file_list = request.FILES
+                # print(data_list)
+                # print(file_list)
+
+                # current_service = get_object_or_404(models.SubscriptionServices, service_title=data_list['service_name'],
+                #                                     category_choice='bcs')
+                current_subscription_service = current_subscription_order.subscription_service
+                print(current_subscription_service)
+
+                for data in data_list:
+                    if data != 'csrfmiddlewaretoken' and data != 'service_name':
+                        current_input = models.SubServiceInput.objects.get(
+                            id=data)
+                        input_data = models.UserSubserviceInput(user=request.user, inputfield=current_input,
+                                                                inputinfo=data_list[data])
+                        input_data.save()
+                        order = models.Order.objects.get_or_create(user=request.user, order_status='new',
+                                                                   service=current_subscription_service, category_choice='bcs')
+
+                        order[0].subserviceinput.add(input_data)
+                for files in file_list:
+                    current_input = models.SubServiceInput.objects.get(
+                        id=files)
+                    myfile = file_list[files]
+                    fs = FileSystemStorage()
+                    filename = fs.save(myfile.name, myfile)
+                    uploaded_file_url = fs.url(filename)
+                    input_data = models.UserSubserviceInput(user=request.user, inputfield=current_input,
+                                                            inputinfo=uploaded_file_url)
+                    input_data.save()
+                    order = models.Order.objects.get_or_create(user=request.user, order_status='new',
+                                                               service=current_subscription_service, category_choice='bcs')
+
+                    order[0].subserviceinput.add(input_data)
+
+                order = models.Order.objects.get_or_create(user=request.user, order_status='new',
+                                                           service=current_subscription_service, category_choice='bcs')
+
+                if not order[0].orderstaff_order.all().exists():
+                    tracking = models.Tracking.objects.get(
+                        service=current_subscription_service)
+                    persons = tracking.persons
+                    persons_list = list(filter(None, persons.split(',')))
+                    person = persons_list.pop(0)
+                    persons_list.append(person)
+                    tracking.persons = ','.join(persons_list)
+                    tracking.save()
+                    current_staff = models.User.objects.get(id=person)
+                    order_staff = models.OrderStaff.objects.create(
+                        staff=current_staff, order=order[0])
+                    order_staff.save()
+
+                notification = models.AdminNotification.objects.create(category_choice='bcs',
+                                                                       business=request.user.business_user.business,
+                                                                       notification=f'Got a New Quotation. ID: {order[0].id} <a href="https://main.techforing.com/bcs_user_order_details/{order[0].id}/" target="_blank" class="btn btn-success">Visit Now</a>')
+                notification.save()
+                return render(request, 'user_panel/bcs/thanks.html')
+
+
             context = {
                 'current_business': current_business,
                 'field_id': field_id,
