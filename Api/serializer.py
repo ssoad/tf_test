@@ -117,6 +117,14 @@ class SubServiceInputSerializer(serializers.ModelSerializer):
         depth = 1
 
 
+class SubscriptionInputSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = bcsmodels.SubscriptionInput
+        # fields = ('id', 'inputfield', 'choices')
+        exclude = ['subscription_field']
+        depth = 1
+
+
 class UserSubServiceOrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = bcsmodels.Order

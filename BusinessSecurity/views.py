@@ -770,6 +770,29 @@ def bcsUserMyTeamView(request):
         except:
             return HttpResponse("You don't have permission to view this page.")
 
+@login_required
+def bcsUserTeamFormView(request, id):
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+
+    elif request.user.is_bcs:
+        try:
+            current_business = models.UsersBusiness.objects.get(
+                user=request.user)
+
+            business = current_business.business
+            current_subscription_order = models.SubscriptionOrder.objects.get(id=id)
+
+            current_subscription_team = models.SubscriptionTeam.objects.get(business=business, user=request.user, subscription_order=current_subscription_order)
+            field_id = current_subscription_team.subscription_order.subscription_service.subscriptionservice_service.id
+
+            context = {
+                'current_business': current_business,
+                'field_id': field_id,
+            }
+            return render(request, 'user_panel/bcs/teamform.html', context)
+        except:
+            return HttpResponse("You don't have permission to view this page.")
 
 @login_required
 def bcsUserTeamMemberDeleteView(request, id):

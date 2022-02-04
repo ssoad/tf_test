@@ -148,6 +148,7 @@ urlpatterns = [
          name='bcs_user_notifications'),
     path('bcs_user_settings/', views.userSettingsView, name='bcs_user_settings'),
     path('bcs_user_my_team/', views.bcsUserMyTeamView, name='bcs_user_my_team'),
+    path('bcs_user_team_service_form/<id>/', views.bcsUserTeamFormView, name='bcs_user_team_service_form'),
     path('bcs_user_my_team_user/', views.bcsUserMyTeamProfileView,
          name='bcs_user_my_team_user'),
     path('bcs_user_my_team_user/<id>/',

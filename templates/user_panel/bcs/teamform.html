@@ -1,0 +1,41 @@
+{% extends 'base/bcs_user_base.html' %}
+{% load static %}
+{% load my_filter %}
+{% load hosts %}
+{% block title %}
+    Services Form
+{% endblock title %} {% block content %}
+
+    <style>
+        form label {
+            text-transform: capitalize;
+            margin-top: 8px
+        }
+
+        .package .info-btn {
+            border-radius: .3rem !important;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+            background-color: #fff;
+            padding: .5rem .8rem;
+            margin-inline: auto;
+            margin-block-end: 10px;
+            box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%) !important;
+        }
+    </style>
+
+    <section class="services position-relative">
+    {{ field_id }}
+
+        <div id="preview-form" class="d-none">
+
+        </div>
+    </section>
+
+{% endblock content %}
+{% block customjs %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+{% endblock customjs %}
