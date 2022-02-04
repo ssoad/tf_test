@@ -484,10 +484,21 @@
                                 </button>`) : (`<button 
                                 style="width: 150px; height: 35px" 
                                 type="button" 
-                                class="btn btn-outline-danger"
+                                disabled
+                                class="btn btn-outline-navy"
                                 >
-                                    Remove Access
+                                    Give Access
                                 </button>`)
+                                {% comment %} 
+                                (`<button 
+                                style="width: 150px; height: 35px" 
+                                type="button" 
+                                class="btn btn-outline-navy"
+                                onclick="handleButtonAction(${service.id},${id})"
+                                >
+                                    Give Access
+                                </button>`)
+                                {% endcomment %}
                             }
                         </td>
                         `}
