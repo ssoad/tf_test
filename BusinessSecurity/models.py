@@ -555,8 +555,8 @@ Where team member of business can insert their info
 
 
 class SubscriptionField(models.Model):
-    subscriptionservice = models.ForeignKey(
-        SubscriptionServices, on_delete=models.CASCADE, related_name='subscriptionservice_service', unique=True,
+    subscriptionservice = models.OneToOneField(
+        SubscriptionServices, on_delete=models.CASCADE, related_name='subscriptionservice_service',
         blank=True, null=True)
     fields = models.ManyToManyField(
         InputFields, related_name='subscriptionservice_inputfields', through='SubscriptionInput')

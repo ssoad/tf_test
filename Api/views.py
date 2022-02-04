@@ -150,6 +150,15 @@ class SubServiceInputApiView(generics.ListAPIView):
         return bcsmodels.SubServiceInput.objects.filter(subservice_id=service_id)
 
 
+class SubscriptionInputApiView(generics.ListAPIView):
+    serializer_class = serializer.SubscriptionInputSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        service_id = self.kwargs['id']
+        return bcsmodels.SubscriptionInput.objects.filter(subscription_field_id=service_id)
+
+
 class ChoiceApiView(generics.ListAPIView):
     serializer_class = serializer.ChoiceSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -866,7 +875,8 @@ class SubscriptionTeamAccessApiView(generics.ListCreateAPIView):
 
         if self.request.user.business_user.business == business.business:
             service_id = request.data['subscription_order']
-            is_subscribed = bcsmodels.SubscriptionTeam.objects.filter(subscription_order_id=service_id, user_id=request.data.get('user'))
+            is_subscribed = bcsmodels.SubscriptionTeam.objects.filter(subscription_order_id=service_id,
+                                                                      user_id=request.data.get('user'))
             if is_subscribed.exists():
                 return Response({
                     'response': 'Team member already assigned'
