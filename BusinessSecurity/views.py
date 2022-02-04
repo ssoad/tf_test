@@ -770,6 +770,7 @@ def bcsUserMyTeamView(request):
         except:
             return HttpResponse("You don't have permission to view this page.")
 
+
 @login_required
 def bcsUserTeamFormView(request, id):
     if not request.user.is_bcs:
@@ -783,79 +784,54 @@ def bcsUserTeamFormView(request, id):
             business = current_business.business
             current_subscription_order = models.SubscriptionOrder.objects.get(id=id)
 
-            current_subscription_team = models.SubscriptionTeam.objects.get(business=business, user=request.user, subscription_order=current_subscription_order)
+            current_subscription_team = models.SubscriptionTeam.objects.get(business=business, user=request.user,
+                                                                            subscription_order=current_subscription_order)
             field_id = current_subscription_team.subscription_order.subscription_service.subscriptionservice_service.id
 
             # Form Submit
             print(request.POST)
+            current_subscription_service = current_subscription_order.subscription_service
             if request.method == 'POST':
                 data_list = request.POST
                 file_list = request.FILES
                 # print(data_list)
                 # print(file_list)
 
-                # current_service = get_object_or_404(models.SubscriptionServices, service_title=data_list['service_name'],
-                #                                     category_choice='bcs')
-                current_subscription_service = current_subscription_order.subscription_service
-                print(current_subscription_service)
-
                 for data in data_list:
-                    if data != 'csrfmiddlewaretoken' and data != 'service_name':
-                        current_input = models.SubServiceInput.objects.get(
+                    if data != 'csrfmiddlewaretoken':
+                        current_input = models.SubscriptionInput.objects.get(
                             id=data)
-                        input_data = models.UserSubserviceInput(user=request.user, inputfield=current_input,
-                                                                inputinfo=data_list[data])
+                        input_data = models.TeamSubscriptionInput(user=request.user, inputfield=current_input,
+                                                                  inputinfo=data_list[data])
                         input_data.save()
-                        order = models.Order.objects.get_or_create(user=request.user, order_status='new',
-                                                                   service=current_subscription_service, category_choice='bcs')
 
-                        order[0].subserviceinput.add(input_data)
                 for files in file_list:
-                    current_input = models.SubServiceInput.objects.get(
+                    current_input = models.SubscriptionInput.objects.get(
                         id=files)
                     myfile = file_list[files]
                     fs = FileSystemStorage()
                     filename = fs.save(myfile.name, myfile)
                     uploaded_file_url = fs.url(filename)
-                    input_data = models.UserSubserviceInput(user=request.user, inputfield=current_input,
-                                                            inputinfo=uploaded_file_url)
+                    input_data = models.TeamSubscriptionInput(user=request.user, inputfield=current_input,
+                                                              inputinfo=uploaded_file_url)
                     input_data.save()
-                    order = models.Order.objects.get_or_create(user=request.user, order_status='new',
-                                                               service=current_subscription_service, category_choice='bcs')
 
-                    order[0].subserviceinput.add(input_data)
-
-                order = models.Order.objects.get_or_create(user=request.user, order_status='new',
-                                                           service=current_subscription_service, category_choice='bcs')
-
-                if not order[0].orderstaff_order.all().exists():
-                    tracking = models.Tracking.objects.get(
-                        service=current_subscription_service)
-                    persons = tracking.persons
-                    persons_list = list(filter(None, persons.split(',')))
-                    person = persons_list.pop(0)
-                    persons_list.append(person)
-                    tracking.persons = ','.join(persons_list)
-                    tracking.save()
-                    current_staff = models.User.objects.get(id=person)
-                    order_staff = models.OrderStaff.objects.create(
-                        staff=current_staff, order=order[0])
-                    order_staff.save()
-
-                notification = models.AdminNotification.objects.create(category_choice='bcs',
-                                                                       business=request.user.business_user.business,
-                                                                       notification=f'Got a New Quotation. ID: {order[0].id} <a href="https://main.techforing.com/bcs_user_order_details/{order[0].id}/" target="_blank" class="btn btn-success">Visit Now</a>')
+                notification = models.Notification.objects.create(category_choice=request.user.email,
+                                                                  notification_time=timezone.now(),
+                                                                  notification=f'We have got your submitted data. We '
+                                                                               f'will start working soon.')
                 notification.save()
                 return render(request, 'user_panel/bcs/thanks.html')
 
-
             context = {
                 'current_business': current_business,
+                'current_subscription_service': current_subscription_service,
                 'field_id': field_id,
             }
             return render(request, 'user_panel/bcs/teamform.html', context)
         except:
             return HttpResponse("You don't have permission to view this page.")
+
 
 @login_required
 def bcsUserTeamMemberDeleteView(request, id):
@@ -2829,24 +2805,11 @@ def bcsAdminOrdersDetailView(request, id):
 def bcsAdminSubscriptionDetailView(request, id):
     if request.user.is_superuser or request.user.is_bcs_head:
         current_order = models.SubscriptionOrder.objects.get(id=id)
-
-        # send_mail(
-        #     f'Price Set for order ID: {current_order.id}',
-        #     f'has been set for your order ID: {current_order.id} '
-        #     f'Please visit: https://main.techforing.com/bcs_user_subscription_details/{current_order.id}/ for more info',
-        #     'admin@techforing.com',
-        #     [current_order.user.business_user.business.email],
-        #     fail_silently=False,
-        # )
-        # notification = models.Notification.objects.create(category_choice=current_order.user.business_user.business.company_name,
-        #                                                   notification=f'Price Set for Order ID: {current_order.id} <a href="https://main.techforing.com/bcs_user_order_details/{current_order.id}/" '
-        #                                                                f'target="_blank" class="btn '
-        #                                                                f'btn-success">Visit Now</a>',
-        #                                                   notification_time=timezone.now())
-        # notification.save()
+        all_user = models.SubscriptionTeam.objects.filter(subscription_order=current_order)
 
         context = {
             'current_order': current_order,
+            'all_user': all_user,
         }
         return render(request, 'admin_panel/bcsTF/subscription_detail.html', context)
     else:

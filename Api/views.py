@@ -905,3 +905,15 @@ class SubscriptionTeamAccessApiView(generics.ListCreateAPIView):
     def get_queryset(self):
         business = self.request.user.business_user.business
         return bcsmodels.SubscriptionTeam.objects.filter(business=business)
+
+
+class TeamInputInfoApiView(generics.ListAPIView):
+    serializer_class = serializer.TeamInputInfoSerializer
+    permission_classes = [apipermissions.IsBCSAdmin]
+    # lookup_field = 'pk'
+    # queryset = bcsmodels.TeamSubscriptionInput.objects.all()
+
+    def get_queryset(self):
+        subscription_team_id = self.kwargs.get('id')
+        current_team_member = bcsmodels.SubscriptionTeam.objects.get(id=subscription_team_id)
+        return bcsmodels.TeamSubscriptionInput.objects.filter(user=current_team_member.user)

@@ -28,7 +28,7 @@
 
     <section class="services position-relative">
         <div>
-            <h5 class="mt-2 services-type">Service Name</h5>
+            <h5 class="mt-2 services-type">{{ current_subscription_service.service_title }}</h5>
         </div>
         <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}

@@ -93,6 +93,12 @@
                 </div>
             </div>
         </div>
+        {% for user in all_user %}
+            {{ forloop.counter }}
+            {{ user.user.full_name }}
+            {{ user.user.email }}
+            {{ user.id }}
+        {% endfor %}
 
     </main>
 {% endblock content %}

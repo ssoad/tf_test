@@ -294,3 +294,9 @@ class SubscriptionTeamAccessSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'business': {'read_only': True}
         }
+
+
+class TeamInputInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = bcsmodels.TeamSubscriptionInput
+        fields = '__all__'
