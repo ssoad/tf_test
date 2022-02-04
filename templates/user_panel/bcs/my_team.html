@@ -474,7 +474,7 @@
                         <td>${service.total_user}</td>
                         <td>
                             ${
-                                !subscribed.length ? (`<button 
+                                (!subscribed.length && service.max_user > service.total_user) ? (`<button 
                                 style="width: 150px; height: 35px" 
                                 type="button" 
                                 class="btn btn-outline-navy"
