@@ -93,16 +93,64 @@
                 </div>
             </div>
         </div>
-        {% for user in all_user %}
-            {{ forloop.counter }}
-            {{ user.user.full_name }}
-            {{ user.user.email }}
-            {{ user.id }}
-        {% endfor %}
+        <div>
+            <table class="table text-center">
+                <thead>
+                  <tr>
+                    <th scope="col">SL</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="updatePermissionTable" >
+                    {% for user in all_user %}
+                    <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ user.user.full_name }}</td>
+                        <td>{{ user.user.email }}</td>
+                        {% comment %} <td>{{ user.id }}</td> {% endcomment %}
+                        <td>
+                            <button 
+                                style="width: 150px; margin-top:0;margin-bottom:0;height:35px" 
+                                type="button" 
+                                class="btn btn-outline-navy"
+                                data-bs-toggle="modal"
+                                data-bs-target="#updateUserResponse-{{ forloop.counter }}"
+                                >
+                                    Update
+                            </button>
+                        </td>
+                        <!-- Modal -->
+                        <div class="modal fade" id="updateUserResponse-{{ forloop.counter }}" tabindex="-1" aria-labelledby="imageChangeModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="imageChangeModalLabel">Update User Response</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body updateUserResponse">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </tbody>
+              </table>
+        </div>
 
     </main>
 {% endblock content %}
 {% block customjs %}
+    <script>
+        const loadUserResponse = id => {
+            const container = $(".updateUserResponse");
+            container.innerHTML = `
+            <div>
+                testing
+            </div>`
+        }
+    </script>
     <script>
         $(document).ready(function () {
             console.log({{ current_order.id }})
