@@ -61,5 +61,4 @@ urlpatterns = [
     path('bcs/puchased_subscriptions/', views.SubscriptionTeamOrderApiView.as_view(), name='purchased_subscriptions'),
     path('bcs/subscription_team/', views.SubscriptionTeamAccessApiView.as_view(), name='subscription_team'),
     path('bcs/subscription_input/<id>/', views.SubscriptionInputApiView.as_view(), name='subscription_input'),
-    path('bcs/choice_field/<id>/', views.ChoiceApiView.as_view(), name='choice_field'),
 ]
