@@ -422,9 +422,9 @@
             integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <script>
-        {% comment %} console.log(tmp) {% endcomment %}
+        const csrf_token = document.querySelector("#employeeDetail form input[name='csrfmiddlewaretoken']").value;
+
         const handleButtonAction = (serviceId, userId) => {
-            const csrf_token = document.querySelector("#employeeDetail form input[name='csrfmiddlewaretoken']").value;
             const payload = {
                 subscription_order: serviceId,
                 user: userId
@@ -441,38 +441,69 @@
             .then((response) => response.json())
             .then(data=>{
                 console.log(data)
+                handlePermissionAccess(userId);
             })
         }
 
         const handlePermissionAccess = id =>{
-            console.log(id)
+            const container = $(`#updatePermissionTable`);
+            container.empty();
             fetch(`${mainOrigin}/api/bcs/puchased_subscriptions/`, {
                 credentials: 'include',
             })
             .then((response) => response.json())
-            .then(data=>{
-                const container = $(`#updatePermissionTable`);
-                container.empty();
-                data.forEach(service=>{
-                    const tableRow = document.createElement("tr");
-                    if(service.is_active){
-                    tableRow.innerHTML += `
-                    <th scope="row">${service.subscription_service}</th>
-                    <td>${service.subscription_package}</td>
-                    <td>${service.max_user}</td>
-                    <td>${service.total_user}</td>
-                    <td>
-                        <button 
-                            style="width: 150px; height: 35px" 
-                            type="button" 
-                            class="btn btn-outline-navy"
-                            onclick="handleButtonAction(${service.id},${id})"
-                            >
-                                Give Access
-                            </button>
-                    </td>
-                    `}
-                    container.append(tableRow);
+            .then(services=>{
+                const servicesIds = services?.map(service => service.id)
+                fetch(`${mainOrigin}/api/bcs/subscription_team/` , {
+                    credentials: 'include',
+                    headers: {
+                        'Content-type': 'application/json',
+                        'X-CSRFToken': csrf_token,
+                    }
+                })
+                .then((response) => response.json())
+                .then(team => {
+                    services.forEach(service=>{
+                        const subscribed = team?.filter(sUser=> service.id === sUser.subscription_order && sUser.user === id)
+                        const tableRow = document.createElement("tr");
+                        if(service.is_active){
+                        tableRow.innerHTML += `
+                        <th scope="row">${service.subscription_service}</th>
+                        <td>${service.subscription_package}</td>
+                        <td>${service.max_user}</td>
+                        <td>${service.total_user}</td>
+                        <td>
+                            ${
+                                (!subscribed.length && service.max_user > service.total_user) ? (`<button 
+                                style="width: 150px; height: 35px" 
+                                type="button" 
+                                class="btn btn-outline-navy"
+                                onclick="handleButtonAction(${service.id},${id})"
+                                >
+                                    Give Access
+                                </button>`) : (`<button 
+                                style="width: 150px; height: 35px" 
+                                type="button" 
+                                disabled
+                                class="btn btn-outline-navy"
+                                >
+                                    Give Access
+                                </button>`)
+                                {% comment %} 
+                                (`<button 
+                                style="width: 150px; height: 35px" 
+                                type="button" 
+                                class="btn btn-outline-navy"
+                                onclick="handleButtonAction(${service.id},${id})"
+                                >
+                                    Give Access
+                                </button>`)
+                                {% endcomment %}
+                            }
+                        </td>
+                        `}
+                        container.append(tableRow);
+                    })
                 })
             })
         }
@@ -504,7 +535,7 @@
 
         const updatePrivilege = e => {
             e.preventDefault();
-            const csrf_token = document.querySelector("#employeeDetail form input[name='csrfmiddlewaretoken']").value;
+            // const csrf_token = document.querySelector("#employeeDetail form input[name='csrfmiddlewaretoken']").value;
             let apiId = document.getElementById('apiId').value;
 
             let privileges = document.getElementById("privilege");
