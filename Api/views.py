@@ -14,6 +14,7 @@ from datetime import date
 from django.db.models import Q
 from rest_framework.response import Response
 from Api import apipermissions
+from django.utils import timezone
 
 
 # Create your views here.
@@ -883,6 +884,18 @@ class SubscriptionTeamAccessApiView(generics.ListCreateAPIView):
                 })
             else:
                 self.perform_create(ser)
+                user = bcsmodels.User.objects.get(id=ser.data['user'])
+                business = bcsmodels.Business.objects.get(id=ser.data['business'])
+                subscription_order = ser.data['subscription_order']
+                notification = bcsmodels.Notification.objects.create(category_choice=user.email,
+                                                                     notification_time=timezone.now(),
+                                                                     notification=f'Your Business {business.company_name}. '
+                                                                                  f'Has added you to an service. '
+                                                                                  f'Please Fill the form to get the '
+                                                                                  f'service. '
+                                                                                  f'<a href="https://main.techforing'
+                                                                                  f'.com/bcs_user_team_service_form/{subscription_order}/" target="_blank" class="btn btn-success">Visit Now</a>')
+                notification.save()
                 return Response(ser.data)
         else:
             return Response({
