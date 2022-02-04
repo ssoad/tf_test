@@ -27,6 +27,9 @@
     </style>
 
     <section class="services position-relative">
+        <div>
+            <h5 class="mt-2 services-type">Service Name</h5>
+        </div>
         <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="modal-body">
@@ -47,7 +50,6 @@
         fetch(`${location.origin}/api/bcs/subscription_input/{{ field_id }}`)
         .then(res=>res.json())
         .then(fields => {
-            console.log(fields)
             let inputFields = ''
             fields.forEach(field => {
                 if (field.inputfield.type === 'select') {
