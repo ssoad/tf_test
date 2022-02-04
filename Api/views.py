@@ -865,8 +865,15 @@ class SubscriptionTeamAccessApiView(generics.ListCreateAPIView):
         business = bcsmodels.UsersBusiness.objects.get(user_id=request.data.get('user'))
 
         if self.request.user.business_user.business == business.business:
-            self.perform_create(ser)
-            return Response(ser.data)
+            service_id = request.data['subscription_order']
+            is_subscribed = bcsmodels.SubscriptionTeam.objects.filter(subscription_order_id=service_id, user_id=request.data.get('user'))
+            if is_subscribed.exists():
+                return Response({
+                    'response': 'Team member already assigned'
+                })
+            else:
+                self.perform_create(ser)
+                return Response(ser.data)
         else:
             return Response({
                 'response': 'User is not in your business'
