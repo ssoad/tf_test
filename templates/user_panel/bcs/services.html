@@ -706,6 +706,7 @@
                         </div>
                         </div>`;
 
+                // function start
                 fetchData(`${location.origin}/api/bcs/sub_service/${btn.id}`)
                     .then(function (data) {
                         previewForm.removeChild(document.getElementById('progress'));
@@ -743,6 +744,7 @@
                                 div.setAttribute("id", `sub-${optionId}-input`)
                                 let inputFields = '';
                                 // informationForm.children[optionIndex]
+                                //
                                 formC.insertAdjacentHTML('beforebegin', `<p id="progress">Loading...</p>`);
                                 fetchData(`${location.origin}/api/bcs/sub_service_input/${optionId}`).then(function (fields) {
                                     formContainer.removeChild(document.getElementById("progress"))

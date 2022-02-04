@@ -27,15 +27,56 @@
     </style>
 
     <section class="services position-relative">
-    {{ field_id }}
-
-        <div id="preview-form" class="d-none">
-
+        <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="modal-body">
+            <div id="preview-form" class="mx-5" >
+                {% comment %} {{ field_id }} {% endcomment %}
+            </div>
+            <button id="submitFormData" type="submit" class="mt-3 ms-5 btn btn-navy">Submit</button>
         </div>
+    </form>
     </section>
 
 {% endblock content %}
 {% block customjs %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    $("document").ready(function(){
+        let previewForm = document.getElementById('preview-form');
+        const div = document.createElement("div")
+        fetch(`${location.origin}/api/bcs/subscription_input/{{ field_id }}`)
+        .then(res=>res.json())
+        .then(fields => {
+            console.log(fields)
+            let inputFields = ''
+            fields.forEach(field => {
+                if (field.inputfield.type === 'select') {
+                    fetch(`${location.origin}/api/bcs/choice_field/${field.inputfield.id}`)
+                    .then(res=>res.json())
+                        .then(function (data) {
+                            inputFields += `<label for="input-${field.inputfield.id}">${field.inputfield.placeholder}</label>`;
+                            inputFields += `<select required id="input-${field.inputfield.id}" name="${field.id}" class="form-select">`;
+                            data[0].choice_field.forEach(choice => {
+                                inputFields += ` <option value="${choice.choices}">${choice.choices}</option>`;
+                            });
 
+                            inputFields += '</select>';
+                            inputFields += `</div>`;
+                            div.innerHTML = inputFields;
+                        }).catch(function (err) {
+                        console.log(err)
+                    });
+                } else {
+                    inputFields += `<label for="input-${field.inputfield.id}">${field.inputfield.placeholder}</label>`;
+                    inputFields += `<input class="form-control" type="${field.inputfield.type}" required
+                id="input-${field.inputfield.id}" name="${field.id}" placeholder="Type here">`;
+                    inputFields += `</div>`;
+                    div.innerHTML = inputFields;
+                }
+            });
+            previewForm.appendChild(div)
+            $("#submitFormData").removeClass("d-none")
+        })
+    })
+</script>
 {% endblock customjs %}
