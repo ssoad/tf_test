@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
-from Academy.models import Course, Section, Content, CoursePurchase, CourseCategory
+from Academy.models import Course, Section, Content, CoursePurchase, CourseCategory, BCSCourse, BCSSection, BCSContent
 
 
 # Create your views here.
@@ -125,8 +125,8 @@ def download_file(request, path=''):
 # bcs academy user panel
 @login_required
 def UserCourses(request):
-    business_courses = Course.objects.filter(course_type='Business')
-    personal_courses = Course.objects.filter(course_type='Personal')
+    business_courses = BCSCourse.objects.all()
+    personal_courses = Course.objects.all()
     context = {
         'business_courses': business_courses,
         'personal_courses': personal_courses,
@@ -137,8 +137,8 @@ def UserCourses(request):
 
 @login_required
 def myCourses(request):
-    business_courses = Course.objects.filter(course_type='Business')
-    personal_courses = Course.objects.filter(course_type='Personal')
+    business_courses = BCSCourse.objects.all()
+    personal_courses = Course.objects.all()
 
     context = {
         'business_courses': business_courses,
@@ -150,10 +150,16 @@ def myCourses(request):
 
 @login_required
 def UserCoursesDetails(request, id):
-    course = Course.objects.get(id=id)
+    try:
+        course = Course.objects.get(id=id)
+        course_type = 'pcs'
+    except:
+        course = BCSCourse.objects.get(id=id)
+        course_type = 'bcs'
 
     context = {
         'course': course,
+        'course_type': course_type,
     }
 
     return render(request, "user_panel/academy/details.html", context)

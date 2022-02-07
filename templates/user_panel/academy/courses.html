@@ -10,7 +10,7 @@
 
         <h5 class="fw-bold mb-3">PROFESSIONAL</h5>
         {% for course in business_courses %}
-            <div class="row mx-0 bg-lightgreen shadow py-3 mb-3">
+            <div class="row mx-0 bg-lightgreen shadow py-3 mb-3 justify-content-between">
             <div class="col-md-5 d-flex">
                 <div class="ps-2">
                     <h6 class="fw-bold">{{ course.course_name }}</h6>
@@ -19,10 +19,10 @@
                     </p>
                 </div>
             </div>
-            <div class="col-md-2 text-center">
-                <h6 class="fw-bold">Duration</h6>
-                <p>{{ course.duration|capitalize }}</p>
-            </div>
+{#            <div class="col-md-2 text-center">#}
+{#                <h6 class="fw-bold">Duration</h6>#}
+{#                <p>{{ course.duration|capitalize }}</p>#}
+{#            </div>#}
             <div class="col-md-2 text-center">
                 <h6 class="fw-bold">Total Classes</h6>
                 <p>{{ course.id|classCount }} Classes</p>
