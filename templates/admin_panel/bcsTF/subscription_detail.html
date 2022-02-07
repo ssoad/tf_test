@@ -96,59 +96,61 @@
         <div>
             <table class="table text-center">
                 <thead>
-                  <tr>
+                <tr>
                     <th scope="col">SL</th>
                     <th scope="col">Name</th>
                     <th scope="col">Email</th>
                     <th scope="col">Action</th>
-                  </tr>
+                </tr>
                 </thead>
-                <tbody id="updatePermissionTable" >
-                    {% for user in all_user %}
-                    <th scope="row">{{ forloop.counter }}</th>
+                <tbody id="updatePermissionTable">
+                {% for user in all_user %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
                         <td>{{ user.user.full_name }}</td>
                         <td>{{ user.user.email }}</td>
                         {% comment %} <td>{{ user.id }}</td> {% endcomment %}
                         <td>
-                            <button 
-                                style="width: 150px; margin-top:0;margin-bottom:0;height:35px" 
-                                type="button" 
-                                class="btn btn-outline-navy"
-                                data-bs-toggle="modal"
-                                onclick="loadUserResponse({{ user.id }})"
-                                data-bs-target="#updateUserResponseModal"
-                                >
-                                    Update
+                            <button
+                                    style="width: 150px; margin-top:0;margin-bottom:0;height:35px"
+                                    type="button"
+                                    class="btn btn-outline-navy"
+                                    data-bs-toggle="modal"
+                                    onclick="loadUserResponse({{ user.id }})"
+                                    data-bs-target="#updateUserResponseModal"
+                            >
+                                View
                             </button>
                         </td>
-                    {% endfor %}
+                    </tr>
+                {% endfor %}
                 </tbody>
-              </table>
-              <!-- Modal -->
-              <div class="modal fade" id="updateUserResponseModal" tabindex="-1" aria-labelledby="imageChangeModalLabel"
-                   aria-hidden="true">
-                  <div class="modal-dialog modal-lg">
-                      <div class="modal-content">
-                          <div class="modal-header">
-                              <h5 class="modal-title" id="imageChangeModalLabel">Update User Response</h5>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body mx-5">
-                              <table class="table">
-                                  <thead>
-                                    <tr>
-                                      <th scope="col">#</th>
-                                      <th scope="col">Field Name</th>
-                                      <th scope="col">Response</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody id="updateUserResponse">
-                                  </tbody>
-                                </table>
-                          </div>
-                      </div>
-                  </div>
-              </div>
+            </table>
+            <!-- Modal -->
+            <div class="modal fade" id="updateUserResponseModal" tabindex="-1" aria-labelledby="imageChangeModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="imageChangeModalLabel">Update User Response</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body mx-5">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Field Name</th>
+                                    <th scope="col">Response</th>
+                                </tr>
+                                </thead>
+                                <tbody id="updateUserResponse">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </main>
@@ -167,7 +169,7 @@
                     const tableRow = document.createElement("tr")
                     let inputFields = ''
                     inputFields=`
-                        <th class="py-auto">${input?.id}</th>
+                        <th scope="row">${input?.id}</th>
                         <td class="fw-bolder">
                                 ${input?.inputfield}    
                         </td>
@@ -177,14 +179,14 @@
                                     <img class="img-fluid"
                                         src="${input?.inputinfo}"
                                         alt="${input?.inputinfo}">
-                                </div>`):(input?.inputinfo)
-                            
+                                </div>`) : (input?.inputinfo)
+
                         }</td>
                     `;
-                    tableRow.innerHTML = inputFields;
-                    container.append(tableRow);
+                        tableRow.innerHTML = inputFields;
+                        container.append(tableRow);
+                    })
                 })
-            })
         }
     </script>
     <script>

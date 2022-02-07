@@ -13,6 +13,13 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 from decouple import config
 import os
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
+PAYPAL_USER = env('paypal_user')
+PAYPAL_PASS = env('paypal_pass')
+PAYPAL_URL = env('paypal_url')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -374,7 +381,7 @@ SESSION_COOKIE_SAMESITE = 'None'
 
 # Media
 MEDIA_URL = '/media/'
-MEDIA_ROOT = 'media'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Login
 LOGIN_URL = '/accounts/login/'
@@ -384,3 +391,4 @@ AUTH_USER_MODEL = 'Account.User'
 CRONJOBS = [
     ('0 0 * * *', 'BusinessSecurity.cronjob.PaypalSubscriptionCheck')
 ]
+

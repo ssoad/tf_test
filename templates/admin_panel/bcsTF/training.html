@@ -164,8 +164,8 @@
         let form = document.getElementById('form');
         let loading = document.getElementById('loading');
 
-        let username = 'AfTmv1E8P0HbJCkRMtm7s_07rqkJCGvp4WufOBxLWUl5AFujlsqmn6WdpMZo-nQr-yKVTnogZOQYgLnl'
-        let password = 'EOsLHpTI748BbKSwcWlQpgmuJZXyudRnJP50Gc8H5Anf8VnDfk8FtEtRYwJ_iU1T9sgH5DOv53BuqeyH'
+        let username = '{{ paypal_user }}'
+        let password = '{{ paypal_pass }}'
 
         form.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -175,7 +175,7 @@
             form.classList.add('d-none')
             loading.classList.remove('d-none')
             loading.classList.add('d-flex')
-            fetch('https://api.sandbox.paypal.com/v1/catalogs/products', {
+            fetch('{{ paypal_url }}catalogs/products', {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json',
