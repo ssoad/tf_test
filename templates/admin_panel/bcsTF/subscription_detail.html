@@ -115,28 +115,40 @@
                                 type="button" 
                                 class="btn btn-outline-navy"
                                 data-bs-toggle="modal"
-                                data-bs-target="#updateUserResponse-{{ forloop.counter }}"
+                                onclick="loadUserResponse({{ user.id }})"
+                                data-bs-target="#updateUserResponseModal"
                                 >
                                     Update
                             </button>
                         </td>
-                        <!-- Modal -->
-                        <div class="modal fade" id="updateUserResponse-{{ forloop.counter }}" tabindex="-1" aria-labelledby="imageChangeModalLabel"
-                             aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="imageChangeModalLabel">Update User Response</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body updateUserResponse">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     {% endfor %}
                 </tbody>
               </table>
+              <!-- Modal -->
+              <div class="modal fade" id="updateUserResponseModal" tabindex="-1" aria-labelledby="imageChangeModalLabel"
+                   aria-hidden="true">
+                  <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h5 class="modal-title" id="imageChangeModalLabel">Update User Response</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body mx-5">
+                              <table class="table">
+                                  <thead>
+                                    <tr>
+                                      <th scope="col">#</th>
+                                      <th scope="col">Field Name</th>
+                                      <th scope="col">Response</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody id="updateUserResponse">
+                                  </tbody>
+                                </table>
+                          </div>
+                      </div>
+                  </div>
+              </div>
         </div>
 
     </main>
@@ -144,11 +156,33 @@
 {% block customjs %}
     <script>
         const loadUserResponse = id => {
-            const container = $(".updateUserResponse");
-            container.innerHTML = `
-            <div>
-                testing
-            </div>`
+            const container = $("#updateUserResponse");
+            container.empty();
+            fetch(`${location.origin}/api/bcs/team_input_info/${id}`)
+            .then(res=>res.json())
+            .then(data => {
+                data.forEach(input => {
+                    const extentionType = input?.inputinfo?.split(/[#?]/)[0].split('.').pop().trim().toLowerCase();
+                    
+                    const tableRow = document.createElement("tr")
+                    let inputFields = ''
+                    inputFields=`
+                        <th scope="row">${input?.id}</th>
+                        <td class="fw-bolder">${input?.inputfield}</td>
+                        <td>${
+                            (['apng', 'avif','gif','jpeg','jpg','png','svg','webp','bmp'].includes(extentionType)) ? (
+                                `<div style="width:200px">
+                                    <img class="img-fluid"
+                                        src="${input?.inputinfo}"
+                                        alt="${input?.inputinfo}">
+                                </div>`):(input?.inputinfo)
+                            
+                        }</td>
+                    `;
+                    tableRow.innerHTML = inputFields;
+                    container.append(tableRow);
+                })
+            })
         }
     </script>
     <script>
