@@ -222,6 +222,15 @@ class PCSCoursePurchaseSerializer(serializers.ModelSerializer):
         }
 
 
+class BCSCoursePurchaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = coursemodels.CourseOrder
+        fields = '__all__'
+        extra_kwargs = {
+            'business': {'read_only': True}
+        }
+
+
 class BCSCourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = coursemodels.BCSCourse

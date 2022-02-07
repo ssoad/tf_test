@@ -267,7 +267,8 @@ class OrderPrice(models.Model):
     invoice = models.FileField(upload_to='invoice', default='invoice/invoice.pdf')
 
     def save(self, *args, **kwargs):
-        self.price = self.initial_price - ((self.initial_price*self.discount)/100) + ((self.initial_price*self.tax)/100)\
+        self.price = self.initial_price - ((self.initial_price * self.discount) / 100) + (
+                    (self.initial_price * self.tax) / 100) \
                      + self.processing_fee
         super(OrderPrice, self).save(*args, **kwargs)
 
@@ -365,7 +366,6 @@ class SubscriptionBasedPackage(models.Model):
     def __str__(self):
         return f'{self.package_name} - {self.service_id}'
 
-
     class Meta:
         verbose_name_plural = 'Subscription Based Packages'
 
@@ -409,7 +409,6 @@ class SubscriptionOrder(models.Model):
 
     def __str__(self):
         return f'{self.user} - {self.subscription_service} - {self.subscription_package} - {self.is_active}'
-
 
 
 class UserAllowed(models.Model):

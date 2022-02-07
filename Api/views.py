@@ -760,6 +760,17 @@ class PCSCoursePurchaseCheckApiView(generics.ListAPIView):
         return Response({'result': purchased_list})
 
 
+class BCSCoursePurchaseCheckApiView(generics.ListAPIView):
+    queryset = coursemodels.CoursePurchase
+    permission_classes = [permissions.IsAuthenticated]
+
+    def list(self, request, *args, **kwargs):
+        purchased_list = coursemodels.CourseOrder.objects.filter(business=self.request.user.business_user.business, is_active=True).values_list('course_id',
+                                                                                                     flat=True)
+        print(purchased_list)
+        return Response({'result': purchased_list})
+
+
 class PCSCoursePurchaseApiView(generics.CreateAPIView):
     serializer_class = serializer.PCSCoursePurchaseSerializer
     queryset = coursemodels.CoursePurchase.objects.all()
@@ -772,6 +783,26 @@ class PCSCoursePurchaseApiView(generics.CreateAPIView):
         course = request.data['course']
         try:
             check_existing_order = coursemodels.CoursePurchase.objects.get(user=self.request.user, course_id=course)
+            return Response({'response': 'You have already purchased this course'})
+        except:
+            ser = self.get_serializer(data=request.data)
+            ser.is_valid(raise_exception=True)
+            self.perform_create(ser)
+            return Response(ser.data)
+
+
+class BCSCoursePurchaseApiView(generics.CreateAPIView):
+    serializer_class = serializer.BCSCoursePurchaseSerializer
+    queryset = coursemodels.CourseOrder.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(business=self.request.user.business_user.business, is_active=True)
+
+    def create(self, request, *args, **kwargs):
+        course = request.data['course']
+        try:
+            check_existing_order = coursemodels.CourseOrder.objects.get(business=self.request.user.business_user.business, course_id=course, is_active=True)
             return Response({'response': 'You have already purchased this course'})
         except:
             ser = self.get_serializer(data=request.data)
@@ -911,6 +942,7 @@ class SubscriptionTeamAccessApiView(generics.ListCreateAPIView):
 class TeamInputInfoApiView(generics.ListAPIView):
     serializer_class = serializer.TeamInputInfoSerializer
     permission_classes = [apipermissions.IsBCSAdmin]
+
     # lookup_field = 'pk'
     # queryset = bcsmodels.TeamSubscriptionInput.objects.all()
 

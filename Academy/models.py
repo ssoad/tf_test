@@ -1,6 +1,7 @@
 from django.db import models
 from Account.models import User
 from tinymce.models import HTMLField
+from BusinessSecurity.models import Business
 import cv2
 
 # Create your models here.
@@ -152,6 +153,7 @@ class CoursePackage(models.Model):
     duration_type = models.CharField(
         choices=duration_type, max_length=264, default='month')
     price = models.IntegerField()
+    max_user = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return f'{self.package_name} - {self.service_id}'
@@ -170,22 +172,22 @@ class PackageFeatures(models.Model):
 
 
 class CourseOrder(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE,
-                             related_name='courseorder_user')
+    business = models.ForeignKey(Business, on_delete=models.CASCADE,
+                             related_name='courseorder_business')
     course = models.ForeignKey(BCSCourse, on_delete=models.CASCADE,
                                related_name='courseorder_bcscourse')
     course_package = models.ForeignKey(CoursePackage, on_delete=models.CASCADE,
                                        related_name='courseorder_coursepackage')
-    paypal_email = models.EmailField()
+    # paypal_email = models.EmailField()
     paypal_id = models.CharField(max_length=255)
-    paypal_user_name = models.CharField(max_length=255)
+    # paypal_user_name = models.CharField(max_length=255)
     payment_id = models.CharField(max_length=255)
-    create_time = models.DateTimeField()
-    update_time = models.DateTimeField()
+    create_time = models.DateTimeField(auto_now_add=True)
+    # update_time = models.DateTimeField()
     amount = models.IntegerField()
-    currency = models.CharField(max_length=255)
+    # currency = models.CharField(max_length=255)
 
     is_active = models.BooleanField(default=False)
 
     def __str__(self):
-        return f'{self.user} - {self.course} - {self.course_package} - {self.is_active}'
+        return f'{self.business} - {self.course} - {self.course_package} - {self.is_active}'

@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
-from Academy.models import Course, Section, Content, CoursePurchase, CourseCategory, BCSCourse, BCSSection, BCSContent
+from Academy.models import Course, Section, Content, CoursePurchase, CourseCategory, BCSCourse, BCSSection, BCSContent, CourseOrder, CoursePackage
 
 
 # Create your views here.
@@ -137,8 +137,8 @@ def UserCourses(request):
 
 @login_required
 def myCourses(request):
-    business_courses = BCSCourse.objects.all()
-    personal_courses = Course.objects.all()
+    business_courses = CourseOrder.objects.filter(user=request.user)
+    personal_courses = CoursePurchase.objects.filter(user=request.user)
 
     context = {
         'business_courses': business_courses,

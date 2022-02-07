@@ -510,9 +510,12 @@ def bcsUserCoursePayment(request, id):
         return HttpResponseRedirect(reverse('create_business'))
 
     elif request.user.is_bcs:
-        course = BCSCourse.objects.get(id=id)
+        course = CoursePackage.objects.get(id=id)
         context = {
             'course': course,
+            'paypal_user': settings.PAYPAL_USER,
+            'paypal_pass': settings.PAYPAL_PASS,
+            'paypal_url': settings.PAYPAL_URL,
         }
         return render(request, 'user_panel/bcs/course_payment.html', context)
 
@@ -910,8 +913,8 @@ def subscriptionCancelView(request, id):
     if not request.user.is_bcs:
         return HttpResponseRedirect(reverse('create_business'))
     else:
-        username = 'AfTmv1E8P0HbJCkRMtm7s_07rqkJCGvp4WufOBxLWUl5AFujlsqmn6WdpMZo-nQr-yKVTnogZOQYgLnl'
-        password = 'EOsLHpTI748BbKSwcWlQpgmuJZXyudRnJP50Gc8H5Anf8VnDfk8FtEtRYwJ_iU1T9sgH5DOv53BuqeyH'
+        username = settings.PAYPAL_USER
+        password = settings.PAYPAL_PASS
         busername = str(base64.b64encode(bytes(username, 'utf-8')))[1:].replace("'", "").replace("=", '')
         bpassword = str(base64.b64encode(bytes(password, 'utf-8')))[1:].replace("'", "")
         bearer = f"Basic {busername}6{bpassword}"
@@ -927,7 +930,7 @@ def subscriptionCancelView(request, id):
 
         current_order.is_active = False
         current_order.save()
-        url = f'https://api.sandbox.paypal.com/v1/billing/subscriptions/{current_order.paypal_subscription_id}/cancel'
+        url = f'{settings.PAYPAL_URL}billing/subscriptions/{current_order.paypal_subscription_id}/cancel'
         headers = {
             'Content-type': 'application/json',
             'Authorization': bearer

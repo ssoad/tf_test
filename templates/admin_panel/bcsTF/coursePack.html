@@ -224,7 +224,7 @@
         let password = '{{ paypal_pass }}'
 
         service_id.addEventListener('change', (e) => {
-            fetch(`${baseUrl}api/bcs/bcs_course/${e.target.value}/`, {
+            fetch(`${baseUrl}bcs/bcs_course/${e.target.value}/`, {
                 method: 'GET',
                 headers: {
                     'Content-type': 'application/json',
