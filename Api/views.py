@@ -2,6 +2,7 @@ import base64
 import itertools
 
 import requests
+from django.conf import settings
 from django.shortcuts import render
 from Api import serializer
 from rest_framework import generics
@@ -615,8 +616,8 @@ class SubscriptionOrderView(generics.CreateAPIView):
         """
         Cancelling Previous Subscriptions
         """
-        username = 'AfTmv1E8P0HbJCkRMtm7s_07rqkJCGvp4WufOBxLWUl5AFujlsqmn6WdpMZo-nQr-yKVTnogZOQYgLnl'
-        password = 'EOsLHpTI748BbKSwcWlQpgmuJZXyudRnJP50Gc8H5Anf8VnDfk8FtEtRYwJ_iU1T9sgH5DOv53BuqeyH'
+        username = settings.PAYPAL_USER
+        password = settings.PAYPAL_PASS
         busername = str(base64.b64encode(bytes(username, 'utf-8')))[1:].replace("'", "").replace("=", '')
         bpassword = str(base64.b64encode(bytes(password, 'utf-8')))[1:].replace("'", "")
         bearer = f"Basic {busername}6{bpassword}"
@@ -635,7 +636,7 @@ class SubscriptionOrderView(generics.CreateAPIView):
             for current_order in user_orders:
                 current_order.is_active = False
                 current_order.save()
-                url = f'https://api.sandbox.paypal.com/v1/billing/subscriptions/{current_order.paypal_subscription_id}/cancel'
+                url = f'{settings.PAYPAL_URL}billing/subscriptions/{current_order.paypal_subscription_id}/cancel'
                 headers = {
                     'Content-type': 'application/json',
                     'Authorization': bearer
@@ -662,7 +663,7 @@ class SubscriptionOrderView(generics.CreateAPIView):
             for current_order in user_orders:
                 current_order.is_active = False
                 current_order.save()
-                url = f'https://api.sandbox.paypal.com/v1/billing/subscriptions/{current_order.paypal_subscription_id}/cancel'
+                url = f'{settings.PAYPAL_URL}billing/subscriptions/{current_order.paypal_subscription_id}/cancel'
                 headers = {
                     'Content-type': 'application/json',
                     'Authorization': bearer

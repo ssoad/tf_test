@@ -264,6 +264,7 @@ class OrderPrice(models.Model):
     price = models.PositiveIntegerField(default=0, blank=True)
     currency = models.CharField(choices=currency, max_length=255)
     payment_method = models.CharField(choices=payment_method, max_length=255)
+    invoice = models.FileField(upload_to='invoice', default='invoice/invoice.pdf')
 
     def save(self, *args, **kwargs):
         self.price = self.initial_price - ((self.initial_price*self.discount)/100) + ((self.initial_price*self.tax)/100)\

@@ -2,6 +2,7 @@ import base64
 import datetime
 
 import requests
+from django.conf import settings
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect, reverse, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils import timezone
@@ -805,6 +806,9 @@ def pcsAdminSubscriptionServiceView(request):
         'form': form,
         # 'sales_persons': sales_persons,
         'services': services,
+        'paypal_user': settings.PAYPAL_USER,
+        'paypal_pass': settings.PAYPAL_PASS,
+        'paypal_url': settings.PAYPAL_URL,
     }
     return render(request, 'admin_panel/pcsTF/subscription-service.html', context)
 
@@ -985,6 +989,9 @@ def pcsAdminSubscriptionPack(request):
     context = {
         'form': form,
         'services': services,
+        'paypal_user': settings.PAYPAL_USER,
+        'paypal_pass': settings.PAYPAL_PASS,
+        'paypal_url': settings.PAYPAL_URL,
     }
     return render(request, 'admin_panel/pcsTF/subscriptionPack.html', context)
 
