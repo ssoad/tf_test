@@ -380,8 +380,7 @@ MEDIA_ROOT = 'media'
 LOGIN_URL = '/accounts/login/'
 AUTH_USER_MODEL = 'Account.User'
 
-
 # CronJob Settings
 CRONJOBS = [
-    ('*/1 * * * *', 'BusinessSecurity.cronjob.PaypalSubscriptionCheck')
+    ('0 0 * * *', 'BusinessSecurity.cronjob.PaypalSubscriptionCheck')
 ]

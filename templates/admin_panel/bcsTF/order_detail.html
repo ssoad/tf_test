@@ -82,6 +82,11 @@
                         <button class="btn view-btn bg-navy btn-outline-light" data-bs-toggle="modal"
                                 data-bs-target="#quotationModal-{{ current_order.id }}">Provide Quotation
                         </button>
+                        {% if current_quotation_agreement %}
+                            <button class="btn view-btn bg-navy btn-outline-light" data-bs-toggle="modal"
+                                    data-bs-target="#agreementModal-{{ current_order.id }}">User Agreement
+                            </button>
+                        {% endif %}
                     </div>
                     <div class="col-md-6">
                         <h3>Company: {{ current_order.user.business_user.business.company_name }}</h3>
@@ -143,6 +148,52 @@
                 </div>
             </div>
         </div>
+        {% if current_quotation_agreement %}
+            <div class="modal fade" id="agreementModal-{{ current_order.id }}" tabindex="-1"
+                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Agreement Details</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form action="" method="POST" enctype="multipart/form-data">
+                            <div class="modal-body">
+                                {% if current_quotation_agreement.user_nda %}
+                                    <b>NDA: </b><a class="btn btn-sm btn-navy mt-2"
+                                                   href="{{ current_quotation_agreement.user_nda.url }}"
+                                                   download="{{ current_quotation_agreement.user_nda.url }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                         class="bi bi-arrow-down-circle-fill" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+                                    </svg>
+                                    Download NDA
+                                </a> <br>
+                                {% endif %}
+                                {% if current_quotation_agreement.user_nca %}
+                                    <b>NCA: </b><a class="btn btn-sm btn-navy mt-2"
+                                                   href="{{ current_quotation_agreement.user_nca.url }}"
+                                                   download="{{ current_quotation_agreement.user_nca.url }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                         class="bi bi-arrow-down-circle-fill" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+                                    </svg>
+                                    Download NCA
+                                </a> <br>
+                                {% endif %}
+                                {% if current_quotation_agreement.message %}
+                                    <b>Message: </b>{{ current_quotation_agreement.message|safe }}
+                                {% endif %}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
         <div class="modal fade" id="invoiceModal-{{ current_order.id }}" tabindex="-1"
              aria-labelledby="exampleModalLabel"
              aria-hidden="true">

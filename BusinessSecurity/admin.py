@@ -1,9 +1,7 @@
 from django.contrib import admin
 from BusinessSecurity import models
 
-
 # Register your models here.
-
 
 
 admin.site.register(models.NewsSubscriber)
@@ -24,7 +22,16 @@ admin.site.register(models.Quotation)
 admin.site.register(models.QuotationAgreement)
 admin.site.register(models.SubscriptionOrder)
 admin.site.register(models.SubscriptionTeam)
-admin.site.register(models.OrderPrice)
+
+
+# admin.site.register(models.OrderPrice)
+
+class OrderPriceCustom(admin.ModelAdmin):
+    readonly_fields = ['price']
+
+
+admin.site.register(models.OrderPrice, OrderPriceCustom)
+
 admin.site.register(models.OrderStaff)
 
 admin.site.register(models.SubscriptionBasedPackage)

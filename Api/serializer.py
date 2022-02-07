@@ -297,6 +297,8 @@ class SubscriptionTeamAccessSerializer(serializers.ModelSerializer):
 
 
 class TeamInputInfoSerializer(serializers.ModelSerializer):
+    inputfield = serializers.CharField(source='inputfield.inputfield.placeholder')
+
     class Meta:
         model = bcsmodels.TeamSubscriptionInput
         fields = '__all__'

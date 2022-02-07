@@ -257,9 +257,18 @@ currency = (
 
 class OrderPrice(models.Model):
     order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name='orderprice_order')
-    price = models.PositiveIntegerField(default=0)
+    initial_price = models.PositiveIntegerField(default=0)
+    discount = models.PositiveIntegerField(default=0, verbose_name='Discount (%)')
+    processing_fee = models.PositiveIntegerField(default=0)
+    tax = models.PositiveIntegerField(default=0, verbose_name='Tax (%)')
+    price = models.PositiveIntegerField(default=0, blank=True)
     currency = models.CharField(choices=currency, max_length=255)
     payment_method = models.CharField(choices=payment_method, max_length=255)
+
+    def save(self, *args, **kwargs):
+        self.price = self.initial_price - ((self.initial_price*self.discount)/100) + ((self.initial_price*self.tax)/100)\
+                     + self.processing_fee
+        super(OrderPrice, self).save(*args, **kwargs)
 
 
 @receiver(post_save, sender=Order)
