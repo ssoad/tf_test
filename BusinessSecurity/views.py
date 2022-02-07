@@ -584,6 +584,19 @@ def userOrderDetailsView(request, id):
                                 if quotation.agreement == 'agree':
                                     current_quotation.agreement = 'agree'
                                     current_quotation.save()
+                                    notification = models.AdminNotification.objects.create(category_choice='bcs',
+                                                                                           business=request.user.business_user.business,
+                                                                                           notification=f'User Agreed to NDA/NCA for quotation: {current_quotation.id}. '
+                                                                                                        f'<a href="https://main'
+                                                                                                        f'.techforing.com/bcs_admin_order_detail/{current_quotation.id}/" target="_blank" class="btn btn-success">Visit Now</a>')
+                                    notification.save()
+                                else:
+                                    notification = models.AdminNotification.objects.create(category_choice='bcs',
+                                                                                           business=request.user.business_user.business,
+                                                                                           notification=f'User Disagreed to NDA/NCA for quotation: {current_quotation.id}. '
+                                                                                                        f'<a href="https://main'
+                                                                                                        f'.techforing.com/bcs_admin_order_detail/{current_quotation.id}/" target="_blank" class="btn btn-success">Visit Now</a>')
+                                    notification.save()
 
                                 return HttpResponseRedirect(request.META['HTTP_REFERER'])
                     except:
@@ -598,6 +611,19 @@ def userOrderDetailsView(request, id):
                                 if quotation.agreement == 'agree':
                                     current_quotation.agreement = 'agree'
                                     current_quotation.save()
+                                    notification = models.AdminNotification.objects.create(category_choice='bcs',
+                                                                                           business=request.user.business_user.business,
+                                                                                           notification=f'User Agreed to NDA/NCA for quotation: {current_quotation.id}. '
+                                                                                                        f'<a href="https://main '
+                                                                                                        f'.techforing.com/bcs_admin_order_detail/{current_quotation.id}/" target="_blank" class="btn btn-success">Visit Now</a>')
+                                    notification.save()
+                                else:
+                                    notification = models.AdminNotification.objects.create(category_choice='bcs',
+                                                                                           business=request.user.business_user.business,
+                                                                                           notification=f'User Disagreed to NDA/NCA for quotation: {current_quotation.id}. '
+                                                                                                        f'<a href="https://main '
+                                                                                                        f'.techforing.com/bcs_admin_order_detail/{current_quotation.id}/" target="_blank" class="btn btn-success">Visit Now</a>')
+                                    notification.save()
 
                                 return HttpResponseRedirect(request.META['HTTP_REFERER'])
                     context = {
@@ -2662,6 +2688,10 @@ def bcsAdminOrdersDetailView(request, id):
         current_order = models.Order.objects.get(id=id)
         current_price = models.OrderPrice.objects.get(order=current_order)
         current_quotation = models.Quotation.objects.get(order=current_order)
+        try:
+            current_quotation_agreement = current_quotation.quotation_agreement_quotation
+        except:
+            current_quotation_agreement = False
         form = forms.OrderPriceForm(instance=current_price)
         quotation_form = forms.QuotationForm(instance=current_quotation)
         if request.method == 'POST':
@@ -2724,6 +2754,7 @@ def bcsAdminOrdersDetailView(request, id):
             'current_order': current_order,
             'form': form,
             'quotation_form': quotation_form,
+            'current_quotation_agreement': current_quotation_agreement,
         }
         return render(request, 'admin_panel/bcsTF/order_detail.html', context)
     else:
