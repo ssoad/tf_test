@@ -161,19 +161,21 @@
             const container = $("#updateUserResponse");
             container.empty();
             fetch(`${location.origin}/api/bcs/team_input_info/${id}`)
-                .then(res => res.json())
-                .then(data => {
-                    data.forEach(input => {
-                        const extentionType = input?.inputinfo?.split(/[#?]/)[0].split('.').pop().trim().toLowerCase();
-
-                        const tableRow = document.createElement("tr")
-                        let inputFields = ''
-                        inputFields = `
+            .then(res=>res.json())
+            .then(data => {
+                data.forEach(input => {
+                    const extentionType = input?.inputinfo?.split(/[#?]/)[0].split('.').pop().trim().toLowerCase();
+                    
+                    const tableRow = document.createElement("tr")
+                    let inputFields = ''
+                    inputFields=`
                         <th scope="row">${input?.id}</th>
-                        <td class="fw-bolder">${input?.inputfield}</td>
-                        <td>${
-                            (['apng', 'avif', 'gif', 'jpeg', 'jpg', 'png', 'svg', 'webp', 'bmp'].includes(extentionType)) ? (
-                                `<div style="width:200px">
+                        <td class="fw-bolder">
+                                ${input?.inputfield}    
+                        </td>
+                        <td style="width:200px ">${
+                            (['apng', 'avif','gif','jpeg','jpg','png','svg','webp','bmp'].includes(extentionType)) ? (
+                                `<div style="d-flex justify-content-center">
                                     <img class="img-fluid"
                                         src="${input?.inputinfo}"
                                         alt="${input?.inputinfo}">
