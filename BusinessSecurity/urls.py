@@ -320,4 +320,5 @@ urlpatterns = [
     path('team_user_settings/', views.teamUserSettingsView,
          name='team_user_settings'),
     path('email_invitation/', views.emailInvitationView, name='email_invitation'),
+    # path('test_view/', views.TestView, name='test_view'),
 ]
