@@ -374,7 +374,7 @@ SESSION_COOKIE_SAMESITE = 'None'
 
 # Media
 MEDIA_URL = '/media/'
-MEDIA_ROOT = 'media'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Login
 LOGIN_URL = '/accounts/login/'
