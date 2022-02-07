@@ -65,9 +65,22 @@
                             {% endif %}
                         </p>
                         {% if current_order.quotation_order.agreement == 'agree' %}
+                            {% comment %}
                             <button class="btn view-btn bg-navy btn-outline-light" data-bs-toggle="modal"
                                     data-bs-target="#invoiceModal-{{ current_order.id }}">View Invoice
                             </button>
+                            {% endcomment %}
+                            {% if current_order.orderprice_order.invoice %}
+                                <a class="btn view-btn bg-navy btn-outline-light"
+                                   href="{{ current_order.orderprice_order.invoice.url }}"
+                                   download="{{ current_order.orderprice_order.invoice.url }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                         class="bi bi-arrow-down-circle-fill" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+                                    </svg>
+                                    Download Invoice
+                                </a>
+                            {% endif %}
                             <!-- Modal -->
                             <div class="modal fade text-dark" id="invoiceModal-{{ current_order.id }}" tabindex="-1"
                                  aria-labelledby="exampleModalLabel"
@@ -166,16 +179,24 @@
                                         </div>
                                         <div class="modal-body invoice" id="invoice">
                                             {{ current_order.quotation_order.quotation_info|safe }}
-                                            <a class="btn btn-sm btn-navy mt-2" href="{{ current_order.quotation_order.nda.url }}" download="{{ current_order.quotation_order.nda.url }}">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-circle-fill" viewBox="0 0 16 16">
+                                            <a class="btn btn-sm btn-navy mt-2"
+                                               href="{{ current_order.quotation_order.nda.url }}"
+                                               download="{{ current_order.quotation_order.nda.url }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                     fill="currentColor" class="bi bi-arrow-down-circle-fill"
+                                                     viewBox="0 0 16 16">
                                                     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
-                                                  </svg>
+                                                </svg>
                                                 Download NDA
                                             </a>
-                                            <a class="btn btn-sm btn-navy mt-2" href="{{ current_order.quotation_order.nca.url }}" download="{{ current_order.quotation_order.nca.url }}">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-circle-fill" viewBox="0 0 16 16">
+                                            <a class="btn btn-sm btn-navy mt-2"
+                                               href="{{ current_order.quotation_order.nca.url }}"
+                                               download="{{ current_order.quotation_order.nca.url }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                     fill="currentColor" class="bi bi-arrow-down-circle-fill"
+                                                     viewBox="0 0 16 16">
                                                     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
-                                                  </svg>
+                                                </svg>
                                                 Download NCA
                                             </a>
                                         </div>
@@ -204,16 +225,24 @@
                                         </div>
                                         <div class="modal-body invoice" id="invoice">
                                             {{ current_order.quotation_order.quotation_info|safe }}
-                                            <a class="btn btn-sm btn-navy mt-2" href="{{ current_order.quotation_order.nda.url }}" download="{{ current_order.quotation_order.nda.url }}">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-circle-fill" viewBox="0 0 16 16">
+                                            <a class="btn btn-sm btn-navy mt-2"
+                                               href="{{ current_order.quotation_order.nda.url }}"
+                                               download="{{ current_order.quotation_order.nda.url }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                     fill="currentColor" class="bi bi-arrow-down-circle-fill"
+                                                     viewBox="0 0 16 16">
                                                     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
-                                                  </svg>
+                                                </svg>
                                                 Download NDA
                                             </a>
-                                            <a class="btn btn-sm btn-navy mt-2" href="{{ current_order.quotation_order.nca.url }}" download="{{ current_order.quotation_order.nca.url }}">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-circle-fill" viewBox="0 0 16 16">
+                                            <a class="btn btn-sm btn-navy mt-2"
+                                               href="{{ current_order.quotation_order.nca.url }}"
+                                               download="{{ current_order.quotation_order.nca.url }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                     fill="currentColor" class="bi bi-arrow-down-circle-fill"
+                                                     viewBox="0 0 16 16">
                                                     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
-                                                  </svg>
+                                                </svg>
                                                 Download NCA
                                             </a>
                                         </div>
@@ -221,7 +250,9 @@
                                             {{ form.media }}
                                             {{ form|crispy }}
                                             {% csrf_token %}
-                                            <button type="submit" onclick="handleSubmitVal(event)" class="my-3 btn btn-navy">SUBMIT</button>
+                                            <button type="submit" onclick="handleSubmitVal(event)"
+                                                    class="my-3 btn btn-navy">SUBMIT
+                                            </button>
                                         </form>
 
                                         <div class="modal-footer">
@@ -362,10 +393,11 @@
 {% block customjs %}
     <script>
         const handleSubmitVal = (e) => {
-            if(!tinyMCE.activeEditor.getContent()){
-            e.preventDefault();
-            alert("Message field can not be empty!")
-        }}
+            if (!tinyMCE.activeEditor.getContent()) {
+                e.preventDefault();
+                alert("Message field can not be empty!")
+            }
+        }
 
         {% comment %} 
             Hide on Initial Load
@@ -377,22 +409,20 @@
         {% comment %} 
             Change on value change
         {% endcomment %}
-        $("#div_id_agreement").change(function() {
-            if($('#div_id_agreement option:selected').val() === "agree"){
+        $("#div_id_agreement").change(function () {
+            if ($('#div_id_agreement option:selected').val() === "agree") {
                 $("#div_id_user_nda").removeClass("d-none");
-                $("#id_user_nda").prop('required',true);
+                $("#id_user_nda").prop('required', true);
                 $("#div_id_user_nca").removeClass("d-none");
-                $("#id_user_nca").prop('required',true);
+                $("#id_user_nca").prop('required', true);
                 $("#div_id_message").removeClass("d-none");
-            }
-            else if($('#div_id_agreement option:selected').val() === "disagree"){
+            } else if ($('#div_id_agreement option:selected').val() === "disagree") {
                 $("#div_id_user_nda").addClass("d-none");
-                $("#id_user_nda").prop('required',false);
+                $("#id_user_nda").prop('required', false);
                 $("#div_id_user_nca").addClass("d-none");
-                $("#id_user_nca").prop('required',false);
+                $("#id_user_nca").prop('required', false);
                 $("#div_id_message").removeClass("d-none");
-            }
-            else {
+            } else {
                 $("#div_id_user_nda").addClass("d-none");
                 $("#div_id_user_nca").addClass("d-none");
                 $("#div_id_message").addClass("d-none");

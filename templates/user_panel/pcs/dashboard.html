@@ -50,9 +50,23 @@
                                         {{ order.order_date }}</span>
                                     </h6>
                                     <h6 class="fw-light d-flex justify-content-between mb-0">
+                                        {% comment %}
                                         <button class="btn view-btn px-0" data-bs-toggle="modal"
                                                 data-bs-target="#invoiceModal-{{ order.id }}">View Invoice
                                         </button>
+                                        {% endcomment %}
+                                        {% if order.orderprice_order.invoice %}
+                                            <a class="btn view-btn px-0"
+                                               href="{{ order.orderprice_order.invoice.url }}"
+                                               download="{{ order.orderprice_order.invoice.url }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                     fill="currentColor"
+                                                     class="bi bi-arrow-down-circle-fill" viewBox="0 0 16 16">
+                                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+                                                </svg>
+                                                Download Invoice
+                                            </a>
+                                        {% endif %}
                                         <div class="d-block d-md-none bg-navy btn-sm text-white px-3 py-2">
                                             {{ order.order_status|capitalize }}
                                         </div>
@@ -169,6 +183,7 @@
 
                         <div class="col-6 col-lg-2 d-flex justify-content-center align-items-center">
                             <a href="
+
                                     {% host_url reading_list.post.category|replacespace host 'blog' %}{{ reading_list.post.post_url }}"
                                target="_blank" class="btn btn-sm bg-navy text-white px-2 py-2">Read Full</a>
                         </div>

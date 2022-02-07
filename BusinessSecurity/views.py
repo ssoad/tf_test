@@ -2717,7 +2717,7 @@ def bcsAdminOrdersDetailView(request, id):
         form = forms.OrderPriceForm(instance=current_price)
         quotation_form = forms.QuotationForm(instance=current_quotation)
         if request.method == 'POST':
-            form = forms.OrderPriceForm(request.POST, instance=current_price)
+            form = forms.OrderPriceForm(files=request.FILES, data=request.POST, instance=current_price)
             quotation_form = forms.QuotationForm(
                 files=request.FILES, data=request.POST, instance=current_quotation)
             if form.is_valid():
@@ -2789,8 +2789,8 @@ def bcsAdminOrdersDetailView(request, id):
             form = forms.OrderPriceForm(instance=current_price)
             quotation_form = forms.QuotationForm(instance=current_quotation)
             if request.method == 'POST':
-                form = forms.OrderPriceForm(
-                    request.POST, instance=current_price)
+                form = forms.OrderPriceForm(files=request.FILES,
+                    data=request.POST, instance=current_price)
                 quotation_form = forms.QuotationForm(
                     files=request.FILES, data=request.POST, instance=current_quotation)
                 if form.is_valid():
