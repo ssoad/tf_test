@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
-from Academy.models import Course, Section, Content, CoursePurchase, CourseCategory, BCSCourse, BCSSection, BCSContent, CourseOrder, CoursePackage
+from Academy.models import Course, Section, Content, CoursePurchase, CourseCategory, BCSCourse, BCSSection, BCSContent, CourseOrder, CoursePackage, SubscriptionTeam
 
 
 # Create your views here.
@@ -137,7 +137,7 @@ def UserCourses(request):
 
 @login_required
 def myCourses(request):
-    business_courses = CourseOrder.objects.filter(user=request.user)
+    business_courses = SubscriptionTeam.objects.filter(user=request.user)
     personal_courses = CoursePurchase.objects.filter(user=request.user)
 
     context = {
@@ -181,6 +181,7 @@ def UserFiles(request, id):
             'course': course,
             'contents': contents,
             'content_type': 'instruction',
+            'course_type': 'pcs',
             'section_no': 1,
             'module_no': 1,
             'page_obj': page_obj
@@ -188,4 +189,26 @@ def UserFiles(request, id):
 
         return render(request, "user_panel/academy/files.html", context)
     except:
-        return HttpResponse('You are not authorized to view this page')
+        try:
+            course = BCSCourse.objects.get(id=id)
+            # section = Section.objects.filter(course=course)
+            contents = BCSContent.objects.filter(section__course=course)
+            # for content in contents:
+            #     print(content.course_video)
+            paginator = Paginator(contents, 1)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+
+            context = {
+                'course': course,
+                'contents': contents,
+                'content_type': 'instruction',
+                'course_type': 'bcs',
+                'section_no': 1,
+                'module_no': 1,
+                'page_obj': page_obj
+            }
+
+            return render(request, "user_panel/academy/files.html", context)
+        except:
+            return HttpResponse('You are not authorized to view this page')

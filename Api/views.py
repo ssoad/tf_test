@@ -827,6 +827,12 @@ class BCSCoursePurchaseApiView(generics.CreateAPIView):
             }
             r = requests.post(url, headers=headers)
             print(r.status_code)
+            current_business = bcsmodels.Business.objects.get(business_business__user=self.request.user)
+            order_subscription_teams = coursemodels.SubscriptionTeam.objects.filter(business=current_business,
+                                                                                    subscription_order=current_order)
+            if order_subscription_teams.exists():
+                for team in order_subscription_teams:
+                    team.delete()
         if user_orders.exists():
             notification = bcsmodels.AdminNotification.objects.create(category_choice='bcs',
                                                                       business=self.request.user.business_user.business,
@@ -1024,13 +1030,14 @@ class CourseSubscriptionTeamAccessApiView(generics.ListCreateAPIView):
                 user = bcsmodels.User.objects.get(id=ser.data['user'])
                 business = bcsmodels.Business.objects.get(id=ser.data['business'])
                 subscription_order = ser.data['subscription_order']
+                current_course = coursemodels.BCSCourse.objects.get(courseorder_bcscourse__id=subscription_order)
                 notification = bcsmodels.Notification.objects.create(category_choice=user.email,
                                                                      notification_time=timezone.now(),
                                                                      notification=f'Your Business {business.company_name}. '
                                                                                   f'Has added you to an Course. '
                                                                                   f'Please Fill visit the link. '
                                                                                   f'<a href="https://training.techforing'
-                                                                                  f'.com/academy_user_files/{subscription_order}/" target="_blank" class="btn btn-success">Visit Now</a>')
+                                                                                  f'.com/academy_user_files/{current_course.id}/" target="_blank" class="btn btn-success">Visit Now</a>')
                 notification.save()
                 return Response(ser.data)
         else:

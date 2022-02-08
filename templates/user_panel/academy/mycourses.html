@@ -25,9 +25,9 @@
                             <div class="row g-0">
                                 <div class="col-md-12">
                                     <div class="card-body">
-                                        <h5 class="card-title">{{ course.course.course_name }}</h5>
-                                        <p>{{ course.course.short_description }} </p>
-                                        <a href="{% host_url 'academy_user_files' host 'academy' %}{{ course.course.id }}"
+                                        <h5 class="card-title">{{ course.subscription_order.course.course_name }}</h5>
+                                        <p>{{ course.subscription_order.course.short_description }} </p>
+                                        <a href="{% host_url 'academy_user_files' host 'academy' %}{{ course.subscription_order.course.id }}"
                                            class="btn btn-navy text-capitalize">go to course <i
                                                 class="bi bi-arrow-bar-left"></i></a>
                                     </div>
