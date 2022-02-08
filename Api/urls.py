@@ -64,6 +64,7 @@ urlpatterns = [
     path('bcs/puchased_course_subscriptions/', views.CourseSubscriptionTeamOrderApiView.as_view(),
          name='puchased_course_subscriptions'),
     path('bcs/subscription_team/', views.SubscriptionTeamAccessApiView.as_view(), name='subscription_team'),
+    path('bcs/course_subscription_team/', views.CourseSubscriptionTeamAccessApiView.as_view(), name='course_subscription_team'),
     path('bcs/subscription_input/<id>/', views.SubscriptionInputApiView.as_view(), name='subscription_input'),
 
     path('bcs/team_input_info/<id>/', views.TeamInputInfoApiView.as_view(), name='team_input_info'),

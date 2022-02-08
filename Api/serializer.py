@@ -321,6 +321,23 @@ class SubscriptionTeamAccessSerializer(serializers.ModelSerializer):
         }
 
 
+class CourseSubscriptionTeamAccessSerializer(serializers.ModelSerializer):
+    # current_business = bcsmodels.Business.objects.get(business_business__user=)
+
+    subscription_order = serializers.SlugRelatedField(
+        queryset=coursemodels.CourseOrder.objects.filter(is_active=True), slug_field='id')
+    user = serializers.SlugRelatedField(queryset=bcsmodels.User.objects.filter(is_bcs=True), slug_field='id')
+
+    class Meta:
+        model = coursemodels.SubscriptionTeam
+        fields = "__all__"
+
+        extra_kwargs = {
+            'business': {'read_only': True}
+        }
+
+
+
 class TeamInputInfoSerializer(serializers.ModelSerializer):
     inputfield = serializers.CharField(source='inputfield.inputfield.placeholder')
 

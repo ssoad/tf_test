@@ -999,6 +999,51 @@ class SubscriptionTeamAccessApiView(generics.ListCreateAPIView):
         return bcsmodels.SubscriptionTeam.objects.filter(business=business)
 
 
+class CourseSubscriptionTeamAccessApiView(generics.ListCreateAPIView):
+    serializer_class = serializer.CourseSubscriptionTeamAccessSerializer
+    permission_classes = [apipermissions.IsTeamAdmin]
+
+    def perform_create(self, serializer):
+        serializer.save(business=self.request.user.business_user.business)
+
+    def create(self, request, *args, **kwargs):
+        ser = self.get_serializer(data=request.data)
+        data = ser.is_valid(raise_exception=True)
+        business = bcsmodels.UsersBusiness.objects.get(user_id=request.data.get('user'))
+
+        if self.request.user.business_user.business == business.business:
+            service_id = request.data['subscription_order']
+            is_subscribed = coursemodels.SubscriptionTeam.objects.filter(subscription_order_id=service_id,
+                                                                      user_id=request.data.get('user'))
+            if is_subscribed.exists():
+                return Response({
+                    'response': 'Team member already assigned'
+                })
+            else:
+                self.perform_create(ser)
+                user = bcsmodels.User.objects.get(id=ser.data['user'])
+                business = bcsmodels.Business.objects.get(id=ser.data['business'])
+                subscription_order = ser.data['subscription_order']
+                notification = bcsmodels.Notification.objects.create(category_choice=user.email,
+                                                                     notification_time=timezone.now(),
+                                                                     notification=f'Your Business {business.company_name}. '
+                                                                                  f'Has added you to an Course. '
+                                                                                  f'Please Fill visit the link. '
+                                                                                  f'<a href="https://training.techforing'
+                                                                                  f'.com/academy_user_files/{subscription_order}/" target="_blank" class="btn btn-success">Visit Now</a>')
+                notification.save()
+                return Response(ser.data)
+        else:
+            return Response({
+                'response': 'User is not in your business'
+            })
+
+    def get_queryset(self):
+        business = self.request.user.business_user.business
+        return coursemodels.SubscriptionTeam.objects.filter(business=business)
+
+
+
 class TeamInputInfoApiView(generics.ListAPIView):
     serializer_class = serializer.TeamInputInfoSerializer
     permission_classes = [apipermissions.IsBCSAdmin]
