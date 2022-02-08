@@ -951,8 +951,10 @@ def userSubscriptionsView(request):
         else:
             services = models.SubscriptionServices.objects.filter(
                 category_choice='bcs')
+            subscription_courses = BCSCourse.objects.all()
             context = {
                 'services': services,
+                'subscription_courses': subscription_courses,
             }
             return render(request, 'user_panel/bcs/subscriptions.html', context)
 
