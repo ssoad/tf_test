@@ -765,8 +765,9 @@ class BCSCoursePurchaseCheckApiView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def list(self, request, *args, **kwargs):
-        purchased_list = coursemodels.CourseOrder.objects.filter(business=self.request.user.business_user.business, is_active=True).values_list('course_id',
-                                                                                                     flat=True)
+        purchased_list = coursemodels.CourseOrder.objects.filter(business=self.request.user.business_user.business,
+                                                                 is_active=True).values_list('course_package_id',
+                                                                                             flat=True)
         print(purchased_list)
         return Response({'result': purchased_list})
 
@@ -802,7 +803,8 @@ class BCSCoursePurchaseApiView(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         course = request.data['course']
         try:
-            check_existing_order = coursemodels.CourseOrder.objects.get(business=self.request.user.business_user.business, course_id=course, is_active=True)
+            check_existing_order = coursemodels.CourseOrder.objects.get(
+                business=self.request.user.business_user.business, course_id=course, is_active=True)
             return Response({'response': 'You have already purchased this course'})
         except:
             ser = self.get_serializer(data=request.data)
