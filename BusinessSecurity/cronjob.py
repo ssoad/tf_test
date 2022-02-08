@@ -3,6 +3,7 @@ import base64
 import requests
 
 from BusinessSecurity import models
+from Academy import models as coursemodels
 from django.conf import settings
 
 from django.core.mail import send_mail
@@ -30,6 +31,27 @@ def PaypalSubscriptionCheck():
         if r.json()['status'] != 'ACTIVE':
             subscription.is_active = False
             subscription.save()
+
+    all_orders_subscriptions = coursemodels.CourseOrder.objects.filter(is_active=True)
+    for subscription in all_orders_subscriptions:
+        subscription_id = subscription.payment_id
+
+        url = f'{settings.PAYPAL_URL}billing/subscriptions/{subscription_id}/'
+
+        headers = {
+            'Content-type': 'application/json',
+            'Authorization': bearer
+        }
+        r = requests.get(url, headers=headers)
+        if r.json()['status'] != 'ACTIVE':
+            subscription.is_active = False
+            subscription.save()
+
+            order_subscription_teams = coursemodels.SubscriptionTeam.objects.filter(subscription_order__payment_id=subscription_id)
+
+            if order_subscription_teams.exists():
+                for team in order_subscription_teams:
+                    team.delete()
 
     # url =
     # send_mail(
