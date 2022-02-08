@@ -108,7 +108,7 @@
         })
             .then(res => res.json())
             .then(data => {
-                if (data.result.includes(parseInt(courseId))) {
+                if (data.result.includes(parseInt(packageID))) {
                     Swal.fire('Already Purchased.')
                 } else {
                     initPayPalButton();
