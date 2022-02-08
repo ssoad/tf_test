@@ -121,7 +121,7 @@
                                 </div>
                             </h4>
                             <div class="row mx-0">
-                                <div class="col ps-0">
+                                <div class="col-sm-6 col-md ps-0">
                                     <p class="mb-1">Company
                                         Type: {{ current_business.business.industry_type|capitalize }}</p>
                                     <p class="mb-1">Website:
@@ -130,7 +130,7 @@
                                     </p>
                                     <p class="mb-1">No of Employees: {{ current_business.business.business_size }}</p>
                                 </div>
-                                <div class="col">
+                                <div class="col-sm-6 col-md ps-0">
                                     <p class="mb-1">Phone: {{ current_business.business.phone_number }}</p>
                                     <p class="mb-1">Email: {{ current_business.business.email }}</p>
                                     <p class="mb-1">Address: {{ current_business.business.address }}</p>
@@ -188,12 +188,12 @@
             <div class="modal fade" id="employeePermission" tabindex="-1" aria-labelledby="employeePermissionLabel"
                  aria-hidden="true">
                 <div class="modal-dialog modal-lg">
-                    <div class="modal-content" style="min-width:600px">
+                    <div class="modal-content" style="width:100%">
                         <div class="modal-header">
                             <h5 class="modal-title" id="employeePermission">Change Access Information</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="px-3" >
+                        <div class="px-3 table-responsive" >
                             <div>
                                 <h5 class="mt-2 services-type">Services</h5>
                             </div>
