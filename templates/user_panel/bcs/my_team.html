@@ -188,12 +188,15 @@
             <div class="modal fade" id="employeePermission" tabindex="-1" aria-labelledby="employeePermissionLabel"
                  aria-hidden="true">
                 <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
+                    <div class="modal-content" style="min-width:600px">
                         <div class="modal-header">
                             <h5 class="modal-title" id="employeePermission">Change Access Information</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="px-3" >
+                            <div>
+                                <h5 class="mt-2 services-type">Services</h5>
+                            </div>
                             <table class="table text-center">
                                 <thead>
                                   <tr>
@@ -204,7 +207,26 @@
                                     <th scope="col">Action</th>
                                   </tr>
                                 </thead>
-                                <tbody id="updatePermissionTable" >
+                                <tbody id="updateServicePermissionTable" >
+                                {% comment %} 
+                                    Fill data from script
+                                {% endcomment %}
+                                </tbody>
+                              </table>
+                              <div>
+                                  <h5 class="mt-2 services-type">Courses</h5>
+                              </div>
+                            <table class="table text-center">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">Course Name</th>
+                                    <th scope="col">Package Name</th>
+                                    <th scope="col">Max User</th>
+                                    <th scope="col">Total User</th>
+                                    <th scope="col">Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody id="updateCoursePermissionTable" >
                                 {% comment %} 
                                     Fill data from script
                                 {% endcomment %}
@@ -421,7 +443,7 @@
     <script>
         const csrf_token = document.querySelector("#employeeDetail form input[name='csrfmiddlewaretoken']").value;
 
-        const handleButtonAction = (serviceId, userId) => {
+        const handleSubscriptionAccessChange = (serviceId, userId) => {
             const payload = {
                 subscription_order: serviceId,
                 user: userId
@@ -437,14 +459,35 @@
             })
             .then((response) => response.json())
             .then(data=>{
-                console.log(data)
+                handlePermissionAccess(userId);
+            })
+        }
+
+        const handleCourseAccessChange = (serviceId, userId) => {
+            const payload = {
+                subscription_order: serviceId,
+                user: userId
+            }
+            fetch(`${mainOrigin}/api/bcs/course_subscription_team/` , {
+                method: 'POST',
+                credentials: 'include',
+                body: JSON.stringify(payload),
+                headers: {
+                    'Content-type': 'application/json',
+                    'X-CSRFToken': csrf_token,
+                }
+            })
+            .then((response) => response.json())
+            .then(data=>{
                 handlePermissionAccess(userId);
             })
         }
 
         const handlePermissionAccess = id =>{
-            const container = $(`#updatePermissionTable`);
-            container.empty();
+            const serviceContainer = $(`#updateServicePermissionTable`);
+            const courseContainer = $(`#updateCoursePermissionTable`);
+            serviceContainer.empty();
+            courseContainer.empty();
             fetch(`${mainOrigin}/api/bcs/puchased_subscriptions/`, {
                 credentials: 'include',
             })
@@ -475,7 +518,7 @@
                                 style="width: 150px; height: 35px" 
                                 type="button" 
                                 class="btn btn-outline-navy"
-                                onclick="handleButtonAction(${service.id},${id})"
+                                onclick="handleSubscriptionAccessChange(${service.id},${id})"
                                 >
                                     Give Access
                                 </button>`) : (`<button 
@@ -491,7 +534,7 @@
                                 style="width: 150px; height: 35px" 
                                 type="button" 
                                 class="btn btn-outline-navy"
-                                onclick="handleButtonAction(${service.id},${id})"
+                                onclick="handleSubscriptionAccessChange(${service.id},${id})"
                                 >
                                     Give Access
                                 </button>`)
@@ -499,7 +542,66 @@
                             }
                         </td>
                         `}
-                        container.append(tableRow);
+                        serviceContainer.append(tableRow);
+                    })
+                })
+            })
+            fetch(`${mainOrigin}/api/bcs/puchased_course_subscriptions/`, {
+                credentials: 'include',
+            })
+            .then((response) => response.json())
+            .then(courses => {
+                console.log(courses)
+                const coursesIds = courses?.map(service => service.id)
+                fetch(`${mainOrigin}/api/bcs/course_subscription_team/` , {
+                    credentials: 'include',
+                    headers: {
+                        'Content-type': 'application/json',
+                        'X-CSRFToken': csrf_token,
+                    }
+                })
+                .then((response) => response.json())
+                .then(team => {
+                    courses.forEach(course => {
+                        const subscribed = team?.filter(sUser=> course.id === sUser.subscription_order && sUser.user === id)
+                        const tableRow = document.createElement("tr");
+                        if(course.is_active){
+                        tableRow.innerHTML += `
+                        <th scope="row">${course.course}</th>
+                        <td>${course.course_package}</td>
+                        <td>${course.max_user}</td>
+                        <td>${course.total_user}</td>
+                        <td>
+                            ${
+                                (!subscribed.length && course.max_user > course.total_user) ? (`<button 
+                                style="width: 150px; height: 35px" 
+                                type="button" 
+                                class="btn btn-outline-navy"
+                                onclick="handleCourseAccessChange(${course.id},${id})"
+                                >
+                                    Give Access
+                                </button>`) : (`<button 
+                                style="width: 150px; height: 35px" 
+                                type="button" 
+                                disabled
+                                class="btn btn-outline-navy"
+                                >
+                                    Give Access
+                                </button>`)
+                                {% comment %} 
+                                (`<button 
+                                style="width: 150px; height: 35px" 
+                                type="button" 
+                                class="btn btn-outline-navy"
+                                onclick="handleCourseAccessChange(${course.id},${id})"
+                                >
+                                    Give Access
+                                </button>`)
+                                {% endcomment %}
+                            }
+                        </td>
+                        `}
+                        courseContainer.append(tableRow);
                     })
                 })
             })
