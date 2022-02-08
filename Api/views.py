@@ -713,7 +713,7 @@ class SubscriptionOrderView(generics.CreateAPIView):
                 notification = bcsmodels.AdminNotification.objects.create(category_choice='pcs',
                                                                           user=self.request.user,
                                                                           notification=f'New Subscription. '
-                                                                                       f'<a href="https://pcs.techforing.com/pcs_admin_subscription_detail/{user_subscribed.id}/" target="_blank" class="btn btn-success">Visit Now</a>')
+                                                                                       f'<a href="https://pcs.techforing.com/pcs_admin_subscription_detail/{user_subscribed.id}/" target="_blank" class="btn btn-success d-block">Visit Now</a>')
                 notification.save()
                 return Response(ser.data)
         elif category_choice == 'bcs':
@@ -738,7 +738,7 @@ class SubscriptionOrderView(generics.CreateAPIView):
                 notification = bcsmodels.AdminNotification.objects.create(category_choice='bcs',
                                                                           business=self.request.user.business_user.business,
                                                                           notification=f'New Subscription. '
-                                                                                       f'<a href="https://main.techforing.com/bcs_admin_subscription_detail/{user_subscribed.id}/" target="_blank" class="btn btn-success">Visit Now</a>')
+                                                                                       f'<a href="https://main.techforing.com/bcs_admin_subscription_detail/{user_subscribed.id}/" target="_blank" class="btn btn-success d-block">Visit Now</a>')
                 notification.save()
                 return Response(ser.data)
 
@@ -998,7 +998,7 @@ class SubscriptionTeamAccessApiView(generics.ListCreateAPIView):
                                                                                   f'Please Fill the form to get the '
                                                                                   f'service. '
                                                                                   f'<a href="https://main.techforing'
-                                                                                  f'.com/bcs_user_team_service_form/{subscription_order}/" target="_blank" class="btn btn-success">Visit Now</a>')
+                                                                                  f'.com/bcs_user_team_service_form/{subscription_order}/" target="_blank" class="btn btn-success d-block">Visit Now</a>')
                 notification.save()
                 return Response(ser.data)
         else:
@@ -1043,7 +1043,7 @@ class CourseSubscriptionTeamAccessApiView(generics.ListCreateAPIView):
                                                                                   f'Has added you to an Course. '
                                                                                   f'Please Fill visit the link. '
                                                                                   f'<a href="https://training.techforing'
-                                                                                  f'.com/academy_user_files/{current_course.id}/" target="_blank" class="btn btn-success">Visit Now</a>')
+                                                                                  f'.com/academy_user_files/{current_course.id}/" target="_blank" class="btn btn-success d-block">Visit Now</a>')
                 notification.save()
                 return Response(ser.data)
         else:
