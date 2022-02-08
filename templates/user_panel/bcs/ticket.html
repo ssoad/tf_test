@@ -63,32 +63,34 @@
                 <h4 class="mt-2">You haven't opened any ticket yet!</h4>
             </div>
         {% else %}
-            <table id="order-table" class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>Ticket ID</th>
-                    <th>Title</th>
-                    <th>Category</th>
-                    <th>status</th>
-                    <th>Date</th>
-                    <th>View</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for ticket in tickets %}
+            <div class="table-responsive">
+                <table id="order-table" class="table table-bordered">
+                    <thead>
                     <tr>
-                        <td>{{ ticket.id }}</td>
-                        <td>{{ ticket.ticket_title }}</td>
-                        <td>{{ ticket.ticket_category }}</td>
-                        <td>{{ ticket.ticket_status }}</td>
-                        <td>{{ ticket.ticket_date }}</td>
-                        <td>
-                        <a class="nav-link" href="{% host_url 'ticket_details' %}{{ ticket.id }}"><i class="icofont-eye-alt"></i></a>
-                        </td>
+                        <th>Ticket ID</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>status</th>
+                        <th>Date</th>
+                        <th>View</th>
                     </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    {% for ticket in tickets %}
+                        <tr>
+                            <td>{{ ticket.id }}</td>
+                            <td>{{ ticket.ticket_title }}</td>
+                            <td>{{ ticket.ticket_category }}</td>
+                            <td>{{ ticket.ticket_status }}</td>
+                            <td>{{ ticket.ticket_date }}</td>
+                            <td>
+                            <a class="nav-link" href="{% host_url 'ticket_details' %}{{ ticket.id }}"><i class="icofont-eye-alt"></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         {% endif %}
 
     </section>
