@@ -941,6 +941,37 @@ def subscriptionCancelView(request, id):
 
 
 @login_required
+def courseSubscriptionCancelView(request, id):
+    if not request.user.is_bcs:
+        return HttpResponseRedirect(reverse('create_business'))
+    else:
+        username = settings.PAYPAL_USER
+        password = settings.PAYPAL_PASS
+        busername = str(base64.b64encode(bytes(username, 'utf-8')))[1:].replace("'", "").replace("=", '')
+        bpassword = str(base64.b64encode(bytes(password, 'utf-8')))[1:].replace("'", "")
+        bearer = f"Basic {busername}6{bpassword}"
+
+        current_package = CoursePackage.objects.get(id=id)
+        current_order = CourseOrder.objects.get(
+            business=request.user.business_user.business,
+            course_package=current_package,
+            course=current_package.service_id,
+            is_active=True
+        )
+
+        current_order.is_active = False
+        current_order.save()
+        url = f'{settings.PAYPAL_URL}billing/subscriptions/{current_order.payment_id}/cancel'
+        headers = {
+            'Content-type': 'application/json',
+            'Authorization': bearer
+        }
+        r = requests.post(url, headers=headers)
+        print(r.status_code)
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@login_required
 def userSubscriptionsView(request):
     if not request.user.is_bcs:
         return HttpResponseRedirect(reverse('create_business'))
@@ -2795,7 +2826,7 @@ def bcsAdminOrdersDetailView(request, id):
             quotation_form = forms.QuotationForm(instance=current_quotation)
             if request.method == 'POST':
                 form = forms.OrderPriceForm(files=request.FILES,
-                    data=request.POST, instance=current_price)
+                                            data=request.POST, instance=current_price)
                 quotation_form = forms.QuotationForm(
                     files=request.FILES, data=request.POST, instance=current_quotation)
                 if form.is_valid():

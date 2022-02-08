@@ -797,19 +797,68 @@ class BCSCoursePurchaseApiView(generics.CreateAPIView):
     queryset = coursemodels.CourseOrder.objects.all()
     permission_classes = [permissions.IsAuthenticated]
 
+    def cancelSubscriptions(self, course):
+        """
+        Cancelling Previous Subscriptions
+        """
+        username = settings.PAYPAL_USER
+        password = settings.PAYPAL_PASS
+        busername = str(base64.b64encode(bytes(username, 'utf-8')))[1:].replace("'", "").replace("=", '')
+        bpassword = str(base64.b64encode(bytes(password, 'utf-8')))[1:].replace("'", "")
+        bearer = f"Basic {busername}6{bpassword}"
+
+        packages = coursemodels.CoursePackage.objects.all().values_list(
+            'id')
+
+        user_orders = coursemodels.CourseOrder.objects.filter(
+            # user__business_user__business=self.request.user.business_user.business,
+            business=self.request.user.business_user.business,
+            course_package__in=packages,
+            course=course,
+            is_active=True
+        )
+        for current_order in user_orders:
+            current_order.is_active = False
+            current_order.save()
+            url = f'{settings.PAYPAL_URL}billing/subscriptions/{current_order.payment_id}/cancel'
+            headers = {
+                'Content-type': 'application/json',
+                'Authorization': bearer
+            }
+            r = requests.post(url, headers=headers)
+            print(r.status_code)
+        if user_orders.exists():
+            notification = bcsmodels.AdminNotification.objects.create(category_choice='bcs',
+                                                                      business=self.request.user.business_user.business,
+                                                                      notification=f'User has cancelled the Course '
+                                                                                   f'subs'
+                                                                                   f'cription for '
+                                                                                   f'{current_order.course.course_name}')
+            notification.save()
+
     def perform_create(self, serializer):
         serializer.save(business=self.request.user.business_user.business, is_active=True)
 
     def create(self, request, *args, **kwargs):
         course = request.data['course']
+        course_package = request.data['course_package']
         try:
             check_existing_order = coursemodels.CourseOrder.objects.get(
-                business=self.request.user.business_user.business, course_package_id=course, is_active=True)
+                business=self.request.user.business_user.business, course=course, course_package=course_package,
+                is_active=True)
             return Response({'response': 'You have already purchased this course'})
         except:
+            self.cancelSubscriptions(course)
+            """
+            Creating new Subscription
+            """
             ser = self.get_serializer(data=request.data)
             ser.is_valid(raise_exception=True)
             self.perform_create(ser)
+            notification = bcsmodels.AdminNotification.objects.create(category_choice='bcs',
+                                                                      business=self.request.user.business_user.business,
+                                                                      notification=f'New Course Subscription from {self.request.user.business_user.business}')
+            notification.save()
             return Response(ser.data)
 
 
