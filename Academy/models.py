@@ -3,6 +3,7 @@ from Account.models import User
 from tinymce.models import HTMLField
 from BusinessSecurity.models import Business
 import cv2
+from django.core.validators import FileExtensionValidator
 
 # Create your models here.
 duration = (
@@ -61,11 +62,14 @@ class Section(models.Model):
 class Content(models.Model):
     section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name='content_section')
     lecture_name = models.CharField(max_length=264)
-    text_instruction = models.FileField(upload_to='course/')
-    course_video = models.FileField(upload_to='course/')
+    text_instruction = models.FileField(upload_to='course/', validators=[FileExtensionValidator(['txt'])])
+    course_video = models.FileField(upload_to='course/', validators=[FileExtensionValidator(['mp4', 'avi', 'mov', 'ogv',
+                                                                                             'mkv', 'webm'])])
     preview_video = models.FileField(upload_to='course/',
-                                     blank=True, null=True)
-    resource_file = models.FileField(upload_to='course/')
+                                     blank=True, null=True,
+                                     validators=[FileExtensionValidator(['mp4', 'avi', 'mov', 'ogv',
+                                                                         'mkv', 'webm'])])
+    resource_file = models.FileField(upload_to='course/', validators=[FileExtensionValidator(['pdf'])])
 
     def __str__(self):
         return self.lecture_name
@@ -120,11 +124,14 @@ class BCSSection(models.Model):
 class BCSContent(models.Model):
     section = models.ForeignKey(BCSSection, on_delete=models.CASCADE, related_name='bcscontent_bcssection')
     lecture_name = models.CharField(max_length=264)
-    text_instruction = models.FileField(upload_to='course/')
-    course_video = models.FileField(upload_to='course/')
+    text_instruction = models.FileField(upload_to='course/', validators=[FileExtensionValidator(['txt'])])
+    course_video = models.FileField(upload_to='course/', validators=[FileExtensionValidator(['mp4', 'avi', 'mov', 'ogv',
+                                                                                             'mkv', 'webm'])])
     preview_video = models.FileField(upload_to='course/',
-                                     blank=True, null=True)
-    resource_file = models.FileField(upload_to='course/')
+                                     blank=True, null=True,
+                                     validators=[FileExtensionValidator(['mp4', 'avi', 'mov', 'ogv',
+                                                                         'mkv', 'webm'])])
+    resource_file = models.FileField(upload_to='course/', validators=[FileExtensionValidator(['pdf'])])
 
     def __str__(self):
         return self.lecture_name
@@ -173,7 +180,7 @@ class PackageFeatures(models.Model):
 
 class CourseOrder(models.Model):
     business = models.ForeignKey(Business, on_delete=models.CASCADE,
-                             related_name='courseorder_business')
+                                 related_name='courseorder_business')
     course = models.ForeignKey(BCSCourse, on_delete=models.CASCADE,
                                related_name='courseorder_bcscourse')
     course_package = models.ForeignKey(CoursePackage, on_delete=models.CASCADE,

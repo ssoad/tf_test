@@ -4,6 +4,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 from django_countries.fields import CountryField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.core.validators import FileExtensionValidator
 
 
 # Create your models here.
