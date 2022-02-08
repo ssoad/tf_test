@@ -3,23 +3,31 @@
 
     <div class="subscription-container position-relative px-0 px-md-2">
 
-        <h4 class="mt-5 fw-bold">All Subscriptions</h4>
+        <div class="d-flex">
+            <div class="w-50">
+                <h4 class="mt-5 fw-bold">All Subscriptions</h4>
 
+                <div class="mt-4 mb-5 subscription-list d-flex flex-column align-items-start">
+                    <!-- Services -->
+                    {% for service in services %}
+                        <button class="btn border-0 fs-5" onclick="handleSubscriptionNotice({{ service.id }})"
+                                data-bs-toggle="modal"
+                                data-bs-target="#{{ service.service_title|replacespace }}">{{ service.service_title|upper }}</button>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="w-50">
+                <h4 class="mt-5 fw-bold">All Courses</h4>
 
-        <div class="mt-4 mb-5 subscription-list d-flex flex-column align-items-start">
-            <!-- Services -->
-            {% for service in services %}
-                <button class="btn border-0 fs-5" onclick="handleSubscriptionNotice({{ service.id }})"
-                        data-bs-toggle="modal"
-                        data-bs-target="#{{ service.service_title|replacespace }}">{{ service.service_title|upper }}</button>
-            {% endfor %}
-
-            <!-- Courses -->
-            {% for course in subscription_courses %}
-                <button class="btn border-0 fs-5" onclick="handleCoursesNotice({{ course.id }})"
-                        data-bs-toggle="modal"
-                        data-bs-target="#{{ course.course_name|replacespace }}">{{ course.course_name|upper }}</button>
-            {% endfor %}
+                <div class="mt-4 mb-5 subscription-list d-flex flex-column align-items-start">
+                    <!-- Courses -->
+                    {% for course in subscription_courses %}
+                        <button class="btn border-0 fs-5" onclick="handleCoursesNotice({{ course.id }})"
+                                data-bs-toggle="modal"
+                                data-bs-target="#{{ course.course_name|replacespace }}">{{ course.course_name|upper }}</button>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
         <!-- Services -->
         {% for service in services %}
