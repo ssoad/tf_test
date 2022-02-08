@@ -804,7 +804,7 @@ class BCSCoursePurchaseApiView(generics.CreateAPIView):
         course = request.data['course']
         try:
             check_existing_order = coursemodels.CourseOrder.objects.get(
-                business=self.request.user.business_user.business, course_id=course, is_active=True)
+                business=self.request.user.business_user.business, course_package_id=course, is_active=True)
             return Response({'response': 'You have already purchased this course'})
         except:
             ser = self.get_serializer(data=request.data)
