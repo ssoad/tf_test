@@ -231,25 +231,14 @@
                         </div>
 
                         <div class="col-6 col-lg-2 d-flex justify-content-center align-items-center">
-                            <a href="
-
-
-
-
-
-
-
-
-
-
-                                    {% host_url reading_list.post.category|replacespace host 'blog' %}{{ reading_list.post.post_url }}"
+                            <a href="{% host_url reading_list.post.category|replacespace host 'blog' %}{{ reading_list.post.post_url }}"
                                target="_blank" class="btn btn-sm bg-navy text-white px-2 py-2">Read Full</a>
                         </div>
                     </div>
                 {% endfor %}
 
                 {% if user.reading_list_user.all.count > 2 %}
-                    <div class="btn-area d-flex justify-content-between">
+                    <div class="btn-area d-md-flex justify-content-between">
                                     <span class="fw-light text-secondary">Showing Content (<span id="current-events-no">1-2</span>) out
                             of {{ user.reading_list_user.all.count }}
                             </span>
