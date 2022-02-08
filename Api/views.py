@@ -643,6 +643,12 @@ class SubscriptionOrderView(generics.CreateAPIView):
                 }
                 r = requests.post(url, headers=headers)
                 print(r.status_code)
+                # current_business = bcsmodels.Business.objects.get(business_business__user=self.request.user)
+                # order_subscription_teams = bcsmodels.SubscriptionTeam.objects.filter(business=current_business,
+                #                                                                      subscription_order=current_order)
+                # if order_subscription_teams.exists():
+                #     for team in order_subscription_teams:
+                #         team.delete()
             if user_orders.exists():
                 notification = bcsmodels.AdminNotification.objects.create(category_choice='pcs',
                                                                           user=self.request.user,
@@ -1020,7 +1026,7 @@ class CourseSubscriptionTeamAccessApiView(generics.ListCreateAPIView):
         if self.request.user.business_user.business == business.business:
             service_id = request.data['subscription_order']
             is_subscribed = coursemodels.SubscriptionTeam.objects.filter(subscription_order_id=service_id,
-                                                                      user_id=request.data.get('user'))
+                                                                         user_id=request.data.get('user'))
             if is_subscribed.exists():
                 return Response({
                     'response': 'Team member already assigned'
@@ -1048,7 +1054,6 @@ class CourseSubscriptionTeamAccessApiView(generics.ListCreateAPIView):
     def get_queryset(self):
         business = self.request.user.business_user.business
         return coursemodels.SubscriptionTeam.objects.filter(business=business)
-
 
 
 class TeamInputInfoApiView(generics.ListAPIView):

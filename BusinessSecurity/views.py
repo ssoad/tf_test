@@ -945,6 +945,12 @@ def subscriptionCancelView(request, id):
         }
         r = requests.post(url, headers=headers)
         print(r.status_code)
+        # current_business = models.Business.objects.get(business_business__user=request.user)
+        # order_subscription_teams = models.SubscriptionTeam.objects.filter(business=current_business,
+        #                                                                   subscription_order=current_order)
+        # if order_subscription_teams.exists():
+        #     for team in order_subscription_teams:
+        #         team.delete()
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
