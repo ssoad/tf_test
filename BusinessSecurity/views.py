@@ -473,7 +473,7 @@ def userServicesView(request):
 
                 notification = models.AdminNotification.objects.create(category_choice='bcs',
                                                                        business=request.user.business_user.business,
-                                                                       notification=f'Got a New Quotation. ID: {order[0].id} <a href="https://main.techforing.com/bcs_user_order_details/{order[0].id}/" target="_blank" class="btn btn-success d-block">Visit Now</a>')
+                                                                       notification=f'Got a New Quotation. ID: {order[0].id} <div><a href="https://main.techforing.com/bcs_user_order_details/{order[0].id}/" target="_blank" class="btn btn-success">Visit Now</a></div>')
                 notification.save()
                 return render(request, 'user_panel/bcs/thanks.html')
             context = {
@@ -591,15 +591,15 @@ def userOrderDetailsView(request, id):
                                     notification = models.AdminNotification.objects.create(category_choice='bcs',
                                                                                            business=request.user.business_user.business,
                                                                                            notification=f'User Agreed to NDA/NCA for quotation: {current_quotation.id}. '
-                                                                                                        f'<a href="https://main'
-                                                                                                        f'.techforing.com/bcs_admin_order_detail/{current_quotation.id}/" target="_blank" class="btn btn-success d-block">Visit Now</a>')
+                                                                                                        f'<div><a href="https://main'
+                                                                                                        f'.techforing.com/bcs_admin_order_detail/{current_quotation.id}/" target="_blank" class="btn btn-success">Visit Now</a></div>')
                                     notification.save()
                                 else:
                                     notification = models.AdminNotification.objects.create(category_choice='bcs',
                                                                                            business=request.user.business_user.business,
                                                                                            notification=f'User Disagreed to NDA/NCA for quotation: {current_quotation.id}. '
-                                                                                                        f'<a href="https://main'
-                                                                                                        f'.techforing.com/bcs_admin_order_detail/{current_quotation.id}/" target="_blank" class="btn btn-success d-block">Visit Now</a>')
+                                                                                                        f'<div><a href="https://main'
+                                                                                                        f'.techforing.com/bcs_admin_order_detail/{current_quotation.id}/" target="_blank" class="btn btn-success">Visit Now</a></div>')
                                     notification.save()
 
                                 return HttpResponseRedirect(request.META['HTTP_REFERER'])
@@ -618,15 +618,15 @@ def userOrderDetailsView(request, id):
                                     notification = models.AdminNotification.objects.create(category_choice='bcs',
                                                                                            business=request.user.business_user.business,
                                                                                            notification=f'User Agreed to NDA/NCA for quotation: {current_quotation.id}. '
-                                                                                                        f'<a href="https://main '
-                                                                                                        f'.techforing.com/bcs_admin_order_detail/{current_quotation.id}/" target="_blank" class="btn btn-success d-block">Visit Now</a>')
+                                                                                                        f'<div><a href="https://main '
+                                                                                                        f'.techforing.com/bcs_admin_order_detail/{current_quotation.id}/" target="_blank" class="btn btn-success">Visit Now</a></div>')
                                     notification.save()
                                 else:
                                     notification = models.AdminNotification.objects.create(category_choice='bcs',
                                                                                            business=request.user.business_user.business,
                                                                                            notification=f'User Disagreed to NDA/NCA for quotation: {current_quotation.id}. '
-                                                                                                        f'<a href="https://main '
-                                                                                                        f'.techforing.com/bcs_admin_order_detail/{current_quotation.id}/" target="_blank" class="btn btn-success d-block">Visit Now</a>')
+                                                                                                        f'<div><a href="https://main '
+                                                                                                        f'.techforing.com/bcs_admin_order_detail/{current_quotation.id}/" target="_blank" class="btn btn-success">Visit Now</a></div>')
                                     notification.save()
 
                                 return HttpResponseRedirect(request.META['HTTP_REFERER'])
@@ -1213,7 +1213,7 @@ def openTicketView(request):
                         ticket.save()
                         notification = models.AdminNotification.objects.create(category_choice='bcs',
                                                                                business=request.user.business_user.business,
-                                                                               notification=f'New Ticket Created. <a href="https://main.techforing.com/bcs_admin_tickets_detail/{ticket.id}/" target="_blank" class="btn btn-success d-block">Visit Now</a>')
+                                                                               notification=f'New Ticket Created. <div><a href="https://main.techforing.com/bcs_admin_tickets_detail/{ticket.id}/" target="_blank" class="btn btn-success">Visit Now</a></div>')
                         notification.save()
                         return HttpResponseRedirect(request.META['HTTP_REFERER'])
             context = {
@@ -1243,7 +1243,7 @@ def ticketDetailView(request, id):
                     comment.save()
                     notification = models.AdminNotification.objects.create(category_choice='bcs',
                                                                            business=request.user.business_user.business,
-                                                                           notification=f'New Comment on Ticket. <a href="https://main.techforing.com/bcs_admin_tickets_detail/{ticket.id}/" target="_blank" class="btn btn-success d-block">Visit Now</a>')
+                                                                           notification=f'New Comment on Ticket. <div><a href="https://main.techforing.com/bcs_admin_tickets_detail/{ticket.id}/" target="_blank" class="btn btn-success">Visit Now</a></div>')
                     notification.save()
                     return HttpResponseRedirect(request.META['HTTP_REFERER'])
             context = {
@@ -2793,9 +2793,9 @@ def bcsAdminOrdersDetailView(request, id):
                 )
                 notification = models.Notification.objects.create(
                     category_choice=current_order.user.business_user.business.company_name,
-                    notification=f'Price Set for Order ID: {current_order.id} <a href="https://main.techforing.com/bcs_user_order_details/{current_order.id}/" '
+                    notification=f'Price Set for Order ID: {current_order.id} <div><a href="https://main.techforing.com/bcs_user_order_details/{current_order.id}/" '
                                  f'target="_blank" class="btn '
-                                 f'btn-success d-block">Visit Now</a>',
+                                 f'btn-success">Visit Now</a></div>',
                     notification_time=timezone.now())
                 notification.save()
 
@@ -2817,9 +2817,9 @@ def bcsAdminOrdersDetailView(request, id):
                 )
                 notification = models.Notification.objects.create(
                     category_choice=current_order.user.business_user.business.company_name,
-                    notification=f'Quotation Set for Order ID: {current_order.id} <a href="https://main.techforing.com/bcs_user_order_details/{current_order.id}/" '
+                    notification=f'Quotation Set for Order ID: {current_order.id} <div><a href="https://main.techforing.com/bcs_user_order_details/{current_order.id}/" '
                                  f'target="_blank" class="btn '
-                                 f'btn-success d-block">Visit Now</a>',
+                                 f'btn-success">Visit Now</a></div>',
                     notification_time=timezone.now())
                 notification.save()
                 try:
@@ -2864,9 +2864,9 @@ def bcsAdminOrdersDetailView(request, id):
                     )
                     notification = models.Notification.objects.create(
                         category_choice=current_order.user.business_user.business.company_name,
-                        notification=f'Price Set for Order ID: {current_order.id} <a href="https://main.techforing.com/bcs_user_order_details/{current_order.id}/" '
+                        notification=f'Price Set for Order ID: {current_order.id} <div><a href="https://main.techforing.com/bcs_user_order_details/{current_order.id}/" '
                                      f'target="_blank" class="btn '
-                                     f'btn-success d-block">Visit Now</a>',
+                                     f'btn-success">Visit Now</a></div>',
                         notification_time=timezone.now())
                     notification.save()
                     return HttpResponseRedirect(request.META['HTTP_REFERER'])
@@ -2888,9 +2888,9 @@ def bcsAdminOrdersDetailView(request, id):
                     )
                     notification = models.Notification.objects.create(
                         category_choice=current_order.user.business_user.business.company_name,
-                        notification=f'Quotation Set for Order ID: {current_order.id} <a href="https://main.techforing.com/bcs_user_order_details/{current_order.id}/" '
+                        notification=f'Quotation Set for Order ID: {current_order.id} <div><a href="https://main.techforing.com/bcs_user_order_details/{current_order.id}/" '
                                      f'target="_blank" class="btn '
-                                     f'btn-success d-block">Visit Now</a>',
+                                     f'btn-success">Visit Now</a></div>',
                         notification_time=timezone.now())
                     notification.save()
                     try:
@@ -2935,9 +2935,9 @@ def bcsAdminSubscriptionDetailView(request, id):
             # )
             # notification = models.Notification.objects.create(
             #     category_choice=current_order.user.business_user.business.company_name,
-            #     notification=f'Price Set for Order ID: {current_order.id} <a href="https://main.techforing.com/bcs_user_order_details/{current_order.id}/" '
+            #     notification=f'Price Set for Order ID: {current_order.id} <div><a href="https://main.techforing.com/bcs_user_order_details/{current_order.id}/" '
             #                  f'target="_blank" class="btn '
-            #                  f'btn-success d-block">Visit Now</a>',
+            #                  f'btn-success">Visit Now</a></div>',
             #     notification_time=timezone.now())
             # notification.save()
 
@@ -3057,9 +3057,9 @@ def bcsAdminTicketsDetailView(request, id):
             comment.save()
             notification = models.Notification.objects.create(
                 category_choice=ticket.user.business_user.business.company_name,
-                notification=f'New Reply on Ticket. <a href="https://main.techforing.com/ticket_details/{ticket.id}/" '
+                notification=f'New Reply on Ticket. <div><a href="https://main.techforing.com/ticket_details/{ticket.id}/" '
                              f'target="_blank" class="btn '
-                             f'btn-success d-block">Visit Now</a>',
+                             f'btn-success">Visit Now</a></div>',
                 notification_time=timezone.now())
             notification.save()
             return HttpResponseRedirect(request.META['HTTP_REFERER'])
