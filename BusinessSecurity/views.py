@@ -875,6 +875,10 @@ def bcsUserTeamMemberDeleteView(request, id):
                 or current_employee.privilege == 'admin':
             return HttpResponseRedirect(request.META['HTTP_REFERER'])
         else:
+            subscription_teams = models.SubscriptionTeam.objects.filter(user=current_user)
+            if subscription_teams.exists():
+                for team in subscription_teams:
+                    team.delete()
             current_user.is_bcs = False
             current_user.save()
             current_employee.delete()

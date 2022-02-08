@@ -945,6 +945,15 @@ class SubscriptionTeamOrderApiView(generics.ListAPIView):
         return bcsmodels.SubscriptionOrder.objects.filter(user__business_user__business=business, category_choice='bcs')
 
 
+class CourseSubscriptionTeamOrderApiView(generics.ListAPIView):
+    serializer_class = serializer.CourseSubscriptionTeamOrderSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        business = self.request.user.business_user.business
+        return coursemodels.CourseOrder.objects.filter(business=business)
+
+
 class SubscriptionTeamAccessApiView(generics.ListCreateAPIView):
     serializer_class = serializer.SubscriptionTeamAccessSerializer
     permission_classes = [apipermissions.IsTeamAdmin]

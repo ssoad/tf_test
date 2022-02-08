@@ -61,6 +61,8 @@ urlpatterns = [
     path('main/collective_notification/', views.CollectiveNotificationApiView.as_view(), name='collective_notification'),
 
     path('bcs/puchased_subscriptions/', views.SubscriptionTeamOrderApiView.as_view(), name='purchased_subscriptions'),
+    path('bcs/puchased_course_subscriptions/', views.CourseSubscriptionTeamOrderApiView.as_view(),
+         name='puchased_course_subscriptions'),
     path('bcs/subscription_team/', views.SubscriptionTeamAccessApiView.as_view(), name='subscription_team'),
     path('bcs/subscription_input/<id>/', views.SubscriptionInputApiView.as_view(), name='subscription_input'),
 

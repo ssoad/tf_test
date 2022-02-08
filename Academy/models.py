@@ -196,5 +196,16 @@ class CourseOrder(models.Model):
 
     is_active = models.BooleanField(default=False)
 
+    @property
+    def total_count(self):
+        return self.subscriptionteam_courseorder.filter(subscription_order_id=self.id).count()
+
     def __str__(self):
         return f'{self.business} - {self.course} - {self.course_package} - {self.is_active}'
+
+
+class SubscriptionTeam(models.Model):
+    business = models.ForeignKey(Business, on_delete=models.CASCADE, related_name='course_subscriptionteam_business')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='course_subscriptionteam_user')
+    subscription_order = models.ForeignKey(CourseOrder, on_delete=models.CASCADE,
+                                           related_name='subscriptionteam_courseorder')
