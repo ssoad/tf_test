@@ -13,7 +13,7 @@ from Academy.forms import BCSCourseCreateForm, SectionCreateForm, ContentCreateF
 from Account.models import User, Permissions, Interest
 from Account.forms import SelectBCSPermissionForm, InterestForm
 from Academy.models import Course, Section, Content, CourseCategory, BCSCourse, BCSSection, BCSContent, CoursePackage, \
-    PackageFeatures, CourseOrder, CoursePurchase
+    PackageFeatures, CourseOrder, CoursePurchase, SubscriptionTeam
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.core.files.storage import FileSystemStorage
@@ -876,8 +876,12 @@ def bcsUserTeamMemberDeleteView(request, id):
             return HttpResponseRedirect(request.META['HTTP_REFERER'])
         else:
             subscription_teams = models.SubscriptionTeam.objects.filter(user=current_user)
+            order_subscription_teams = SubscriptionTeam.objects.filter(user=current_user)
             if subscription_teams.exists():
                 for team in subscription_teams:
+                    team.delete()
+            if order_subscription_teams.exists():
+                for team in order_subscription_teams:
                     team.delete()
             current_user.is_bcs = False
             current_user.save()
@@ -941,6 +945,12 @@ def subscriptionCancelView(request, id):
         }
         r = requests.post(url, headers=headers)
         print(r.status_code)
+        # current_business = models.Business.objects.get(business_business__user=request.user)
+        # order_subscription_teams = models.SubscriptionTeam.objects.filter(business=current_business,
+        #                                                                   subscription_order=current_order)
+        # if order_subscription_teams.exists():
+        #     for team in order_subscription_teams:
+        #         team.delete()
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
@@ -972,6 +982,12 @@ def courseSubscriptionCancelView(request, id):
         }
         r = requests.post(url, headers=headers)
         print(r.status_code)
+        current_business = models.Business.objects.get(business_business__user=request.user)
+        order_subscription_teams = SubscriptionTeam.objects.filter(business=current_business,
+                                                                   subscription_order=current_order)
+        if order_subscription_teams.exists():
+            for team in order_subscription_teams:
+                team.delete()
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 

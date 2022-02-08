@@ -643,6 +643,12 @@ class SubscriptionOrderView(generics.CreateAPIView):
                 }
                 r = requests.post(url, headers=headers)
                 print(r.status_code)
+                # current_business = bcsmodels.Business.objects.get(business_business__user=self.request.user)
+                # order_subscription_teams = bcsmodels.SubscriptionTeam.objects.filter(business=current_business,
+                #                                                                      subscription_order=current_order)
+                # if order_subscription_teams.exists():
+                #     for team in order_subscription_teams:
+                #         team.delete()
             if user_orders.exists():
                 notification = bcsmodels.AdminNotification.objects.create(category_choice='pcs',
                                                                           user=self.request.user,
@@ -827,6 +833,12 @@ class BCSCoursePurchaseApiView(generics.CreateAPIView):
             }
             r = requests.post(url, headers=headers)
             print(r.status_code)
+            current_business = bcsmodels.Business.objects.get(business_business__user=self.request.user)
+            order_subscription_teams = coursemodels.SubscriptionTeam.objects.filter(business=current_business,
+                                                                                    subscription_order=current_order)
+            if order_subscription_teams.exists():
+                for team in order_subscription_teams:
+                    team.delete()
         if user_orders.exists():
             notification = bcsmodels.AdminNotification.objects.create(category_choice='bcs',
                                                                       business=self.request.user.business_user.business,
@@ -1014,7 +1026,7 @@ class CourseSubscriptionTeamAccessApiView(generics.ListCreateAPIView):
         if self.request.user.business_user.business == business.business:
             service_id = request.data['subscription_order']
             is_subscribed = coursemodels.SubscriptionTeam.objects.filter(subscription_order_id=service_id,
-                                                                      user_id=request.data.get('user'))
+                                                                         user_id=request.data.get('user'))
             if is_subscribed.exists():
                 return Response({
                     'response': 'Team member already assigned'
@@ -1024,13 +1036,14 @@ class CourseSubscriptionTeamAccessApiView(generics.ListCreateAPIView):
                 user = bcsmodels.User.objects.get(id=ser.data['user'])
                 business = bcsmodels.Business.objects.get(id=ser.data['business'])
                 subscription_order = ser.data['subscription_order']
+                current_course = coursemodels.BCSCourse.objects.get(courseorder_bcscourse__id=subscription_order)
                 notification = bcsmodels.Notification.objects.create(category_choice=user.email,
                                                                      notification_time=timezone.now(),
                                                                      notification=f'Your Business {business.company_name}. '
                                                                                   f'Has added you to an Course. '
                                                                                   f'Please Fill visit the link. '
                                                                                   f'<a href="https://training.techforing'
-                                                                                  f'.com/academy_user_files/{subscription_order}/" target="_blank" class="btn btn-success">Visit Now</a>')
+                                                                                  f'.com/academy_user_files/{current_course.id}/" target="_blank" class="btn btn-success">Visit Now</a>')
                 notification.save()
                 return Response(ser.data)
         else:
@@ -1041,7 +1054,6 @@ class CourseSubscriptionTeamAccessApiView(generics.ListCreateAPIView):
     def get_queryset(self):
         business = self.request.user.business_user.business
         return coursemodels.SubscriptionTeam.objects.filter(business=business)
-
 
 
 class TeamInputInfoApiView(generics.ListAPIView):
