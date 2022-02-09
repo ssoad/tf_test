@@ -1035,7 +1035,8 @@ def pcsAdminUserInterest(request):
     return render(request, 'admin_panel/pcsTF/userInterest.html')
 
 
-@user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
 def adminNotificationsView(request):
     notifications = models.AdminNotification.objects.filter(category_choice='pcs').order_by('-notification_time')
 

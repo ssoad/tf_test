@@ -2306,7 +2306,8 @@ def bcsAdminSingleUserInterest(request, id):
     return render(request, 'admin_panel/bcsTF/editForm.html', context)
 
 
-@user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/')
+@user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
 def adminNotificationsView(request):
     notifications = models.AdminNotification.objects.filter(category_choice='bcs').order_by('-notification_time')
 
