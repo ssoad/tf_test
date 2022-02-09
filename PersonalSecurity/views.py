@@ -184,7 +184,7 @@ def openTicketView(request):
                 ticket.save()
                 notification = models.AdminNotification.objects.create(category_choice='pcs',
                                                                        business=request.user.business_user.business,
-                                                                       notification=f'New Ticket Created. <div><a href="https://main.techforing.com/mysecurity/pcs_admin_tickets_detail/{ticket.id}/" target="_blank" class="btn btn-success">Visit Now</a></div>')
+                                                                       notification=f'New Ticket Created. <div><a href="https://pcs.techforing.com/pcs_admin_tickets_detail/{ticket.id}/" target="_blank" class="btn btn-success">Visit Now</a></div>')
                 notification.save()
                 return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
@@ -208,7 +208,7 @@ def ticketDetailView(request, id):
             comment.save()
             notification = models.AdminNotification.objects.create(category_choice='pcs',
                                                                    business=request.user.business_user.business,
-                                                                   notification=f'New Comment on Ticket. <div><a href="https://main.techforing.com/mysecurity/pcs_admin_tickets_detail/{ticket.id}/" target="_blank" class="btn btn-success">Visit Now</a></div>')
+                                                                   notification=f'New Comment on Ticket. <div><a href="https://pcs.techforing.com/pcs_admin_tickets_detail/{ticket.id}/" target="_blank" class="btn btn-success">Visit Now</a></div>')
             notification.save()
             return HttpResponseRedirect(request.META['HTTP_REFERER'])
     context = {
@@ -319,7 +319,7 @@ def userServicesView(request):
             order_staff.save()
         notification = models.AdminNotification.objects.create(category_choice='pcs',
                                                                user=request.user,
-                                                               notification=f'Got a New Quotation. ID: {order[0].id} <div><a href="https://pcs.techforing.com/pcs_user_order_details/{order[0].id}/" target="_blank" class="btn btn-success">Visit Now</a></div>')
+                                                               notification=f'Got a New Quotation. ID: {order[0].id} <div><a href="https://pcs.techforing.com/pcs_admin_order_details/{order[0].id}/" target="_blank" class="btn btn-success">Visit Now</a></div>')
         notification.save()
         return render(request, 'user_panel/pcs/thanks.html')
     context = {
@@ -407,13 +407,13 @@ def userOrderDetailsView(request, id):
                         notification = models.AdminNotification.objects.create(category_choice='pcs',
                                                                                user=request.user,
                                                                                notification=f'User Agreed on NDA/NCA. '
-                                                                                            f'ID: {current_quotation.order.id} <div><a href="https://pcs.techforing.com/pcs_user_order_details/{current_quotation.order.id}/" target="_blank" class="btn btn-success">Visit Now</a></div>')
+                                                                                            f'ID: {current_quotation.order.id} <div><a href="https://pcs.techforing.com/pcs_admin_order_details/{current_quotation.order.id}/" target="_blank" class="btn btn-success">Visit Now</a></div>')
                         notification.save()
                     else:
                         notification = models.AdminNotification.objects.create(category_choice='pcs',
                                                                                user=request.user,
                                                                                notification=f'User Disagreed on '
-                                                                                            f'NDA/NCA. ID: {current_quotation.order.id} <div><a href="https://pcs.techforing.com/pcs_user_order_details/{current_quotation.order.id}/" target="_blank" class="btn btn-success">Visit Now</a></div>')
+                                                                                            f'NDA/NCA. ID: {current_quotation.order.id} <div><a href="https://pcs.techforing.com/pcs_admin_order_details/{current_quotation.order.id}/" target="_blank" class="btn btn-success">Visit Now</a></div>')
                         notification.save()
 
                     return HttpResponseRedirect(request.META['HTTP_REFERER'])
@@ -432,13 +432,13 @@ def userOrderDetailsView(request, id):
                         notification = models.AdminNotification.objects.create(category_choice='pcs',
                                                                                user=request.user,
                                                                                notification=f'User Agreed on NDA/NCA. '
-                                                                                            f'ID: {current_quotation.order.id} <div><a href="https://pcs.techforing.com/pcs_user_order_details/{current_quotation.order.id}/" target="_blank" class="btn btn-success">Visit Now</a></div>')
+                                                                                            f'ID: {current_quotation.order.id} <div><a href="https://pcs.techforing.com/pcs_admin_order_details/{current_quotation.order.id}/" target="_blank" class="btn btn-success">Visit Now</a></div>')
                         notification.save()
                     else:
                         notification = models.AdminNotification.objects.create(category_choice='pcs',
                                                                                user=request.user,
                                                                                notification=f'User Disagreed on '
-                                                                                            f'NDA/NCA. ID: {current_quotation.order.id} <div><a href="https://pcs.techforing.com/pcs_user_order_details/{current_quotation.order.id}/" target="_blank" class="btn btn-success">Visit Now</a></div>')
+                                                                                            f'NDA/NCA. ID: {current_quotation.order.id} <div><a href="https://pcs.techforing.com/pcs_admin_order_details/{current_quotation.order.id}/" target="_blank" class="btn btn-success">Visit Now</a></div>')
                         notification.save()
 
                     return HttpResponseRedirect(request.META['HTTP_REFERER'])

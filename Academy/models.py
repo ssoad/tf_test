@@ -62,14 +62,18 @@ class Section(models.Model):
 class Content(models.Model):
     section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name='content_section')
     lecture_name = models.CharField(max_length=264)
-    text_instruction = models.FileField(upload_to='course/', validators=[FileExtensionValidator(['txt'])])
+    text_instruction = models.FileField(upload_to='course/', validators=[FileExtensionValidator(['txt'])],
+                                        help_text='(Supported Format: .txt)')
     course_video = models.FileField(upload_to='course/', validators=[FileExtensionValidator(['mp4', 'avi', 'mov', 'ogv',
-                                                                                             'mkv', 'webm'])])
+                                                                                             'mkv', 'webm'])],
+                                    help_text='(Video File Only)')
     preview_video = models.FileField(upload_to='course/',
                                      blank=True, null=True,
                                      validators=[FileExtensionValidator(['mp4', 'avi', 'mov', 'ogv',
-                                                                         'mkv', 'webm'])])
-    resource_file = models.FileField(upload_to='course/', validators=[FileExtensionValidator(['pdf'])])
+                                                                         'mkv', 'webm'])],
+                                     help_text='(Video File Only)')
+    resource_file = models.FileField(upload_to='course/', validators=[FileExtensionValidator(['pdf'])],
+                                     help_text='(Supported Format: .pdf)')
 
     def __str__(self):
         return self.lecture_name
@@ -124,14 +128,18 @@ class BCSSection(models.Model):
 class BCSContent(models.Model):
     section = models.ForeignKey(BCSSection, on_delete=models.CASCADE, related_name='bcscontent_bcssection')
     lecture_name = models.CharField(max_length=264)
-    text_instruction = models.FileField(upload_to='course/', validators=[FileExtensionValidator(['txt'])])
+    text_instruction = models.FileField(upload_to='course/', validators=[FileExtensionValidator(['txt'])],
+                                        help_text='(Supported Format: .txt)')
     course_video = models.FileField(upload_to='course/', validators=[FileExtensionValidator(['mp4', 'avi', 'mov', 'ogv',
-                                                                                             'mkv', 'webm'])])
+                                                                                             'mkv', 'webm'])],
+                                    help_text='(Video File Only)')
     preview_video = models.FileField(upload_to='course/',
                                      blank=True, null=True,
                                      validators=[FileExtensionValidator(['mp4', 'avi', 'mov', 'ogv',
-                                                                         'mkv', 'webm'])])
-    resource_file = models.FileField(upload_to='course/', validators=[FileExtensionValidator(['pdf'])])
+                                                                         'mkv', 'webm'])],
+                                     help_text='(Video File Only)')
+    resource_file = models.FileField(upload_to='course/', validators=[FileExtensionValidator(['pdf'])],
+                                     help_text='(Supported Format: .pdf)')
 
     def __str__(self):
         return self.lecture_name

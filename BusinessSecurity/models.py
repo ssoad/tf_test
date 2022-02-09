@@ -230,8 +230,10 @@ agreement = (
 
 class Quotation(models.Model):
     order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name='quotation_order')
-    nda = models.FileField(upload_to='nda/', blank=True, null=True, validators=[FileExtensionValidator(['pdf'])])
-    nca = models.FileField(upload_to='nca/', blank=True, null=True, validators=[FileExtensionValidator(['pdf'])])
+    nda = models.FileField(upload_to='nda/', blank=True, null=True, validators=[FileExtensionValidator(['pdf'])],
+                           help_text='(Supported Format: .pdf)')
+    nca = models.FileField(upload_to='nca/', blank=True, null=True, validators=[FileExtensionValidator(['pdf'])],
+                           help_text='(Supported Format: .pdf)')
     # quotation = models.FileField(upload_to='quotation/', blank=True, null=True)
     quotation_info = HTMLField(blank=True, null=True)
     extra_field = models.CharField(max_length=255, blank=True, null=True)
@@ -245,9 +247,9 @@ class QuotationAgreement(models.Model):
     quotation = models.OneToOneField(Quotation, on_delete=models.CASCADE, related_name='quotation_agreement_quotation')
     agreement = models.CharField(verbose_name='Agree to NDA/NCA', choices=agreement, max_length=255)
     user_nda = models.FileField(upload_to='nda/uploaded/', blank=True, null=True, verbose_name='Upload NDA',
-                                validators=[FileExtensionValidator(['pdf'])])
+                                validators=[FileExtensionValidator(['pdf'])], help_text='(Supported Format: .pdf)')
     user_nca = models.FileField(upload_to='nca/uploaded/', blank=True, null=True, verbose_name='Upload NCA',
-                                validators=[FileExtensionValidator(['pdf'])])
+                                validators=[FileExtensionValidator(['pdf'])], help_text='(Supported Format: .pdf)')
     message = HTMLField(blank=True, null=True)
 
 
@@ -267,8 +269,8 @@ class OrderPrice(models.Model):
     price = models.PositiveIntegerField(default=0, blank=True)
     currency = models.CharField(choices=currency, max_length=255)
     payment_method = models.CharField(choices=payment_method, max_length=255)
-    invoice = models.FileField(upload_to='invoice', default='invoice/invoice.pdf',
-                               validators=[FileExtensionValidator(['pdf'])])
+    invoice = models.FileField(upload_to='invoice',
+                               validators=[FileExtensionValidator(['pdf'])], help_text='(Supported Format: .pdf)')
 
     def save(self, *args, **kwargs):
         self.price = self.initial_price - ((self.initial_price * self.discount) / 100) + (
@@ -332,7 +334,8 @@ class Ticket(models.Model):
                                                                                             'avif', 'gif', 'jpeg',
                                                                                             'jpg', 'png', 'svg', 'webp',
                                                                                             'bmp', 'mp3', 'wav',
-                                                                                            'ogg', 'pdf', 'csv'])])
+                                                                                            'ogg', 'pdf', 'csv'])],
+        help_text='(Supported Format: Video/Audio/Images/Documents)')
     ticket_status = models.CharField(max_length=255, choices=ticket_status)
     ticket_date = models.DateTimeField(auto_now_add=True)
 
