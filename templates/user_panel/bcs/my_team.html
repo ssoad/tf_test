@@ -4,7 +4,10 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
     {% comment %} <link rel="stylesheet" href="https://npmcdn.com/tootik@1.0.2/css/tootik.min.css"> {% endcomment %}
     <style>
-        body { padding-right: 0 !important }
+        body {
+            padding-right: 0 !important
+        }
+
         .profile-details {
             margin-block: 1rem;
         }
@@ -193,45 +196,45 @@
                             <h5 class="modal-title" id="employeePermission">Change Access Information</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="px-3 table-responsive" >
+                        <div class="px-3 table-responsive">
                             <div>
                                 <h5 class="mt-2 services-type">Services</h5>
                             </div>
                             <table class="table text-center">
                                 <thead>
-                                  <tr>
+                                <tr>
                                     <th scope="col">Service Name</th>
                                     <th scope="col">Package Name</th>
                                     <th scope="col">Max User</th>
                                     <th scope="col">Total User</th>
                                     <th scope="col">Action</th>
-                                  </tr>
+                                </tr>
                                 </thead>
-                                <tbody id="updateServicePermissionTable" >
+                                <tbody id="updateServicePermissionTable">
                                 {% comment %} 
                                     Fill data from script
                                 {% endcomment %}
                                 </tbody>
-                              </table>
-                              <div>
-                                  <h5 class="mt-2 services-type">Courses</h5>
-                              </div>
+                            </table>
+                            <div>
+                                <h5 class="mt-2 services-type">Courses</h5>
+                            </div>
                             <table class="table text-center">
                                 <thead>
-                                  <tr>
+                                <tr>
                                     <th scope="col">Course Name</th>
                                     <th scope="col">Package Name</th>
                                     <th scope="col">Max User</th>
                                     <th scope="col">Total User</th>
                                     <th scope="col">Action</th>
-                                  </tr>
+                                </tr>
                                 </thead>
-                                <tbody id="updateCoursePermissionTable" >
+                                <tbody id="updateCoursePermissionTable">
                                 {% comment %} 
                                     Fill data from script
                                 {% endcomment %}
                                 </tbody>
-                              </table>
+                            </table>
                         </div>
                         </form>
                     </div>
@@ -318,8 +321,9 @@
                                         class="fa fa-user-o"></i></a>
                                 <button data-tootik="Change access permissions" id=""
                                         class="btn btn-outline-navy btn-sm employeePermissionUpdate"
-                                        data-bs-toggle="modal" data-bs-target="#employeePermission" onclick="handlePermissionAccess({{employee.user.id}})" >
-                                        <i class="icofont-unlock"></i>
+                                        data-bs-toggle="modal" data-bs-target="#employeePermission"
+                                        onclick="handlePermissionAccess({{ employee.user.id }})">
+                                    <i class="icofont-unlock"></i>
                                 </button>
 
                                 {% if current_business.business.business_business.count > 1 %}
@@ -331,7 +335,8 @@
                                                         data-bs-toggle="modal" data-bs-target="#employeeDetail">
                                                     <i class="bi bi-pencil"></i>
                                                 </button>
-                                                <a data-tootik="Delete" href="{% host_url 'bcs_user_team_member_delete' %}{{ employee.id }}"
+                                                <a data-tootik="Delete"
+                                                   href="{% host_url 'bcs_user_team_member_delete' %}{{ employee.id }}"
                                                    class="del-btn btn btn-outline-danger btn-sm">
                                                     <i class="bi bi-trash"></i>
                                                 </a>
@@ -342,7 +347,8 @@
                                                     data-bs-toggle="modal" data-bs-target="#employeeDetail">
                                                 <i class="bi bi-pencil"></i>
                                             </button>
-                                            <a data-tootik="Delete" href="{% host_url 'bcs_user_team_member_delete' %}{{ employee.id }}"
+                                            <a data-tootik="Delete"
+                                               href="{% host_url 'bcs_user_team_member_delete' %}{{ employee.id }}"
                                                class="del-btn btn btn-outline-danger btn-sm">
                                                 <i class="bi bi-trash"></i>
                                             </a>
@@ -448,7 +454,7 @@
                 subscription_order: serviceId,
                 user: userId
             }
-            fetch(`${mainOrigin}/api/bcs/subscription_team/` , {
+            fetch(`${mainOrigin}/api/bcs/subscription_team/`, {
                 method: 'POST',
                 credentials: 'include',
                 body: JSON.stringify(payload),
@@ -457,10 +463,10 @@
                     'X-CSRFToken': csrf_token,
                 }
             })
-            .then((response) => response.json())
-            .then(data=>{
-                handlePermissionAccess(userId);
-            })
+                .then((response) => response.json())
+                .then(data => {
+                    handlePermissionAccess(userId);
+                })
         }
 
         const handleCourseAccessChange = (serviceId, userId) => {
@@ -468,7 +474,7 @@
                 subscription_order: serviceId,
                 user: userId
             }
-            fetch(`${mainOrigin}/api/bcs/course_subscription_team/` , {
+            fetch(`${mainOrigin}/api/bcs/course_subscription_team/`, {
                 method: 'POST',
                 credentials: 'include',
                 body: JSON.stringify(payload),
@@ -477,13 +483,13 @@
                     'X-CSRFToken': csrf_token,
                 }
             })
-            .then((response) => response.json())
-            .then(data=>{
-                handlePermissionAccess(userId);
-            })
+                .then((response) => response.json())
+                .then(data => {
+                    handlePermissionAccess(userId);
+                })
         }
 
-        const handlePermissionAccess = id =>{
+        const handlePermissionAccess = id => {
             const serviceContainer = $(`#updateServicePermissionTable`);
             const courseContainer = $(`#updateCoursePermissionTable`);
             serviceContainer.empty();
@@ -491,30 +497,30 @@
             fetch(`${mainOrigin}/api/bcs/puchased_subscriptions/`, {
                 credentials: 'include',
             })
-            .then((response) => response.json())
-            .then(services=>{
-                const servicesIds = services?.map(service => service.id)
-                fetch(`${mainOrigin}/api/bcs/subscription_team/` , {
-                    credentials: 'include',
-                    headers: {
-                        'Content-type': 'application/json',
-                        'X-CSRFToken': csrf_token,
-                    }
-                })
                 .then((response) => response.json())
-                .then(team => {
-                    services.forEach(service=>{
-                        const subscribed = team?.filter(sUser=> service.id === sUser.subscription_order && sUser.user === id)
-                        const tableRow = document.createElement("tr");
-                        if(service.is_active){
-                        tableRow.innerHTML += `
+                .then(services => {
+                    const servicesIds = services?.map(service => service.id)
+                    fetch(`${mainOrigin}/api/bcs/subscription_team/`, {
+                        credentials: 'include',
+                        headers: {
+                            'Content-type': 'application/json',
+                            'X-CSRFToken': csrf_token,
+                        }
+                    })
+                        .then((response) => response.json())
+                        .then(team => {
+                            services.forEach(service => {
+                                const subscribed = team?.filter(sUser => service.id === sUser.subscription_order && sUser.user === id)
+                                const tableRow = document.createElement("tr");
+                                if (service.is_active) {
+                                    tableRow.innerHTML += `
                         <th scope="row">${service.subscription_service}</th>
                         <td>${service.subscription_package}</td>
                         <td>${service.max_user}</td>
                         <td>${service.total_user}</td>
                         <td>
                             ${
-                                (!subscribed.length && service.max_user > service.total_user) ? (`<button 
+                                        (!subscribed.length && service.max_user > service.total_user) ? (`<button
                                 style="width: 150px; height: 35px" 
                                 type="button" 
                                 class="btn btn-outline-navy"
@@ -529,51 +535,52 @@
                                 >
                                     Give Access
                                 </button>`)
-                                {% comment %} 
-                                (`<button 
-                                style="width: 150px; height: 35px" 
-                                type="button" 
-                                class="btn btn-outline-navy"
-                                onclick="handleSubscriptionAccessChange(${service.id},${id})"
-                                >
-                                    Give Access
-                                </button>`)
-                                {% endcomment %}
-                            }
+                                    {% comment %}
+                                    (`<button
+                                    style="width: 150px; height: 35px"
+                                    type="button"
+                                    class="btn btn-outline-navy"
+                                    onclick="handleSubscriptionAccessChange(${service.id},${id})"
+                                    >
+                                        Give Access
+                                    </button>`)
+                                    {% endcomment %}
+                                    }
                         </td>
-                        `}
-                        serviceContainer.append(tableRow);
-                    })
+                        `
+                                }
+                                serviceContainer.append(tableRow);
+                            })
+                        })
                 })
-            })
             fetch(`${mainOrigin}/api/bcs/puchased_course_subscriptions/`, {
                 credentials: 'include',
             })
-            .then((response) => response.json())
-            .then(courses => {
-                console.log(courses)
-                const coursesIds = courses?.map(service => service.id)
-                fetch(`${mainOrigin}/api/bcs/course_subscription_team/` , {
-                    credentials: 'include',
-                    headers: {
-                        'Content-type': 'application/json',
-                        'X-CSRFToken': csrf_token,
-                    }
-                })
                 .then((response) => response.json())
-                .then(team => {
-                    courses.forEach(course => {
-                        const subscribed = team?.filter(sUser=> course.id === sUser.subscription_order && sUser.user === id)
-                        const tableRow = document.createElement("tr");
-                        if(course.is_active){
-                        tableRow.innerHTML += `
+                .then(courses => {
+                    console.log(courses)
+                    const coursesIds = courses?.map(service => service.id)
+                    fetch(`${mainOrigin}/api/bcs/course_subscription_team/`, {
+                        credentials: 'include',
+                        headers: {
+                            'Content-type': 'application/json',
+                            'X-CSRFToken': csrf_token,
+                        }
+                    })
+                        .then((response) => response.json())
+                        .then(team => {
+                            courses.forEach(course => {
+                                const subscribed = team?.filter(sUser => course.id === sUser.subscription_order && sUser.user === id)
+                                const tableRow = document.createElement("tr");
+                                if (course.is_active) {
+                                    tableRow.innerHTML += `
                         <th scope="row">${course.course}</th>
                         <td>${course.course_package}</td>
                         <td>${course.max_user}</td>
                         <td>${course.total_user}</td>
                         <td>
                             ${
-                                (!subscribed.length && course.max_user > course.total_user) ? (`<button 
+                                        (!subscribed.length && course.max_user > course.total_user) ? (`<button
                                 style="width: 150px; height: 35px" 
                                 type="button" 
                                 class="btn btn-outline-navy"
@@ -588,23 +595,24 @@
                                 >
                                     Give Access
                                 </button>`)
-                                {% comment %} 
-                                (`<button 
-                                style="width: 150px; height: 35px" 
-                                type="button" 
-                                class="btn btn-outline-navy"
-                                onclick="handleCourseAccessChange(${course.id},${id})"
-                                >
-                                    Give Access
-                                </button>`)
-                                {% endcomment %}
-                            }
+                                    {% comment %}
+                                    (`<button
+                                    style="width: 150px; height: 35px"
+                                    type="button"
+                                    class="btn btn-outline-navy"
+                                    onclick="handleCourseAccessChange(${course.id},${id})"
+                                    >
+                                        Give Access
+                                    </button>`)
+                                    {% endcomment %}
+                                    }
                         </td>
-                        `}
-                        courseContainer.append(tableRow);
-                    })
+                        `
+                                }
+                                courseContainer.append(tableRow);
+                            })
+                        })
                 })
-            })
         }
 
         document.querySelector('#employeeDetail .modal-body');
@@ -772,19 +780,27 @@
     </script>
     <script>
         var alertPlaceholder = document.getElementById('liveAlertPlaceholder');
-        function alert(message, type) {
+
+        function successAlert(message, type) {
             var wrapper = document.createElement('div')
-            wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
-            
+            wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">User with given email ' + message + ' added to your teams.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+
+            alertPlaceholder.append(wrapper)
+        }
+
+        function failedAlert(message, type) {
+            var wrapper = document.createElement('div')
+            wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">User with given email ' + message + ' registered to another business.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+
             alertPlaceholder.append(wrapper)
         }
 
         {% if success %}
-        alert('{{ success }}', 'success')
+            successAlert('{{ success }}', 'success')
         {% endif %}
-        
+
         {% if message %}
-        alert('{{ message }}', 'danger')
+            failedAlert('{{ message }}', 'danger')
         {% endif %}
     </script>
 {% endblock customjs %}

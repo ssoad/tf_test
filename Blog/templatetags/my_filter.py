@@ -10,6 +10,11 @@ def times(count):
 
 
 @register.filter
+def array_len(count):
+    return len(count)
+
+
+@register.filter
 def sub(count):
     return range(int(5 - int(count)))
 

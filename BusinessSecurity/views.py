@@ -22,6 +22,7 @@ from django.utils.dateparse import parse_date
 from django.utils.formats import get_format
 from Blog.models import Post
 from django.conf import settings
+import uuid
 
 
 def date_parser(date_str):
@@ -737,32 +738,78 @@ def bcsUserMyTeamView(request):
                     # print(emails)
                     err_mail = []
                     suc_mail = []
-                    for mail in emails:
-                        try:
-                            added_user = models.User.objects.get(email=mail)
-                            added_user.is_bcs = True
-                            added_user.save()
-                            user_business = models.UsersBusiness.objects.get_or_create(user=added_user,
+
+                    def add_member(mail):
+                        current_user = models.User.objects.get(email=mail)
+                        if not current_user.is_bcs:
+                            current_user.is_bcs = True
+                            current_user.save()
+                            user_business = models.UsersBusiness.objects.get_or_create(user=current_user,
                                                                                        business=current_business.business)
                             user_business[0].save()
                             suc_mail.append(mail)
-                            context = {
-                                'current_business': current_business,
-                                'image_form': image_form,
-                                'info_form': info_form,
-                                'admins': admins,
-                                'success': f'User with given email {suc_mail} added'
-                            }
-
-                        except:
+                            notification = models.Notification.objects.create(category_choice=current_user.email,
+                                                                              notification_time=timezone.now(),
+                                                                              notification=f'You have been added to '
+                                                                                           f'{current_business.business.company_name} by {request.user}')
+                            notification.save()
+                        else:
                             err_mail.append(mail)
-                            context = {
-                                'current_business': current_business,
-                                'image_form': image_form,
-                                'info_form': info_form,
-                                'admins': admins,
-                                'message': f'User with given email {err_mail} not found'
-                            }
+
+                    for mail in emails:
+                        try:
+                            add_member(mail)
+                        except:
+                            password = str(uuid.uuid4())
+
+                            new_user = models.User.objects.create(email=mail)
+                            new_user.set_password(password)
+                            new_user.save()
+                            add_member(new_user.email)
+                            send_mail(
+                                f'Invitation from {current_business.business.company_name}',
+                                f'You have been invited to {current_business.business.company_name} by {request.user}.\n'
+                                f'An account has been created at https://main.techforing.com\n'
+                                f'Email: {new_user.email}\nPassword: {password}\n'
+                                f'Please change your password, and update your profile to get support.',
+                                'hridoy.techforing@gmail.com',
+                                [f'{new_user.email}'],
+                                fail_silently=False,
+                            )
+                    context = {
+                        'current_business': current_business,
+                        'image_form': image_form,
+                        'info_form': info_form,
+                        'admins': admins,
+                        'success': suc_mail,
+                        'message': err_mail
+                    }
+
+                    # try:
+                    #     added_user = models.User.objects.get(email=mail)
+                    #     added_user.is_bcs = True
+                    #     added_user.save()
+                    #     user_business = models.UsersBusiness.objects.get_or_create(user=added_user,
+                    #                                                                business=current_business.business)
+                    #     user_business[0].save()
+                    #     suc_mail.append(mail)
+                    #     context = {
+                    #         'current_business': current_business,
+                    #         'image_form': image_form,
+                    #         'info_form': info_form,
+                    #         'admins': admins,
+                    #         'success': f'User with given email {suc_mail} added'
+                    #     }
+                    #
+                    # except:
+                    #     err_mail.append(mail)
+                    #     context = {
+                    #         'current_business': current_business,
+                    #         'image_form': image_form,
+                    #         'info_form': info_form,
+                    #         'admins': admins,
+                    #         'message': f'User with given email {err_mail} not found'
+                    #     }
                     return render(request, 'user_panel/bcs/my_team.html', context)
 
                     # if added_user is not None:
