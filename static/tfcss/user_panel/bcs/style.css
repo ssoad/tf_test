@@ -114,6 +114,19 @@ a {
 
 /* custom styles  */
 
+.view-btn {
+    cursor: pointer;
+    text-decoration: none;
+    color: rgb(130, 190, 40);
+    outline: none;
+    border: none;
+}
+
+.view-btn:hover {
+    text-decoration: underline;
+    color: rgb(100, 156, 15);
+}
+
 .btn-outline-navy {
     border: 1px solid #151331;
 }
@@ -151,10 +164,6 @@ a {
 
 .text-green {
     color: #5BBC2E !important;
-}
-
-.bg-green {
-    background-color: #5BBC2E;
 }
 
 .bg-green {
@@ -227,19 +236,6 @@ a {
 
 .shadow-md {
     box-shadow: 5px 0.5rem 0.25rem rgba(0, 0, 0, .15) !important;
-}
-
-.view-btn {
-    cursor: pointer;
-    text-decoration: none;
-    color: rgb(130, 190, 40);
-    outline: none;
-    border: none;
-}
-
-.view-btn:hover {
-    text-decoration: underline;
-    color: rgb(100, 156, 15);
 }
 
 .fontAwesome {

@@ -14,7 +14,9 @@
         <div class="container-fluid">
             <div class="info-container">
                 <div class="short-info">
-                    <img src="{{ current_user.profile_pic.url }}" alt="" class="avatar">
+                    <div style="width:200px;height:200px" class="mt-5 mb-2" >
+                        <img src="{{ current_user.profile_pic.url }}" alt="" class="avatar w-100 h-100">
+                    </div>
                     <div class="info-body">
                         <p class="text-primary">{{ current_user.full_name }}</p>
                         <p class="text-primary">Registration Date: {{ current_user.date_joined|date }}</p>
