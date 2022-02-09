@@ -1,4 +1,5 @@
 import base64
+import calendar
 import itertools
 
 import requests
@@ -208,16 +209,16 @@ class BCSAdminDashboardAllChartApiView(generics.ListAPIView):
         total_count = []
 
         query = bcsmodels.Order.objects.filter(category_choice='bcs')
+        subscriptions = bcsmodels.SubscriptionOrder.objects.filter(subscription_service__category_choice='bcs')
 
         for year in all_years:
-            order = query.filter(order_date__year=year, service__is_subscription_based=False).count()
-            subscription_count.append(order)
-        for year in all_years:
-            order = query.filter(order_date__year=year, service__is_subscription_based=True).count()
+            order = query.filter(order_date__year=year).count()
             unsubscription_count.append(order)
         for year in all_years:
-            order = query.filter(order_date__year=year).count()
-            total_count.append(order)
+            order = subscriptions.filter(create_time__year=year).count()
+            subscription_count.append(order)
+
+        total_count = (sum(x) for x in zip(unsubscription_count, subscription_count))
 
         datas = {
             'for_subscription': subscription_count,
@@ -262,18 +263,16 @@ class BCSAdminDashboardYearChartApiView(generics.ListAPIView):
         total_count = []
 
         query = bcsmodels.Order.objects.filter(category_choice='bcs')
+        subscriptions = bcsmodels.SubscriptionOrder.objects.filter(subscription_service__category_choice='bcs')
 
         for month in all_months:
-            order = query.filter(order_date__month=month, order_date__year=current_year,
-                                 service__is_subscription_based=False).count()
-            subscription_count.append(order)
-        for month in all_months:
-            order = query.filter(order_date__month=month, order_date__year=current_year,
-                                 service__is_subscription_based=True).count()
+            order = query.filter(order_date__month=month, order_date__year=current_year).count()
             unsubscription_count.append(order)
         for month in all_months:
-            order = query.filter(order_date__month=month, order_date__year=current_year, ).count()
-            total_count.append(order)
+            order = subscriptions.filter(create_time__month=month, create_time__year=current_year).count()
+            subscription_count.append(order)
+
+        total_count = (sum(x) for x in zip(unsubscription_count, subscription_count))
 
         datas = {
             'for_subscription': subscription_count,
@@ -285,8 +284,11 @@ class BCSAdminDashboardYearChartApiView(generics.ListAPIView):
         #     'x_axis': all_months,
         #     'datas': datas
         # })
+        months = []
+        for month in all_months:
+            months.append(calendar.month_name[month])
         return Response({
-            'x_axis': all_months,
+            'x_axis': months,
             'datas': datas
         })
 
@@ -318,18 +320,16 @@ class BCSAdminDashboardMonthChartApiView(generics.ListAPIView):
         total_count = []
 
         query = bcsmodels.Order.objects.filter(category_choice='bcs')
+        subscriptions = bcsmodels.SubscriptionOrder.objects.filter(subscription_service__category_choice='bcs')
 
         for day in all_dates:
-            order = query.filter(order_date__day=day, order_date__month=current_month,
-                                 service__is_subscription_based=False).count()
-            subscription_count.append(order)
-        for day in all_dates:
-            order = query.filter(order_date__day=day, order_date__month=current_month,
-                                 service__is_subscription_based=True).count()
+            order = query.filter(order_date__day=day, order_date__month=current_month).count()
             unsubscription_count.append(order)
         for day in all_dates:
-            order = query.filter(order_date__day=day, order_date__month=current_month).count()
-            total_count.append(order)
+            order = subscriptions.filter(create_time__day=day, create_time__month=current_month).count()
+            subscription_count.append(order)
+
+        total_count = (sum(x) for x in zip(unsubscription_count, subscription_count))
 
         datas = {
             'for_subscription': subscription_count,
@@ -361,16 +361,16 @@ class PCSAdminDashboardAllChartApiView(generics.ListAPIView):
         total_count = []
 
         query = bcsmodels.Order.objects.filter(category_choice='pcs')
+        subscriptions = bcsmodels.SubscriptionOrder.objects.filter(subscription_service__category_choice='pcs')
 
         for year in all_years:
-            order = query.filter(order_date__year=year, service__is_subscription_based=False).count()
-            subscription_count.append(order)
-        for year in all_years:
-            order = query.filter(order_date__year=year, service__is_subscription_based=True).count()
+            order = query.filter(order_date__year=year).count()
             unsubscription_count.append(order)
         for year in all_years:
-            order = query.filter(order_date__year=year).count()
-            total_count.append(order)
+            order = subscriptions.filter(create_time__year=year).count()
+            subscription_count.append(order)
+
+        total_count = (sum(x) for x in zip(unsubscription_count, subscription_count))
 
         datas = {
             'for_subscription': subscription_count,
@@ -400,18 +400,16 @@ class PCSAdminDashboardYearChartApiView(generics.ListAPIView):
         total_count = []
 
         query = bcsmodels.Order.objects.filter(category_choice='pcs')
+        subscriptions = bcsmodels.SubscriptionOrder.objects.filter(subscription_service__category_choice='pcs')
 
         for month in all_months:
-            order = query.filter(order_date__month=month, order_date__year=current_year,
-                                 service__is_subscription_based=False).count()
-            subscription_count.append(order)
-        for month in all_months:
-            order = query.filter(order_date__month=month, order_date__year=current_year,
-                                 service__is_subscription_based=True).count()
+            order = query.filter(order_date__month=month, order_date__year=current_year).count()
             unsubscription_count.append(order)
         for month in all_months:
-            order = query.filter(order_date__month=month, order_date__year=current_year, ).count()
-            total_count.append(order)
+            order = subscriptions.filter(create_time__month=month, create_time__year=current_year).count()
+            subscription_count.append(order)
+
+        total_count = (sum(x) for x in zip(unsubscription_count, subscription_count))
 
         datas = {
             'for_subscription': subscription_count,
@@ -419,8 +417,12 @@ class PCSAdminDashboardYearChartApiView(generics.ListAPIView):
             'total_count': total_count,
         }
 
+        months = []
+        for month in all_months:
+            months.append(calendar.month_name[month])
+
         return Response({
-            'x_axis': all_months,
+            'x_axis': months,
             'datas': datas
         })
 
@@ -442,18 +444,16 @@ class PCSAdminDashboardMonthChartApiView(generics.ListAPIView):
         current_month = date.today().month
 
         query = bcsmodels.Order.objects.filter(category_choice='pcs')
+        subscriptions = bcsmodels.SubscriptionOrder.objects.filter(subscription_service__category_choice='pcs')
 
         for day in all_dates:
-            order = query.filter(order_date__day=day, order_date__month=current_month,
-                                 service__is_subscription_based=False).count()
-            subscription_count.append(order)
-        for day in all_dates:
-            order = query.filter(order_date__day=day, order_date__month=current_month,
-                                 service__is_subscription_based=True).count()
+            order = query.filter(order_date__day=day, order_date__month=current_month).count()
             unsubscription_count.append(order)
         for day in all_dates:
-            order = query.filter(order_date__day=day, order_date__month=current_month).count()
-            total_count.append(order)
+            order = subscriptions.filter(create_time__day=day, create_time__month=current_month).count()
+            subscription_count.append(order)
+
+        total_count = (sum(x) for x in zip(unsubscription_count, subscription_count))
 
         datas = {
             'for_subscription': subscription_count,
@@ -481,16 +481,16 @@ class MainAdminDashboardAllChartApiView(generics.ListAPIView):
         total_count = []
 
         query = bcsmodels.Order.objects.all()
+        subscriptions = bcsmodels.SubscriptionOrder.objects.all()
 
         for year in all_years:
-            order = query.filter(order_date__year=year, service__is_subscription_based=False).count()
-            subscription_count.append(order)
-        for year in all_years:
-            order = query.filter(order_date__year=year, service__is_subscription_based=True).count()
+            order = query.filter(order_date__year=year).count()
             unsubscription_count.append(order)
         for year in all_years:
-            order = query.filter(order_date__year=year).count()
-            total_count.append(order)
+            order = subscriptions.filter(create_time__year=year).count()
+            subscription_count.append(order)
+
+        total_count = (sum(x) for x in zip(unsubscription_count, subscription_count))
 
         datas = {
             'for_subscription': subscription_count,
@@ -520,18 +520,16 @@ class MainAdminDashboardYearChartApiView(generics.ListAPIView):
         total_count = []
 
         query = bcsmodels.Order.objects.all()
+        subscriptions = bcsmodels.SubscriptionOrder.objects.all()
 
         for month in all_months:
-            order = query.filter(order_date__month=month, order_date__year=current_year,
-                                 service__is_subscription_based=False).count()
-            subscription_count.append(order)
-        for month in all_months:
-            order = query.filter(order_date__month=month, order_date__year=current_year,
-                                 service__is_subscription_based=True).count()
+            order = query.filter(order_date__month=month, order_date__year=current_year).count()
             unsubscription_count.append(order)
         for month in all_months:
-            order = query.filter(order_date__month=month, order_date__year=current_year).count()
-            total_count.append(order)
+            order = subscriptions.filter(create_time__month=month, create_time__year=current_year).count()
+            subscription_count.append(order)
+
+        total_count = (sum(x) for x in zip(unsubscription_count, subscription_count))
 
         datas = {
             'for_subscription': subscription_count,
@@ -539,8 +537,12 @@ class MainAdminDashboardYearChartApiView(generics.ListAPIView):
             'total_count': total_count,
         }
 
+        months = []
+        for month in all_months:
+            months.append(calendar.month_name[month])
+
         return Response({
-            'x_axis': all_months,
+            'x_axis': months,
             'datas': datas
         })
 
@@ -562,18 +564,16 @@ class MainAdminDashboardMonthChartApiView(generics.ListAPIView):
         current_month = date.today().month
 
         query = bcsmodels.Order.objects.all()
+        subscriptions = bcsmodels.SubscriptionOrder.objects.all()
 
         for day in all_dates:
-            order = query.filter(order_date__day=day, order_date__month=current_month,
-                                 service__is_subscription_based=False).count()
-            subscription_count.append(order)
-        for day in all_dates:
-            order = query.filter(order_date__day=day, order_date__month=current_month,
-                                 service__is_subscription_based=True).count()
+            order = query.filter(order_date__day=day, order_date__month=current_month).count()
             unsubscription_count.append(order)
         for day in all_dates:
-            order = query.filter(order_date__day=day, order_date__month=current_month).count()
-            total_count.append(order)
+            order = subscriptions.filter(create_time__day=day, create_time__month=current_month).count()
+            subscription_count.append(order)
+
+        total_count = (sum(x) for x in zip(unsubscription_count, subscription_count))
 
         datas = {
             'for_subscription': subscription_count,
