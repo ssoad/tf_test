@@ -38,7 +38,7 @@
         <div class="order-info">
             <div class="container-fluid">
                 <div class="row d-flex justify-content-between">
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <h3>Order ID: {{ current_order.id }}</h3>
                         <p>User: <span class="text-bold">{{ current_order.user }}</span></p>
                         <p>User Phone: <span class="text-bold">{{ current_order.user.phone_number }}</span></p>
@@ -66,7 +66,7 @@
                             </span>
                         </p>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3 d-flex flex-column">
                         {% if current_order.quotation_order.agreement == 'agree' %}
                             {% comment %}
                             <button class="btn view-btn bg-green btn-outline-light" data-bs-toggle="modal"
@@ -166,7 +166,7 @@
                                 </div>
                             </div>
 
-                            <button class="btn view-btn bg-green btn-outline-light" data-bs-toggle="modal"
+                            <button class="btn view-btn bg-green btn-outline-light mt-2" data-bs-toggle="modal"
                                     data-bs-target="#quotationModal-{{ current_order.id }}">View Quotation
                             </button>
                             <!-- Modal -->
