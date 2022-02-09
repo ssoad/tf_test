@@ -206,7 +206,6 @@ class BCSAdminDashboardAllChartApiView(generics.ListAPIView):
 
         subscription_count = []
         unsubscription_count = []
-        total_count = []
 
         query = bcsmodels.Order.objects.filter(category_choice='bcs')
         subscriptions = bcsmodels.SubscriptionOrder.objects.filter(subscription_service__category_choice='bcs')
@@ -260,7 +259,6 @@ class BCSAdminDashboardYearChartApiView(generics.ListAPIView):
 
         subscription_count = []
         unsubscription_count = []
-        total_count = []
 
         query = bcsmodels.Order.objects.filter(category_choice='bcs')
         subscriptions = bcsmodels.SubscriptionOrder.objects.filter(subscription_service__category_choice='bcs')
@@ -317,7 +315,6 @@ class BCSAdminDashboardMonthChartApiView(generics.ListAPIView):
 
         subscription_count = []
         unsubscription_count = []
-        total_count = []
 
         query = bcsmodels.Order.objects.filter(category_choice='bcs')
         subscriptions = bcsmodels.SubscriptionOrder.objects.filter(subscription_service__category_choice='bcs')
@@ -358,7 +355,6 @@ class PCSAdminDashboardAllChartApiView(generics.ListAPIView):
 
         subscription_count = []
         unsubscription_count = []
-        total_count = []
 
         query = bcsmodels.Order.objects.filter(category_choice='pcs')
         subscriptions = bcsmodels.SubscriptionOrder.objects.filter(subscription_service__category_choice='pcs')
@@ -397,7 +393,6 @@ class PCSAdminDashboardYearChartApiView(generics.ListAPIView):
 
         subscription_count = []
         unsubscription_count = []
-        total_count = []
 
         query = bcsmodels.Order.objects.filter(category_choice='pcs')
         subscriptions = bcsmodels.SubscriptionOrder.objects.filter(subscription_service__category_choice='pcs')
@@ -440,7 +435,7 @@ class PCSAdminDashboardMonthChartApiView(generics.ListAPIView):
 
         subscription_count = []
         unsubscription_count = []
-        total_count = []
+
         current_month = date.today().month
 
         query = bcsmodels.Order.objects.filter(category_choice='pcs')
@@ -478,7 +473,6 @@ class MainAdminDashboardAllChartApiView(generics.ListAPIView):
 
         subscription_count = []
         unsubscription_count = []
-        total_count = []
 
         query = bcsmodels.Order.objects.all()
         subscriptions = bcsmodels.SubscriptionOrder.objects.all()
@@ -517,7 +511,6 @@ class MainAdminDashboardYearChartApiView(generics.ListAPIView):
 
         subscription_count = []
         unsubscription_count = []
-        total_count = []
 
         query = bcsmodels.Order.objects.all()
         subscriptions = bcsmodels.SubscriptionOrder.objects.all()
@@ -560,7 +553,7 @@ class MainAdminDashboardMonthChartApiView(generics.ListAPIView):
 
         subscription_count = []
         unsubscription_count = []
-        total_count = []
+
         current_month = date.today().month
 
         query = bcsmodels.Order.objects.all()
