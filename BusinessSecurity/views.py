@@ -377,7 +377,7 @@ def userDashboardView(request):
 
     elif request.user.is_bcs:
         if request.user.business_user.privilege == 'general_staff':
-            return HttpResponse("You don't have permission to view this page")
+            return HttpResponseRedirect(reverse('bcs_user_my_team'))
         else:
             current_business = request.user.business_user.business
             notifications = models.Notification.objects.filter(
@@ -635,7 +635,7 @@ def userOrderDetailsView(request, id):
                 else:
                     return HttpResponse("You don't have permission to view this page")
             except:
-                return HttpResponse("You don't have permission to view this page")
+                return render(request, 'user_panel/bcs/no-permission.html')
 
 
 @login_required

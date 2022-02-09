@@ -1,10 +1,10 @@
 {% extends 'base/base.html' %} {% load static %} {% load hosts %} {% block title %} BCS Start Here {% endblock title %} {% block headercss %}
-<link rel="stylesheet" href="{% static '' %}css/glide.core.css" />
-<link rel="stylesheet" href="{% static '' %}css/glide.theme.css" />
-<link rel="stylesheet" href="{% static '' %}css/datepicker.css" />
+<link rel="stylesheet" href="{% static 'css/glide.core.css' %}" />
+<link rel="stylesheet" href="{% static 'css/glide.theme.css' %}" />
+<link rel="stylesheet" href="{% static 'css/datepicker.css' %}" />
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css" />
-<link rel="stylesheet" href="{% static '' %}css/telephone.css" />
-<link rel="stylesheet" href="{% static '' %}css/style.css" />
+<link rel="stylesheet" href="{% static 'css/telephone.css' %}" />
+<link rel="stylesheet" href="{% static 'css/style.css' %}" />
 <!-- style for bitrix form  -->
 <style>
     .iti__selected-flag {
@@ -136,7 +136,7 @@
                             <h2>Meet Face to Face</h2>
                             <p>We are waiting to meet you</p>
                         </div>
-                        <a href="appointment.html" target="_blank" class="reserve">
+                        <a href="{% host_url 'appointment' %}" target="_blank" class="reserve">
                             <i class="far fa-calendar-check mr-2"></i>Schedule Your Meeting
                         </a>
                     </div>
@@ -147,12 +147,12 @@
 </section>
 {% endblock content %} {% block customjs %}
 
-<script src="{% static '' %}js/glide.js"></script>
+<script src="{% static 'js/glide.js' %}"></script>
 
-<script src="{% static '' %}js/home-tab.js"></script>
-<script src="{% static '' %}js/gs.js"></script>
-<script src="{% static '' %}js/datepicker.js"></script>
-<script src="{% static '' %}js/telephone.js"></script>
+<script src="{% static 'js/home-tab.js' %}"></script>
+<script src="{% static 'js/gs.js' %}"></script>
+<script src="{% static 'js/datepicker.js' %}"></script>
+<script src="{% static 'js/telephone.js' %}"></script>
 <script>
     if (localStorage.hasOwnProperty('b24-form-field-stored-values'))
         localStorage.removeItem('b24-form-field-stored-values');
@@ -218,7 +218,7 @@
     }
 </script>
 
-<script src="{% static '' %}js/purecookie.js"></script>
+<script src="{% static 'js/purecookie.js' %}"></script>
 
 
 {% endblock customjs %}

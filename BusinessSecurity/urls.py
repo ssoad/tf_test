@@ -58,7 +58,7 @@ urlpatterns = [
 
     path('get_start/', views.getStartView, name='get_start'),
 
-    path('appoinment/', views.appoinmentView, name='appoinment'),
+    path('appointment/', views.appoinmentView, name='appointment'),
     path('open_tickets/', views.openTicketView, name='open_tickets'),
     path('ticket_details/', views.ticketDetailView, name='ticket_details'),
     path('ticket_details/<id>/', views.ticketDetailView, name='ticket_details'),
