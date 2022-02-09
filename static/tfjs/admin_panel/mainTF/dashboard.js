@@ -1,4 +1,4 @@
-let expanded = false;
+// let expanded = false;
 
 const showCheckboxes = (checkboxes) => {
     console.log(checkboxes);
@@ -24,8 +24,8 @@ $(function () {
         function (ev, picker) {
             $(this).val(
                 picker.startDate.format("MM/DD/YYYY") +
-                    " - " +
-                    picker.endDate.format("MM/DD/YYYY")
+                " - " +
+                picker.endDate.format("MM/DD/YYYY")
             );
         }
     );
@@ -79,7 +79,7 @@ useraStats.forEach((useraStat) => {
             individualUser.style.opacity = "1";
             individualUsersDetail.style.transform = "translateX(-100rem)"
             individualUsersDetail.style.display = "none";
-        }else{
+        } else {
             useraStat.style.opacity = "0";
             businessUsersDetail.style.transform = "translateX(-100rem)";
             businessUsersDetail.style.display = "none";

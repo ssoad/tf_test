@@ -15,15 +15,29 @@
     --sidebar-width: 20%;
 }
 
+.select2-selection button {
+    margin-block: initial;
+}
+
 body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
     font-family: 'Roboto', sans-serif;
+    min-height: 100vh;
+}
+
+.btn-outline-navy {
+    border: 1px solid var(--var-primary-color);
+}
+
+.btn-outline-navy:hover {
+    background-color: var(--var-primary-color);
+    color: white;
 }
 
 ul {
-    list-style: none;
+    /* list-style: none; */
     padding-inline: 0;
 }
 
@@ -138,14 +152,14 @@ nav {
 
 /* sidebar style starts here */
 
-aside {
-    background: #fff;
+aside li {
+    list-style: none;
 }
 
 .aside-container {
     background-color: #ededed;
     width: var(--sidebar-width);
-    position: fixed;
+    z-index: 12;
     top: 6.4rem;
     display: block !important;
     bottom: 0;
@@ -154,15 +168,16 @@ aside {
     padding: 1rem 0rem 1rem 0rem;
     border-bottom-left-radius: 0.5rem;
     border-top-left-radius: 0.5rem;
-    background-color: var(--var-sidebar-color);
     box-shadow: 0px 1px 1px 1px var(--var-box-shadow-color);
-    overflow: hidden;
+    /* overflow-y: hidden; */
     transition: all 0.3s;
 }
 
-/* .aside-container:hover {
-    overflow-y: auto;
-} */
+.aside-container li::before,
+.aside-container li::after {
+    display: none;
+}
+
 
 /* .aside-container:hover::-webkit-scrollbar {
     opacity: 0;
