@@ -1195,7 +1195,7 @@ def pcsAdminTraining(request):
 def pcsAdminTrainingDelete(request, id):
     current_course = Course.objects.get(id=id)
     current_course.delete()
-    return HttpResponseRedirect(reverse('pcs_admin_training_delete', args=(id,)))
+    return HttpResponseRedirect(reverse('pcs_admin_training'))
 
 
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/')
@@ -1847,8 +1847,8 @@ def ticketOpenCloseView(request, id):
     if current_ticket.ticket_status == 'open':
         current_ticket.ticket_status = 'closed'
         current_ticket.save()
-        return HttpResponseRedirect(reverse('ticket_status_change', args=(id,)))
+        return HttpResponseRedirect(reverse('pcs_admin_all_tickets'))
     elif current_ticket.ticket_status == 'closed':
         current_ticket.ticket_status = 'open'
         current_ticket.save()
-        return HttpResponseRedirect(reverse('ticket_status_change', args=(id,)))
+        return HttpResponseRedirect(reverse('pcs_admin_all_tickets'))
