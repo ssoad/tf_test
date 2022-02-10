@@ -202,12 +202,12 @@
         }
         window.addEventListener("load", () => {
             packageDetails.innerHTML = ""
-            showSubscription(`${baseUrl}bcs/package/${subscriptionService.value}`)
+            showSubscription(`${mainOrigin}/api/bcs/package/${subscriptionService.value}`)
         })
 
         subscriptionService.addEventListener("change", () => {
             packageDetails.innerHTML = ""
-            showSubscription(`${baseUrl}bcs/package/${subscriptionService.value}`)
+            showSubscription(`${mainOrigin}/api/bcs/package/${subscriptionService.value}`)
         });
 
         let feature = 1;
