@@ -1170,7 +1170,7 @@ def pcsAdminTrainingCategoryEditView(request, id):
 def pcsAdminTrainingCategoryDelete(request, id):
     current_category = CourseCategory.objects.get(id=id)
     current_category.delete()
-    return HttpResponseRedirect(reverse('pcs_admin_training_category_delete', args=(id,)))
+    return HttpResponseRedirect(reverse('pcs_admin_training_category'))
 
 
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/')
