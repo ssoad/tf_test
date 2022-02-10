@@ -1,5 +1,5 @@
 // console.log($("#subscription-list"));
-const baseUrl = location.origin+"/api/"
+const baseUrl = mainOrigin + "/api/"
 
 $(document).ready(function () {
     $("#subscription-list").DataTable({
@@ -32,7 +32,7 @@ let revenuePieChart = new Chart(packageChart, {
             label: "Subscribed client",
             backgroundColor: ['#182F59', '#5BBC2E', '#FFD500', '#DC143C'],
             data: [45, 25, 10, 20],
-        }, ],
+        },],
     },
 
     options: {
