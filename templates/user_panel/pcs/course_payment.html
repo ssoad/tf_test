@@ -46,23 +46,7 @@
             <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         let courseId = "{{course.id}}";
-        function getCookie(name) {
-            var cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                var cookies = document.cookie.split(';');
-                for (var i = 0; i < cookies.length; i++) {
-                    var cookie = jQuery.trim(cookies[i]);
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
-        {% comment %} const csrf_token = document.querySelector("input[name='csrfmiddlewaretoken']")    {% endcomment %}
-        const csrf_token = getCookie('csrftoken'); 
-        console.log(csrf_token)
+        const csrf_token = document.querySelector("input[name='csrfmiddlewaretoken']")   
             
 
         function initPayPalButton() {
@@ -98,7 +82,8 @@
                             body: JSON.stringify({paypal_id: data.orderID, course: courseId}),
                             headers: {
                                 'Content-type': 'application/json',
-                                'X-CSRFToken': csrf_token,
+                                'X-CSRFToken': csrf_token.value,
+                                {% comment %} 'Referer': window.location.href {% endcomment %}
                             },
                         })
                         .then((response) => response.json())
