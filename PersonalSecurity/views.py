@@ -448,7 +448,7 @@ def userOrderDetailsView(request, id):
         }
         return render(request, 'user_panel/pcs/order_detail.html', context)
     except:
-        return HttpResponse("You don't have permission to view this page")
+        return render(request, 'user_panel/pcs/no-permission.html')
 
 
 @login_required
