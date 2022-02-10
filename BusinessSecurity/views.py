@@ -475,7 +475,7 @@ def userServicesView(request):
 
                 notification = models.AdminNotification.objects.create(category_choice='bcs',
                                                                        business=request.user.business_user.business,
-                                                                       notification=f'Got a New Quotation. ID: {order[0].id} <div><a href="https://main.techforing.com/bcs_admin_order_details/{order[0].id}/" target="_blank" class="btn btn-success mt-2">Visit Now</a></div>')
+                                                                       notification=f'Got a New Quotation. ID: {order[0].id} <div><a href="https://main.techforing.com/bcs_admin_order_detail/{order[0].id}/" target="_blank" class="btn btn-success mt-2">Visit Now</a></div>')
                 notification.save()
                 return render(request, 'user_panel/bcs/thanks.html')
             context = {
