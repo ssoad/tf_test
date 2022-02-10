@@ -186,7 +186,7 @@ def openTicketView(request):
                                                                        business=request.user.business_user.business,
                                                                        notification=f'New Ticket Created. <div><a href="https://pcs.techforing.com/pcs_admin_tickets_detail/{ticket.id}/" target="_blank" class="btn btn-success mt-2">Visit Now</a></div>')
                 notification.save()
-                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     context = {
         'form': form,
         'tickets': tickets,
@@ -210,7 +210,7 @@ def ticketDetailView(request, id):
                                                                    business=request.user.business_user.business,
                                                                    notification=f'New Comment on Ticket. <div><a href="https://pcs.techforing.com/pcs_admin_tickets_detail/{ticket.id}/" target="_blank" class="btn btn-success mt-2">Visit Now</a></div>')
             notification.save()
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     context = {
         'ticket': ticket,
         'commentform': commentform,
@@ -416,7 +416,7 @@ def userOrderDetailsView(request, id):
                                                                                             f'NDA/NCA. ID: {current_quotation.order.id} <div><a href="https://pcs.techforing.com/pcs_admin_order_detail/{current_quotation.order.id}/" target="_blank" class="btn btn-success mt-2">Visit Now</a></div>')
                         notification.save()
 
-                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         except:
             current_quotation = models.Quotation.objects.get(order=current_order)
             form = forms.QuotationAgreementForm()
@@ -441,7 +441,7 @@ def userOrderDetailsView(request, id):
                                                                                             f'NDA/NCA. ID: {current_quotation.order.id} <div><a href="https://pcs.techforing.com/pcs_admin_order_detail/{current_quotation.order.id}/" target="_blank" class="btn btn-success mt-2">Visit Now</a></div>')
                         notification.save()
 
-                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         context = {
             'current_order': current_order,
             'form': form,
@@ -462,7 +462,7 @@ def quotationAcceptView(request, id):
         current_quotation.save()
         current_order.save()
 
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     except:
         return HttpResponse("You don't have permission to view this page")
 
@@ -478,7 +478,7 @@ def ndaNcaAcceptView(request, id):
         current_quotation.save()
         current_order.save()
 
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     except:
         return HttpResponse("You don't have permission to view this page")
 
@@ -495,7 +495,7 @@ def orderRejectView(request, id):
         current_quotation.save()
         current_order.save()
 
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     except:
         return HttpResponse("You don't have permission to view this page")
 
@@ -984,7 +984,7 @@ def pcsAdminSubscriptionPack(request):
                                                                                     feature_name=feature_name,
                                                                                     feature=feature)
                 package_feature[0].save()
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     context = {
         'form': form,
         'services': services,
@@ -1081,7 +1081,7 @@ def pcsAdminTrainingCategoryView(request):
             course = form.save(commit=False)
             course.course_type = 'Personal'
             course.save()
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     context = {
         'form': form,
         'categories': categories,
@@ -1114,7 +1114,7 @@ def pcsAdminTrainingCategoryEditView(request, id):
 def pcsAdminTrainingCategoryDelete(request, id):
     current_category = CourseCategory.objects.get(id=id)
     current_category.delete()
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/')
@@ -1127,7 +1127,7 @@ def pcsAdminTraining(request):
             course = form.save(commit=False)
             course.course_type = 'Personal'
             course.save()
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     context = {
         'form': form,
         'courses': courses,
@@ -1139,7 +1139,7 @@ def pcsAdminTraining(request):
 def pcsAdminTrainingDelete(request, id):
     current_course = Course.objects.get(id=id)
     current_course.delete()
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/')
@@ -1176,7 +1176,7 @@ def pcsAdminCourseDetail(request, id):
                 section = form.save(commit=False)
                 section.course = course
                 section.save()
-                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         elif 'add_content' in request.POST:
             form2 = ContentCreateForm(request.POST, request.FILES)
             if form2.is_valid():
@@ -1185,7 +1185,7 @@ def pcsAdminCourseDetail(request, id):
                 current_section = Section.objects.get(id=section_id)
                 content.section = current_section
                 content.save()
-                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
     context = {
         'course': course,
@@ -1200,7 +1200,7 @@ def pcsAdminCourseDetail(request, id):
 def pcsAdminCourseContentDelete(request, id):
     current_content = Content.objects.get(id=id)
     current_content.delete()
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/')
@@ -1216,7 +1216,7 @@ def pcsAdminCourseContentEdit(request, id):
             if next_page:
                 return HttpResponseRedirect(next_page)
             else:
-                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     context = {
         'form': form,
     }
@@ -1236,7 +1236,7 @@ def pcsAdminCourseSectionEdit(request, id):
             if next_page:
                 return HttpResponseRedirect(next_page)
             else:
-                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     context = {
         'form': form,
     }
@@ -1501,7 +1501,7 @@ def pcsAdminOrdersDetailView(request, id):
                                                                                f'btn-success mt-2">Visit Now</a></div>',
                                                                   notification_time=timezone.now())
                 notification.save()
-                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
             if quotation_form.is_valid():
                 current_order.order_status = 'attending'
                 current_order.save()
@@ -1528,7 +1528,7 @@ def pcsAdminOrdersDetailView(request, id):
                     current_quotation_agreement.delete()
                 except:
                     pass
-                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         context = {
             'current_order': current_order,
             'form': form,
@@ -1571,7 +1571,7 @@ def pcsAdminOrdersDetailView(request, id):
                                                                                    f'btn-success mt-2">Visit Now</a></div>',
                                                                       notification_time=timezone.now())
                     notification.save()
-                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
                 if quotation_form.is_valid():
                     current_order.order_status = 'attending'
                     current_order.save()
@@ -1599,7 +1599,7 @@ def pcsAdminOrdersDetailView(request, id):
                         current_quotation_agreement.delete()
                     except:
                         pass
-                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
             context = {
                 'current_order': current_order,
                 'form': form,
@@ -1685,9 +1685,9 @@ def pcsAdminOrderNewView(request, id):
         #     for staff in current_order.orderstaff_order.all():
         #         staff.delete()
         current_order.save()
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     except:
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 @user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/',
@@ -1704,9 +1704,9 @@ def pcsAdminOrderAttendingView(request, id):
         current_order.order_status = 'attending'
         current_order.save()
         # staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     except:
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 @user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/',
@@ -1723,9 +1723,9 @@ def pcsAdminOrderCompletedView(request, id):
         current_order.order_status = 'completed'
         current_order.save()
         # staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     except:
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 @user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/',
@@ -1742,9 +1742,9 @@ def pcsAdminOrderCanceledView(request, id):
         current_order.order_status = 'canceled'
         current_order.save()
         # staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     except:
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 @user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/',
@@ -1776,7 +1776,7 @@ def pcsAdminTicketsDetailView(request, id):
                              f'btn-success mt-2">Visit Now</a></div>',
                 notification_time=timezone.now())
             notification.save()
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     context = {
         'ticket': ticket,
         'commentform': commentform,
@@ -1791,8 +1791,8 @@ def ticketOpenCloseView(request, id):
     if current_ticket.ticket_status == 'open':
         current_ticket.ticket_status = 'closed'
         current_ticket.save()
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     elif current_ticket.ticket_status == 'closed':
         current_ticket.ticket_status = 'open'
         current_ticket.save()
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
