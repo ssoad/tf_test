@@ -7,7 +7,7 @@
         {% if not orders.exists %}
             <h3 class="text-center text-gray my-5 py-5 h-100">No {{ message }} History Found!</h3>
             <div class="d-flex my-2 justify-content-center">
-                <a href="{% host_url 'bcs_user_services' %}" class="btn btn-outline-navy">Get a Quotation</a>
+                <a href="{% host_url 'bcs_user_services' host 'main' %}" class="btn btn-outline-navy">Get a Quotation</a>
             </div>
         {% else %}
             <div class="table-responsive">
@@ -43,7 +43,7 @@
                                 <td><p class="badge bg-danger">{{ order.order_status|capitalize }}</p></td>
                             {% endif %}
     
-                            <td><a href="{% host_url 'bcs_user_order_details' %}{{ order.id }}"><i
+                            <td><a href="{% host_url 'bcs_user_order_details' host 'main' %}{{ order.id }}"><i
                                     class="bi bi-eye-fill"></i></a></td>
                         </tr>
                     {% endfor %}

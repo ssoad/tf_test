@@ -84,7 +84,7 @@
                             <td>{{ ticket.ticket_status }}</td>
                             <td>{{ ticket.ticket_date }}</td>
                             <td>
-                            <a class="nav-link" href="{% host_url 'ticket_details' %}{{ ticket.id }}"><i class="icofont-eye-alt"></i></a>
+                            <a class="nav-link" href="{% host_url 'ticket_details' host 'main' %}{{ ticket.id }}"><i class="icofont-eye-alt"></i></a>
                             </td>
                         </tr>
                     {% endfor %}

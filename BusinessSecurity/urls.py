@@ -144,6 +144,8 @@ urlpatterns = [
     path('bcs_order_subscription_cancel/', views.courseSubscriptionCancelView, name='bcs_order_subscription_cancel'),
     path('bcs_order_subscription_cancel/<id>/', views.courseSubscriptionCancelView, name='bcs_order_subscription_cancel'),
     path('bcs_user_events/', views.userEventsView, name='bcs_user_events'),
+    path('bcs_user_event_register/',
+         views.userEventRegisterView, name='bcs_user_event_register'),
     path('bcs_user_event_register/<id>/',
          views.userEventRegisterView, name='bcs_user_event_register'),
     path('bcs_user_notifications/', views.userNotificationsView,

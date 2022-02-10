@@ -163,7 +163,7 @@
                             to
                             get a quotation
                         </button>
-                        <a href="{% host_url 'pcs_appointment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
+                        <a href="{% host_url 'pcs_appointment' host 'mysecurity' %}" class="btn bg-navy px-2 py-1">Talk to one of our
                             representatives</a>
 
                     </div>
@@ -520,7 +520,7 @@
                             </div>
                             </div>
                             <div class="d-flex justify-content-center">
-                            <a href="{% host_url 'pcs_subscription_payment' %}${subscription.id}" class="mt-3 btn bg-navy px-5 py-1">Subscribe</a>
+                            <a href="{% host_url 'pcs_subscription_payment' host 'mysecurity' %}${subscription.id}" class="mt-3 btn bg-navy px-5 py-1">Subscribe</a>
                             </div>`
                             div.innerHTML = divHtml
                             packageDetails.appendChild(div)

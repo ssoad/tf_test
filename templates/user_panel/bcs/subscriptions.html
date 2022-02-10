@@ -51,7 +51,7 @@
                             <h4 class="fw-bold">First you need to make an one time purchase for
                                 your {{ service.service_title|capitalize }} service only then you will be eligible for
                                 monthly subscription</h4>
-                            <a href="{% host_url 'bcs_user_services' %}" class="btn fs-5 mt-3 text-green">Please go
+                            <a href="{% host_url 'bcs_user_services' host 'main' %}" class="btn fs-5 mt-3 text-green">Please go
                                 to the
                                 service menu</a>
                         </div>
@@ -80,7 +80,7 @@
                             <h4 class="fw-bold">First you need to make an one time purchase for
                                 your {{ service.course_name|capitalize }} service only then you will be eligible for
                                 monthly subscription</h4>
-                            <a href="{% host_url 'bcs_user_services' %}" class="btn fs-5 mt-3 text-green">Please go
+                            <a href="{% host_url 'bcs_user_services' host 'main' %}" class="btn fs-5 mt-3 text-green">Please go
                                 to the
                                 service menu</a>
                         </div>
@@ -803,8 +803,8 @@
                                 </div>
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                <a href="{% host_url 'bcs_subscription_payment' %}${subscription.id}" class="mt-3 btn bg-navy px-5 py-1 ${(subscribedPackages.includes(subscription.id)) && "d-none"}">Subscribe</a>
-                                <a href="{% host_url 'bcs_subscription_cancel' %}${subscription.id}" class="mt-3 btn btn-danger px-5 py-1 ${!(subscribedPackages.includes(subscription.id)) && "d-none"}">Cancel</a>
+                                <a href="{% host_url 'bcs_subscription_payment' host 'main' %}${subscription.id}" class="mt-3 btn bg-navy px-5 py-1 ${(subscribedPackages.includes(subscription.id)) && "d-none"}">Subscribe</a>
+                                <a href="{% host_url 'bcs_subscription_cancel' host 'main' %}${subscription.id}" class="mt-3 btn btn-danger px-5 py-1 ${!(subscribedPackages.includes(subscription.id)) && "d-none"}">Cancel</a>
                                 </div>`
                                     div.innerHTML = divHtml;
                                     container.appendChild(div)
@@ -866,8 +866,8 @@
                                 </div>
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                <a href="{% host_url 'bcs_user_course_payment' %}${subscription.id}" class="mt-3 btn bg-navy px-5 py-1 ${(subscribedPackages.includes(subscription.id)) && "d-none"}">Subscribe</a>
-                                <a href="{% host_url 'bcs_order_subscription_cancel' %}${subscription.id}" class="mt-3 btn btn-danger px-5 py-1 ${!(subscribedPackages.includes(subscription.id)) && "d-none"}">Cancel</a>
+                                <a href="{% host_url 'bcs_user_course_payment' host 'main' %}${subscription.id}" class="mt-3 btn bg-navy px-5 py-1 ${(subscribedPackages.includes(subscription.id)) && "d-none"}">Subscribe</a>
+                                <a href="{% host_url 'bcs_order_subscription_cancel' host 'main' %}${subscription.id}" class="mt-3 btn btn-danger px-5 py-1 ${!(subscribedPackages.includes(subscription.id)) && "d-none"}">Cancel</a>
                                 </div>`
                                     div.innerHTML = divHtml;
                                     container.appendChild(div)

@@ -316,7 +316,7 @@
                             <td>{{ employee.position }}</td>
                             <td>{{ employee.privilege|capitalize }}</td>
                             <td>
-                                <a href="{% host_url 'bcs_user_my_team_user' %}{{ employee.id }}"
+                                <a href="{% host_url 'bcs_user_my_team_user' host 'main' %}{{ employee.id }}"
                                    class="btn btn-outline-navy btn-sm" data-tootik="View Profile"><i
                                         class="fa fa-user-o"></i></a>
                                 <button data-tootik="Change access permissions" id=""
@@ -336,7 +336,7 @@
                                                     <i class="bi bi-pencil"></i>
                                                 </button>
                                                 <a data-tootik="Delete"
-                                                   href="{% host_url 'bcs_user_team_member_delete' %}{{ employee.id }}"
+                                                   href="{% host_url 'bcs_user_team_member_delete' host 'main' %}{{ employee.id }}"
                                                    class="del-btn btn btn-outline-danger btn-sm">
                                                     <i class="bi bi-trash"></i>
                                                 </a>
@@ -348,7 +348,7 @@
                                                 <i class="bi bi-pencil"></i>
                                             </button>
                                             <a data-tootik="Delete"
-                                               href="{% host_url 'bcs_user_team_member_delete' %}{{ employee.id }}"
+                                               href="{% host_url 'bcs_user_team_member_delete' host 'main' %}{{ employee.id }}"
                                                class="del-btn btn btn-outline-danger btn-sm">
                                                 <i class="bi bi-trash"></i>
                                             </a>

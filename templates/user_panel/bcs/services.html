@@ -253,7 +253,7 @@
                             to
                             get a quotation
                         </button>
-                        <a href="{% host_url 'bcs_appointment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
+                        <a href="{% host_url 'bcs_appointment' host 'main' %}" class="btn bg-navy px-2 py-1">Talk to one of our
                             representatives</a>
 
                     </div>
@@ -327,7 +327,7 @@
                 </div>
                 <div class="my-4 pt-5 px-3">
                     <div class="d-flex flex-wrap justify-content-center justify-content-md-between">
-                        <a href="{% host_url 'bcs_user_course_details' %}{{ course.id }}"
+                        <a href="{% host_url 'bcs_user_course_details' host 'main' %}{{ course.id }}"
                            class="get-quotation btn bg-navy px-2 py-1 mb-3 mb-md-0">View Details Module
                         </a>
                     </div>
@@ -598,7 +598,7 @@
                 </h5>
                 <div class="mt-5 d-flex align-items-center flex-wrap flex-md-nowrap justify-content-center">
                     <h5 class="text-center me-2 me-md-5">To invite members for your team</h5>
-                    <a href="{% host_url 'bcs_user_my_team' %}" class="btn btn-outline-navy">Click Here</a>
+                    <a href="{% host_url 'bcs_user_my_team' host 'main' %}" class="btn btn-outline-navy">Click Here</a>
                 </div>
             </div>
             <!-- Concierge Cybersecurity -->
@@ -666,7 +666,7 @@
                         <button type="button" id="subscription-package-btn" type="button"
                                 class="btn bg-navy px-2 py-1 mb-3 mb-md-0">Get Subscription Packages
                         </button>
-                        <a href="{% host_url 'bcs_appointment' %}" class="btn bg-navy px-2 py-1">Talk to one of our
+                        <a href="{% host_url 'bcs_appointment' host 'main' %}" class="btn bg-navy px-2 py-1">Talk to one of our
                             representatives</a>
                     </div>
                 </div>
@@ -927,7 +927,7 @@
                             </div>
                             </div>
                             <div class="d-flex justify-content-center">
-                            <a href="{% host_url 'bcs_subscription_payment' %}${subscription.id}" class="mt-3 btn bg-navy px-5 py-1">Subscribe</a>
+                            <a href="{% host_url 'bcs_subscription_payment' host 'main' %}${subscription.id}" class="mt-3 btn bg-navy px-5 py-1">Subscribe</a>
                             </div>`
                             div.innerHTML = divHtml
                             container.appendChild(div)

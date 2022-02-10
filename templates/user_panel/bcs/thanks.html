@@ -8,8 +8,8 @@
     </p>
     <div class="container mt-5 d-flex mx-auto justify-content-evenly">
         <a class="btn bg-navy" target="_blank" href="{% host_url 'home'%}">Home Page</a>
-        <a class="btn bg-navy" href="{% host_url 'bcs_user_services'%}">Get Another Quotation</a>
-        <a class="btn bg-navy" href="{% host_url 'bcs_user_dashboard'%}">Dashboard</a>
+        <a class="btn bg-navy" href="{% host_url 'bcs_user_services' host 'main' %}">Get Another Quotation</a>
+        <a class="btn bg-navy" href="{% host_url 'bcs_user_dashboard' host 'main' %}">Dashboard</a>
     </div>
 </section>
 {% endblock content %}
