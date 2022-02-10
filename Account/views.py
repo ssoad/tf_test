@@ -3,6 +3,7 @@ from Account import models, forms
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
+from allauth.socialaccount.models import SocialAccount
 
 
 # Create your views here.
@@ -111,11 +112,20 @@ def profileView(request):
                 }
                 return render(request, 'account/profile-info-add.html', context)
         else:
+            # print(current_user.profile_pic)
             if request.method == 'POST':
                 form = forms.InterestForm(request.POST, instance=interests)
                 if form.is_valid():
                     form.save()
                     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            try:
+                social_account = current_user.socialaccount_set.filter(provider='google')[0]
+                if not current_user.full_name:
+                    current_user.full_name = social_account.extra_data['name']
+                    # current_user.profile_pic = social_account.extra_data['picture']
+                    current_user.save()
+            except:
+                pass
             context = {
                 # 'interests': interests,
                 'form': form,

@@ -335,14 +335,15 @@ def createBusinessView(request):
         if request.POST:
             if 'new' in request.POST:
                 form = forms.CreateBusinessForm(request.POST, request.FILES)
-                position = request.POST.get('position')
-                business = form.save(commit=True)
-                current_user.is_bcs = True
-                current_user.save()
-                user_business = models.UsersBusiness.objects.create(user=current_user, business=business,
-                                                                    position=position, privilege='admin')
-                user_business.save()
-                return HttpResponseRedirect(reverse('bcs_user_dashboard'))
+                if form.is_valid():
+                    position = request.POST.get('position')
+                    business = form.save(commit=True)
+                    current_user.is_bcs = True
+                    current_user.save()
+                    user_business = models.UsersBusiness.objects.create(user=current_user, business=business,
+                                                                        position=position, privilege='admin')
+                    user_business.save()
+                    return HttpResponseRedirect(reverse('bcs_user_dashboard'))
             elif 'join' in request.POST:
                 joining_key = request.POST.get('joining_key')
                 try:
