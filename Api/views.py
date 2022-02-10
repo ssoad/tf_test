@@ -4,6 +4,7 @@ import itertools
 
 import requests
 from django.conf import settings
+from django.contrib.auth.backends import ModelBackend
 from django.shortcuts import render
 from Api import serializer
 from rest_framework import generics
@@ -751,6 +752,7 @@ class SubscriptionPurchaseCheckApiView(generics.ListAPIView):
 class PCSCoursePurchaseCheckApiView(generics.ListAPIView):
     queryset = coursemodels.CoursePurchase
     permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [ModelBackend]
 
     def list(self, request, *args, **kwargs):
         purchased_list = coursemodels.CoursePurchase.objects.filter(user=self.request.user).values_list('course_id',

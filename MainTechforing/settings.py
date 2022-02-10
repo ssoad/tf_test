@@ -37,7 +37,7 @@ SECRET_KEY = 'django-insecure-j55@su5sxajtqf_yed#+^vn&p0l=ovow1^6cp$&05so^8^l3th
 DEBUG = True
 
 ALLOWED_HOSTS = ['0.0.0.0', '44.242.38.198', 'main.techforing.com', 'pcs.techforing.com', 'training.techforing.com',
-                 '127.0.0.1', 'localhost', '.techforing.com']
+                 '127.0.0.1', 'localhost', '.techforing.com', '*.techforing.com']
 
 # Application definition
 
@@ -95,10 +95,7 @@ INSTALLED_APPS = [
     'django_crontab',
 ]
 
-CSRF_TRUSTED_ORIGINS = ['https://training.techforing.com', 'https://academy.techforing.com',
-                        'https://main.techforing.com', 'https://pcs.techforing.com',
-                        'https://bcs.techforing.com', 'https://mysecurity.techforing.com',
-                        'https://www.techforing.com', 'https://techforing.com', 'http://127.0.0.1:8000']
+CSRF_TRUSTED_ORIGINS = ['https://*.techforing.com', 'https://techforing.com', 'http://127.0.0.1:8000']
 
 # Django-Rest-Framework Settings
 REST_FRAMEWORK = {
@@ -225,24 +222,24 @@ MIDDLEWARE = [
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 # For Development
-# SESSION_COOKIE_DOMAIN = '127.0.0.1'
-# SESSION_COOKIE_NAME = 'techforingsessionid'
-# SESSION_COOKIE_SECURE = True
-# SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
-# ROOT_URLCONF = 'MainTechforing.urls'
-# ROOT_HOSTCONF = 'MainTechforing.hosts'
-# DEFAULT_HOST = 'main'
-# PARENT_HOST = '127.0.0.1:8000'
-
-# For Production
-SESSION_COOKIE_DOMAIN = '.techforing.com'
+SESSION_COOKIE_DOMAIN = '127.0.0.1'
 SESSION_COOKIE_NAME = 'techforingsessionid'
 SESSION_COOKIE_SECURE = True
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 ROOT_URLCONF = 'MainTechforing.urls'
 ROOT_HOSTCONF = 'MainTechforing.hosts'
 DEFAULT_HOST = 'main'
-PARENT_HOST = 'techforing.com'
+PARENT_HOST = '127.0.0.1:8000'
+
+# For Production
+# SESSION_COOKIE_DOMAIN = '.techforing.com'
+# SESSION_COOKIE_NAME = 'techforingsessionid'
+# SESSION_COOKIE_SECURE = True
+# SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+# ROOT_URLCONF = 'MainTechforing.urls'
+# ROOT_HOSTCONF = 'MainTechforing.hosts'
+# DEFAULT_HOST = 'main'
+# PARENT_HOST = 'techforing.com'
 
 TEMPLATES = [
     {
@@ -269,25 +266,25 @@ WSGI_APPLICATION = 'MainTechforing.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 # For Development
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-# For Production
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'main_techforing_v3',
-        'USER': 'root',
-        'PASSWORD': 'hOLL4m&*%$',
-        'OPTIONS': {
-            'sql_mode': 'traditional',
-        }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# For Production
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'main_techforing_v3',
+#         'USER': 'root',
+#         'PASSWORD': 'hOLL4m&*%$',
+#         'OPTIONS': {
+#             'sql_mode': 'traditional',
+#         }
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
