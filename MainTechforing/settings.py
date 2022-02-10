@@ -95,6 +95,11 @@ INSTALLED_APPS = [
     'django_crontab',
 ]
 
+CSRF_TRUSTED_ORIGINS = ['https://training.techforing.com', 'https://academy.techforing.com',
+                        'https://main.techforing.com', 'https://pcs.techforing.com',
+                        'https://bcs.techforing.com', 'https://mysecurity.techforing.com',
+                        'https://www.techforing.com', 'https://techforing.com', 'http://127.0.0.1:8000']
+
 # Django-Rest-Framework Settings
 REST_FRAMEWORK = {
     # 'DEFAULT_RENDERER_CLASSES': (

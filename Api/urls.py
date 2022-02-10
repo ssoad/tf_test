@@ -1,6 +1,5 @@
 from django.urls import path
 from Api import views
-from django.views.decorators.csrf import csrf_exempt
 
 app_name = 'api_app'
 
@@ -47,7 +46,7 @@ urlpatterns = [
 
     path('subscription_order/', views.SubscriptionOrderView.as_view(), name='subscription_order'),
     path('subscription_order_check/', views.SubscriptionPurchaseCheckApiView.as_view(), name='subscription_order_check'),
-    path('pcs/course_order_check/', csrf_exempt(views.PCSCoursePurchaseCheckApiView.as_view()), name='course_order_check'),
+    path('pcs/course_order_check/', views.PCSCoursePurchaseCheckApiView.as_view(), name='course_order_check'),
     path('pcs/course_order/', views.PCSCoursePurchaseApiView.as_view(), name='course_order'),
     path('bcs/course_order_check/', views.BCSCoursePurchaseCheckApiView.as_view(), name='bcs_course_order_check'),
     path('bcs/course_order/', views.BCSCoursePurchaseApiView.as_view(), name='bcs_course_order'),

@@ -14,9 +14,10 @@
 
         <div class="col-md-6 mt-4 mb-5 subscription-list d-flex flex-column align-items-start">
             {% for service in services %}
-            <button class="btn border-0 fs-5 bg-navy w-100 mb-2" onclick="handleSubscriptionNotice({{ service.id }})"
-                    data-bs-toggle="modal"
-                    data-bs-target="#{{ service.service_title|replacespace }}">
+                <button class="btn border-0 fs-5 bg-navy w-100 mb-2"
+                        onclick="handleSubscriptionNotice({{ service.id }})"
+                        data-bs-toggle="modal"
+                        data-bs-target="#{{ service.service_title|replacespace }}">
                     <i class="icofont-cubes"></i>
                     {{ service.service_title|upper }}
                 </button>
@@ -33,7 +34,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                         </div>
-                        <div class="modal-body p-5 text-center noPurchaseNotice" >
+                        <div class="modal-body p-5 text-center noPurchaseNotice">
                             <h4 class="fw-bold">First you need to make an one time purchase for
                                 your {{ service.service_title|capitalize }} service only then you will be eligible for
                                 monthly subscription</h4>
@@ -42,7 +43,7 @@
                                 service menu</a>
                         </div>
                         <div class="modal-body p-5 text-center">
-                            <div class="row g-3 showSubscriptionDetails" >
+                            <div class="row g-3 showSubscriptionDetails">
 
                             </div>
                         </div>
@@ -464,7 +465,9 @@
                 .then(result => {
                     const packagesList = result;
 
-                    fetch(`${mainOrigin}/api/subscription_order_check/`)
+                    fetch(`${mainOrigin}/api/subscription_order_check/`, {
+                        credentials: 'include'
+                    })
                         .then(res => res.json())
                         .then(data => {
                             const subscribedPackages = data.result;
