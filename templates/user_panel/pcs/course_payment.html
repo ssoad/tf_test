@@ -82,8 +82,8 @@
                             body: JSON.stringify({paypal_id: data.orderID, course: courseId}),
                             headers: {
                                 'Content-type': 'application/json',
-                                'X-CSRFToken': csrf_token.value,
-                                'Referer': window.location.href
+                                {#'X-CSRFToken': csrf_token.value,#}
+                                {#'Referer': window.location.href#}
                             },
                         })
                         .then((response) => response.json())
