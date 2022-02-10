@@ -537,7 +537,7 @@ def subscriptionCancelView(request, id):
     }
     r = requests.post(url, headers=headers)
     print(r.status_code)
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    return HttpResponseRedirect(reverse('pcs_user_subscriptions'))
 
 
 @login_required
