@@ -370,7 +370,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://www.techforing.com",
     "https://main.techforing.com",
     "https://bcs.techforing.com",
-    "https://pcs.techforing.com",
+    "https://pcs.techforing.com/",
     "https://academy.techforing.com",
     "https://training.techforing.com",
     "http://localhost:8080",
