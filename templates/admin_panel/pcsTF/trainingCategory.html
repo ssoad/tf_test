@@ -49,12 +49,12 @@
                                     <p>{{ category.category_name }}</p>
                                 </td>
                                 <td>
-                                    <a href="{% host_url 'pcs_admin_training_category_edit' id=category.id %}?next={{ request.path|urlencode }}"
+                                    <a href="{% host_url 'pcs_admin_training_category_edit' host 'mysecurity' %}{{ category.id }}?next={{ request.path|urlencode }}"
                                        class="btn">
                                         <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
                                         Edit
                                     </a>
-                                    <a href="{% host_url 'pcs_admin_training_category_delete' id=category.id %}"
+                                    <a href="{% host_url 'pcs_admin_training_category_delete' host 'mysecurity' %}{{ category.id }}"
                                        class="btn trash">
                                         <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
                                         Delete

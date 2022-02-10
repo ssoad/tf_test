@@ -26,11 +26,11 @@
         <div class="preview-course px-2">
             <div class="d-flex justify-content-between">
                 <h5 class="fw-bold pb-14p text-primary">{{ course.course_name }}</h5>
-                <a href="{% host_url 'pcs_admin_training' %}" class="btn border-1 border-dark">Go Back to
+                <a href="{% host_url 'pcs_admin_training' host 'mysecurity' %}" class="btn border-1 border-dark">Go Back to
                     Courses </a>
             </div>
             <hr>
-            <a href="{% host_url 'pcs_admin_training_edit' id=course.id %}?next={{ request.path|urlencode }}"
+            <a href="{% host_url 'pcs_admin_training_edit' host 'mysecurity' %}{{ course.id }}?next={{ request.path|urlencode }}"
                 class="btn border-1 border-dark float-end">Edit <i class="bi bi-pencil-square"></i></a>
 
             {{ course.long_description|safe }}
@@ -65,7 +65,7 @@
                                     </thead>
                                 </table>
                             </button>
-                            <a href="{% host_url 'pcs_admin_course_section_edit' id=section.id %}?next={{ request.path|urlencode }}"
+                            <a href="{% host_url 'pcs_admin_course_section_edit' host 'mysecurity' %}{{ section.id }}?next={{ request.path|urlencode }}"
                                             class="btn btn-primary">
                                             <i class="bi bi-pencil"></i>
                             </a>
@@ -98,13 +98,13 @@
                                                 </a>
                                             </td>
                                             <td class="text-center">
-                                                <a href="{% host_url 'pcs_admin_course_content_edit' id=content.id %}?next={{ request.path|urlencode }}"
+                                                <a href="{% host_url 'pcs_admin_course_content_edit' host 'mysecurity' %}{{ content.id }}?next={{ request.path|urlencode }}"
                                                     class="">
                                                     <i class="bi bi-pencil"></i>
                                                 </a>
                                             </td>
                                             <td class="text-center">
-                                                <a href="{% host_url 'pcs_admin_course_content_delete' id=content.id %}"
+                                                <a href="{% host_url 'pcs_admin_course_content_delete' host 'mysecurity' %}{{ content.id }}"
                                                     class="">
                                                     <i class="bi bi-trash text-danger"></i>
                                                 </a>

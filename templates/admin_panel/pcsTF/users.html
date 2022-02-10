@@ -43,7 +43,7 @@
                                 <td>{{ all_user.country }}</td>
                                 <td>{{ all_user.date_joined|date }}</td>
                                 <td>
-                                    <a href="{% host_url 'pcs_admin_individual_user_panel' id=all_user.id %}"
+                                    <a href="{% host_url 'pcs_admin_individual_user_panel' host 'mysecurity' %}{{ all_user.id }}"
                                        class="btn view">
                                         <i class="bi bi-eye-fill text-success rounded-circle activites-icon"></i>
                                     </a>

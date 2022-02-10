@@ -37,7 +37,7 @@
                         <td>{{ order.subscription_package.package_name }}</td>
                         <td>$ {{ order.subscription_package.price }}</td>
                         <td>{% if order.is_active == True %} Active {% else %} Deactivate {% endif %}</td>
-                        <td><a href="{% host_url 'pcs_admin_subscription_detail' %}{{ order.id }}"><i
+                        <td><a href="{% host_url 'pcs_admin_subscription_detail' host 'mysecurity' %}{{ order.id }}"><i
                                 class="bi bi-eye-fill"></i></a></td>
                     </tr>
                 {% endfor %}
@@ -87,7 +87,7 @@
                                 {% endfor %}
                             {% endif %}
                         </td>
-                        <td><a href="{% host_url 'pcs_admin_order_detail' %}{{ order.id }}"><i
+                        <td><a href="{% host_url 'pcs_admin_order_detail' host 'mysecurity' %}{{ order.id }}"><i
                                 class="bi bi-eye-fill"></i></a></td>
                     </tr>
                 {% endfor %}

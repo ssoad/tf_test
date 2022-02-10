@@ -47,16 +47,16 @@
                             <tr>
                                 <td>{{ forloop.counter }}</td>
                                 <td>
-                                    <a href="{% host_url 'pcs_admin_course_detail' id=course.id %}">{{ course.course_name }}</a>
+                                    <a href="{% host_url 'pcs_admin_course_detail' host 'mysecurity' %}{{ course.id }}">{{ course.course_name }}</a>
                                 </td>
                                 <td>{{ course.duration|capitalize }}</td>
                                 <td>40 Lectures</td>
                                 <td>
-                                    <a href="{% host_url 'pcs_admin_training_edit' id=course.id %}?next={{ request.path|urlencode }}" class="btn">
+                                    <a href="{% host_url 'pcs_admin_training_edit' host 'mysecurity' %}{{ course.id }}?next={{ request.path|urlencode }}" class="btn">
                                         <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
                                         Edit
                                     </a>
-                                    <a href="{% host_url 'pcs_admin_training_delete' id=course.id %}" class="btn trash">
+                                    <a href="{% host_url 'pcs_admin_training_delete' host 'mysecurity' %}{{ course.id }}" class="btn trash">
                                         <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
                                         Delete
                                     </a>

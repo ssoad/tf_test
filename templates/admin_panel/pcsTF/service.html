@@ -83,12 +83,12 @@
                                     <td>{{ service.short_description }}</td>
                                     <td>
 
-                                        <a href="{% host_url 'pcs_admin_services_edit' id=service.id %}"
+                                        <a href="{% host_url 'pcs_admin_services_edit' host 'mysecurity' %}{{ service.id }}"
                                            class="btn editBtn">
                                             <i class="icofont-edit text-primary rounded-circle activites-icon"></i>
                                             Edit
                                         </a>
-                                        <a href="{% host_url 'pcs_admin_services_delete' id=service.id %}"
+                                        <a href="{% host_url 'pcs_admin_services_delete' host 'mysecurity' %}{{ service.id }}"
                                            class="btn trash">
                                             <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
                                             Delete

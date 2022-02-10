@@ -72,7 +72,7 @@
                         <td>{{ forloop.counter }}</td>
                         <td>{{ ticket.id }}</td>
                         <td><a href="
-                                {% host_url 'pcs_admin_tickets_detail' %}{{ ticket.id }}">{{ ticket.ticket_title }}</a>
+                                {% host_url 'pcs_admin_tickets_detail' host 'mysecurity' %}{{ ticket.id }}">{{ ticket.ticket_title }}</a>
                         </td>
                         <td>{{ ticket.ticket_category }}</td>
                         <td>{{ ticket.issue_category|capitalize }}</td>
