@@ -1771,7 +1771,7 @@ def pcsAdminTicketsDetailView(request, id):
             comment.save()
             notification = models.Notification.objects.create(
                 category_choice=ticket.user.email,
-                notification=f'New Reply on Ticket. <div><a href="https://pcs.techforing.com/ticket_details/{ticket.id}/" '
+                notification=f'New Reply on Ticket. <div><a href="https://pcs.techforing.com/ticket_detail/{ticket.id}/" '
                              f'target="_blank" class="btn '
                              f'btn-success mt-2">Visit Now</a></div>',
                 notification_time=timezone.now())

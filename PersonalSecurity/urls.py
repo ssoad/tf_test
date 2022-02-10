@@ -22,8 +22,8 @@ urlpatterns = [
     path('media_celebrities/', views.mediaCelebritiesView, name='media_celebrities'),
     path('site_map/', views.siteMapView, name='site_map'),
     path('open_tickets/', views.openTicketView, name='open_tickets'),
-    path('ticket_details/', views.ticketDetailView, name='ticket_details'),
-    path('ticket_details/<id>/', views.ticketDetailView, name='ticket_details'),
+    path('ticket_detail/', views.ticketDetailView, name='ticket_details'),
+    path('ticket_detail/<id>/', views.ticketDetailView, name='ticket_details'),
 
     # user panel
     path('pcs_user_dashboard/', views.userDashboardView, name='pcs_user_dashboard'),
