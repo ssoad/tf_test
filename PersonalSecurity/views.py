@@ -210,7 +210,7 @@ def ticketDetailView(request, id):
                                                                    business=request.user.business_user.business,
                                                                    notification=f'New Comment on Ticket. <div><a href="https://pcs.techforing.com/pcs_admin_tickets_detail/{ticket.id}/" target="_blank" class="btn btn-success mt-2">Visit Now</a></div>')
             notification.save()
-            return HttpResponseRedirect(reverse('ticket_detail', args=(id,)))
+            return ticketDetailView(request, id)
     context = {
         'ticket': ticket,
         'commentform': commentform,
