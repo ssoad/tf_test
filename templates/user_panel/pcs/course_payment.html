@@ -81,8 +81,7 @@
                             credentials: 'include',
                             body: JSON.stringify({paypal_id: data.orderID, course: courseId}),
                             headers: {
-                                'Content-type': 'application/json',
-                                'X-CSRFToken': csrf_token.value,
+                                'Content-type': 'application/json'
                             },
                         })
                         .then((response) => response.json())
