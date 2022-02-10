@@ -186,7 +186,7 @@ def openTicketView(request):
                                                                        business=request.user.business_user.business,
                                                                        notification=f'New Ticket Created. <div><a href="https://pcs.techforing.com/pcs_admin_tickets_detail/{ticket.id}/" target="_blank" class="btn btn-success mt-2">Visit Now</a></div>')
                 notification.save()
-                return openTicketView(request)
+                return HttpResponseRedirect(reverse('open_tickets'))
     context = {
         'form': form,
         'tickets': tickets,
@@ -210,7 +210,7 @@ def ticketDetailView(request, id):
                                                                    business=request.user.business_user.business,
                                                                    notification=f'New Comment on Ticket. <div><a href="https://pcs.techforing.com/pcs_admin_tickets_detail/{ticket.id}/" target="_blank" class="btn btn-success mt-2">Visit Now</a></div>')
             notification.save()
-            return ticketDetailView(request, id)
+            return HttpResponseRedirect(reverse('ticket_details', args=(id,)))
     context = {
         'ticket': ticket,
         'commentform': commentform,

@@ -21,9 +21,9 @@ urlpatterns = [
     path('cyber_security_for_government/', views.cyberSecurityForGovernmentView, name='cyber_security_for_government'),
     path('media_celebrities/', views.mediaCelebritiesView, name='media_celebrities'),
     path('site_map/', views.siteMapView, name='site_map'),
-    path('open_ticket/', views.openTicketView, name='open_ticket'),
-    path('ticket_detail/', views.ticketDetailView, name='ticket_detail'),
-    path('ticket_detail/<id>/', views.ticketDetailView, name='ticket_detail'),
+    path('open_tickets/', views.openTicketView, name='open_tickets'),
+    path('ticket_details/', views.ticketDetailView, name='ticket_details'),
+    path('ticket_details/<id>/', views.ticketDetailView, name='ticket_details'),
 
     # user panel
     path('pcs_user_dashboard/', views.userDashboardView, name='pcs_user_dashboard'),
