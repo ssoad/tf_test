@@ -95,7 +95,7 @@ INSTALLED_APPS = [
     'django_crontab',
 ]
 
-CSRF_TRUSTED_ORIGINS = ['https://*.techforing.com', 'https://techforing.com', 'http://127.0.0.1:8000']
+# CSRF_TRUSTED_ORIGINS = ['https://*.techforing.com', 'https://techforing.com', 'http://127.0.0.1:8000']
 
 # Django-Rest-Framework Settings
 REST_FRAMEWORK = {
@@ -365,19 +365,19 @@ SECURE_REFERRER_POLICY = "strict-origin"
 #     "http://0.0.0.0",
 # ]
 #
-# CSRF_TRUSTED_ORIGINS = [
-#     "https://techforing.com",
-#     "https://www.techforing.com",
-#     "https://main.techforing.com",
-#     "https://bcs.techforing.com",
-#     "https://pcs.techforing.com",
-#     "https://academy.techforing.com",
-#     "https://training.techforing.com",
-#     "http://localhost:8080",
-#     "http://127.0.0.1:8000",
-#     "http://44.242.38.198",
-#     "http://0.0.0.0",
-# ]
+CSRF_TRUSTED_ORIGINS = [
+    "https://techforing.com",
+    "https://www.techforing.com",
+    "https://main.techforing.com",
+    "https://bcs.techforing.com",
+    "https://pcs.techforing.com",
+    "https://academy.techforing.com",
+    "https://training.techforing.com",
+    "http://localhost:8080",
+    "http://127.0.0.1:8000",
+    "http://44.242.38.198",
+    "http://0.0.0.0",
+]
 
 CORS_URLS_REGEX = r'^/api/.*$'
 CORS_ALLOW_CREDENTIALS = True
