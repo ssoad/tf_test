@@ -152,7 +152,9 @@
         const packageDetails = document.querySelector(".package-details")
         const subscriptionService = document.querySelector("#serviceName")
         const showSubscription = (url) => {
-            fetch(url)
+            fetch(url, {
+                credentials: 'include'
+            })
                 .then(response => response.json())
                 .then(result => {
                     let divHtml
