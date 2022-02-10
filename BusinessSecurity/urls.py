@@ -182,6 +182,8 @@ urlpatterns = [
          name='bcs_admin_services'),
     path('bcs_admin_subscription_services/', views.bcsAdminSubscriptionServiceView,
          name='bcs_admin_subscription_services'),
+    path('bcs_admin_subscription_services_delete/',
+         views.bcsAdminSubscriptionServiceDeleteView, name='bcs_admin_subscription_services_delete'),
     path('bcs_admin_subscription_services_delete/<id>/',
          views.bcsAdminSubscriptionServiceDeleteView, name='bcs_admin_subscription_services_delete'),
     path('bcs_admin_services_delete/<id>/',

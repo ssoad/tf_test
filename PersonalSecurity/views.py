@@ -811,6 +811,11 @@ def pcsAdminSubscriptionServiceView(request):
     }
     return render(request, 'admin_panel/pcsTF/subscription-service.html', context)
 
+@user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def pcsAdminSubscriptionServiceDeleteView(request, id):
+    current_service = models.SubscriptionServices.objects.get(id=id)
+    current_service.delete()
+    return HttpResponseRedirect(reverse('pcs_admin_subscription_services'))
 
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def pcsAdminServiceDeleteView(request, id):
