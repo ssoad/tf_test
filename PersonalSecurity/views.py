@@ -207,7 +207,7 @@ def ticketDetailView(request, id):
             comment.ticket = ticket
             comment.save()
             notification = models.AdminNotification.objects.create(category_choice='pcs',
-                                                                   business=request.user.business_user.business,
+                                                                   user=request.user,
                                                                    notification=f'New Comment on Ticket. <div><a href="https://pcs.techforing.com/pcs_admin_tickets_detail/{ticket.id}/" target="_blank" class="btn btn-success mt-2">Visit Now</a></div>')
             notification.save()
             return HttpResponseRedirect(reverse('pcs_ticket_details', args=(id,)))
