@@ -1,5 +1,6 @@
 // console.log($("#subscription-list"));
 const baseUrl = mainOrigin + "/api/"
+console.log(baseUrl)
 
 $(document).ready(function () {
     $("#subscription-list").DataTable({
