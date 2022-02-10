@@ -159,7 +159,6 @@ urlpatterns = [
     path('pcs_admin_training/', views.pcsAdminTraining, name='pcs_admin_training'),
     path('pcs_admin_course_detail/', views.pcsAdminCourseDetail, name='pcs_admin_course_detail'),
 
-    path('pcs_admin_training/', views.pcsAdminTraining, name='pcs_admin_training'),
     path('pcs_admin_training_delete/', views.pcsAdminTrainingDelete, name='pcs_admin_training_delete'),
     path('pcs_admin_training_delete/<id>/', views.pcsAdminTrainingDelete, name='pcs_admin_training_delete'),
     path('pcs_admin_training_edit/', views.pcsAdminTrainingEdit, name='pcs_admin_training_edit'),
