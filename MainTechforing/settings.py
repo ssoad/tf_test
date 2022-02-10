@@ -378,6 +378,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://44.242.38.198",
     "http://0.0.0.0",
 ]
+CSRF_COOKIE_DOMAIN = '.techforing.com'
 
 CORS_URLS_REGEX = r'^/api/.*$'
 CORS_ALLOW_CREDENTIALS = True
