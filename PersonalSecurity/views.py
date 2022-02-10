@@ -1005,11 +1005,11 @@ def pcsAdminSubscriptionPackEdit(request, id):
     current_package = models.SubscriptionBasedPackage.objects.get(id=id)
     package_features = models.SubscriptionFeatures.objects.filter(
         package=current_package)
-    form = forms.AddPackageForm(instance=current_package)
+    form = pcsforms.AddPackageForm(instance=current_package)
     form2 = forms.AddIndividualPackageFeatureForm()
     if request.method == 'POST':
         if 'package-btn' in request.POST:
-            form = forms.AddPackageForm(request.POST, instance=current_package)
+            form = pcsforms.AddPackageForm(request.POST, instance=current_package)
             if form.is_valid():
                 form.save()
                 return HttpResponseRedirect(reverse('pcs_admin_subscription_packages'))
