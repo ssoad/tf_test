@@ -210,7 +210,7 @@ def ticketDetailView(request, id):
                                                                    business=request.user.business_user.business,
                                                                    notification=f'New Comment on Ticket. <div><a href="https://pcs.techforing.com/pcs_admin_tickets_detail/{ticket.id}/" target="_blank" class="btn btn-success mt-2">Visit Now</a></div>')
             notification.save()
-            return HttpResponseRedirect(reverse('ticket_details', args=(id,)))
+            return HttpResponseRedirect(reverse('pcs_ticket_details', args=(id,)))
     context = {
         'ticket': ticket,
         'commentform': commentform,
@@ -1771,7 +1771,7 @@ def pcsAdminTicketsDetailView(request, id):
             comment.save()
             notification = models.Notification.objects.create(
                 category_choice=ticket.user.email,
-                notification=f'New Reply on Ticket. <div><a href="https://pcs.techforing.com/ticket_detail/{ticket.id}/" '
+                notification=f'New Reply on Ticket. <div><a href="https://pcs.techforing.com/pcs_ticket_details/{ticket.id}/" '
                              f'target="_blank" class="btn '
                              f'btn-success mt-2">Visit Now</a></div>',
                 notification_time=timezone.now())
