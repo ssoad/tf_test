@@ -995,7 +995,7 @@ def subscriptionCancelView(request, id):
         # if order_subscription_teams.exists():
         #     for team in order_subscription_teams:
         #         team.delete()
-        return HttpResponseRedirect(reverse('team_user_subscriptions'))
+        return HttpResponseRedirect(reverse('bcs_user_subscriptions'))
 
 
 @login_required
@@ -1032,7 +1032,7 @@ def courseSubscriptionCancelView(request, id):
         if order_subscription_teams.exists():
             for team in order_subscription_teams:
                 team.delete()
-        return HttpResponseRedirect(reverse('team_user_subscriptions'))
+        return HttpResponseRedirect(reverse('bcs_user_subscriptions'))
 
 
 @login_required
