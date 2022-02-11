@@ -209,15 +209,15 @@ def adminCategoryListView(request):
         if 'category-btn' in request.POST:
             form1 = forms.CategoryForm(request.POST)
             form1.save()
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            return HttpResponseRedirect(reverse('admin_category_list'))
         elif 'subcategory-btn' in request.POST:
             form2 = forms.SubCategoryForm(request.POST)
             form2.save()
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            return HttpResponseRedirect(reverse('admin_category_list'))
         elif 'filter-btn' in request.POST:
             form3 = forms.FilterOptionForm(request.POST)
             form3.save()
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            return HttpResponseRedirect(reverse('admin_category_list'))
 
     context = {
         'categories': categories,
@@ -235,21 +235,21 @@ def adminCategoryListView(request):
 def categoryDeleteView(request, id):
     current_category = models.BlogCategory.objects.get(id=id)
     current_category.delete()
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    return HttpResponseRedirect(reverse('admin_category_list'))
 
 
 @user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def subCategoryDeleteView(request, id):
     current_subcategory = models.BlogSubCategory.objects.get(id=id)
     current_subcategory.delete()
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    return HttpResponseRedirect(reverse('admin_category_list'))
 
 
 @user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def filterDeleteView(request, id):
     current_filter = models.FilterOption.objects.get(id=id)
     current_filter.delete()
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    return HttpResponseRedirect(reverse('admin_category_list'))
 
 
 @user_passes_test(permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
