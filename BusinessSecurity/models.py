@@ -273,9 +273,16 @@ class OrderPrice(models.Model):
                                validators=[FileExtensionValidator(['pdf'])], help_text='(Supported Format: .pdf)')
 
     def save(self, *args, **kwargs):
-        self.price = self.initial_price - ((self.initial_price * self.discount) / 100) + (
-                (self.initial_price * self.tax) / 100) \
-                     + self.processing_fee
+        if self.discount < 1:
+            discount = 0
+        else:
+            discount = ((self.initial_price * self.discount) / 100)
+        if self.tax < 1:
+            tax = 0
+        else:
+            tax = ((self.initial_price * self.tax) / 100)
+
+        self.price = self.initial_price - discount + tax + self.processing_fee
         super(OrderPrice, self).save(*args, **kwargs)
 
 
