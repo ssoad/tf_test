@@ -301,11 +301,15 @@
     </main>
 {% endblock content %}
 {% block customjs %}
+
+    <!-- sweetAlert CDN -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <script>
         const handleSubmitVal = (e) => {
             if (!tinyMCE.activeEditor.getContent()) {
                 e.preventDefault();
-                alert("Message field can not be empty!")
+                Swal.fire("Message field can not be empty!")
             }
         }
 

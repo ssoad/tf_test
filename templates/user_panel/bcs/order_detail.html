@@ -39,19 +39,6 @@
         <div class="order-info">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-5">
-                        <h3>Company: {{ current_order.user.business_user.business.company_name }}</h3>
-                        <p>Company Type: <span
-                                class="text-bold">{{ current_order.user.business_user.business.industry_type|capitalize }}</span>
-                        </p>
-                        <p>Website: <a href="{{ current_order.user.business_user.business.website }}" target="_blank"
-                                       class="text-bold text-green">{{ current_order.user.business_user.business.website }}</a></p>
-                        <p>Number of Employees: <span
-                                class="text-bold">{{ current_order.user.business_user.business.business_size }}</span>
-                        </p>
-                        <p>User Position: <span class="text-bold">{{ current_order.user.business_user.position }}</span>
-                        </p>
-                    </div>
                     <div class="col-md-4">
                         <h3>Order ID: {{ current_order.id }}</h3>
                         <p>User: <span class="text-bold">{{ current_order.user }}</span></p>
@@ -78,6 +65,19 @@
                                     <span class="badge bg-danger">{{ current_order.order_status|capitalize }}</span>
                                 {% endif %}
                             </span>
+                        </p>
+                    </div>
+                    <div class="col-md-5">
+                        <h3>Company: {{ current_order.user.business_user.business.company_name }}</h3>
+                        <p>Company Type: <span
+                                class="text-bold">{{ current_order.user.business_user.business.industry_type|capitalize }}</span>
+                        </p>
+                        <p>Website: <a href="{{ current_order.user.business_user.business.website }}" target="_blank"
+                                       class="text-bold text-green">{{ current_order.user.business_user.business.website }}</a></p>
+                        <p>Number of Employees: <span
+                                class="text-bold">{{ current_order.user.business_user.business.business_size }}</span>
+                        </p>
+                        <p>User Position: <span class="text-bold">{{ current_order.user.business_user.position }}</span>
                         </p>
                     </div>
                     <div class="col-md-3 d-flex flex-column">
@@ -394,11 +394,15 @@
     </main>
 {% endblock content %}
 {% block customjs %}
+
+    <!-- sweetAlert CDN -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         const handleSubmitVal = (e) => {
             if (!tinyMCE.activeEditor.getContent()) {
                 e.preventDefault();
-                alert("Message field can not be empty!")
+                Swal.fire("Message field can not be empty!")
             }
         }
 
