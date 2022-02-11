@@ -132,7 +132,7 @@ class OrderPriceForm(forms.ModelForm):
             'discount': forms.NumberInput(attrs={'max': '100'}),
             'currency': forms.Select(attrs={'class': 'form-select'}),
             'payment_method': forms.Select(attrs={'class': 'form-select'}),
-            # 'invoice': forms.FileInput(attrs={'class': 'form-control'})
+            'invoice': forms.FileInput(attrs={'class': 'form-control'})
         }
 
 
