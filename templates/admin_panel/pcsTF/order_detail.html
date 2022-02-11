@@ -30,6 +30,10 @@
             -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
             background-color: #182f59;
         }
+        
+        a:hover, a:focus {
+            color: white;
+        }
     </style>
 
 {% endblock headercss %}
@@ -64,17 +68,17 @@
                             {% endif %}
                         </p>
                         <p>Change Status: </p>
-                        <div class="d-flex gap-3">
-                            <a href="{% host_url 'pcs_admin_order_new' host 'mysecurity' %}{{ current_order.id }}"><span
-                                    class="badge bg-primary">New</span></a>
-                            <a href="{% host_url 'pcs_admin_order_attending' host 'mysecurity' %}{{ current_order.id }}"><span
-                                    class="badge bg-warning text-dark">Attending</span></a>
-                            <a role="button" data-bs-toggle="modal" data-bs-target="#exampleModal"><span
-                                    class="badge bg-info text-dark">On Progress</span></a>
-                            <a href="{% host_url 'pcs_admin_order_completed' host 'mysecurity' %}{{ current_order.id }}"><span
-                                    class="badge bg-success">Completed</span></a>
-                            <a href="{% host_url 'pcs_admin_order_canceled' host 'mysecurity' %}{{ current_order.id }}"><span
-                                    class="badge bg-danger">Canceled</span></a>
+                        <div class="d-flex gap-3 flex-wrap">
+                            <a class="badge bg-primary w-25" href="{% host_url 'bcs_admin_order_new' %}{{ current_order.id }}">
+                                <span>New</span></a>
+                            <a class="badge bg-warning text-dark w-25" href="{% host_url 'bcs_admin_order_attending' %}{{ current_order.id }}">
+                                <span>Attending</span></a>
+                            <a class="badge bg-info text-dark w-25" role="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <span>On Progress</span></a>
+                            <a class="badge bg-success w-25" href="{% host_url 'bcs_admin_order_completed' %}{{ current_order.id }}">
+                                <span>Completed</span></a>
+                            <a class="badge bg-danger w-25" href="{% host_url 'bcs_admin_order_canceled' %}{{ current_order.id }}">
+                                <span>Canceled</span></a>
                         </div>
                     </div>
                     <div class="col-md-3 d-flex flex-column">

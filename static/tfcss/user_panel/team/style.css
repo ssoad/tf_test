@@ -198,7 +198,7 @@ header.sticky-top {
 }
 
 .view-btn:hover {
-    text-decoration: underline;
+    /* text-decoration: underline; */
     color: rgb(100, 156, 15);
 }
 
