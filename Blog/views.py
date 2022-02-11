@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponseRedirect, reverse
+from django.shortcuts import render, HttpResponseRedirect, reverse, redirect
 from django.http import JsonResponse
 from django.core import serializers
 from django.db.models import Q
@@ -497,7 +497,7 @@ def addToReadingListView(request, id):
             user=request.user, post=current_post)
     else:
         is_saved.delete()
-    return HttpResponseRedirect(indexView)
+    return redirect('/')
 
 
 @login_required
