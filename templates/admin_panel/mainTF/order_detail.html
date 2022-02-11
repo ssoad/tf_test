@@ -43,10 +43,6 @@
             background-color: #5BBC2E;
             color: white;
         }
-        
-        a:hover, a:focus {
-            color: white;
-        }
     </style>
 
 {% endblock headercss %}
@@ -78,18 +74,18 @@
                             {% endif %}
                         </p>
                         <p>Change Status: </p>
-                        <div class="d-flex gap-3 flex-wrap">
-                            <a class="badge bg-primary w-25" href="{% host_url 'bcs_admin_order_new' %}{{ current_order.id }}">
+                        <div class="d-flex gap-3 flex-wrap" >
+                            <a class="badge bg-primary w-25" style="a:hover, a:focus {color: white;}" href="{% host_url 'bcs_admin_order_new' %}{{ current_order.id }}">
                                 <span>New</span></a>
-                            <a role="button" class="badge bg-secondary w-25" data-bs-toggle="modal" data-bs-target="#assignModal">
+                            <a role="button" class="badge bg-secondary w-25" style="a:hover, a:focus {color: white;}" data-bs-toggle="modal" data-bs-target="#assignModal">
                                 <span>Assign To</span></a>
-                            <a class="badge bg-warning text-dark w-25" href="{% host_url 'bcs_admin_order_attending' %}{{ current_order.id }}">
+                            <a class="badge bg-warning text-dark w-25" style="a:hover, a:focus {color: white;}" href="{% host_url 'bcs_admin_order_attending' %}{{ current_order.id }}">
                                 <span>Attending</span></a>
-                            <a class="badge bg-info text-dark w-25" role="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <a class="badge bg-info text-dark w-25" style="a:hover, a:focus {color: white;}" role="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                 <span>On Progress</span></a>
-                            <a class="badge bg-success w-25" href="{% host_url 'bcs_admin_order_completed' %}{{ current_order.id }}">
+                            <a class="badge bg-success w-25" style="a:hover, a:focus {color: white;}" href="{% host_url 'bcs_admin_order_completed' %}{{ current_order.id }}">
                                 <span>Completed</span></a>
-                            <a class="badge bg-danger w-25" href="{% host_url 'bcs_admin_order_canceled' %}{{ current_order.id }}">
+                            <a class="badge bg-danger w-25" style="a:hover, a:focus {color: white;}" href="{% host_url 'bcs_admin_order_canceled' %}{{ current_order.id }}">
                                 <span>Canceled</span></a>
                         </div>
                     </div>
