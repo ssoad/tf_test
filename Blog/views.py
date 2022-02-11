@@ -497,7 +497,7 @@ def addToReadingListView(request, id):
             user=request.user, post=current_post)
     else:
         is_saved.delete()
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    return HttpResponseRedirect(indexView)
 
 
 @login_required
