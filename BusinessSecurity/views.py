@@ -1787,7 +1787,7 @@ def bcsAdminServiceCategoryView(request):
             category = form.save(commit=False)
             category.category_choice = 'bcs'
             category.save()
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            return HttpResponseRedirect(reverse('bcs_admin_services_category'))
 
     context = {
         'form': form,
@@ -1801,7 +1801,7 @@ def bcsAdminServiceCategoryDeleteView(request, id):
     current_category = models.ServiceCategory.objects.get(
         id=id, category_choice='bcs')
     current_category.delete()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    return HttpResponseRedirect(reverse('bcs_admin_services_category'))
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
@@ -1850,7 +1850,7 @@ def bcsAdminServiceView(request):
                 person = tracking[0].persons
                 tracking[0].persons = f'{person},{sale_id}'
                 tracking[0].save()
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            return HttpResponseRedirect(reverse('bcs_admin_services'))
     context = {
         'form': form,
         'sales_persons': sales_persons,
@@ -1884,7 +1884,7 @@ def bcsAdminSubscriptionServiceView(request):
             #     person = tracking[0].persons
             #     tracking[0].persons = f'{person},{sale_id}'
             #     tracking[0].save()
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            return HttpResponseRedirect(reverse('bcs_admin_subscription_services'))
     context = {
         'form': form,
         # 'sales_persons': sales_persons,
@@ -1900,14 +1900,14 @@ def bcsAdminSubscriptionServiceView(request):
 def bcsAdminSubscriptionServiceDeleteView(request, id):
     current_service = models.SubscriptionServices.objects.get(id=id)
     current_service.delete()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    return HttpResponseRedirect(reverse('bcs_admin_subscription_services'))
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminServiceDeleteView(request, id):
     current_service = models.Service.objects.get(id=id)
     current_service.delete()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    return HttpResponseRedirect(reverse('bcs_admin_services'))
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
@@ -1957,7 +1957,7 @@ def bcsAdminSubServiceView(request):
         form = forms.AddSubServiceForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            return HttpResponseRedirect(reverse('bcs_admin_sub_services'))
     context = {
         'form': form,
         'sub_services': sub_services,
@@ -1969,7 +1969,7 @@ def bcsAdminSubServiceView(request):
 def bcsAdminSubServiceDeleteView(request, id):
     current_sub_service = models.SubService.objects.get(id=id)
     current_sub_service.delete()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    return HttpResponseRedirect(reverse('bcs_admin_sub_services'))
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
@@ -2065,7 +2065,7 @@ def bcsSubServiceFormView(request):
                     new_choices[0].choice_field.add(field)
                     new_choices[0].save()
 
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            return HttpResponseRedirect(reverse('bcs_admin_sub_services_form'))
     context = {
         'form': form,
         'form_lists': form_lists,
@@ -2078,7 +2078,7 @@ def bcsSubServiceFormView(request):
 def bcsAdminSubServiceFormDeleteView(request, id):
     input_field = models.InputFields.objects.get(id=id)
     input_field.delete()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    return HttpResponseRedirect(reverse('bcs_admin_sub_services_form'))
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
