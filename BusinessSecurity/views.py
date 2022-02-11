@@ -602,7 +602,7 @@ def userOrderDetailsView(request, id):
                                                                                                         f'<div><a href="https://main.techforing.com/bcs_admin_order_detail/{current_quotation.id}/" target="_blank" class="btn btn-success mt-2">Visit Now</a></div>')
                                     notification.save()
 
-                                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                                return HttpResponseRedirect(reverse('bcs_user_order_details', args=(id,)))
                     except:
                         current_quotation = models.Quotation.objects.get(order=current_order)
                         form = forms.QuotationAgreementForm()
@@ -627,7 +627,7 @@ def userOrderDetailsView(request, id):
                                                                                                         f'<div><a href="https://main.techforing.com/bcs_admin_order_detail/{current_quotation.id}/" target="_blank" class="btn btn-success mt-2">Visit Now</a></div>')
                                     notification.save()
 
-                                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                                return HttpResponseRedirect(reverse('bcs_user_order_details', args=(id,)))
                     context = {
                         'current_order': current_order,
                         'form': form,
@@ -654,7 +654,7 @@ def quotationAcceptView(request, id):
                 current_order.order_status = 'agreed_to_quotation'
                 current_quotation.save()
                 current_order.save()
-                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                return HttpResponseRedirect(reverse('bcs_user_accept_quotation'))
             else:
                 return HttpResponse("You don't have permission to view this page")
         except:
@@ -676,7 +676,7 @@ def ndaNcaAcceptView(request, id):
                 current_order.order_status = 'agreed_to_nda_nca'
                 current_quotation.save()
                 current_order.save()
-                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                return HttpResponseRedirect(reverse('bcs_user_accept_nda_nca', args=(id,)))
             else:
                 return HttpResponse("You don't have permission to view this page")
         except:
@@ -699,7 +699,7 @@ def orderRejectView(request, id):
             current_quotation.save()
             current_order.save()
 
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            return HttpResponseRedirect(reverse('bcs_user_order_reject', args=(id,)))
         except:
             return HttpResponse("You don't have permission to view this page")
 
@@ -733,7 +733,7 @@ def bcsUserMyTeamView(request):
                         request.POST, instance=current_business.business)
                     if info_form.is_valid():
                         info_form.save()
-                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                    return HttpResponseRedirect(reverse('bcs_user_my_team'))
                 elif 'inv-btn' in request.POST:
                     emails = request.POST['email'].split()
                     # print(emails)
@@ -917,7 +917,7 @@ def bcsUserTeamMemberDeleteView(request, id):
         if current_user == request.user \
                 or current_user.business_user.privilege == 'general_admin' \
                 or current_employee.privilege == 'admin':
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            return HttpResponseRedirect(reverse('bcs_user_my_team'))
         else:
             subscription_teams = models.SubscriptionTeam.objects.filter(user=current_user)
             order_subscription_teams = SubscriptionTeam.objects.filter(user=current_user)
@@ -930,7 +930,7 @@ def bcsUserTeamMemberDeleteView(request, id):
             current_user.is_bcs = False
             current_user.save()
             current_employee.delete()
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            return HttpResponseRedirect(reverse('bcs_user_my_team'))
 
 
 @login_required
@@ -995,7 +995,7 @@ def subscriptionCancelView(request, id):
         # if order_subscription_teams.exists():
         #     for team in order_subscription_teams:
         #         team.delete()
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(reverse('team_user_subscriptions'))
 
 
 @login_required
@@ -1032,7 +1032,7 @@ def courseSubscriptionCancelView(request, id):
         if order_subscription_teams.exists():
             for team in order_subscription_teams:
                 team.delete()
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(reverse('team_user_subscriptions'))
 
 
 @login_required
@@ -1090,10 +1090,8 @@ def userEventRegisterView(request, id):
                     user=request.user, event=current_event)
             else:
                 is_register.delete()
-            try:
-                return HttpResponseRedirect(request.META['HTTP_REFERER'])
-            except:
-                return HttpResponseRedirect(reverse('pcs_user_dashboard'))
+            return HttpResponseRedirect(reverse('bcs_user_dashboard'))
+
 
 
 @login_required
@@ -1259,7 +1257,7 @@ def openTicketView(request):
                                                                                business=request.user.business_user.business,
                                                                                notification=f'New Ticket Created. <div><a href="https://main.techforing.com/bcs_admin_tickets_detail/{ticket.id}/" target="_blank" class="btn btn-success mt-2">Visit Now</a></div>')
                         notification.save()
-                        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                        return HttpResponseRedirect(reverse('open_tickets'))
             context = {
                 'form': form,
                 'tickets': tickets,
@@ -1289,7 +1287,7 @@ def ticketDetailView(request, id):
                                                                            business=request.user.business_user.business,
                                                                            notification=f'New Comment on Ticket. <div><a href="https://main.techforing.com/bcs_admin_tickets_detail/{ticket.id}/" target="_blank" class="btn btn-success mt-2">Visit Now</a></div>')
                     notification.save()
-                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                    return HttpResponseRedirect(reverse('ticket_details', args=(id,)))
             context = {
                 'ticket': ticket,
                 'commentform': commentform,
@@ -1374,7 +1372,7 @@ def mainAdminOrdersDetailView(request, id):
                     form.save()
                     current_order.order_status = 'assigned'
                     current_order.save()
-                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                    return HttpResponseRedirect(reverse('main_admin_order_detail', args=(id,)))
             elif 'price-btn' in request.POST:
                 form2 = forms.OrderPriceForm(
                     request.POST, instance=current_price)
@@ -1384,7 +1382,7 @@ def mainAdminOrdersDetailView(request, id):
                     new_staff = models.OrderStaff.objects.get_or_create(
                         order=current_order, staff=request.user)
                     form2.save()
-                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                    return HttpResponseRedirect(reverse('main_admin_order_detail', args=(id,)))
         context = {
             'current_order': current_order,
             'form1': form1,
@@ -1405,7 +1403,7 @@ def mainAdminNotificationView(request):
             form = forms.NotificationForm(request.POST)
             if form.is_valid():
                 form.save()
-                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                return HttpResponseRedirect(reverse('main_admin_notification'))
         elif 'date_range' in request.POST:
             notification = request.POST.get('notification')
             input_date = request.POST.get('date_range')
@@ -1420,7 +1418,7 @@ def mainAdminNotificationView(request):
                 note.save()
             # print(date_parser(start_date))
             # print(start_date, end_date)
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            return HttpResponseRedirect(reverse('main_admin_notification'))
 
     context = {
         'form': form,
@@ -1433,7 +1431,7 @@ def mainAdminNotificationView(request):
 def mainAdminNotificationDeleteView(request, id):
     current_notification = models.Notification.objects.get(id=id)
     current_notification.delete()
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    return HttpResponseRedirect(reverse('main_admin_notification'))
 
 
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
@@ -1444,7 +1442,7 @@ def mainAdminEventsView(request):
         form = forms.EventCreateForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            return HttpResponseRedirect(reverse('main_admin_events'))
     context = {
         'form': form,
         'events': events,
@@ -1459,7 +1457,7 @@ def mainAdminEventsView(request):
 def mainAdminEventsDeleteView(request, id):
     current_event = models.Events.objects.get(id=id)
     current_event.delete()
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    return HttpResponseRedirect(reverse('main_admin_events'))
 
 
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
@@ -1535,7 +1533,7 @@ def mainAdminSupportView(request):
                     current_user.is_staff = True
                     current_user.is_pcs_head = True
                     current_user.save()
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(reverse('main_admin_support_view'))
 
     context = {
         'admin_list': admin_list,
@@ -1707,7 +1705,7 @@ def mainAdminSupportDeleteView(request, id):
             current_user.is_pcs_head = False
             current_user.save()
 
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    return HttpResponseRedirect(reverse('main_admin_support_view'))
 
 
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
@@ -1744,7 +1742,7 @@ def mainAdminTicketsDetailView(request, id):
             comment.user = request.user
             comment.ticket = ticket
             comment.save()
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            return HttpResponseRedirect(reverse('main_admin_tickets_detail', args=(id,)))
     context = {
         'ticket': ticket,
         'commentform': commentform,
@@ -1759,11 +1757,11 @@ def ticketOpenCloseView(request, id):
     if current_ticket.ticket_status == 'open':
         current_ticket.ticket_status = 'closed'
         current_ticket.save()
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(reverse('bcs_admin_all_tickets'))
     elif current_ticket.ticket_status == 'closed':
         current_ticket.ticket_status = 'open'
         current_ticket.save()
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(reverse('bcs_admin_all_tickets'))
 
 
 # BCS Admin Section
@@ -2146,7 +2144,7 @@ def bcsAdminSubscriptionPack(request):
                                                                                     feature_name=feature_name,
                                                                                     feature=feature)
                 package_feature[0].save()
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(reverse('bcs_admin_subscription_packages'))
     context = {
         'form': form,
         'services': services,
@@ -2177,14 +2175,14 @@ def bcsAdminSubscriptionPackEdit(request, id):
             current_feature.feature_name = request.POST.get('feature_name')
             current_feature.feature = request.POST.get('feature')
             current_feature.save()
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            return HttpResponseRedirect(reverse('bcs_admin_subscription_packages_edit', args=(id,)))
         elif 'add-feature-btn' in request.POST:
             form2 = forms.AddIndividualPackageFeatureForm(request.POST)
             if form2.is_valid():
                 feature = form2.save(commit=False)
                 feature.package = current_package
                 feature.save()
-                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                return HttpResponseRedirect(reverse('bcs_admin_subscription_packages_edit', args=(id,)))
 
     context = {
         'form': form,
@@ -2198,14 +2196,14 @@ def bcsAdminSubscriptionPackEdit(request, id):
 def bcsAdminSubscriptionPackDelete(request, id):
     current_package = models.SubscriptionBasedPackage.objects.get(id=id)
     current_package.delete()
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    return HttpResponseRedirect(reverse('bcs_admin_subscription_packages'))
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminSubscriptionPackFeatureDelete(request, id):
     current_feature = models.SubscriptionFeatures.objects.get(id=id)
     current_feature.delete()
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    return HttpResponseRedirect(reverse('bcs_admin_subscription_packages_edit', args=(id,)))
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
@@ -2345,7 +2343,7 @@ def bcsAdminTrainingCategoryView(request):
             course = form.save(commit=False)
             course.course_type = 'Business'
             course.save()
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            return HttpResponseRedirect(reverse('bcs_admin_training_category'))
     context = {
         'form': form,
         'categories': categories,
@@ -2377,7 +2375,7 @@ def bcsAdminTrainingCategoryEditView(request, id):
 def bcsAdminTrainingCategoryDelete(request, id):
     current_category = CourseCategory.objects.get(id=id)
     current_category.delete()
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    return HttpResponseRedirect(reverse('bcs_admin_training_category'))
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
@@ -2390,7 +2388,7 @@ def bcsAdminTraining(request):
             course = form.save(commit=False)
             course.product_id = request.POST.get('product_id')
             course.save()
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            return HttpResponseRedirect(reverse('bcs_admin_training'))
     context = {
         'form': form,
         'courses': courses,
@@ -2405,7 +2403,7 @@ def bcsAdminTraining(request):
 def bcsAdminTrainingDelete(request, id):
     current_course = BCSCourse.objects.get(id=id)
     current_course.delete()
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    return HttpResponseRedirect(reverse('bcs_admin_training'))
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
@@ -2442,7 +2440,7 @@ def bcsAdminCourseDetail(request, id):
                 section = form.save(commit=False)
                 section.course = course
                 section.save()
-                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                return HttpResponseRedirect(reverse('bcs_admin_course_detail', args=(id,)))
         elif 'add_content' in request.POST:
             form2 = BCSContentCreateForm(request.POST, request.FILES)
             if form2.is_valid():
@@ -2451,7 +2449,7 @@ def bcsAdminCourseDetail(request, id):
                 current_section = BCSSection.objects.get(id=section_id)
                 content.section = current_section
                 content.save()
-                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                return HttpResponseRedirect(reverse('bcs_admin_course_detail', args=(id,)))
 
     context = {
         'course': course,
@@ -2465,13 +2463,15 @@ def bcsAdminCourseDetail(request, id):
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminCourseContentDelete(request, id):
     current_content = BCSContent.objects.get(id=id)
+    course_id = current_content.section.course.id
     current_content.delete()
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    return HttpResponseRedirect(reverse('bcs_admin_course_detail', args=(course_id,)))
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminCourseContentEdit(request, id):
     current_content = BCSContent.objects.get(id=id)
+    course_id = current_content.section.course.id
     form = BCSContentCreateForm(instance=current_content)
     if request.method == 'POST':
         form = BCSContentCreateForm(
@@ -2482,7 +2482,7 @@ def bcsAdminCourseContentEdit(request, id):
             if next_page:
                 return HttpResponseRedirect(next_page)
             else:
-                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                return HttpResponseRedirect(reverse('bcs_admin_course_detail', args=(course_id,)))
     context = {
         'form': form,
     }
@@ -2492,6 +2492,7 @@ def bcsAdminCourseContentEdit(request, id):
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminCourseSectionEdit(request, id):
     current_section = BCSSection.objects.get(id=id)
+    course_id = current_section.course.id
     form = BCSSectionCreateForm(instance=current_section)
     if request.method == 'POST':
         form = BCSSectionCreateForm(
@@ -2502,7 +2503,7 @@ def bcsAdminCourseSectionEdit(request, id):
             if next_page:
                 return HttpResponseRedirect(next_page)
             else:
-                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                return HttpResponseRedirect(reverse('bcs_admin_course_detail', args=(course_id,)))
     context = {
         'form': form,
     }
@@ -2527,7 +2528,7 @@ def bcsAdminCourseSubscriptionPack(request):
                                                                         feature_name=feature_name,
                                                                         feature=feature)
                 package_feature[0].save()
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(reverse('bcs_admin_course_packages'))
     context = {
         'form': form,
         'courses': courses,
@@ -2558,14 +2559,14 @@ def bcsAdminCourseSubscriptionPackEdit(request, id):
             current_feature.feature_name = request.POST.get('feature_name')
             current_feature.feature = request.POST.get('feature')
             current_feature.save()
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            return HttpResponseRedirect(reverse('bcs_admin_course_packages'))
         elif 'add-feature-btn' in request.POST:
             form2 = forms.AddIndividualPackageFeatureForm(request.POST)
             if form2.is_valid():
                 feature = form2.save(commit=False)
                 feature.package = current_package
                 feature.save()
-                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                return HttpResponseRedirect(reverse('bcs_admin_course_packages'))
 
     context = {
         'form': form,
@@ -2579,14 +2580,15 @@ def bcsAdminCourseSubscriptionPackEdit(request, id):
 def bcsAdminCourseSubscriptionPackDelete(request, id):
     current_package = CoursePackage.objects.get(id=id)
     current_package.delete()
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    return HttpResponseRedirect(reverse('bcs_admin_course_packages'))
 
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminCourseSubscriptionPackFeatureDelete(request, id):
     current_feature = models.SubscriptionFeatures.objects.get(id=id)
+    course_id = current_feature.package.id
     current_feature.delete()
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    return HttpResponseRedirect(reverse('bcs_admin_course_packages_edit', args=(course_id,)))
 
 
 @user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
@@ -2844,7 +2846,7 @@ def bcsAdminOrdersDetailView(request, id):
                     notification_time=timezone.now())
                 notification.save()
 
-                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                return HttpResponseRedirect(reverse('bcs_admin_order_detail', args=(id,)))
             if quotation_form.is_valid():
                 current_order.order_status = 'attending'
                 current_order.save()
@@ -2872,7 +2874,7 @@ def bcsAdminOrdersDetailView(request, id):
                     current_quotation_agreement.delete()
                 except:
                     pass
-                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                return HttpResponseRedirect(reverse('bcs_admin_order_detail', args=(id,)))
         context = {
             'current_order': current_order,
             'form': form,
@@ -2914,7 +2916,7 @@ def bcsAdminOrdersDetailView(request, id):
                                      f'btn-success mt-2">Visit Now</a></div>',
                         notification_time=timezone.now())
                     notification.save()
-                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                    return HttpResponseRedirect(reverse('bcs_admin_order_detail', args=(id,)))
                 if quotation_form.is_valid():
                     current_order.order_status = 'attending'
                     current_order.save()
@@ -2943,7 +2945,7 @@ def bcsAdminOrdersDetailView(request, id):
                         current_quotation_agreement.delete()
                     except:
                         pass
-                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                    return HttpResponseRedirect(reverse('bcs_admin_order_detail', args=(id,)))
             context = {
                 'current_order': current_order,
                 'form': form,
@@ -3016,9 +3018,9 @@ def bcsAdminOrderNewView(request, id):
         #     for staff in current_order.orderstaff_order.all():
         #         staff.delete()
         current_order.save()
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(reverse('bcs_admin_orders'))
     except:
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(reverse('bcs_admin_orders'))
 
 
 @user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
@@ -3035,9 +3037,9 @@ def bcsAdminOrderAttendingView(request, id):
         current_order.order_status = 'attending'
         current_order.save()
         # staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(reverse('bcs_admin_order_detail', args=(id,)))
     except:
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(reverse('bcs_admin_order_detail', args=(id,)))
 
 
 @user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
@@ -3054,9 +3056,9 @@ def bcsAdminOrderCompletedView(request, id):
         current_order.order_status = 'completed'
         current_order.save()
         # staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(reverse('bcs_admin_order_detail', args=(id,)))
     except:
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(reverse('bcs_admin_order_detail', args=(id,)))
 
 
 @user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
@@ -3073,9 +3075,9 @@ def bcsAdminOrderCanceledView(request, id):
         current_order.order_status = 'canceled'
         current_order.save()
         # staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(reverse('bcs_admin_order_detail', args=(id,)))
     except:
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(reverse('bcs_admin_order_detail', args=(id,)))
 
 
 @user_passes_test(bcs_admin_permission_check_order, login_url='/accounts/login/',
@@ -3107,7 +3109,7 @@ def bcsAdminTicketsDetailView(request, id):
                              f'btn-success mt-2">Visit Now</a></div>',
                 notification_time=timezone.now())
             notification.save()
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            return HttpResponseRedirect(reverse('bcs_admin_tickets_detail', args=(id,)))
     context = {
         'ticket': ticket,
         'commentform': commentform,

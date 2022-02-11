@@ -251,6 +251,8 @@ urlpatterns = [
          views.bcsAdminTrainingDelete, name='bcs_admin_training_delete'),
     path('bcs_admin_training_edit/<id>/',
          views.bcsAdminTrainingEdit, name='bcs_admin_training_edit'),
+    path('bcs_admin_course_detail/',
+         views.bcsAdminCourseDetail, name='bcs_admin_course_detail'),
     path('bcs_admin_course_detail/<id>/',
          views.bcsAdminCourseDetail, name='bcs_admin_course_detail'),
     path('bcs_admin_course_section_edit/<id>/',
