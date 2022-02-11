@@ -316,6 +316,8 @@
 {% endblock content %}
 {% block customjs %}
     <script src="{% static 'tfjs/admin_panel/bcsTF/order.js' %}"></script>
+    <!-- sweetAlert CDN -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $("document").ready(function () {
             $("#id_nda").prop('required', true);
@@ -325,7 +327,7 @@
         const handleSubmitVal = (e) => {
             if (!tinyMCE.activeEditor.getContent()) {
                 e.preventDefault();
-                alert("Provide Quotation info")
+                Swal.fire("Provide Quotation info")
             }
         }
 
