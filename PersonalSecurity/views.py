@@ -723,7 +723,7 @@ def pcsAdminServiceCategoryDeleteView(request, id):
     current_category = models.ServiceCategory.objects.get(
         id=id, category_choice='pcs')
     current_category.delete()
-    return HttpResponseRedirect(reverse('pcs_admin_services_category_delete', args=(id,)))
+    return HttpResponseRedirect(reverse('pcs_admin_services_category'))
 
 
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
@@ -821,7 +821,7 @@ def pcsAdminSubscriptionServiceDeleteView(request, id):
 def pcsAdminServiceDeleteView(request, id):
     current_service = models.Service.objects.get(id=id)
     current_service.delete()
-    return HttpResponseRedirect(reverse('pcs_admin_services_delete', args=(id,)))
+    return HttpResponseRedirect(reverse('pcs_admin_services'))
 
 
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
@@ -896,7 +896,7 @@ def pcsSubServiceFormView(request):
 def pcsAdminSubServiceFormDeleteView(request, id):
     input_field = models.InputFields.objects.get(id=id)
     input_field.delete()
-    return HttpResponseRedirect(reverse('pcs_admin_sub_services_form_delete', args=(id,)))
+    return HttpResponseRedirect(reverse('pcs_admin_sub_services_form'))
 
 
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
@@ -939,7 +939,7 @@ def pcsAdminSubServiceView(request):
 def pcsAdminSubServiceDeleteView(request, id):
     current_sub_service = models.SubService.objects.get(id=id)
     current_sub_service.delete()
-    return HttpResponseRedirect(reverse('pcs_admin_sub_services_delete', args=(id,)))
+    return HttpResponseRedirect(reverse('pcs_admin_sub_services'))
 
 
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
@@ -1034,7 +1034,7 @@ def pcsAdminSubscriptionPackEdit(request, id):
         'form2': form2,
         'package_features': package_features,
     }
-    return render(request, 'admin_panel/bcsTF/subscriptionPackEdit.html', context)
+    return render(request, 'admin_panel/pcsTF/subscriptionPackEdit.html', context)
 
 
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
@@ -1255,13 +1255,15 @@ def pcsAdminCourseDetail(request, id):
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/')
 def pcsAdminCourseContentDelete(request, id):
     current_content = Content.objects.get(id=id)
+    course_id = current_content.section.course.id
     current_content.delete()
-    return HttpResponseRedirect(reverse('pcs_admin_course_content_delete', args=(id,)))
+    return HttpResponseRedirect(reverse('pcs_admin_course_detail', args=(course_id,)))
 
 
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/')
 def pcsAdminCourseContentEdit(request, id):
     current_content = Content.objects.get(id=id)
+    course_id = current_content.section.course.id
     form = ContentCreateForm(instance=current_content)
     if request.method == 'POST':
         form = ContentCreateForm(
@@ -1272,7 +1274,7 @@ def pcsAdminCourseContentEdit(request, id):
             if next_page:
                 return HttpResponseRedirect(next_page)
             else:
-                return HttpResponseRedirect(reverse('pcs_admin_course_content_edit', args=(id,)))
+                return HttpResponseRedirect(reverse('pcs_admin_course_detail', args=(course_id,)))
     context = {
         'form': form,
     }
@@ -1282,6 +1284,7 @@ def pcsAdminCourseContentEdit(request, id):
 @user_passes_test(pcs_admin_permission_check, login_url='/accounts/login/')
 def pcsAdminCourseSectionEdit(request, id):
     current_section = Section.objects.get(id=id)
+    course_id = current_section.course.id
     form = SectionCreateForm(instance=current_section)
     if request.method == 'POST':
         form = SectionCreateForm(
@@ -1292,7 +1295,7 @@ def pcsAdminCourseSectionEdit(request, id):
             if next_page:
                 return HttpResponseRedirect(next_page)
             else:
-                return HttpResponseRedirect(reverse('pcs_admin_course_section_edit', args=(id,)))
+                return HttpResponseRedirect(reverse('pcs_admin_course_detail', args=(course_id,)))
     context = {
         'form': form,
     }
@@ -1741,9 +1744,9 @@ def pcsAdminOrderNewView(request, id):
         #     for staff in current_order.orderstaff_order.all():
         #         staff.delete()
         current_order.save()
-        return HttpResponseRedirect(reverse('pcs_admin_order_new', args=(id,)))
+        return HttpResponseRedirect(reverse('pcs_admin_order_detail', args=(id,)))
     except:
-        return HttpResponseRedirect(reverse('pcs_admin_order_new', args=(id,)))
+        return HttpResponseRedirect(reverse('pcs_admin_order_detail', args=(id,)))
 
 
 @user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/',
@@ -1760,9 +1763,9 @@ def pcsAdminOrderAttendingView(request, id):
         current_order.order_status = 'attending'
         current_order.save()
         # staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
-        return HttpResponseRedirect(reverse('pcs_admin_order_attending', args=(id,)))
+        return HttpResponseRedirect(reverse('pcs_admin_order_detail', args=(id,)))
     except:
-        return HttpResponseRedirect(reverse('pcs_admin_order_attending', args=(id,)))
+        return HttpResponseRedirect(reverse('pcs_admin_order_detail', args=(id,)))
 
 
 @user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/',
@@ -1779,9 +1782,9 @@ def pcsAdminOrderCompletedView(request, id):
         current_order.order_status = 'completed'
         current_order.save()
         # staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
-        return HttpResponseRedirect(reverse('pcs_admin_order_completed', args=(id,)))
+        return HttpResponseRedirect(reverse('pcs_admin_order_detail', args=(id,)))
     except:
-        return HttpResponseRedirect(reverse('pcs_admin_order_completed', args=(id,)))
+        return HttpResponseRedirect(reverse('pcs_admin_order_detail', args=(id,)))
 
 
 @user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/',
@@ -1798,9 +1801,9 @@ def pcsAdminOrderCanceledView(request, id):
         current_order.order_status = 'canceled'
         current_order.save()
         # staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
-        return HttpResponseRedirect(reverse('pcs_admin_order_canceled', args=(id,)))
+        return HttpResponseRedirect(reverse('pcs_admin_order_detail', args=(id,)))
     except:
-        return HttpResponseRedirect(reverse('pcs_admin_order_canceled', args=(id,)))
+        return HttpResponseRedirect(reverse('pcs_admin_order_detail', args=(id,)))
 
 
 @user_passes_test(pcs_admin_permission_check_order, login_url='/accounts/login/',
