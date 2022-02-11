@@ -561,6 +561,17 @@ def userEventsView(request):
         'registered_event': registered_event,
     }
     return render(request, 'user_panel/pcs/events.html', context)
+@login_required
+def userEventRegisterView(request, id):
+    current_event = models.Events.objects.get(id=id)
+    is_register = models.RegisteredEvents.objects.filter(
+        user=request.user, event=current_event)
+    if not is_register:
+        models.RegisteredEvents.objects.get_or_create(
+            user=request.user, event=current_event)
+    else:
+        is_register.delete()
+    return HttpResponseRedirect(reverse('pcs_user_dashboard'))
 
 
 @login_required

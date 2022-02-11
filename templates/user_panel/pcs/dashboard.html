@@ -289,7 +289,7 @@
                                                         </tbody>
                                                     </table>
                                                     {% if event.id not in registered_event %}
-                                                        <a href="{% host_url 'bcs_user_event_register' id=event.id %}"
+                                                        <a href="{% host_url 'pcs_user_event_register' id=event.id %}"
                                                            class="d-block w-100 btn btn-sm bg-navy text-white px-4 py-1 mt-2">Interested</a>
                                                     {% else %}
                                                         <button disabled
