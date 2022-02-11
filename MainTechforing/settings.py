@@ -37,7 +37,7 @@ SECRET_KEY = 'django-insecure-j55@su5sxajtqf_yed#+^vn&p0l=ovow1^6cp$&05so^8^l3th
 DEBUG = True
 
 ALLOWED_HOSTS = ['0.0.0.0', '44.242.38.198', 'main.techforing.com', 'pcs.techforing.com', 'training.techforing.com',
-                 '127.0.0.1', 'localhost', '.techforing.com', '*.techforing.com']
+                 '127.0.0.1', 'localhost', '.techforing.com']
 
 # Application definition
 
@@ -349,7 +349,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #     "http://0.0.0.0",
 # ]
 CORS_ALLOW_ALL_ORIGINS = True
-SECURE_REFERRER_POLICY = "strict-origin"
+# SECURE_REFERRER_POLICY = "strict-origin"
 
 # CORS_ORIGIN_WHITELIST = [
 #     "https://techforing.com",
