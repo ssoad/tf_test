@@ -26,6 +26,27 @@
             -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
             background-color: #182f59;
         }
+
+        .view-btn {
+            cursor: pointer;
+            text-decoration: none;
+            outline: none;
+            border: none;
+        }
+        
+        .view-btn:hover {
+            {% comment %} text-decoration: underline; {% endcomment %}
+            color: #5BBC2E;
+        }
+
+        .bg-green {
+            background-color: #5BBC2E;
+            color: white;
+        }
+        
+        a:hover, a:focus {
+            color: white;
+        }
     </style>
 
 {% endblock headercss %}
@@ -35,7 +56,7 @@
         <div class="order-info">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <h3>Order ID: {{ current_order.id }}</h3>
                         <p>User: <span class="text-bold">{{ current_order.user }}</span></p>
                         <p>User Phone: <span class="text-bold">{{ current_order.user.phone_number }}</span></p>
@@ -57,26 +78,23 @@
                             {% endif %}
                         </p>
                         <p>Change Status: </p>
-                        <div class="d-flex gap-3">
-                            <a href="{% host_url 'bcs_admin_order_new' %}{{ current_order.id }}"><span
-                                    class="badge bg-primary">New</span></a>
-                            <a role="button" data-bs-toggle="modal" data-bs-target="#assignModal"><span
-                                    class="badge bg-secondary">Assign To</span></a>
-                            <a href="{% host_url 'bcs_admin_order_attending' %}{{ current_order.id }}"><span
-                                    class="badge bg-warning text-dark">Attending</span></a>
-                            <a role="button" data-bs-toggle="modal" data-bs-target="#exampleModal"><span
-                                    class="badge bg-info text-dark">On Progress</span></a>
-                            <a href="{% host_url 'bcs_admin_order_completed' %}{{ current_order.id }}"><span
-                                    class="badge bg-success">Completed</span></a>
-                            <a href="{% host_url 'bcs_admin_order_canceled' %}{{ current_order.id }}"><span
-                                    class="badge bg-danger">Canceled</span></a>
+                        <div class="d-flex gap-3 flex-wrap">
+                            <a class="badge bg-primary w-25" href="{% host_url 'bcs_admin_order_new' %}{{ current_order.id }}">
+                                <span>New</span></a>
+                            <a role="button" class="badge bg-secondary w-25" data-bs-toggle="modal" data-bs-target="#assignModal">
+                                <span>Assign To</span></a>
+                            <a class="badge bg-warning text-dark w-25" href="{% host_url 'bcs_admin_order_attending' %}{{ current_order.id }}">
+                                <span>Attending</span></a>
+                            <a class="badge bg-info text-dark w-25" role="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <span>On Progress</span></a>
+                            <a class="badge bg-success w-25" href="{% host_url 'bcs_admin_order_completed' %}{{ current_order.id }}">
+                                <span>Completed</span></a>
+                            <a class="badge bg-danger w-25" href="{% host_url 'bcs_admin_order_canceled' %}{{ current_order.id }}">
+                                <span>Canceled</span></a>
                         </div>
-                        <button class="btn view-btn bg-navy btn-outline-light" data-bs-toggle="modal"
-                                data-bs-target="#invoiceModal-{{ current_order.id }}">View Invoice
-                        </button>
                     </div>
                     {% if current_order.category_choice == 'bcs' %}
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <h3>Company: {{ current_order.user.business_user.business.company_name }}</h3>
                             <p>Company Type: <span
                                     class="text-bold">{{ current_order.user.business_user.business.industry_type|capitalize }}</span>
@@ -91,6 +109,11 @@
                             <p>User Position: <span
                                     class="text-bold">{{ current_order.user.business_user.position }}</span>
                             </p>
+                        </div>
+                        <div class="col-md-3 d-flex flex-column">
+                            <button class="btn view-btn bg-green btn-outline-light" data-bs-toggle="modal"
+                                data-bs-target="#invoiceModal-{{ current_order.id }}">View Invoice
+                            </button>
                         </div>
                     {% endif %}
                 </div>
