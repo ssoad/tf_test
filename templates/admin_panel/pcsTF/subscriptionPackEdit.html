@@ -16,7 +16,7 @@
     <main>
         <section>
             <div class="container">
-                <a href="{% host_url 'bcs_admin_subscription_packages' host 'blog' %}" class="btn border-1 border-dark">Go
+                <a href="{% host_url 'pcs_admin_subscription_packages' host 'mysecurity' %}" class="btn border-1 border-dark">Go
                     Back</a>
                 <form action="" method="POST">
                     {{ form|crispy }}
@@ -36,7 +36,7 @@
                             <a href="
 
 
-                                    {% host_url 'bcs_admin_subscription_packages_feature_delete' host 'blog' %}{{ package_feature.id }}"
+                                    {% host_url 'pcs_admin_subscription_packages_feature_delete' host 'mysecurity' %}{{ package_feature.id }}"
                                type="button" class="btn btn-danger text-capitalize">
                                 <i class="bi bi-trash2-fill"></i>
                             </a>
