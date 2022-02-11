@@ -2559,14 +2559,14 @@ def bcsAdminCourseSubscriptionPackEdit(request, id):
             current_feature.feature_name = request.POST.get('feature_name')
             current_feature.feature = request.POST.get('feature')
             current_feature.save()
-            return HttpResponseRedirect(reverse('bcs_admin_course_packages'))
+            return HttpResponseRedirect(reverse('bcs_admin_course_packages_edit', args=(id,)))
         elif 'add-feature-btn' in request.POST:
             form2 = AddCourseIndividualPackageFeatureForm(request.POST)
             if form2.is_valid():
                 feature = form2.save(commit=False)
                 feature.package = current_package
                 feature.save()
-                return HttpResponseRedirect(reverse('bcs_admin_course_packages'))
+                return HttpResponseRedirect(reverse('bcs_admin_course_packages_edit', args=(id,)))
 
     context = {
         'form': form,
