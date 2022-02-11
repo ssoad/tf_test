@@ -109,7 +109,7 @@ class AddPackageFeatureForm(forms.ModelForm):
 
 class AddIndividualPackageFeatureForm(forms.ModelForm):
     class Meta:
-        model = PackageFeatures
+        model = models.SubscriptionFeatures
         fields = ['feature_name', 'feature']
 
 
