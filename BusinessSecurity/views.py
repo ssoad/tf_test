@@ -2585,7 +2585,7 @@ def bcsAdminCourseSubscriptionPackDelete(request, id):
 
 @user_passes_test(bcs_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def bcsAdminCourseSubscriptionPackFeatureDelete(request, id):
-    current_feature = models.SubscriptionFeatures.objects.get(id=id)
+    current_feature = PackageFeatures.objects.get(id=id)
     course_id = current_feature.package.id
     current_feature.delete()
     return HttpResponseRedirect(reverse('bcs_admin_course_packages_edit', args=(course_id,)))
