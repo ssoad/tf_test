@@ -349,7 +349,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #     "http://0.0.0.0",
 # ]
 CORS_ALLOW_ALL_ORIGINS = True
-SECURE_REFERRER_POLICY = "origin"
+SECURE_REFERRER_POLICY = "no-referrer-when-downgrade"
 
 # CORS_ORIGIN_WHITELIST = [
 #     "https://techforing.com",
