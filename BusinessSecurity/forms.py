@@ -129,7 +129,7 @@ class OrderPriceForm(forms.ModelForm):
         model = models.OrderPrice
         fields = ['initial_price', 'discount', 'processing_fee', 'tax', 'currency', 'payment_method', 'invoice']
         widgets = {
-            'discount': forms.IntegerField(attrs={'max': '100'}),
+            'discount': forms.NumberInput(attrs={'max': '100'}),
             'currency': forms.Select(attrs={'class': 'form-select'}),
             'payment_method': forms.Select(attrs={'class': 'form-select'}),
             # 'invoice': forms.FileInput(attrs={'class': 'form-control'})
