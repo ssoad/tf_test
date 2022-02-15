@@ -26,7 +26,7 @@
 
             <div class="invisible customer-email">
             <label for="addOrder" class="fw-bold">Add a Order for:</label>
-            <select name="user_info" id="addOrder" class="js-example-basic-single w-auto">
+            <select name="user_info" id="addOrder" class="js-example-basic-single w-25">
                 <option disabled selected>----------------</option>
                 {% for user_list in user_lists %}
                     <option value="{{ user_list.id }}">{{ user_list.email }}</option>
