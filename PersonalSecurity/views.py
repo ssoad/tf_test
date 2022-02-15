@@ -1410,7 +1410,10 @@ def pcsAdminNewOrdersView(request):
             for data in data_list:
                 if data != 'csrfmiddlewaretoken' and data != 'service_name' \
                         and data != 'customer' and data != 'price' \
-                        and data != 'currency' and data != 'payment_method':
+                        and data != 'currency' and data != 'payment_method'\
+                        and data != 'initial_price' and data != 'discount'\
+                        and data != 'processing_fee' and data != 'tax' and data != 'invoice':
+
                     current_input = models.SubServiceInput.objects.get(id=data)
                     input_data = models.UserSubserviceInput(user=current_customer, inputfield=current_input,
                                                             inputinfo=data_list[data])
@@ -1420,18 +1423,19 @@ def pcsAdminNewOrdersView(request):
 
                     order[0].subserviceinput.add(input_data)
             for files in file_list:
-                current_input = models.SubServiceInput.objects.get(id=files)
-                myfile = file_list[files]
-                fs = FileSystemStorage()
-                filename = fs.save(myfile.name, myfile)
-                uploaded_file_url = fs.url(filename)
-                input_data = models.UserSubserviceInput(user=current_customer, inputfield=current_input,
-                                                        inputinfo=uploaded_file_url)
-                input_data.save()
-                order = models.Order.objects.get_or_create(user=current_customer, order_status='new',
-                                                           service=current_service, category_choice='pcs')
+                if files != 'invoice':
+                    current_input = models.SubServiceInput.objects.get(id=files)
+                    myfile = file_list[files]
+                    fs = FileSystemStorage()
+                    filename = fs.save(myfile.name, myfile)
+                    uploaded_file_url = fs.url(filename)
+                    input_data = models.UserSubserviceInput(user=current_customer, inputfield=current_input,
+                                                            inputinfo=uploaded_file_url)
+                    input_data.save()
+                    order = models.Order.objects.get_or_create(user=current_customer, order_status='new',
+                                                               service=current_service, category_choice='pcs')
 
-                order[0].subserviceinput.add(input_data)
+                    order[0].subserviceinput.add(input_data)
 
             order = models.Order.objects.get_or_create(user=current_customer, order_status='new',
                                                        service=current_service, category_choice='pcs')

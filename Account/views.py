@@ -85,7 +85,7 @@ def profileView(request):
                     form = forms.CountryPhoneForm(request.POST, instance=current_user)
                     if form.is_valid():
                         form.save()
-                        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                        return HttpResponseRedirect(reverse('user_profile'))
                 context = {
                     'form': form,
                     'message': message,
@@ -103,7 +103,7 @@ def profileView(request):
                     form = forms.AddressForm(request.POST, instance=current_user)
                     if form.is_valid():
                         form.save()
-                        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                        return HttpResponseRedirect(reverse('user_profile'))
                 context = {
                     'form': form,
                     'message': message,
@@ -117,7 +117,7 @@ def profileView(request):
                 form = forms.InterestForm(request.POST, instance=interests)
                 if form.is_valid():
                     form.save()
-                    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+                    return HttpResponseRedirect(reverse('user_profile'))
             try:
                 social_account = current_user.socialaccount_set.filter(provider='google')[0]
                 if not current_user.full_name:
