@@ -86,7 +86,7 @@
                             <td class="service">{{ order.service.category }}</td>
                             <td>{{ order.service.service_title }}</td>
                             <td>{{ order.order_date|date }}</td>
-                            <td>${{ order.price }}</td>
+                            <td>${{ order.orderprice_order.price }}</td>
                             <td>{{ order.order_status|upper }}</td>
                         </tr>
                         {% endfor %}
