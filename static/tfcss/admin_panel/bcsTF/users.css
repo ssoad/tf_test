@@ -74,7 +74,7 @@
     background-color: #182f591f;
     border-radius: 10px;
     position: relative;
-    display: grid;
+    /* display: grid; */
     padding-block: .5rem;
     padding-inline: 1.5rem;
 }
@@ -123,6 +123,10 @@
     margin-inline-end: 5px;
 }
 .details li i{
+    color: #5BBC2E;
+}
+
+.details-icon {
     color: #5BBC2E;
 }
 
