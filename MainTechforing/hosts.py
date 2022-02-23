@@ -4,7 +4,7 @@ from django_hosts import patterns, host
 host_patterns = patterns(
     '',
     # For Production
-    host(r'main', settings.ROOT_URLCONF, name='main'),
+    host(r'', settings.ROOT_URLCONF, name=''),
     # <-- The `name` we used to in the `DEFAULT_HOST` setting
     # host(r'help', 'help.urls', name='help'),
     host(r'training', 'Academy.urls', name='academy'),
