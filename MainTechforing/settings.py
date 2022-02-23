@@ -277,9 +277,9 @@ WSGI_APPLICATION = 'MainTechforing.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'main_techforing_v3',
+        'NAME': env('DB_NAME'),
         'USER': 'root',
-        'PASSWORD': 'hOLL4m&*%$',
+        'PASSWORD': env('DB_PASSWORD'),
         'OPTIONS': {
             'sql_mode': 'traditional',
         }
