@@ -129,11 +129,11 @@ TINYMCE_DEFAULT_CONFIG = {
                 "charmap emoticons table pagebreak |  insertdatetime image insertfile media template link anchor "
                 "codesample | "
                 "ltr rtl |fullscreen preview print | help",
-    # 'file_browser_callback': 'filebrowser'
+    'file_browser_callback': 'filebrowser'
 
 }
 TINYMCE_SPELLCHECKER = True
-# TINYMCE_FILEBROWSER = True
+TINYMCE_FILEBROWSER = True
 
 
 # Crispy_Forms_Settings
