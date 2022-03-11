@@ -15,9 +15,9 @@ host_patterns = patterns(
 
 
     # For Development
-    host(r'', settings.ROOT_URLCONF, name='main'),
-    host(r'', settings.ROOT_URLCONF, name='academy'),
-    host(r'', settings.ROOT_URLCONF, name='account'),
-    host(r'', settings.ROOT_URLCONF, name='mysecurity'),
-    host(r'', settings.ROOT_URLCONF, name='blog'),
+    # host(r'', settings.ROOT_URLCONF, name='main'),
+    # host(r'', settings.ROOT_URLCONF, name='academy'),
+    # host(r'', settings.ROOT_URLCONF, name='account'),
+    # host(r'', settings.ROOT_URLCONF, name='mysecurity'),
+    # host(r'', settings.ROOT_URLCONF, name='blog'),
 )
