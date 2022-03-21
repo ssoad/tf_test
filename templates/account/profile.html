@@ -74,12 +74,37 @@
                         <div class="card h-100">
                             <div class="card-body d-flex align-items-center justify-content-center">
                                 <div class="d-flex flex-column align-items-center text-center">
-                                    <img src="{{ user.profile_pic.url }}" alt="Admin" class="rounded-circle" width="150" height="150" style="object-fit: cover">
-                                    <div class="mt-3">
+                                    {% comment %} <img src="{{ user.profile_pic.url }}" alt="Admin" class="rounded-circle" width="150" height="150" style="object-fit: cover"> {% endcomment %}
+                                    <div class="col-md-4 mb-md-0 mb-3">
+                                        <div class="card h-100">
+                                            <div class="card-body d-flex align-items-center justify-content-center">
+                                                <div class="d-flex flex-column align-items-center text-center">
+                                                    <div class="profile-img position-relative border border-2 rounded-circle"
+                                                         style="width: fit-content">
+                                                        <img src="{{ user.profile_pic.url }}" alt="Admin"
+                                                             class="rounded-circle profiles-logo"
+                                                             width="150" height="150" style="object-fit: cover">
+                                                        <div data-tootik="Change Profile Picture"
+                                                             class="img-change overlay position-absolute top-0 start-0 bottom-0 end-0 w-100 h-100 m-auto d-flex align-items-center justify-content-center rounded-circle"
+                                                             data-bs-toggle="modal" data-bs-target="#imageChangeModal"
+                                                             style="background: #00000033; cursor: pointer"><i
+                                                                class="fa fa-camera"></i></div>
+                                                    </div>
+            
+                                                    <div class="mt-3">
+                                                        <h4>{{ user.full_name }}</h4>
+                                                        <p class="text-secondary mb-1">{{ user.email }}</p>
+                                                        <p class="text-muted font-size-sm">{{ user.phone_number }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% comment %} <div class="mt-3">
                                         <h4>{{ user.full_name }}</h4>
                                         <p class="text-secondary mb-1">{{ user.email }}</p>
                                         <p class="text-muted font-size-sm">{{ user.phone_number }}</p>
-                                    </div>
+                                    </div> {% endcomment %}
                                 </div>
                             </div>
                         </div>
@@ -141,11 +166,62 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="imageChangeModal" tabindex="-1" aria-labelledby="imageChangeModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="imageChangeModalLabel">Change Profile Picture</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="POST" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        {{ img_forms.as_p }}
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-navy" name="img-btn">Upload</button>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
             </div>
         </div>
 
+    </section>
+    {% comment %} <section>
+        {%for val in vals %}
+            {{interest|values_from_model: val}}
+        {% endfor %} {% endcomment %}
+        <section>
+        <div class='container'>
+            <div <div class="col-sm-3">
+                <p>Interests</p>
+        {% if interests.risk_assessment %}<p>Risk Mangement</p>{% endif %}
+        {% if  interests.incident_response %}<p>Incident Response</p>{% endif %}
+        {% if  interests.cyber_crime_investigation %}<p>Cyber Crime Investigations</p>{% endif %}
+        {% if  interests.open_source_intelligence %}<p>Open Source Intelligence</p>{% endif %}
+        {% if  interests.hack_recovery %}<p>Hack Recovery</p>{% endif %}
+        {% if  interests.virus_removal %}<p>Virus Removal</p>{% endif %}
+            </div>
+            
+        </div>
+        
+        {% comment %} <p>Interest</p>
+        {% for interest in interests %}
+        <p>{{interest}}</p>
+        {% endfor %} {% endcomment %}
+        {% comment %} {{interests.risk_assessment}}
+        {{interests.incident_response}}
+        {{interests.cyber_crime_investigation}}
+        {{interests.open_source_intelligence}}
+        {{interests.hack_recovery}}
+        {{interests.virus_removal}} {% endcomment %}
     </section>
 
 </div>

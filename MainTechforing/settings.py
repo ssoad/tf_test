@@ -129,11 +129,11 @@ TINYMCE_DEFAULT_CONFIG = {
                 "charmap emoticons table pagebreak |  insertdatetime image insertfile media template link anchor "
                 "codesample | "
                 "ltr rtl |fullscreen preview print | help",
-    'file_browser_callback': 'filebrowser'
+    # 'file_browser_callback': 'filebrowser'
 
 }
 TINYMCE_SPELLCHECKER = True
-TINYMCE_FILEBROWSER = True
+# TINYMCE_FILEBROWSER = True
 
 
 # Crispy_Forms_Settings
@@ -219,27 +219,27 @@ MIDDLEWARE = [
     'django_hosts.middleware.HostsResponseMiddleware',  # for django-host
 ]
 
-X_FRAME_OPTIONS = 'SAMEORIGIN'
+# X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 # For Development
-# SESSION_COOKIE_DOMAIN = '127.0.0.1'
-# SESSION_COOKIE_NAME = 'techforingsessionid'
-# SESSION_COOKIE_SECURE = True
-# SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
-# ROOT_URLCONF = 'MainTechforing.urls'
-# ROOT_HOSTCONF = 'MainTechforing.hosts'
-# DEFAULT_HOST = 'main'
-# PARENT_HOST = '127.0.0.1:8000'
-
-# For Production
-SESSION_COOKIE_DOMAIN = '.techforing.com'
+SESSION_COOKIE_DOMAIN = '127.0.0.1'
 SESSION_COOKIE_NAME = 'techforingsessionid'
 SESSION_COOKIE_SECURE = True
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 ROOT_URLCONF = 'MainTechforing.urls'
 ROOT_HOSTCONF = 'MainTechforing.hosts'
 DEFAULT_HOST = 'main'
-PARENT_HOST = 'techforing.com'
+PARENT_HOST = '127.0.0.1:8000'
+
+# For Production
+# SESSION_COOKIE_DOMAIN = '.techforing.com'
+# SESSION_COOKIE_NAME = 'techforingsessionid'
+# SESSION_COOKIE_SECURE = True
+# SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+# ROOT_URLCONF = 'MainTechforing.urls'
+# ROOT_HOSTCONF = 'MainTechforing.hosts'
+# DEFAULT_HOST = 'main'
+# PARENT_HOST = 'techforing.com'
 
 TEMPLATES = [
     {
@@ -266,25 +266,25 @@ WSGI_APPLICATION = 'MainTechforing.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 # For Development
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-# For Production
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': env('DB_NAME'),
-        'USER': 'root',
-        'PASSWORD': env('DB_PASSWORD'),
-        'OPTIONS': {
-            'sql_mode': 'traditional',
-        }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# For Production
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'main_techforing_v3',
+#         'USER': 'root',
+#         'PASSWORD': 'hOLL4m&*%$',
+#         'OPTIONS': {
+#             'sql_mode': 'traditional',
+#         }
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -349,7 +349,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #     "http://0.0.0.0",
 # ]
 CORS_ALLOW_ALL_ORIGINS = True
-SECURE_REFERRER_POLICY = "strict-origin"
+# SECURE_REFERRER_POLICY = "strict-origin"
 
 # CORS_ORIGIN_WHITELIST = [
 #     "https://techforing.com",
@@ -378,11 +378,11 @@ CSRF_TRUSTED_ORIGINS = [
     "http://44.242.38.198",
     "http://0.0.0.0",
 ]
-CSRF_COOKIE_DOMAIN = '.techforing.com'
+# CSRF_COOKIE_DOMAIN = '.techforing.com'
 
-CORS_URLS_REGEX = r'^/api/.*$'
-CORS_ALLOW_CREDENTIALS = True
-SESSION_COOKIE_SAMESITE = 'None'
+# CORS_URLS_REGEX = r'^/api/.*$'
+# CORS_ALLOW_CREDENTIALS = True
+# SESSION_COOKIE_SAMESITE = 'None'
 
 # Media
 MEDIA_URL = '/media/'
