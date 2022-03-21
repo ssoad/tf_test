@@ -574,12 +574,14 @@ def userEventsView(request):
     # except EmptyPage:
     #     events = paginator.page(paginator.num_pages)
     # print(events)
+    total_length=events_length
     events_length //=2
     if events_length%2==1:
         events_length+=1
     context = {
         'events': events,
         'events_length':range(1,events_length+1),
+        'total_length':total_length,
         'registered_event': registered_event,
     }
     return render(request, 'user_panel/pcs/events.html', context)

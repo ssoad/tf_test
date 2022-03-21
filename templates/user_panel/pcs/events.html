@@ -52,7 +52,7 @@
                     <div class="col-auto">
                         <h6 class="fw-light text-secondary">
                         Show on page (<span id="current-events-no">1-2</span>) out
-                        of 8
+                        of {{total_length}}
                     </h6>
                 </div>
             </div>
@@ -95,7 +95,7 @@
                 <div class="col-auto">
                     <a href="{{ event.address }}"
                        target="_blank"
-                       class="btn btn-sm bg-navy ms-0 ms-md-4 text-white px-3 py-2 ">Visit Now</a>
+                       class="btn btn-sm bg-navy ms-0 ms-md-4 text-white px-3 py-2 ">Register</a>
                     {% comment %}
                                     {% if event.status == 'active' %}
                                         {% if event.id not in registered_event %}
@@ -204,6 +204,7 @@
         let statusActive = document.getElementById('status-active');
         let statusCompleted = document.getElementById('status-completed');
         let dateSortBtn = document.getElementById('event-time');
+        console.log(dateSortBtn)
         let currentEventsNo = document.getElementById('current-events-no');
         let activeState = 0,
             pageNo = 0;
@@ -230,14 +231,13 @@
             if (type == 'date') {
                 dateList.forEach(date => {
                     array.push(date.childNodes[0].textContent);
-                    console.log(date.childNodes[0].textContent);
+                    {% comment %} console.log(date.childNodes[0].textContent); {% endcomment %}
                 });
             } else {
                 statusList.forEach(status => {
                     array.push(status.childNodes[0].textContent);
                 });
             }
-
 
             let eventsSorted = Array.from(eventsContainer.children);
             eventsSorted.shift();
@@ -268,11 +268,14 @@
                     }
                 }
             }
+
             eventsSorted.forEach((event, index) => {
                 events[index].outerHTML = event.outerHTML;
             });
         }
-
+        {% comment %} dateSortBtn.addEventListener('click',() =>{
+            sorting('date');
+        }); {% endcomment %}
         statusActive.addEventListener('click', () => {
             sorting('active');
             updateEventList();
