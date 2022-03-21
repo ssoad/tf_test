@@ -9,7 +9,7 @@ from django.utils import timezone
 
 from Academy.models import Course, Section, Content, CourseCategory
 from Academy.forms import PCSCourseCreateForm, SectionCreateForm, ContentCreateForm, CourseCategoryCreateForm
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from BusinessSecurity import models, forms
 from PersonalSecurity import forms as pcsforms
 from django.db.models import Q
@@ -554,10 +554,32 @@ def userSubscriptionsView(request):
 def userEventsView(request):
     registered_event = models.RegisteredEvents.objects.filter(
         user=request.user).values_list('event', flat=True)
-    events = models.Events.objects.filter(category='for_personal_security',
-                                          registered_event_event__user=request.user).order_by('-created_date')
+    # total_events = models.Events.objects.filter(category='for_personal_security',
+    #                                       registered_event_event__user=request.user).order_by('-created_date') #with registered event user
+    events = models.Events.objects.filter(category='for_personal_security',).order_by('-created_date')
+    events_length=len(events)
+    # paginator = Paginator(total_events, 3) # Show 25 contacts per page.
+
+    # page_number = request.GET.get('page')
+    # events = paginator.get_page(page_number)
+    
+    # page = request.GET.get('page', 1)
+
+    # paginator = Paginator(total_events, 10)
+    # print(paginator)
+    # try:
+    #     events = paginator.page(page)
+    # except PageNotAnInteger:
+    #     events = paginator.page(1)
+    # except EmptyPage:
+    #     events = paginator.page(paginator.num_pages)
+    # print(events)
+    events_length //=2
+    if events_length%2==1:
+        events_length+=1
     context = {
         'events': events,
+        'events_length':range(1,events_length+1),
         'registered_event': registered_event,
     }
     return render(request, 'user_panel/pcs/events.html', context)
