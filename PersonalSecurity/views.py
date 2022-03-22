@@ -170,23 +170,38 @@ def openTicketView(request):
     tickets = models.Ticket.objects.filter(
         user=request.user, category_choice='pcs').order_by('-ticket_date')
     if request.method == 'POST':
-        u_file = request.FILES['ticket_attachment']
-        extension = str(u_file).split(".")[1].lower()
-        # print(u_file.content_type)
-        if extension not in ['php', 'exe', '', 'html', 'htm', 'asp']:
+        if len(request.FILES) != 0:
+            u_file = request.FILES['ticket_attachment']
+            extension = str(u_file).split(".")[1].lower()
+            # print(u_file.content_type)
+            if extension not in ['php', 'exe', '', 'html', 'htm', 'asp']:
+                form = forms.TicketCreateForm(request.POST, request.FILES)
+                if form.is_valid():
+                    ticket = form.save(commit=False)
+                    ticket.user = request.user
+                    ticket.category_choice = 'pcs'
+                    ticket.ticket_status = 'open'
+                    ticket.ticket_category = request.POST.get('ticket_category')
+                    ticket.save()
+                    notification = models.AdminNotification.objects.create(category_choice='pcs',
+                                                                        user=request.user,
+                                                                        notification=f'New Ticket Created. <div><a href="https://pcs.techforing.com/pcs_admin_tickets_detail/{ticket.id}/" target="_blank" class="btn btn-success mt-2">Visit Now</a></div>')
+                    notification.save()
+                    return HttpResponseRedirect(reverse('pcs_open_tickets'))
+        else:
             form = forms.TicketCreateForm(request.POST, request.FILES)
             if form.is_valid():
-                ticket = form.save(commit=False)
-                ticket.user = request.user
-                ticket.category_choice = 'pcs'
-                ticket.ticket_status = 'open'
-                ticket.ticket_category = request.POST.get('ticket_category')
-                ticket.save()
-                notification = models.AdminNotification.objects.create(category_choice='pcs',
-                                                                       user=request.user,
-                                                                       notification=f'New Ticket Created. <div><a href="https://pcs.techforing.com/pcs_admin_tickets_detail/{ticket.id}/" target="_blank" class="btn btn-success mt-2">Visit Now</a></div>')
-                notification.save()
-                return HttpResponseRedirect(reverse('pcs_open_tickets'))
+                    ticket = form.save(commit=False)
+                    ticket.user = request.user
+                    ticket.category_choice = 'pcs'
+                    ticket.ticket_status = 'open'
+                    ticket.ticket_category = request.POST.get('ticket_category')
+                    ticket.save()
+                    notification = models.AdminNotification.objects.create(category_choice='pcs',
+                                                                        user=request.user,
+                                                                        notification=f'New Ticket Created. <div><a href="https://pcs.techforing.com/pcs_admin_tickets_detail/{ticket.id}/" target="_blank" class="btn btn-success mt-2">Visit Now</a></div>')
+                    notification.save()
+                    return HttpResponseRedirect(reverse('pcs_open_tickets'))
     context = {
         'form': form,
         'tickets': tickets,

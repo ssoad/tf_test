@@ -18,11 +18,13 @@
         <h6 class="mt-5 fw-bold">Description:</h6>
         <div>{{ ticket.ticket_description|safe }}</div>
 
+
         <div class="row">
             <h6 class="fw-bold mb-3">Attachment</h6>
             <div id="ticketAttachmentPreview" >
                 
             </div>
+            
             <div>
                 <a class="btn btn-sm btn-navy mt-2" href="{{ ticket.ticket_attachment.url }}" download="{{ ticket.ticket_attachment.url }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-circle-fill" viewBox="0 0 16 16">
@@ -32,7 +34,7 @@
                 </a>
             </div>
         </div>
-
+        
         {% if ticket.ticketcomment_ticket.all.count < 1 %}
             <p class="border-top py-3">No Comment Yet</p>
         {% else %}
