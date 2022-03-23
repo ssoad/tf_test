@@ -1397,12 +1397,18 @@ def mainAdminOrdersDetailView(request, id):
 def mainAdminNotificationView(request):
     form = forms.NotificationForm()
     notifications = models.Notification.objects.all().order_by('-notification_time')
-
+    def clean_url(update):
+        update=update.replace('<a href="','<a href="http://')
+        update=update.replace('<a href="http://http://','<a href="http://')
+        update=update.replace('<a href="http://https://','<a href="https://')
+        return update
     if 'instant-btn' in request.POST:
         if 'date_range' not in request.POST:
             form = forms.NotificationForm(request.POST)
             if form.is_valid():
-                form.save()
+                new_form= form.save(commit=False)
+                new_form.notification=clean_url(new_form.notification)
+                new_form.save()
                 return HttpResponseRedirect(reverse('main_admin_notification'))
         elif 'date_range' in request.POST:
             notification = request.POST.get('notification')
@@ -1413,6 +1419,7 @@ def mainAdminNotificationView(request):
                 date_joined__gte=datetime.datetime.strptime(start_date, '%m/%d/%Y').date(),
                 date_joined__lte=datetime.datetime.strptime(end_date, '%m/%d/%Y').date())
             # print(users)
+            notification=clean_url(notification)
             for user in users:
                 note = models.Notification.objects.create(category_choice=user.email, notification=notification)
                 note.save()
@@ -1424,6 +1431,8 @@ def mainAdminNotificationView(request):
         'form': form,
         'notifications': notifications,
     }
+    
+        
     return render(request, 'admin_panel/mainTF/notification.html', context)
 
 
