@@ -789,9 +789,11 @@
                         <li class="menus signin-btn-hover">
                             <a href="{% host_url 'user_profile' %}" class="signin-btn-lg">{{ user.full_name }}</a>
                             <div class="signin-drop">
+                                {% if not user.is_superuser %}
                                 <a href="{% host_url 'user_profile' %}">Profile</a>
                                 <a href="{% host_url 'bcs_user_dashboard' %}">BCS Dashboard</a>
                                 <a href="{% host_url 'pcs_user_dashboard' host 'mysecurity' %}">PCS Dashboard</a>
+                                {% endif %}
                                 {% if user.is_superuser %}
                                     <a href="{% host_url 'main_admin_dashboard' %}">Main Admin Dashboard</a>
                                 {% endif %}
