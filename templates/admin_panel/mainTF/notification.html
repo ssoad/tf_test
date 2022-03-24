@@ -40,7 +40,7 @@
 
         @media (min-width: 1000px) {
             .notification-table {
-                width: 1106px !important;
+                width: 1400x !important;
             }
         }
     </style>
@@ -117,7 +117,8 @@
                         <tr>
                             <th>notification text</th>
                             <th>target user</th>
-                            <th>time</th>
+                            <th>time</th>      
+                            <th>Action</th>             
                         </tr>
                         </thead>
                         <tbody>
@@ -126,6 +127,12 @@
                                 <td>{{ notification.notification|safe }}</td>
                                 <td>{{ notification.category_choice|upper }}</td>
                                 <td class="text-center">{{ notification.notification_time }}</td>
+                                <td><a href="{% host_url 'main_admin_notification_delete' id=notification.id %}"
+                                           class="btn trash">
+                                            <i class="bi bi-trash-fill text-danger rounded-circle activites-icon"></i>
+                                            Delete
+                                        </a></td>
+                                {% comment %} <td>{{ notification.notification_time }}</td> {% endcomment %}
                             </tr>
                         {% endfor %}
                         </tbody>

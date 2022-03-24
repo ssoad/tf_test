@@ -128,9 +128,18 @@
                         <td>{{ ticket.ticket_date }}</td>
                         <td>
                             {% if ticket.ticket_status == 'open' %}
+                                {% if user.is_superuser %}
+                                <a href="{% host_url 'admin_tickets_status_change' %}{{ ticket.id }}" class="btn btn-primary">Close</a>
+                                {% else %}
                                 <a href="{% host_url 'tickets_status_change' %}{{ ticket.id }}" class="btn btn-primary">Close</a>
+                                {% endif %}
                             {% else %}
+                                {% if user.is_superuser %}
+                                <a href="{% host_url 'admin_tickets_status_change' %}{{ ticket.id }}" class="btn btn-primary">Open</a>
+                                {% else %}
                                 <a href="{% host_url 'tickets_status_change' %}{{ ticket.id }}" class="btn btn-primary">Open</a>
+                                {% endif %}
+                                
                             {% endif %}
                         </td>
                     </tr>
@@ -143,4 +152,8 @@
 
 {% block customjs %}
     <script src="{% static 'tfjs/admin_panel/mainTF/eventWebinar.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script type="text/javascript">
+
+    </script>
 {% endblock customjs %}

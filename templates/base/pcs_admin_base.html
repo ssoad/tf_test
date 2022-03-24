@@ -71,6 +71,9 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="{% host_url 'user_profile' %}">My profile</a></li>
+                            {% if user.is_superuser %}
+                                    <li><a class="dropdown-item" href="{% host_url 'pcs_admin_dashboard' host 'mysecurity' %}">Main Admin </br>Dashboard</a></li>
+                                {% endif %}
                             <li><a class="dropdown-item" href="{% host_url 'logout' %}">Sign out</a></li>
                         </ul>
                     </span>

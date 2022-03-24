@@ -363,8 +363,15 @@
                                             {#console.log("select ")#}
                                         } else {
                                             inputFields += `<label for="input-${field.inputfield.id}.${optionId}">${field.inputfield.placeholder}</label>`;
-                                            inputFields += `<input class="form-control" type="${field.inputfield.type}" required
-                                        id="input-${field.inputfield.id}.${optionId}" name="${field.id}" placeholder="Type here">`;
+                                            var tp=field.inputfield.type;
+                                            if (tp=='number'){
+                                                inputFields += `<input class="form-control" type="${tp}" required
+                                        id="input-${field.inputfield.id}.${optionId}" name="${field.id}" min="0" value="0" placeholder="Type here">`;
+                                            }
+                                            else{inputFields += `<input class="form-control" type="${tp}" required
+                                            id="input-${field.inputfield.id}.${optionId}" name="${field.id}" placeholder="Type here">`;}
+                                            
+                                            
                                             inputFields += `</div>`;
                                             div.innerHTML = inputFields;
                                             informationForm.insertBefore(div, informationForm.children[optionIndex]);

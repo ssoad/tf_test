@@ -176,6 +176,7 @@ class ProfileInfoForm(forms.ModelForm):
 
 
 class ProfilePictureForm(forms.ModelForm):
+    profile_pic = forms.ImageField(widget=forms.FileInput)
     class Meta:
         model = models.User
         fields = ['profile_pic']

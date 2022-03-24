@@ -61,6 +61,7 @@ def login_executed(redirect_to):
 def profileView(request):
     current_user = request.user
     interests = models.Interest.objects.get(user=current_user)
+    img_forms = forms.ProfilePictureForm(instance=request.user)
 
     email_verify = request.user.emailaddress_set.all()
 
@@ -114,10 +115,16 @@ def profileView(request):
         else:
             # print(current_user.profile_pic)
             if request.method == 'POST':
-                form = forms.InterestForm(request.POST, instance=interests)
-                if form.is_valid():
-                    form.save()
-                    return HttpResponseRedirect(reverse('user_profile'))
+                if 'img-btn' in request.POST:
+                    form = forms.ProfilePictureForm(request.POST, request.FILES, instance=request.user)
+                    if form.is_valid():
+                        form.save()
+                        return redirect('user_profile')
+            
+                # form = forms.InterestForm(request.POST, instance=interests)
+                # if form.is_valid():
+                #     form.save()
+                #     return HttpResponseRedirect(reverse('user_profile'))
             try:
                 social_account = current_user.socialaccount_set.filter(provider='google')[0]
                 if not current_user.full_name:
@@ -126,9 +133,20 @@ def profileView(request):
                     current_user.save()
             except:
                 pass
+            # val=[]
+            # for field in interests._meta.fields:
+            #     val.append(field.get_attname_column()[0])
+
+            # print(val)
+            # print(interests.risk_assessment)
+            # for x in val:
+            #    print(interests+"."+x)
             context = {
-                # 'interests': interests,
+                # 'vals': val,
+                'img_forms': img_forms,
+                'interests': interests,
                 'form': form,
+                
             }
             return render(request, 'account/profile.html', context)
 

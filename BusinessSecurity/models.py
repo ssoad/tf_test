@@ -342,7 +342,7 @@ class Ticket(models.Model):
                                                                                             'jpg', 'png', 'svg', 'webp',
                                                                                             'bmp', 'mp3', 'wav',
                                                                                             'ogg', 'pdf', 'csv'])],
-        help_text='(Supported Format: Video/Audio/Images/Documents)')
+        help_text='(Supported Format: Video/Audio/Images/Documents)',default='ticket/default.gif')
     ticket_status = models.CharField(max_length=255, choices=ticket_status)
     ticket_date = models.DateTimeField(auto_now_add=True)
 
