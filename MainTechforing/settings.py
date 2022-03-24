@@ -348,8 +348,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #     "http://44.242.38.198",
 #     "http://0.0.0.0",
 # ]
-
-# for production
 CORS_ALLOW_ALL_ORIGINS = True
 SECURE_REFERRER_POLICY = "strict-origin"
 
@@ -380,8 +378,6 @@ CSRF_TRUSTED_ORIGINS = [
     "http://44.242.38.198",
     "http://0.0.0.0",
 ]
-
-# for production
 CSRF_COOKIE_DOMAIN = '.techforing.com'
 
 CORS_URLS_REGEX = r'^/api/.*$'
