@@ -104,10 +104,10 @@ urlpatterns = [
          name='main_admin_tickets_detail'),
     path('main_admin_tickets_detail/<id>',
          views.mainAdminTicketsDetailView, name='main_admin_tickets_detail'),
-    path('tickets_status_change/', views.ticketOpenCloseView,
-         name='tickets_status_change'),
-    path('tickets_status_change/<id>/',
-         views.ticketOpenCloseView, name='tickets_status_change'),
+    path('admin_tickets_status_change/', views.adminticketOpenCloseView,
+         name='admin_tickets_status_change'),
+    path('admin_tickets_status_change/<id>/',
+         views.adminticketOpenCloseView, name='admin_tickets_status_change'),
 
     # bcs user panel
     path('bcs_user_dashboard/', views.userDashboardView, name='bcs_user_dashboard'),
@@ -315,6 +315,10 @@ urlpatterns = [
          name='bcs_admin_tickets_detail'),
     path('bcs_admin_tickets_detail/<id>/', views.bcsAdminTicketsDetailView,
          name='bcs_admin_tickets_detail'),
+     path('tickets_status_change/', views.ticketOpenCloseView,
+         name='tickets_status_change'),
+    path('tickets_status_change/<id>/',
+         views.ticketOpenCloseView, name='tickets_status_change'),
 
     # team invidual user panel
     path('team_user_services/', views.teamUserServicesView,

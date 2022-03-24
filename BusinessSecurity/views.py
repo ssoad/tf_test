@@ -1761,16 +1761,16 @@ def mainAdminTicketsDetailView(request, id):
 
 @user_passes_test(ticket_admin, login_url='/accounts/login/',
                   redirect_field_name='/account/profile/')
-def ticketOpenCloseView(request, id):
+def adminticketOpenCloseView(request, id):
     current_ticket = models.Ticket.objects.get(id=id)
     if current_ticket.ticket_status == 'open':
         current_ticket.ticket_status = 'closed'
         current_ticket.save()
-        return HttpResponseRedirect(reverse('bcs_admin_all_tickets'))
+        return HttpResponseRedirect(reverse('main_admin_all_tickets'))
     elif current_ticket.ticket_status == 'closed':
         current_ticket.ticket_status = 'open'
         current_ticket.save()
-        return HttpResponseRedirect(reverse('bcs_admin_all_tickets'))
+        return HttpResponseRedirect(reverse('main_admin_all_tickets'))
 
 
 # BCS Admin Section
@@ -3128,6 +3128,18 @@ def bcsAdminTicketsDetailView(request, id):
     }
     return render(request, 'admin_panel/bcsTF/ticket_detail.html', context)
 
+@user_passes_test(ticket_admin, login_url='/accounts/login/',
+                  redirect_field_name='/account/profile/')
+def ticketOpenCloseView(request, id):
+    current_ticket = models.Ticket.objects.get(id=id)
+    if current_ticket.ticket_status == 'open':
+        current_ticket.ticket_status = 'closed'
+        current_ticket.save()
+        return HttpResponseRedirect(reverse('bcs_admin_all_tickets'))
+    elif current_ticket.ticket_status == 'closed':
+        current_ticket.ticket_status = 'open'
+        current_ticket.save()
+        return HttpResponseRedirect(reverse('bcs_admin_all_tickets'))
 
 def TestView(request):
     username = 'AfTmv1E8P0HbJCkRMtm7s_07rqkJCGvp4WufOBxLWUl5AFujlsqmn6WdpMZo-nQr-yKVTnogZOQYgLnl'
