@@ -1507,6 +1507,14 @@ def mainAdminSupportView(request):
     pcs_head = User.objects.filter(is_pcs_head=True)
     form = forms.AssignToServiceForm()
 
+    #This function is for notificaton change if any staff is assigened
+    def staff_notification(designation,assigned_by,total_services=None,serve=None):
+        notification = models.Notification.objects.create(category_choice=current_user.email,
+                                                                              notification_time=timezone.now(),
+                                                                              notification=f'You have been added as a {designation} in '
+                                                                                           f'{total_services} {serve} by {assigned_by}')
+        notification.save()
+
     if request.method == 'POST':
         user_email = request.POST.get('user_email')
         user_permission = request.POST.get('user_permission')
@@ -1518,8 +1526,14 @@ def mainAdminSupportView(request):
             if form.is_valid():
                 assigned = form.save(commit=False)
                 assigned.user = current_user
+                total_services=""
+                count=0
                 for service_id in request.POST.getlist('service'):
                     service = models.Service.objects.get(id=service_id)
+                    if count>0:
+                        total_services+=","
+                    total_services+=str(service)
+                    count+=1
                     tracking = models.Tracking.objects.get_or_create(
                         service=service)
                     person = tracking[0].persons
@@ -1528,20 +1542,41 @@ def mainAdminSupportView(request):
                 assigned.save()
                 form.save_m2m()
                 current_user.save()
+                serve="service"
+                if len(request.POST.getlist('service'))>1:
+                    serve="services"
+                #calling the notification fucntion
+                staff_notification('Sales Expert',request.user,total_services,serve)
+                
         else:
+            total_designation=""
+            count=0
             for item in request.POST.getlist('user_permission'):
                 if 'blogger' in request.POST.getlist('user_permission'):
                     current_user.is_staff = True
                     current_user.is_blogger = True
                     current_user.save()
+                    total_designation+="BLOGGER"
+                    if count > 0:
+                        total_designation+=", "
+                    count+=1
                 if 'bcs_head' in request.POST.getlist('user_permission'):
                     current_user.is_staff = True
                     current_user.is_bcs_head = True
                     current_user.save()
+                    total_designation+="BCS_HEAD"
+                    if count > 0:
+                        total_designation+=", "
+                    count+=1
                 if 'pcs_head' in request.POST.getlist('user_permission'):
                     current_user.is_staff = True
                     current_user.is_pcs_head = True
                     current_user.save()
+                    total_designation+="PCS_HEAD"
+                    if count > 0:
+                        total_designation+=", "
+                    count+=1
+            staff_notification(total_designation,request.user)
         return HttpResponseRedirect(reverse('main_admin_support_view'))
 
     context = {
