@@ -2882,7 +2882,6 @@ def bcsAdminOrdersDetailView(request, id):
                     f'has been set for your order ID: {current_order.id} '
                     f'Please visit: https://main.techforing.com/bcs_user_order_details/{current_order.id}/ for more info',
                     'admin@techforing.com',
-                    [current_order.user.business_user.business.email],
                     fail_silently=False,
                 )
                 notification = models.Notification.objects.create(
@@ -2898,6 +2897,10 @@ def bcsAdminOrdersDetailView(request, id):
                 current_order.order_status = 'attending'
                 current_order.save()
                 quotation_form.save()
+                try:
+                    q_mail=[current_order.user.business_user.business.email]
+                except:   
+                    q_mail=[current_order.user.email]
                 send_mail(
                     f'Quotation Set for order ID: {current_order.id}',
                     f'NDA: https://main.techforing.com/{current_order.quotation_order.nda.url} '
@@ -2906,11 +2909,15 @@ def bcsAdminOrdersDetailView(request, id):
                     f'Please sign them and submit a copy to https://main.techforing.com/bcs_user_order_details/{current_order.id}/ '
                     f'Please visit: https://main.techforing.com/bcs_user_order_details/{current_order.id}/ for more info',
                     'admin@techforing.com',
-                    [current_order.user.business_user.business.email],
+                    q_mail,
                     fail_silently=False,
                 )
+                try:
+                    q_user=current_order.user.business_user.business.company_name
+                except:
+                    q_user=current_order.user.email
                 notification = models.Notification.objects.create(
-                    category_choice=current_order.user.business_user.business.company_name,
+                    category_choice=q_user,
                     notification=f'Quotation Set for Order ID: {current_order.id} <div><a href="https://main.techforing.com/bcs_user_order_details/{current_order.id}/" '
                                  f'target="_blank" class="btn '
                                  f'btn-success mt-2">Visit Now</a></div>',
