@@ -289,9 +289,11 @@
                                                         </tbody>
                                                     </table>
                                                     {% if event.id not in registered_event %}
+                                                    <a href="#"class="d-block w-45 btn btn-sm bg-navy text-white px-4 py-1 mt-2">Add To List</a>
                                                         <a href="{% host_url 'pcs_user_event_register' host 'mysecurity' %}{{ event.id }}"
-                                                           class="d-block w-100 btn btn-sm bg-navy text-white px-4 py-1 mt-2">Interested</a>
+                                                           class="d-block w-45 btn btn-sm bg-navy text-white px-4 py-1 mt-2">Register</a>
                                                     {% else %}
+                                                    <a href="#"class="d-block w-45 btn btn-sm bg-navy text-white px-4 py-1 mt-2">Add To List</a>
                                                         <button disabled
                                                             class="d-block w-100 btn btn-sm bg-navy text-white px-4 py-1 mt-2">Registered</button>
                                                     {% endif %}
