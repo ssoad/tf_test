@@ -1392,6 +1392,19 @@ def mainAdminOrdersDetailView(request, id):
     except:
         return HttpResponse("You don't have permission to view this page")
 
+@user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def mainAdminDeleteOrdersView(request, id):
+    try:
+        current_order = models.Order.objects.get(id=id)
+        current_order.delete()
+        current_user = models.User.objects.get(id=current_order.user.id)
+        notification = models.Notification.objects.create(category_choice=current_user.email,
+                                                                              notification_time=timezone.now(),
+                                                                              notification=f'You order/quoation {current_order.id} has been deleted by ADMIN')
+        notification.save()
+        return HttpResponseRedirect(reverse('main_admin_quotations'))
+    except:
+        return HttpResponse("You don't have permission to view this page")
 
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminNotificationView(request):
