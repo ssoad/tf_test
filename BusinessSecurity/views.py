@@ -2901,10 +2901,20 @@ def bcsAdminOrdersDetailView(request, id):
                     q_mail=[current_order.user.business_user.business.email]
                 except:   
                     q_mail=[current_order.user.email]
+                try:
+                    if current_order.quotation_order.nda.url:
+                        nda_url = "https://main.techforing.com/"+current_order.quotation_order.nda.url
+                except:
+                        nda_url = 'No NDA'
+                try:
+                    if current_order.quotation_order.nca.url:
+                        nca_url = "https://main.techforing.com/"+current_order.quotation_order.nca.url
+                except:
+                    nca_url = 'No NCA'
                 send_mail(
                     f'Quotation Set for order ID: {current_order.id}',
-                    f'NDA: https://main.techforing.com/{current_order.quotation_order.nda.url} '
-                    f'NCA: https://main.techforing.com/{current_order.quotation_order.nca.url} '
+                    f'NDA: {nda_url}'
+                    f'NCA: {nca_url} '
                     f'has been set for your order ID: {current_order.id} '
                     f'Please sign them and submit a copy to https://main.techforing.com/bcs_user_order_details/{current_order.id}/ '
                     f'Please visit: https://main.techforing.com/bcs_user_order_details/{current_order.id}/ for more info',
