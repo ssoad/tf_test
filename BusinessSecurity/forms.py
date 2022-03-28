@@ -88,6 +88,16 @@ class CreateBusinessForm(forms.ModelForm):
         fields = '__all__'
         exclude = ['unique_id', 'company_logo']
 
+    def clean(self):
+ 
+        # data from the form is fetched using super function
+        super(CreateBusinessForm, self).clean()
+         
+        # extract the email field from the data
+        email = self.cleaned_data.get('email')
+        email_set={'gmail','protonmail','hotmail','yahoo','zoho','aim','aol','gmx','icloud','yandex'}
+        if email.split('@')[1].split('.')[0].lower() in email_set:
+              raise forms.ValidationError('The email need to be a bussinees email')
 
 class AddPackageForm(forms.ModelForm):
     service_id = forms.ModelChoiceField(
@@ -122,7 +132,12 @@ class EventCreateForm(forms.ModelForm):
     class Meta:
         model = models.Events
         fields = '__all__'
-
+        # exclude = ('event_image',)
+# class EventPictureForm(forms.ModelForm):
+#     profile_pic = forms.ImageField(widget=forms.FileInput)
+#     class Meta:
+#         model = models.Events
+#         fields = ['event_image']
 
 class OrderPriceForm(forms.ModelForm):
     class Meta:
