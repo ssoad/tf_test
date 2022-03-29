@@ -98,8 +98,8 @@
                         {% endcomment %}
                         {% if current_order.orderprice_order.invoice %}
                             <a class="btn view-btn bg-green btn-outline-light"
-                            href="{{ current_order.orderprice_order.invoice.url }}"
-                            download="{{ current_order.orderprice_order.invoice.url }}">
+                            href="{{ current_order.quotation_order.invoice.url }}"
+                            download="{{ current_order.quotation_order.invoice.url }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-arrow-down-circle-fill" viewBox="0 0 16 16">
                                     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
@@ -176,28 +176,28 @@
                         </div>
                         <form action="" method="POST" enctype="multipart/form-data">
                             <div class="modal-body">
-                                {% if current_quotation_agreement.user_nda %}
-                                    <b>NDA: </b><a class="btn btn-sm btn-navy mt-2"
-                                                   href="{{ current_quotation_agreement.user_nda.url }}"
-                                                   download="{{ current_quotation_agreement.user_nda.url }}">
+                                {% if current_quotation_agreement.user_nda_nca %}
+                                    <b>NDA AND NCA: </b><a class="btn btn-sm btn-navy mt-2"
+                                                   href="{{ current_quotation_agreement.user_nda_nca.url }}"
+                                                   download="{{ current_quotation_agreement.user_nda_nca.url }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                          class="bi bi-arrow-down-circle-fill" viewBox="0 0 16 16">
                                         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
                                     </svg>
-                                    Download NDA
+                                    Download NDA and NCA
                                 </a> <br>
                                 {% endif %}
-                                {% if current_quotation_agreement.user_nca %}
-                                    <b>NCA: </b><a class="btn btn-sm btn-navy mt-2"
-                                                   href="{{ current_quotation_agreement.user_nca.url }}"
-                                                   download="{{ current_quotation_agreement.user_nca.url }}">
+                                {% comment %} {% if current_quotation_agreement.user_nca %}
+                                    <b>Invoice: </b><a class="btn btn-sm btn-navy mt-2"
+                                                   href="{{ current_quotation_agreement.invoice.url }}"
+                                                   download="{{ current_quotation_agreement.invoice.url }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                          class="bi bi-arrow-down-circle-fill" viewBox="0 0 16 16">
                                         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
                                     </svg>
-                                    Download NCA
+                                    Download Invoice
                                 </a> <br>
-                                {% endif %}
+                                {% endif %} {% endcomment %}
                                 {% if current_quotation_agreement.message %}
                                     <b>Message: </b>{{ current_quotation_agreement.message|safe }}
                                 {% endif %}
@@ -322,8 +322,8 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $("document").ready(function () {
-            $("#id_nda").prop('required', true);
-            $("#id_nca").prop('required', true);
+            $("#id_nda").prop('required', false);
+            $("#id_nca").prop('required', false);
         })
         $(document).ready(function(){
             $("#id_nda").on('change', function(event) {
@@ -356,7 +356,6 @@
             }
         }
 
-        console.log(document.querySelectorAll('.card-title.trash').length)
         document.querySelectorAll('.card-title.trash').forEach(elem => {
             elem.parentNode.parentNode.parentNode.outerHTML = '';
         })

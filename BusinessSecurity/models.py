@@ -1,3 +1,5 @@
+from distutils.command.upload import upload
+from xml.sax import default_parser_list
 from django.db import models
 from tinymce.models import HTMLField
 from Account.models import User
@@ -230,9 +232,9 @@ agreement = (
 
 class Quotation(models.Model):
     order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name='quotation_order')
-    nda = models.FileField(upload_to='nda/', blank=True, null=True, validators=[FileExtensionValidator(['pdf'])],
+    nda_and_nca = models.FileField(upload_to='nda/', blank=True, null=True, validators=[FileExtensionValidator(['pdf'])],
                            help_text='(Supported Format: .pdf)')
-    nca = models.FileField(upload_to='nca/', blank=True, null=True, validators=[FileExtensionValidator(['pdf'])],
+    invoice = models.FileField(upload_to='invoice/', blank=True, null=True, validators=[FileExtensionValidator(['pdf'])],
                            help_text='(Supported Format: .pdf)')
     # quotation = models.FileField(upload_to='quotation/', blank=True, null=True)
     quotation_info = HTMLField(blank=True, null=True)
@@ -241,15 +243,15 @@ class Quotation(models.Model):
 
     # agree_to_quotation = models.CharField(choices=agreement, default='disagree', max_length=255)
     # agree_to_nda_nca = models.CharField(choices=agreement, default='disagree', max_length=255)
-
+    def get_nda(self):
+        print(self.nda)
 
 class QuotationAgreement(models.Model):
     quotation = models.OneToOneField(Quotation, on_delete=models.CASCADE, related_name='quotation_agreement_quotation')
     agreement = models.CharField(verbose_name='Agree to NDA/NCA', choices=agreement, max_length=255)
-    user_nda = models.FileField(upload_to='nda/uploaded/', blank=True, null=True, verbose_name='Upload NDA',
+    user_nda_nca = models.FileField(upload_to='nda/uploaded/', blank=True, null=True, verbose_name='Upload NDA and NCA',
                                 validators=[FileExtensionValidator(['pdf'])], help_text='(Supported Format: .pdf)')
-    user_nca = models.FileField(upload_to='nca/uploaded/', blank=True, null=True, verbose_name='Upload NCA',
-                                validators=[FileExtensionValidator(['pdf'])], help_text='(Supported Format: .pdf)')
+    # user_invoice= models.FileField(upload_to='nca/uploaded/', blank=True, null=True, verbose_name='Upload NCA',validators=[FileExtensionValidator(['pdf'])], help_text='(Supported Format: .pdf)')
     message = HTMLField(blank=True, null=True)
 
 
@@ -269,8 +271,7 @@ class OrderPrice(models.Model):
     price = models.PositiveIntegerField(default=0, blank=True)
     currency = models.CharField(choices=currency, max_length=255)
     payment_method = models.CharField(choices=payment_method, max_length=255)
-    invoice = models.FileField(upload_to='invoice',
-                               validators=[FileExtensionValidator(['pdf'])], help_text='(Supported Format: .pdf)')
+    # invoice = models.FileField(upload_to='invoice',validators=[FileExtensionValidator(['pdf'])], help_text='(Supported Format: .pdf)', blank=True, null=True)
 
     def save(self, *args, **kwargs):
         if self.discount < 1:
@@ -535,6 +536,7 @@ class Events(models.Model):
     status = models.CharField(choices=status_list, max_length=264)
     event_description = HTMLField(max_length=5000)
     created_date = models.DateTimeField(auto_now_add=True)
+    event_image=models.ImageField(upload_to='events/', default='events/default.jpg')
 
     def __str__(self):
         return self.event_name

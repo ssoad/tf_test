@@ -1303,6 +1303,7 @@ def mainAdminDashboardView(request):
         category_choice='bcs')
     service_categories_pcs = models.ServiceCategory.objects.filter(
         category_choice='pcs')
+    print(service_categories_pcs.count())
     context = {
         'total_user': total_user,
         'total_business_user': total_user.filter(is_bcs=True),
@@ -2888,15 +2889,17 @@ def bcsAdminOrdersDetailView(request, id):
                 current_order.save()
                 # new_staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
                 form.save()
-
-                send_mail(
-                    f'Price Set for order ID: {current_order.id}',
-                    f'Price: {current_order.orderprice_order.price} {current_order.orderprice_order.currency} '
-                    f'has been set for your order ID: {current_order.id} '
-                    f'Please visit: https://main.techforing.com/bcs_user_order_details/{current_order.id}/ for more info',
-                    'admin@techforing.com',
-                    fail_silently=False,
-                )
+                try:
+                    send_mail(
+                        f'Price Set for order ID: {current_order.id}',
+                        f'Price: {current_order.orderprice_order.price} {current_order.orderprice_order.currency} '
+                        f'has been set for your order ID: {current_order.id} '
+                        f'Please visit: https://main.techforing.com/bcs_user_order_details/{current_order.id}/ for more info',
+                        'admin@techforing.com',
+                        fail_silently=False,
+                    )
+                except:
+                    pass
                 notification = models.Notification.objects.create(
                     category_choice=current_order.user.business_user.business.company_name,
                     notification=f'Price Set for Order ID: {current_order.id} <div><a href="https://main.techforing.com/bcs_user_order_details/{current_order.id}/" '
@@ -2916,18 +2919,18 @@ def bcsAdminOrdersDetailView(request, id):
                     q_mail=[current_order.user.email]
                 try:
                     if current_order.quotation_order.nda.url:
-                        nda_url = "https://main.techforing.com/"+current_order.quotation_order.nda.url
+                        nda_url = "https://main.techforing.com/"+current_order.quotation_order.nda_and_nca.url
                 except:
-                        nda_url = 'No NDA'
+                        nda_url = 'No NDA and NCA'
                 try:
-                    if current_order.quotation_order.nca.url:
-                        nca_url = "https://main.techforing.com/"+current_order.quotation_order.nca.url
+                    if current_order.quotation_order.invoice.url:
+                        invoice_url = "https://main.techforing.com/"+current_order.quotation_order.invoice.url
                 except:
-                    nca_url = 'No NCA'
+                    invoice_url = 'No INVOICE'
                 send_mail(
                     f'Quotation Set for order ID: {current_order.id}',
                     f'NDA: {nda_url}'
-                    f'NCA: {nca_url} '
+                    f'NCA: {invoice_url} '
                     f'has been set for your order ID: {current_order.id} '
                     f'Please sign them and submit a copy to https://main.techforing.com/bcs_user_order_details/{current_order.id}/ '
                     f'Please visit: https://main.techforing.com/bcs_user_order_details/{current_order.id}/ for more info',

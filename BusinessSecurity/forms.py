@@ -142,7 +142,7 @@ class EventCreateForm(forms.ModelForm):
 class OrderPriceForm(forms.ModelForm):
     class Meta:
         model = models.OrderPrice
-        fields = ['initial_price', 'discount', 'processing_fee', 'tax', 'currency', 'payment_method', 'invoice']
+        fields = ['initial_price', 'discount', 'processing_fee', 'tax', 'currency', 'payment_method'] #, 'invoice'
         widgets = {
             'discount': forms.NumberInput(attrs={'max': '100'}),
             'currency': forms.Select(attrs={'class': 'form-select'}),
