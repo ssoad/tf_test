@@ -8,6 +8,7 @@
     .profile-area {
         text-align: left;
         background-color: #e2e8f0;
+        padding-bottom: 10px;
     }
     
     .main-body {
@@ -63,10 +64,23 @@
     .shadow-none {
         box-shadow: none !important;
     }
+
+
+    .img-change {
+        visibility: hidden;
+    }
+
+    .profiles-logo:hover + .img-change {
+        visibility: visible;
+    }
+
+    .img-change:hover {
+        visibility: visible;
+    }
 </style>
 <div class="profile-area">
     {% include 'base/verification_check.html' %}
-    <section class="py-5">
+    <section class="py-1">
         <div class="container">
             <div class="main-body">
                 <div class="row gutters-sm">
@@ -88,7 +102,8 @@
                                                              class="img-change overlay position-absolute top-0 start-0 bottom-0 end-0 w-100 h-100 m-auto d-flex align-items-center justify-content-center rounded-circle"
                                                              data-bs-toggle="modal" data-bs-target="#imageChangeModal"
                                                              style="background: #00000033; cursor: pointer"><i
-                                                                class="fa fa-camera"></i></div>
+                                                                class="fa fa-camera"></i>
+                                                            </div>
                                                     </div>
             
                                                     <div class="mt-3">
@@ -198,31 +213,54 @@
         {%for val in vals %}
             {{interest|values_from_model: val}}
         {% endfor %} {% endcomment %}
-        <section>
-        <div class='container'>
-            <div <div class="col-sm-3">
-                <p>Interests</p>
-        {% if interests.risk_assessment %}<p>Risk Mangement</p>{% endif %}
-        {% if  interests.incident_response %}<p>Incident Response</p>{% endif %}
-        {% if  interests.cyber_crime_investigation %}<p>Cyber Crime Investigations</p>{% endif %}
-        {% if  interests.open_source_intelligence %}<p>Open Source Intelligence</p>{% endif %}
-        {% if  interests.hack_recovery %}<p>Hack Recovery</p>{% endif %}
-        {% if  interests.virus_removal %}<p>Virus Removal</p>{% endif %}
+    
+          <section>
+            <div class="container">
+                <div class="main-body">
+                    <div class="row gutters-sm">
+                        <div class="container card mb-4" >
+                            <div class="card-header fw-bold">
+                                Interest
+                            </div>
+                            <div class="row card-body">
+                                {% if interests.risk_assessment %}
+                                <div class="col col-6 col-md-4 py-1">
+                                    Risk Mangement
+                                </div>
+                                {% endif %}
+                                {% if interests.incident_response %}
+                                <div class="col col-6 col-md-4 py-1">
+                                    Incident Response
+                                </div>
+                                {% endif %}
+                                {% if interests.cyber_crime_investigation %}
+                                <div class="col col-6 col-md-4 py-1">
+                                    Cyber Crime Investigations
+                                </div>
+                                {% endif %}
+                                {% if interests.open_source_intelligence %}
+                                <div class="col col-6 col-md-4 py-1">
+                                    Open Source Intelligence
+                                </div>
+                                {% endif %}
+                                {% if interests.hack_recovery %}
+                                <div class="col col-6 col-md-4 py-1">
+                                    Hack Recovery
+                                </div>
+                                {% endif %}
+                                {% if interests.virus_removal %}
+                                <div class="col col-6 col-md-4 py-1">
+                                    Virus Removal
+                                </div>
+                                {% endif %}
+                            </div>
+                          </div>
+                    </div>
+    
+                </div>
             </div>
-            
-        </div>
-        
-        {% comment %} <p>Interest</p>
-        {% for interest in interests %}
-        <p>{{interest}}</p>
-        {% endfor %} {% endcomment %}
-        {% comment %} {{interests.risk_assessment}}
-        {{interests.incident_response}}
-        {{interests.cyber_crime_investigation}}
-        {{interests.open_source_intelligence}}
-        {{interests.hack_recovery}}
-        {{interests.virus_removal}} {% endcomment %}
-    </section>
+    
+        </section>
 
 </div>
 {% endblock content %}
