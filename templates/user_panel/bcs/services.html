@@ -720,7 +720,7 @@
                     <input class="form-check-input sub-services-check" type="checkbox" name="" id="sub-${option.id}" data-index="${index}" data-title="${option.title}" data-id="${option.id}">
                     <label class="form-check-label" for="sub-${option.id}">${index + 1}. ${option.title}</label>
                 </div>`;
-                            previewForm.innerHTML = '<div class="row mx-0">' + list + '</div>' + '<div class="col-md-8 d-none form-container"><h5 class="fw-bold text-center border-bottom border-gray p-2">Please Provide Necessary Informations:</h5>' + form + '<div class="information-form"></div><button type="submit" class="submit-btn btn btn-navy mt-3">Submit</button></form> </div>';
+                            previewForm.innerHTML = '<div class="row mx-0">' + list + '</div>' + '<div class="col-md-8 d-none form-container" style="height: 90vh;overflow-x: auto;" ><h5 class="fw-bold text-center border-bottom border-gray p-2">Please Provide Necessary Informations:</h5>' + form + '<div class="information-form"></div><button type="submit" class="submit-btn btn btn-navy mt-3">Submit</button></form> </div>';
 
                         });
                         document.getElementById('service_name').value = mainHeading.textContent.trim();
