@@ -17,6 +17,7 @@ from django.db.models import Q
 from rest_framework.response import Response
 from Api import apipermissions
 from django.utils import timezone
+from datetime import date, timedelta
 
 
 # Create your views here.
@@ -252,7 +253,6 @@ class BCSAdminDashboardYearChartApiView(generics.ListAPIView):
 
         start_date = 1
         end_date = date.today().month
-        # print(end_date)
         all_months = list(range(start_date, end_date + 1))
         # print(all_months)
         current_year = date.today().year
@@ -556,6 +556,44 @@ class MainAdminDashboardMonthChartApiView(generics.ListAPIView):
 
         current_month = date.today().month
 
+        query = bcsmodels.Order.objects.all()
+        subscriptions = bcsmodels.SubscriptionOrder.objects.all()
+
+        for day in all_dates:
+            order = query.filter(order_date__day=day, order_date__month=current_month).count()
+            unsubscription_count.append(order)
+        for day in all_dates:
+            order = subscriptions.filter(create_time__day=day, create_time__month=current_month).count()
+            subscription_count.append(order)
+
+        total_count = (sum(x) for x in zip(unsubscription_count, subscription_count))
+
+        datas = {
+            'for_subscription': subscription_count,
+            'for_unsubscription': unsubscription_count,
+            'total_count': total_count,
+        }
+
+        return Response({
+            'x_axis': all_dates,
+            'datas': datas
+        })
+
+class MainAdminDashboardLastMonthChartApiView(generics.ListAPIView):
+    serializer_class = serializer.BCSAdminDashboardChartSerializer
+    permission_classes = [apipermissions.IsMainAdmin]
+
+    def list(self, request, *args, **kwargs):
+
+        start_date = 1
+        #get last month total day
+        end_date = calendar.monthrange(date.today().year, date.today().month - 1)[1]
+        all_dates = list(range(start_date, end_date + 1))
+
+        subscription_count = []
+        unsubscription_count = []
+
+        current_month = (date.today().month) - 1
         query = bcsmodels.Order.objects.all()
         subscriptions = bcsmodels.SubscriptionOrder.objects.all()
 
