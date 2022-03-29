@@ -345,10 +345,10 @@ class BCSAdminDashboardRangeChartApiView(generics.ListAPIView):
                     #     subscription_count.append(order)
             else:
                 current_year=s_year
-                for month in all_months:
+                for month in range(s_month,e_month+1):
                         order = query.filter(order_date__month=month, order_date__year=current_year).count()
                         unsubscription_count.append(order)
-                for month in all_months:
+                for month in range(s_month,e_month+1):
                         order = subscriptions.filter(create_time__month=month, create_time__year=current_year).count()
                         subscription_count.append(order)
 
@@ -372,7 +372,7 @@ class BCSAdminDashboardRangeChartApiView(generics.ListAPIView):
                         for month in range(1,13):
                             months.append((calendar.month_name[month],year))
             else:
-                for month in all_months:
+                for month in range(s_month,e_month+1):
                     months.append(calendar.month_name[month])
 
             return Response({
@@ -614,10 +614,10 @@ class PCSAdminDashboardRangeChartApiView(generics.ListAPIView):
                     #     subscription_count.append(order)
             else:
                 current_year=s_year
-                for month in all_months:
+                for month in range(s_month,e_month+1):
                         order = query.filter(order_date__month=month, order_date__year=current_year).count()
                         unsubscription_count.append(order)
-                for month in all_months:
+                for month in range(s_month,e_month+1):
                         order = subscriptions.filter(create_time__month=month, create_time__year=current_year).count()
                         subscription_count.append(order)
 
@@ -641,7 +641,7 @@ class PCSAdminDashboardRangeChartApiView(generics.ListAPIView):
                         for month in range(1,13):
                             months.append((calendar.month_name[month],year))
             else:
-                for month in all_months:
+                for month in range(s_month,e_month+1):
                     months.append(calendar.month_name[month])
 
             return Response({
@@ -816,15 +816,14 @@ class MainAdminDashboardRangeChartApiView(generics.ListAPIView):
                     #     subscription_count.append(order)
             else:
                 current_year=s_year
-                for month in all_months:
+                for month in range(s_month,e_month+1):
                         order = query.filter(order_date__month=month, order_date__year=current_year).count()
                         unsubscription_count.append(order)
-                for month in all_months:
+                for month in range(s_month,e_month+1):
                         order = subscriptions.filter(create_time__month=month, create_time__year=current_year).count()
                         subscription_count.append(order)
 
             total_count = (sum(x) for x in zip(unsubscription_count, subscription_count))
-            print(total_count,subscription_count,unsubscription_count)
             datas = {
                 'for_subscription': subscription_count,
                 'for_unsubscription': unsubscription_count,
@@ -844,7 +843,7 @@ class MainAdminDashboardRangeChartApiView(generics.ListAPIView):
                         for month in range(1,13):
                             months.append((calendar.month_name[month],year))
             else:
-                for month in all_months:
+                for month in range(s_month,e_month+1):
                     months.append(calendar.month_name[month])
 
             return Response({
