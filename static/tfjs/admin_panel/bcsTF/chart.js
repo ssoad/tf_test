@@ -1,9 +1,9 @@
 let infoChart = document.getElementById("info-chart").getContext("2d");
 
 let infoLineChart = new Chart(infoChart, {});
-let getChartData = type => {
+let getChartData = (type, start, end) => {
 
-    fetch(`${mainOrigin}/api/bcs/bcs_admin_${type}_chart/`, {
+    fetch(`${mainOrigin}/api/bcs/${(start && end) ? `bcs_admin_range_chart/?start_date=${start}&end_date=${end}` : `main_admin_${type}_chart`}`, {
         credentials: 'include'
     })
         .then(response => {

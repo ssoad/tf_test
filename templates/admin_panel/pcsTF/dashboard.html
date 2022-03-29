@@ -77,11 +77,22 @@
 {#                        <input type="text" id="dashboardDaterange" class="float-end" placeholder="Select By Time range" name="daterange" />#}
                         <canvas id="info-chart" height="50" class="chartjs-render-monitor"></canvas>
                         <!-- filter buttons -->
-                        <div class="filter-options d-flex w-100 float-end justify-content-between mb-3">
-                            <button class="btn btn-secondary mx-2 rounded-pill px-3" onclick="getChartData('month')">This Month</button>
-                            <button class="btn btn-secondary mx-2 rounded-pill px-3" onclick="getChartData('lastmonth')">Last Month</button>
-                            <button class="btn btn-secondary mx-2 rounded-pill px-3" onclick="getChartData('year')">This Year</button>
-                            <button class="btn btn-secondary mx-2 rounded-pill px-3" onclick="getChartData('all')">All</button>
+                        <div class="filter-options d-flex w-100 justify-content-between  align-items-center" >
+                            <div class="input-group" style="width: 350px" >
+                              <span class="input-group-text" style="width: 120px" id="inputGroup-sizing-lg">Start month:</span>
+                              <input class="form-control" type="month" id="startMonth" name="startMonth">
+                            </div>
+                            <div class="input-group" style="width: 350px" >
+                              <span class="input-group-text" style="width: 120px" id="inputGroup-sizing-lg">End month:</span>
+                              <input class="form-control" type="month" id="endMonth" name="endMonth">
+                            </div>
+                            <button style="width: 150px" class="btn btn-secondary mx-2 rounded-pill" onclick="handleRangeChart()">Filter</button>
+                        </div>
+                        <div class="filter-options d-flex w-100 justify-content-between mb-3">
+                            <button style="width: 150px" class="btn btn-secondary mx-2 rounded-pill px-3" onclick="getChartData('month')">This Month</button>
+                            <button style="width: 150px" class="btn btn-secondary mx-2 rounded-pill px-3" onclick="getChartData('lastmonth')">Last Month</button>
+                            <button style="width: 150px" class="btn btn-secondary mx-2 rounded-pill px-3" onclick="getChartData('year')">This Year</button>
+                            <button style="width: 150px" class="btn btn-secondary mx-2 rounded-pill px-3" onclick="getChartData('all')">All</button>
                         </div>
                     </div>
                 </div>
@@ -279,4 +290,33 @@
     <!-- custom scripts -->
     <script src="{% static 'tfjs/admin_panel/pcsTF//chart.js' %}"></script>
     <script src="{% static 'tfjs/admin_panel/bcsTF/dashboard.js' %}"></script>
+    <!-- sweetAlert CDN -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const handleRangeChart =()=>{
+            const startMonth = $('#startMonth').val();
+            const endMonth = $('#endMonth').val();
+    
+            // error if start or endmonth is empty
+            if(startMonth === '' || endMonth === ''){
+                Swal.fire({
+                    text: 'Please select start and end month',
+                    icon: 'error'
+                })
+                return;
+            }
+    
+            // validate startmonth and endmonth
+            if(startMonth > endMonth){
+                Swal.fire(({
+                    text: 'Start month can not be greater than end month!',
+                    icon: 'error',
+                  }));
+                return;
+            }
+    
+            console.log(startMonth,endMonth);
+            getChartData('range',startMonth,endMonth);
+        }
+    </script>
 {% endblock customjs %}
