@@ -3113,6 +3113,10 @@ def bcsAdminOrderAttendingView(request, id):
 
         current_order.order_status = 'attending'
         current_order.save()
+        notification = models.Notification.objects.create(category_choice=current_order.user.email,
+                                                                              notification_time=timezone.now(),
+                                                                              notification=f'Your quotation is attending by {request.user}')
+        notification.save()
         # staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
         return HttpResponseRedirect(reverse('bcs_admin_order_detail', args=(id,)))
     except:
