@@ -3,7 +3,7 @@ let infoChart = document.getElementById("info-chart").getContext("2d");
 let infoLineChart = new Chart(infoChart, {});
 let getChartData = type => {
 
-    fetch(`${mainOrigin}/api/main/main_admin_${type}_chart/`, {
+    fetch(`${mainOrigin}/api/main/main_admin_${type}_chart`, {
         credentials: 'include'
     })
         .then(response => {
