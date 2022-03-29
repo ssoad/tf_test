@@ -342,6 +342,57 @@ class BCSAdminDashboardMonthChartApiView(generics.ListAPIView):
             'x_axis': all_dates,
             'datas': datas
         })
+class BCSAdminDashboardLastMonthChartApiView(generics.ListAPIView):
+    serializer_class = serializer.BCSAdminDashboardChartSerializer
+    permission_classes = [apipermissions.IsBCSAdmin]
+
+    # queryset = bcsmodels.Order.objects.all()
+
+    # def get_queryset(self):
+    #     w = bcsmodels.Order.objects.filter(service__is_subscription_based=False)
+    #     # print(w.values_list())
+    #     return bcsmodels.Order.objects.all()
+
+    def list(self, request, *args, **kwargs):
+        # ser = self.get_serializer(self.get_queryset(), many=True)
+        # responseData = ser.data
+
+        start_date = 1
+        end_date = calendar.monthrange(date.today().year, date.today().month - 1)[1]
+        # print(end_date)
+        all_dates = list(range(start_date, end_date + 1))
+        # print(all_dates)
+        current_month = (date.today().month) - 1
+
+        subscription_count = []
+        unsubscription_count = []
+
+        query = bcsmodels.Order.objects.filter(category_choice='bcs')
+        subscriptions = bcsmodels.SubscriptionOrder.objects.filter(subscription_service__category_choice='bcs')
+
+        for day in all_dates:
+            order = query.filter(order_date__day=day, order_date__month=current_month).count()
+            unsubscription_count.append(order)
+        for day in all_dates:
+            order = subscriptions.filter(create_time__day=day, create_time__month=current_month).count()
+            subscription_count.append(order)
+
+        total_count = (sum(x) for x in zip(unsubscription_count, subscription_count))
+
+        datas = {
+            'for_subscription': subscription_count,
+            'for_unsubscription': unsubscription_count,
+            'total_count': total_count,
+        }
+
+        # responseData.append({
+        #     'x_axis': all_months,
+        #     'datas': datas
+        # })
+        return Response({
+            'x_axis': all_dates,
+            'datas': datas
+        })
 
 
 class PCSAdminDashboardAllChartApiView(generics.ListAPIView):
@@ -437,6 +488,44 @@ class PCSAdminDashboardMonthChartApiView(generics.ListAPIView):
         unsubscription_count = []
 
         current_month = date.today().month
+
+        query = bcsmodels.Order.objects.filter(category_choice='pcs')
+        subscriptions = bcsmodels.SubscriptionOrder.objects.filter(subscription_service__category_choice='pcs')
+
+        for day in all_dates:
+            order = query.filter(order_date__day=day, order_date__month=current_month).count()
+            unsubscription_count.append(order)
+        for day in all_dates:
+            order = subscriptions.filter(create_time__day=day, create_time__month=current_month).count()
+            subscription_count.append(order)
+
+        total_count = (sum(x) for x in zip(unsubscription_count, subscription_count))
+
+        datas = {
+            'for_subscription': subscription_count,
+            'for_unsubscription': unsubscription_count,
+            'total_count': total_count,
+        }
+
+        return Response({
+            'x_axis': all_dates,
+            'datas': datas
+        })
+class PCSAdminDashboardLastMonthChartApiView(generics.ListAPIView):
+    serializer_class = serializer.BCSAdminDashboardChartSerializer
+    permission_classes = [apipermissions.IsPCSAdmin]
+
+    def list(self, request, *args, **kwargs):
+
+        start_date = 1
+        end_date = calendar.monthrange(date.today().year, date.today().month - 1)[1]
+
+        all_dates = list(range(start_date, end_date + 1))
+
+        subscription_count = []
+        unsubscription_count = []
+
+        current_month = (date.today().month)-1
 
         query = bcsmodels.Order.objects.filter(category_choice='pcs')
         subscriptions = bcsmodels.SubscriptionOrder.objects.filter(subscription_service__category_choice='pcs')
