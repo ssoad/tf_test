@@ -13,6 +13,8 @@
                 <th>{{ message }} ID</th>
                 <th>service</th>
                 <th>user</th>
+                <th>Phone</th>
+                <th>Email</th>
                 <th>status</th>
                 <th>type</th>
                 <th>assigned to</th>
@@ -26,6 +28,8 @@
                     <td>{{ order.id }}</td>
                     <td>{{ order.service.service_title }}</td>
                     <td>{{ order.user }}</td>
+                    <td>{{ order.user.phone_number }}</td>
+                    <td>{{ order.user.email }}</td>
                     {% if order.order_status == 'new' %}
                         <td><p class="badge bg-primary">{{ order.order_status|capitalize }}</p></td>
                     {% elif order.order_status == 'assigned' %}
@@ -50,7 +54,11 @@
                         {% endif %}
                     </td>
                     <td><a href="{% host_url 'main_admin_order_detail' %}{{ order.id }}"><i
-                            class="bi bi-eye-fill"></i></a></td>
+                            class="bi bi-eye-fill"></i></a>
+                            {% comment %} &nbsp;&nbsp;
+                            <a href="{% host_url 'main_admin_order_detail' %}{{ order.id }}"><span style="color:red"><i
+                                class="bi bi-trash" ></i></span></a> {% endcomment %}
+                        </td>
                 </tr>
             {% endfor %}
             </tbody>

@@ -325,7 +325,30 @@
             $("#id_nda").prop('required', true);
             $("#id_nca").prop('required', true);
         })
-
+        $(document).ready(function(){
+            $("#id_nda").on('change', function(event) {
+                var file = event.target.files[0].name;
+                var ext=file.toString().split(".");
+                if (ext[ext.length-1]!='pdf'){
+                    Swal.fire("Choose a pdf file");
+                    $('input[name=nda]').val('');
+                }
+                return;
+            });
+        });
+        
+        $(document).ready(function(){
+            $("#id_nca").on('change', function(event) {
+                var file = event.target.files[0].name;
+                var ext=file.toString().split(".");
+                if (ext[ext.length-1]!='pdf'){
+                    Swal.fire("Choose a pdf file");
+                    $('input[name=nca]').val('');
+                }
+                return;
+            });
+        });
+        
         const handleSubmitVal = (e) => {
             if (!tinyMCE.activeEditor.getContent()) {
                 e.preventDefault();
@@ -381,4 +404,7 @@
         });
 
     </script>
+    
+
+    
 {% endblock customjs %}

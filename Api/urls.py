@@ -31,17 +31,30 @@ urlpatterns = [
     path('bcs/bcs_admin_year_chart/', views.BCSAdminDashboardYearChartApiView.as_view(), name='bcs_admin_year_chart'),
     path('bcs/bcs_admin_month_chart/', views.BCSAdminDashboardMonthChartApiView.as_view(),
          name='bcs_admin_month_chart'),
+    path('bcs/bcs_admin_lastmonth_chart/', views.BCSAdminDashboardLastMonthChartApiView.as_view(),
+         name='bcs_admin_lastmonth_chart'),
+    path('bcs/bcs_admin_range_chart/', views.BCSAdminDashboardRangeChartApiView.as_view(),
+         name='bcs_admin_chart_range'),
+    
 
     path('pcs/pcs_admin_all_chart/', views.PCSAdminDashboardAllChartApiView.as_view(), name='pcs_admin_all_chart'),
     path('pcs/pcs_admin_year_chart/', views.PCSAdminDashboardYearChartApiView.as_view(), name='pcs_admin_year_chart'),
     path('pcs/pcs_admin_month_chart/', views.PCSAdminDashboardMonthChartApiView.as_view(),
          name='pcs_admin_month_chart'),
+    path('pcs/pcs_admin_lastmonth_chart/', views.PCSAdminDashboardLastMonthChartApiView.as_view(),
+         name='pcs_admin_lastmonth_chart'),
+    path('pcs/pcs_admin_range_chart/', views.PCSAdminDashboardRangeChartApiView.as_view(),
+         name='pcs_admin_range_chart'),
 
     path('main/main_admin_all_chart/', views.MainAdminDashboardAllChartApiView.as_view(), name='main_admin_all_chart'),
     path('main/main_admin_year_chart/', views.MainAdminDashboardYearChartApiView.as_view(),
          name='main_admin_year_chart'),
     path('main/main_admin_month_chart/', views.MainAdminDashboardMonthChartApiView.as_view(),
          name='main_admin_month_chart'),
+    path('main/main_admin_lastmonth_chart/', views.MainAdminDashboardLastMonthChartApiView.as_view(),
+         name='main_admin_lastmonth_chart'),
+    path('main/main_admin_range_chart/', views.MainAdminDashboardRangeChartApiView.as_view(),
+         name='main_admin_chart_range'),     
 
     path('bcs/bcs_subscriptions/<service>/', views.SubscriptionApiView.as_view(), name='bcs_subscriptions'),
 

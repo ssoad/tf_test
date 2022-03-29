@@ -1392,6 +1392,19 @@ def mainAdminOrdersDetailView(request, id):
     except:
         return HttpResponse("You don't have permission to view this page")
 
+@user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
+def mainAdminDeleteOrdersView(request, id):
+    try:
+        current_order = models.Order.objects.get(id=id)
+        current_order.delete()
+        current_user = models.User.objects.get(id=current_order.user.id)
+        notification = models.Notification.objects.create(category_choice=current_user.email,
+                                                                              notification_time=timezone.now(),
+                                                                              notification=f'You order/quoation {current_order.id} has been deleted by ADMIN')
+        notification.save()
+        return HttpResponseRedirect(reverse('main_admin_quotations'))
+    except:
+        return HttpResponse("You don't have permission to view this page")
 
 @user_passes_test(main_admin_permission_check, login_url='/accounts/login/', redirect_field_name='/account/profile/')
 def mainAdminNotificationView(request):
@@ -1507,6 +1520,14 @@ def mainAdminSupportView(request):
     pcs_head = User.objects.filter(is_pcs_head=True)
     form = forms.AssignToServiceForm()
 
+    #This function is for notificaton change if any staff is assigened
+    def staff_notification(designation,assigned_by,total_services=None,serve=None):
+        notification = models.Notification.objects.create(category_choice=current_user.email,
+                                                                              notification_time=timezone.now(),
+                                                                              notification=f'You have been added as a {designation} in '
+                                                                                           f'{total_services} {serve} by {assigned_by}')
+        notification.save()
+
     if request.method == 'POST':
         user_email = request.POST.get('user_email')
         user_permission = request.POST.get('user_permission')
@@ -1518,8 +1539,14 @@ def mainAdminSupportView(request):
             if form.is_valid():
                 assigned = form.save(commit=False)
                 assigned.user = current_user
+                total_services=""
+                count=0
                 for service_id in request.POST.getlist('service'):
                     service = models.Service.objects.get(id=service_id)
+                    if count>0:
+                        total_services+=","
+                    total_services+=str(service)
+                    count+=1
                     tracking = models.Tracking.objects.get_or_create(
                         service=service)
                     person = tracking[0].persons
@@ -1528,20 +1555,41 @@ def mainAdminSupportView(request):
                 assigned.save()
                 form.save_m2m()
                 current_user.save()
+                serve="service"
+                if len(request.POST.getlist('service'))>1:
+                    serve="services"
+                #calling the notification fucntion
+                staff_notification('Sales Expert',request.user,total_services,serve)
+                
         else:
+            total_designation=""
+            count=0
             for item in request.POST.getlist('user_permission'):
                 if 'blogger' in request.POST.getlist('user_permission'):
                     current_user.is_staff = True
                     current_user.is_blogger = True
                     current_user.save()
+                    total_designation+="BLOGGER"
+                    if count > 0:
+                        total_designation+=", "
+                    count+=1
                 if 'bcs_head' in request.POST.getlist('user_permission'):
                     current_user.is_staff = True
                     current_user.is_bcs_head = True
                     current_user.save()
+                    total_designation+="BCS_HEAD"
+                    if count > 0:
+                        total_designation+=", "
+                    count+=1
                 if 'pcs_head' in request.POST.getlist('user_permission'):
                     current_user.is_staff = True
                     current_user.is_pcs_head = True
                     current_user.save()
+                    total_designation+="PCS_HEAD"
+                    if count > 0:
+                        total_designation+=", "
+                    count+=1
+            staff_notification(total_designation,request.user)
         return HttpResponseRedirect(reverse('main_admin_support_view'))
 
     context = {
@@ -2847,7 +2895,6 @@ def bcsAdminOrdersDetailView(request, id):
                     f'has been set for your order ID: {current_order.id} '
                     f'Please visit: https://main.techforing.com/bcs_user_order_details/{current_order.id}/ for more info',
                     'admin@techforing.com',
-                    [current_order.user.business_user.business.email],
                     fail_silently=False,
                 )
                 notification = models.Notification.objects.create(
@@ -2863,19 +2910,37 @@ def bcsAdminOrdersDetailView(request, id):
                 current_order.order_status = 'attending'
                 current_order.save()
                 quotation_form.save()
+                try:
+                    q_mail=[current_order.user.business_user.business.email]
+                except:   
+                    q_mail=[current_order.user.email]
+                try:
+                    if current_order.quotation_order.nda.url:
+                        nda_url = "https://main.techforing.com/"+current_order.quotation_order.nda.url
+                except:
+                        nda_url = 'No NDA'
+                try:
+                    if current_order.quotation_order.nca.url:
+                        nca_url = "https://main.techforing.com/"+current_order.quotation_order.nca.url
+                except:
+                    nca_url = 'No NCA'
                 send_mail(
                     f'Quotation Set for order ID: {current_order.id}',
-                    f'NDA: https://main.techforing.com/{current_order.quotation_order.nda.url} '
-                    f'NCA: https://main.techforing.com/{current_order.quotation_order.nca.url} '
+                    f'NDA: {nda_url}'
+                    f'NCA: {nca_url} '
                     f'has been set for your order ID: {current_order.id} '
                     f'Please sign them and submit a copy to https://main.techforing.com/bcs_user_order_details/{current_order.id}/ '
                     f'Please visit: https://main.techforing.com/bcs_user_order_details/{current_order.id}/ for more info',
                     'admin@techforing.com',
-                    [current_order.user.business_user.business.email],
+                    q_mail,
                     fail_silently=False,
                 )
+                try:
+                    q_user=current_order.user.business_user.business.company_name
+                except:
+                    q_user=current_order.user.email
                 notification = models.Notification.objects.create(
-                    category_choice=current_order.user.business_user.business.company_name,
+                    category_choice=q_user,
                     notification=f'Quotation Set for Order ID: {current_order.id} <div><a href="https://main.techforing.com/bcs_user_order_details/{current_order.id}/" '
                                  f'target="_blank" class="btn '
                                  f'btn-success mt-2">Visit Now</a></div>',
@@ -3048,6 +3113,10 @@ def bcsAdminOrderAttendingView(request, id):
 
         current_order.order_status = 'attending'
         current_order.save()
+        notification = models.Notification.objects.create(category_choice=current_order.user.email,
+                                                                              notification_time=timezone.now(),
+                                                                              notification=f'Your quotation is attending by {request.user}')
+        notification.save()
         # staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
         return HttpResponseRedirect(reverse('bcs_admin_order_detail', args=(id,)))
     except:

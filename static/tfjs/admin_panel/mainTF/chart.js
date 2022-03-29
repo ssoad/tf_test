@@ -1,9 +1,9 @@
 let infoChart = document.getElementById("info-chart").getContext("2d");
 
 let infoLineChart = new Chart(infoChart, {});
-let getChartData = type => {
+let getChartData = (type, start, end) => {
 
-    fetch(`${mainOrigin}/api/main/main_admin_${type}_chart/`, {
+    fetch(`${mainOrigin}/api/main/${(start && end) ? `main_admin_range_chart/?start_date=${start}&end_date=${end}` : `main_admin_${type}_chart`}`, {
         credentials: 'include'
     })
         .then(response => {
@@ -16,19 +16,19 @@ let getChartData = type => {
                 data: {
                     labels: data.x_axis,
                     datasets: [{
-                        label: "Subscribed client",
+                        label: "Subscribed Client",
                         backgroundColor: "#182F59",
                         borderColor: "#182F59",
                         data: data.datas.for_subscription,
                         fill: false,
                     }, {
-                        label: "non- subscribed client",
+                        label: "Non-Subscribed Client",
                         backgroundColor: "#5BBC2E",
                         borderColor: "#5BBC2E",
                         data: data.datas.for_unsubscription,
                         fill: false,
                     }, {
-                        label: "total client",
+                        label: "Total Client",
                         backgroundColor: "#111125",
                         borderColor: "#111125",
                         data: data.datas.total_count,
