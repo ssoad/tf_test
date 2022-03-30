@@ -73,6 +73,28 @@
                             {% endif %}
                         </p>
                         <p>Change Status: </p>
+                        {% if current_order.category_choice == "pcs" %}
+                        <div class="d-flex gap-3 flex-wrap">
+                            <a class="badge bg-primary w-25 text-white"
+                               href="{% host_url 'pcs_admin_order_new'  host 'mysecurity'%}{{ current_order.id }}">
+                                <span>New</span></a>
+                            <a role="button" class="badge bg-secondary w-25 text-white" data-bs-toggle="modal"
+                               data-bs-target="#assignModal">
+                                <span>Assign To</span></a>
+                            <a class="badge bg-warning text-dark w-25"
+                               href="{% host_url 'pcs_admin_order_attending' host 'mysecurity'%}{{ current_order.id }}">
+                                <span>Attending</span></a>
+                            <a class="badge bg-info text-dark w-25" role="button" data-bs-toggle="modal"
+                               data-bs-target="#exampleModal">
+                                <span>On Progress</span></a>
+                            <a class="badge bg-success w-25 text-white"
+                               href="{% host_url 'pcs_admin_order_completed' host 'mysecurity'%}{{ current_order.id }}">
+                                <span>Completed</span></a>
+                            <a class="badge bg-danger w-25 text-white"
+                               href="{% host_url 'pcs_admin_order_canceled' host 'mysecurity'%}{{ current_order.id }}">
+                                <span>Canceled</span></a>
+                        </div>
+                        {% else %}
                         <div class="d-flex gap-3 flex-wrap">
                             <a class="badge bg-primary w-25 text-white"
                                href="{% host_url 'bcs_admin_order_new' %}{{ current_order.id }}">
@@ -93,6 +115,8 @@
                                href="{% host_url 'bcs_admin_order_canceled' %}{{ current_order.id }}">
                                 <span>Canceled</span></a>
                         </div>
+                        {% endif %}
+                        
                     </div>
                     {% if current_order.category_choice == 'bcs' %}
                         <div class="col-md-5">
