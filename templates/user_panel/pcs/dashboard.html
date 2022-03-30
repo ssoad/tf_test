@@ -29,7 +29,6 @@
             height: 50px;
             padding: 12px
         }
-
         }
     </style>
     <div class="dashboard-container overflow-hidden">
@@ -240,17 +239,17 @@
 
         <section class="events mt-5 mb-3">
             <h3 class="fw-bold border-bottom border-gray pb-3 mb-4">Upcoming Events</h3>
-            <div class="row mx-0 gy-3 gy-lg-0 justify-content-between">
+            <div class="row mx-0 gy-3 gy-lg-0 justify-content-between eventCard">
                 {% if events.exists %}
-                    <div id="carouselExampleControls" class="carousel slide" data-bs-touch="true"
+                    <div id="carouselExampleControls" class="carousel slide " data-bs-touch="true"
                          data-bs-ride="carousel">
                         <div class="carousel-inner">
                             {% for event in events %}
                                 <div class="col-12 carousel-item  {% if forloop.first %} active{% endif %} px-0 px-md-2">
                                     <div class="card shadow rounded-3">
                                         <div class="row g-0">
-                                            <div class="col-md-6">
-                                                <img src="{% static 'tfimg/user_panel/webinar.jpg' %}"
+                                            <div class="col-md-6" >
+                                                <img src="{{event.event_image.url}}"
                                                      class="img-fluid rounded-start h-100" alt="...">
                                             </div>
                                             <div class="col-md-6">

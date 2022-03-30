@@ -55,9 +55,9 @@
                     </td>
                     <td><a href="{% host_url 'main_admin_order_detail' %}{{ order.id }}"><i
                             class="bi bi-eye-fill"></i></a>
-                            {% comment %} &nbsp;&nbsp;
-                            <a href="{% host_url 'main_admin_order_detail' %}{{ order.id }}"><span style="color:red"><i
-                                class="bi bi-trash" ></i></span></a> {% endcomment %}
+                            &nbsp;&nbsp;
+                            <a href="{% host_url 'main_admin_delete_order' %}{{ order.id }}"><span style="color:red"><i
+                                class="bi bi-x-circle-fill" ></i></span></a>
                         </td>
                 </tr>
             {% endfor %}
