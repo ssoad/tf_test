@@ -774,11 +774,13 @@ class MainAdminDashboardRangeChartApiView(generics.ListAPIView):
     def list(self, request, *args, **kwargs):
         start_date = self.request.query_params.get('start_date')
         end_date = self.request.query_params.get('end_date')
+        print(start_date, end_date)
         s_month=int(start_date.split('-')[1])
         s_year=int(start_date.split('-')[0])
         e_month=int(end_date.split('-')[1])
         e_year=int(end_date.split('-')[0])
         if s_year<=e_year:
+            print("ok")
             end_date = date.today().month
             all_months = list(range(s_month, e_month+ 1))
             current_year = date.today().year
@@ -816,6 +818,7 @@ class MainAdminDashboardRangeChartApiView(generics.ListAPIView):
                     #     subscription_count.append(order)
             else:
                 current_year=s_year
+                
                 for month in range(s_month,e_month+1):
                         order = query.filter(order_date__month=month, order_date__year=current_year).count()
                         unsubscription_count.append(order)
@@ -858,9 +861,8 @@ class MainAdminDashboardYearChartApiView(generics.ListAPIView):
     permission_classes = [apipermissions.IsMainAdmin]
 
     def list(self, request, *args, **kwargs):
-
         #total months between 2014 and current year
-        start_date = 2014
+        start_date = 1
         end_date = date.today().month
         all_months = list(range(start_date, end_date + 1))
         current_year = date.today().year
@@ -870,7 +872,7 @@ class MainAdminDashboardYearChartApiView(generics.ListAPIView):
 
         query = bcsmodels.Order.objects.all()
         subscriptions = bcsmodels.SubscriptionOrder.objects.all()
-
+        print(all_months)
         for month in all_months:
             order = query.filter(order_date__month=month, order_date__year=current_year).count()
             unsubscription_count.append(order)
@@ -889,7 +891,6 @@ class MainAdminDashboardYearChartApiView(generics.ListAPIView):
         months = []
         for month in all_months:
             months.append(calendar.month_name[month])
-
         return Response({
             'x_axis': months,
             'datas': datas

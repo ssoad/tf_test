@@ -54,7 +54,7 @@ urlpatterns = [
     path('main/main_admin_lastmonth_chart/', views.MainAdminDashboardLastMonthChartApiView.as_view(),
          name='main_admin_lastmonth_chart'),
     path('main/main_admin_range_chart/', views.MainAdminDashboardRangeChartApiView.as_view(),
-         name='main_admin_chart_range'),     
+         name='main_admin_range_chart'),     
 
     path('bcs/bcs_subscriptions/<service>/', views.SubscriptionApiView.as_view(), name='bcs_subscriptions'),
 
