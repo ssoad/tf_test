@@ -1617,12 +1617,23 @@ def pcsAdminOrdersDetailView(request, id):
                 return HttpResponseRedirect(reverse('pcs_admin_order_detail', args=(id,)))
             if quotation_form.is_valid():
                 current_order.order_status = 'attending'
+                print(current_order.user.email)
                 current_order.save()
                 quotation_form.save()
+                try:
+                    if current_order.quotation_order.nda_and_nca.url:
+                        nda_url = "https://main.techforing.com/"+current_order.quotation_order.nda.url
+                except:
+                        nda_url = 'No NDA and NCA'
+                try:
+                    if current_order.quotation_order.invoice.url:
+                        invoice_url = "https://main.techforing.com/"+current_order.quotation_order.invoice.url
+                except:
+                    invoice_url = 'No INVOICE'
                 send_mail(
                     f'Quotation Set for order ID: {current_order.id}',
-                    f'NDA: https://main.techforing.com/{current_order.quotation_order.nda.url} '
-                    f'NCA: https://main.techforing.com/{current_order.quotation_order.nca.url} '
+                    f'NDA AND NCA: {nda_url} '
+                    f'INVOICE: {invoice_url} '
                     f'has been set for your order ID: {current_order.id} '
                     f'Please sign them and submit a copy to https://pcs.techforing.com/pcs_user_order_details/{current_order.id}/ '
                     f'Please visit: https://pcs.techforing.com/pcs_user_order_details/{current_order.id}/ for more info',
@@ -1690,10 +1701,20 @@ def pcsAdminOrdersDetailView(request, id):
                     current_order.save()
                     # new_staff = models.OrderStaff.objects.get_or_create(order=current_order, staff=request.user)
                     quotation_form.save()
+                    try:
+                        if current_order.quotation_order.nda_and_nca.url:
+                            nda_url = "https://main.techforing.com/"+current_order.quotation_order.nda.url
+                    except:
+                            nda_url = 'No NDA and NCA'
+                    try:
+                        if current_order.quotation_order.invoice.url:
+                            invoice_url = "https://main.techforing.com/"+current_order.quotation_order.invoice.url
+                    except:
+                        invoice_url = 'No INVOICE'
                     send_mail(
                         f'Quotation Set for order ID: {current_order.id}',
-                        f'NDA: https://main.techforing.com/{current_order.quotation_order.nda.url} '
-                        f'NCA: https://main.techforing.com/{current_order.quotation_order.nca.url} '
+                        f'NDA AND NCA: {nda_url} '
+                        f'INVOICE: {invoice_url} '
                         f'has been set for your order ID: {current_order.id} '
                         f'Please sign them and submit a copy to https://pcs.techforing.com/pcs_user_order_details/{current_order.id}/ '
                         f'Please visit: https://pcs.techforing.com/pcs_user_order_details/{current_order.id}/ for more info',

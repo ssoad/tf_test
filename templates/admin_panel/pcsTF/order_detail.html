@@ -65,15 +65,15 @@
                         </p>
                         <p>Change Status: </p>
                         <div class="d-flex gap-3 flex-wrap">
-                            <a class="badge bg-primary w-25 text-white" href="{% host_url 'bcs_admin_order_new' %}{{ current_order.id }}">
+                            <a class="badge bg-primary w-25 text-white" href="{% host_url 'pcs_admin_order_new' %}{{ current_order.id }}">
                                 <span>New</span></a>
-                            <a class="badge bg-warning text-dark w-25" href="{% host_url 'bcs_admin_order_attending' %}{{ current_order.id }}">
+                            <a class="badge bg-warning text-dark w-25" href="{% host_url 'pcs_admin_order_attending' %}{{ current_order.id }}">
                                 <span>Attending</span></a>
                             <a class="badge bg-info text-dark w-25" role="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                 <span>On Progress</span></a>
-                            <a class="badge bg-success w-25 text-white" href="{% host_url 'bcs_admin_order_completed' %}{{ current_order.id }}">
+                            <a class="badge bg-success w-25 text-white" href="{% host_url 'pcs_admin_order_completed' %}{{ current_order.id }}">
                                 <span>Completed</span></a>
-                            <a class="badge bg-danger w-25 text-white" href="{% host_url 'bcs_admin_order_canceled' %}{{ current_order.id }}">
+                            <a class="badge bg-danger w-25 text-white" href="{% host_url 'pcs_admin_order_canceled' %}{{ current_order.id }}">
                                 <span>Canceled</span></a>
                         </div>
                     </div>
@@ -163,15 +163,15 @@
                         </div>
                         <form action="" method="POST" enctype="multipart/form-data">
                             <div class="modal-body">
-                                {% if current_quotation_agreement.user_nda %}
-                                    <b>NDA: </b><a class="btn btn-sm btn-navy mt-2"
-                                                   href="{{ current_quotation_agreement.user_nda.url }}"
-                                                   download="{{ current_quotation_agreement.user_nda.url }}">
+                                {% if current_quotation_agreement.user_nda_nca %}
+                                    <b>NDA AND NCA: </b><a class="btn btn-sm btn-navy mt-2"
+                                                   href="{{ current_quotation_agreement.user_nda_nca.url }}"
+                                                   download="{{ current_quotation_agreement.user_nda_nca.url }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                          class="bi bi-arrow-down-circle-fill" viewBox="0 0 16 16">
                                         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
                                     </svg>
-                                    Download NDA
+                                    Download NDA AND NCA
                                 </a> <br>
                                 {% endif %}
                                 {% if current_quotation_agreement.user_nca %}

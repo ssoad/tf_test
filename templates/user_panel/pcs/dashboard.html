@@ -248,7 +248,7 @@
 
         <section class="events mt-5 mb-3">
             <h3 class="fw-bold border-bottom border-gray pb-3 mb-4">Upcoming Events</h3>
-            <div class="row mx-0 gy-3 gy-lg-0 justify-content-between">
+            <div class="row mx-0 gy-3 gy-lg-0 justify-content-between eventCard">
                 {% if events.exists %}
                     <div id="carouselExampleControls" class="carousel slide" style="height: 300px" data-bs-touch="true"
                          data-bs-ride="carousel">
@@ -259,7 +259,7 @@
                                         <div class="row g-0">
                                             <div class="col-md-6 d-flex justify-content-between align-items-center">
                                                 <div class="eventImageContainer">
-                                                    <img src="{% static 'tfimg/user_panel/webinar.jpg' %}"
+                                                <img src="{{event.event_image.url}}"
                                                         class="rounded" alt="...">
                                                 </div>
                                             </div>
