@@ -1351,7 +1351,7 @@ def mainAdminOrdersView(request):
 def mainAdminOrdersDetailView(request, id):
     try:
         current_order = models.Order.objects.get(id=id)
-
+        # print(current_order.category_choice)
         try:
             order_staff = models.OrderStaff.objects.get(order=current_order)
             form1 = forms.OrderAssignForm(instance=order_staff)
@@ -1462,7 +1462,7 @@ def mainAdminEventsView(request):
     form = forms.EventCreateForm()
     events = models.Events.objects.all().order_by('-created_date')
     if request.method == 'POST':
-        form = forms.EventCreateForm(request.POST)
+        form = forms.EventCreateForm(request.POST,request.FILES)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('main_admin_events'))
@@ -1488,7 +1488,7 @@ def mainAdminEventsEditView(request, id):
     current_event = models.Events.objects.get(id=id)
     form = forms.EventCreateForm(instance=current_event)
     if request.method == 'POST':
-        form = forms.EventCreateForm(request.POST, instance=current_event)
+        form = forms.EventCreateForm(request.POST, request.FILES, instance=current_event)
         if form.is_valid():
             form.save()
             next_page = request.POST.get('next', '/')
@@ -2930,7 +2930,7 @@ def bcsAdminOrdersDetailView(request, id):
                 send_mail(
                     f'Quotation Set for order ID: {current_order.id}',
                     f'NDA: {nda_url}'
-                    f'NCA: {invoice_url} '
+                    f'Invoice: {invoice_url} '
                     f'has been set for your order ID: {current_order.id} '
                     f'Please sign them and submit a copy to https://main.techforing.com/bcs_user_order_details/{current_order.id}/ '
                     f'Please visit: https://main.techforing.com/bcs_user_order_details/{current_order.id}/ for more info',
