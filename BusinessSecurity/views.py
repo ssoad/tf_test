@@ -83,7 +83,7 @@ def indexView(request):
     return render(request, 'index.html', context)
 
 
-def getStartView(request):
+def getStartView(request,*args,**kwargs):
     context = {
 
     }
@@ -91,7 +91,7 @@ def getStartView(request):
     return render(request, 'pages/get_start.html', context)
 
 
-def aboutUsView(request):
+def aboutUsView(request,*args,**kwargs):
     context = {
 
     }
@@ -99,7 +99,7 @@ def aboutUsView(request):
     return render(request, 'pages/aboutus.html', context)
 
 
-def enterpriseCyberSecurityView(request):
+def enterpriseCyberSecurityView(request,*args,**kwargs):
     context = {
 
     }
@@ -109,7 +109,7 @@ def enterpriseCyberSecurityView(request):
 # ---------------------------------------------
 
 
-def vulnerabilityAssessmentView(request):
+def vulnerabilityAssessmentView(request,*args,**kwargs):
     context = {
 
     }
@@ -137,7 +137,7 @@ def incidentResponseServiceView(request):
     return render(request, 'pages/incident_response_service.html', context)
 
 
-def hackRecoveryServiceView(request):
+def hackRecoveryServiceView(request,*args,**kwargs):
     context = {
 
     }
@@ -312,7 +312,7 @@ def trustView(request):
     return render(request, 'pages/trust.html', context)
 
 
-def findUsView(request):
+def findUsView(request,*args,**kwargs):
     context = {
 
     }

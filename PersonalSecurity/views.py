@@ -87,7 +87,7 @@ def incidentResponseServiceView(request):
     return render(request, 'mspages/pages/incident_response_service.html', context)
 
 
-def hackRecoveryServiceView(request):
+def hackRecoveryServiceView(request,*args,**kwargs):
     context = {
 
     }

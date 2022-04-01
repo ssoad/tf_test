@@ -1,5 +1,6 @@
-from django.urls import path, include
+from django.urls import path, include,re_path
 from PersonalSecurity import views
+
 
 urlpatterns = [
     path('', views.personalSecurityView, name='my_security_home'),
@@ -10,7 +11,7 @@ urlpatterns = [
 
     path('cyber_crime_investigation/', views.cyberCrimeInvestigationView, name='cyber_crime_investigation'),
     path('incident_response_service/', views.incidentResponseServiceView, name='incident_response_service'),
-    path('hack_recovery_service/', views.hackRecoveryServiceView, name='hack_recovery_service'),
+    re_path(r'^(pages/)?hack_recovery_service(.*)?/', views.hackRecoveryServiceView, name='hack_recovery_service'),
     path('remove_malware_from_pc/', views.removeMalwareFromPCView, name='remove_malware_from_pc'),
     path('data_removal/', views.dataRemovalView, name='data_removal'),
     path('on_board/', views.onBoardView, name='on_board'),
