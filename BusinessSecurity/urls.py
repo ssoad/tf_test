@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, re_path
 from BusinessSecurity import views
 
 # app_name = 'bcs_app'
@@ -6,12 +6,12 @@ from BusinessSecurity import views
 urlpatterns = [
     path('', views.indexView, name='home'),
 
-    path('about_us/', views.aboutUsView, name='aboutus'),
-    path('enterprise_cybersecurity/', views.enterpriseCyberSecurityView,
+    re_path(r'^(pages/)?about_us(.*)?/', views.aboutUsView, name='aboutus'),
+    re_path(r'^(pages/)?enterprise_cybersecurity(.*)?/', views.enterpriseCyberSecurityView,
          name='enterprise_cybersecurity'),
-    path('vulnerability_assessment/', views.vulnerabilityAssessmentView,
+    re_path(r'^(pages/)?vulnerability_assessment(.*)?/', views.vulnerabilityAssessmentView,
          name='vulnerability_assessment'),
-    path('red_team_penetration_testing/', views.redTeamPenetrationTestingView,
+    re_path(r'^(pages/)?red_team_penetration_testing(.*)?/', views.redTeamPenetrationTestingView,
          name='red_team_penetration_testing'),
     path('cybersecurity_risk_assessment/', views.cybersecurityRiskAssessmentView,
          name='cybersecurity_risk_assessment'),
@@ -46,7 +46,7 @@ urlpatterns = [
     path('franchise_faq/', views.franchiseFaqView, name='franchise_faq'),
     path('investor/', views.investorView, name='investor'),
     path('career/', views.careerView, name='career'),
-    path('events/', views.eventsView, name='events'),
+    re_path(r'^(pages/)?events(.*)?/', views.eventsView, name='events'),
     path('policy/', views.policyView, name='policy'),
     path('terms/', views.termsView, name='terms'),
 
@@ -54,10 +54,11 @@ urlpatterns = [
     path('bpartner/', views.bPartnerView, name='bpartner'),
 
     path('trust/', views.trustView, name='trust'),
-    path('findus/', views.findUsView, name='findus'),
+#     path('findus/', views.findUsView, name='findus'),
+    re_path(r'^(pages/)?findus(.*)?/', views.findUsView, name='findus'),
 
-    path('get_start/', views.getStartView, name='get_start'),
-
+#     path('get_start/', views.getStartView, name='get_start'),
+    re_path(r'^(pages/)?get_start(.*)?/', views.getStartView, name='get_start'),
     path('appointment/', views.appoinmentView, name='appointment'),
     path('open_tickets/', views.openTicketView, name='open_tickets'),
     path('ticket_details/', views.ticketDetailView, name='ticket_details'),
