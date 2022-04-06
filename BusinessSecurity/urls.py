@@ -6,7 +6,7 @@ from BusinessSecurity import views
 urlpatterns = [
     path('', views.indexView, name='home'),
 
-    re_path(r'^(pages/)?about_us(.*)?/', views.aboutUsView, name='aboutus'),
+    re_path(r'^((pages/)?about_us(.*))?/', views.aboutUsView, name='aboutus'),
     re_path(r'^(pages/)?enterprise_cybersecurity(.*)?/', views.enterpriseCyberSecurityView,
          name='enterprise_cybersecurity'),
     re_path(r'^(pages/)?vulnerability_assessment(.*)?/', views.vulnerabilityAssessmentView,
@@ -17,7 +17,7 @@ urlpatterns = [
          name='cybersecurity_risk_assessment'),
     path('incident_response_service/', views.incidentResponseServiceView,
          name='incident_response_services'),
-    path('hack_recovery_service/', views.hackRecoveryServiceView,
+    re_path(r'^(pages/)?hack_recovery_service(.*)?/', views.hackRecoveryServiceView,
          name='hack_recovery_services'),
     path('best_malware_removal/', views.bestMalwareRemovalView,
          name='best_malware_removal'),

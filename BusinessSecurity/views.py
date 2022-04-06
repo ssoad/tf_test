@@ -5,7 +5,7 @@ from django.core.mail import send_mail, send_mass_mail
 from django.shortcuts import render, HttpResponseRedirect, reverse, HttpResponse, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils import timezone
-
+from django.shortcuts import redirect
 from BusinessSecurity import forms, models
 from Academy.forms import BCSCourseCreateForm, SectionCreateForm, ContentCreateForm, CourseCategoryCreateForm, \
     BCSSectionCreateForm, BCSContentCreateForm, AddCoursePackageForm, AddCoursePackageFeatureForm, \
@@ -84,6 +84,9 @@ def indexView(request):
 
 
 def getStartView(request,*args,**kwargs):
+    # re_path=request.path
+    # if '.' in re_path:
+    #     return HttpResponseRedirect(redirect_to='/get_start')
     context = {
 
     }
@@ -92,6 +95,10 @@ def getStartView(request,*args,**kwargs):
 
 
 def aboutUsView(request,*args,**kwargs):
+    req_path = request.path
+    print(req_path)
+    if '.' in req_path:
+        return HttpResponseRedirect(redirect_to='/about_us')
     context = {
 
     }
@@ -270,7 +277,10 @@ def careerView(request):
     return render(request, 'pages/career.html', context)
 
 
-def eventsView(request):
+def eventsView(request,*args,**kwargs):
+    # re_path=request.path
+    # if '.' in re_path:
+    #     return HttpResponseRedirect(redirect_to='/events')
     context = {
 
     }
@@ -313,6 +323,9 @@ def trustView(request):
 
 
 def findUsView(request,*args,**kwargs):
+    re_path=request.path
+    if '.' in re_path:
+        return HttpResponseRedirect(redirect_to='/findus')
     context = {
 
     }
