@@ -75,7 +75,7 @@ def ticket_admin(user):
         return user.is_staff and user.is_superuser
 
 
-def indexView(request):
+def indexView(request,*args,**kwargs):
     context = {
 
     }
