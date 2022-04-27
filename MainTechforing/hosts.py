@@ -8,7 +8,7 @@ host_patterns = patterns(
     host(r'', settings.ROOT_URLCONF, name=''), # <-- Change it to host(r'', settings.ROOT_URLCONF, name='')
     # <-- The `name` we used to in the `DEFAULT_HOST` setting
     # host(r'help', 'help.urls', name='help'),
-    host(r'training', 'Academy.urls', name='academy'),
+    host(r'academy', 'Academy.urls', name='academy'),
     # host(r'pcs', 'PersonalSecurity.urls', name='mysecurity'),
     host(r'mysecurity', 'PersonalSecurity.urls', name='mysecurity'),
     # host(r'main', settings.ROOT_URLCONF, name='blog'), # <-- Change it to host(r'blog', settings.ROOT_URLCONF, name='blog')
