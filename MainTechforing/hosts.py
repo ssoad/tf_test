@@ -5,16 +5,16 @@ host_patterns = patterns(
     '',
     # For Production
     # host(r'main', settings.ROOT_URLCONF, name='main'), # <-- Change it to host(r'', settings.ROOT_URLCONF, name='')
-    host(r'', settings.ROOT_URLCONF, name=''), # <-- Change it to host(r'', settings.ROOT_URLCONF, name='')
+    host(r'root', settings.ROOT_URLCONF, name='main'), # <-- Change it to host(r'', settings.ROOT_URLCONF, name='')
     # <-- The `name` we used to in the `DEFAULT_HOST` setting
     # host(r'help', 'help.urls', name='help'),
-    host(r'academy', 'Academy.urls', name='academy'),
+    host(r'school', 'Academy.urls', name='academy'),
     # host(r'pcs', 'PersonalSecurity.urls', name='mysecurity'),
-    host(r'mysecurity', 'PersonalSecurity.urls', name='mysecurity'),
+    host(r'consumer', 'PersonalSecurity.urls', name='mysecurity'),
     # host(r'main', settings.ROOT_URLCONF, name='blog'), # <-- Change it to host(r'blog', settings.ROOT_URLCONF, name='blog')
     host(r'blog', settings.ROOT_URLCONF, name='blog'), # <-- Change it to host(r'blog', settings.ROOT_URLCONF, name='blog')
-    host(r'main', settings.ROOT_URLCONF, name='account'),
-    host(r'main', settings.ROOT_URLCONF, name='api'),
+    host(r'root', settings.ROOT_URLCONF, name='account'),
+    host(r'root', settings.ROOT_URLCONF, name='api'),
 
 
     # For Development
