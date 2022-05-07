@@ -123,7 +123,7 @@ def vulnerabilityAssessmentView(request,*args,**kwargs):
     return render(request, 'pages/vulnerability_assessment.html', context)
 
 
-def redTeamPenetrationTestingView(request):
+def redTeamPenetrationTestingView(request,*args,**kwargs):
     context = {
 
     }
@@ -323,9 +323,9 @@ def trustView(request):
 
 
 def findUsView(request,*args,**kwargs):
-    re_path=request.path
-    if '.' in re_path:
-        return HttpResponseRedirect(redirect_to='/findus')
+    # re_path=request.path
+    # if '.' in re_path:
+    #     return HttpResponseRedirect(redirect_to='/findus')
     context = {
 
     }
