@@ -158,7 +158,7 @@ def bestMalwareRemovalView(request):
     return render(request, 'pages/best_malware_removal.html', context)
 
 
-def digitalForensicInvestigationView(request):
+def digitalForensicInvestigationView(request,*args,**kwargs):
     context = {
 
     }
@@ -172,28 +172,28 @@ def complianceConsultingView(request):
     return render(request, 'pages/compliance_consulting.html', context)
 
 
-def ISO27001View(request):
+def ISO27001View(request,*args,**kwargs):
     context = {
 
     }
     return render(request, 'pages/iso27001.html', context)
 
 
-def pciDssComplianceView(request):
+def pciDssComplianceView(request,*args,**kwargs):
     context = {
 
     }
     return render(request, 'pages/pci_dss_compliance.html', context)
 
 
-def gdprComplianceView(request):
+def gdprComplianceView(request,*args,**kwargs):
     context = {
 
     }
     return render(request, 'pages/gdpr_compliance.html', context)
 
 
-def hippaComplianceConsultingView(request):
+def hippaComplianceConsultingView(request,*args,**kwargs):
     context = {
 
     }
