@@ -17,4 +17,4 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('tinymce/', include('tinymce.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-handler404 = 'BussinessSecurity.views.error_404_handler'
+handler404 = 'BusinessSecurity.views.error_404_handler'
