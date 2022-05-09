@@ -7,7 +7,7 @@ urlpatterns = [
     re_path(r'^(index.html)?/', views.indexView, name='home'),
     path('', views.indexView, name='home'),
 
-    re_path(r'^(pages/)?about_us(.*))?/', views.aboutUsView, name='aboutus'),
+    re_path(r'^(pages/)?about_us(.*)?/', views.aboutUsView, name='aboutus'),
     re_path(r'^(pages/)?enterprise_cybersecurity(.*)?/', views.enterpriseCyberSecurityView,
          name='enterprise_cybersecurity'),
     re_path(r'^(pages/)?vulnerability_assessment(.*)?/', views.vulnerabilityAssessmentView,
