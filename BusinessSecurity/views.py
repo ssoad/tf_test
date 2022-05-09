@@ -3270,3 +3270,5 @@ def TestView(request):
     #         subscription.save()
     # print(settings.PAYPAL_USER)
     return HttpResponse('r.content')
+def error_404_handler(request, exception):
+    return render(request, '404.html')
