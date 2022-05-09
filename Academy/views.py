@@ -14,7 +14,7 @@ def academyHomeView(request):
     return render(request, 'academypages/index.html', context)
 
 
-def ccspView(request):
+def ccspView(request,*args,**kwargs):   
     context = {
 
     }
@@ -22,7 +22,7 @@ def ccspView(request):
     return render(request, 'academypages/pages/ccsp.html', context)
 
 
-def academyFAQView(request):
+def academyFAQView(request,*args,**kwargs):
     context = {
 
     }
@@ -30,7 +30,7 @@ def academyFAQView(request):
     return render(request, 'academypages/pages/academy_faq.html', context)
 
 
-def corporateTrainingView(request):
+def corporateTrainingView(request,*args,**kwargs):
     context = {
 
     }
@@ -38,7 +38,7 @@ def corporateTrainingView(request):
     return render(request, 'academypages/pages/corporate_training.html', context)
 
 
-def lawEnforcementView(request):
+def lawEnforcementView(request,*args,**kwargs):
     context = {
 
     }
@@ -46,7 +46,7 @@ def lawEnforcementView(request):
     return render(request, 'academypages/pages/law_enforcement.html', context)
 
 
-def educationalInstituteView(request):
+def educationalInstituteView(request,*args,**kwargs):
     context = {
 
     }

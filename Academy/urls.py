@@ -1,16 +1,16 @@
-from django.urls import path, include
+from django.urls import path, include,re_path
 from Academy import views
 
 urlpatterns = [
     path('', views.academyHomeView, name='academy_home'),
 
     path('tinymce/', include('tinymce.urls')),
-    path('ccsp/', views.ccspView, name='ccsp'),
+    re_path(r'^(pages/)?ccsp(.*)?/', views.ccspView, name='ccsp'),
 
-    path('academy_faq/', views.academyFAQView, name='academy_faq'),
-    path('corporate_training/', views.corporateTrainingView, name='corporate_training'),
-    path('law_enforcement/', views.lawEnforcementView, name='law_enforcement'),
-    path('educational_institute/', views.educationalInstituteView, name='educational_institute'),
+    re_path(r'^(pages/)?academy_faq(.*)?/', views.academyFAQView, name='academy_faq'),
+    re_path(r'^(pages/)?corporate_training(.*)?/', views.corporateTrainingView, name='corporate_training'),
+    re_path(r'^(pages/)?law_enforcement(.*)?/', views.lawEnforcementView, name='law_enforcement'),
+    re_path(r'^(pages/)?educational_institute(.*)?/', views.educationalInstituteView, name='educational_institute'),
 
     path('download/', views.download_file, name='demo_download'),
     path('download/<str:path>', views.download_file, name='download'),
