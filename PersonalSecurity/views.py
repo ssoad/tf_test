@@ -52,35 +52,35 @@ def personalSecurityView(request):
     return render(request, 'mspages/index.html', context)
 
 
-def conciergeCybersecurityView(request):
+def conciergeCybersecurityView(request,*args,**kwargs):
     context = {
 
     }
     return render(request, 'mspages/pages/concierge_cybersecurity.html', context)
 
 
-def cyberInvestigationView(request):
+def cyberInvestigationView(request,*args,**kwargs):
     context = {
 
     }
     return render(request, 'mspages/pages/cyber_investigation.html', context)
 
 
-def OSIntInvestigationsView(request):
+def OSIntInvestigationsView(request,*args,**kwargs):
     context = {
 
     }
     return render(request, 'mspages/pages/osint_investigations.html', context)
 
 
-def cyberCrimeInvestigationView(request):
+def cyberCrimeInvestigationView(request,*args,**kwargs):
     context = {
 
     }
     return render(request, 'mspages/pages/cyber_crime_investigation.html', context)
 
 
-def incidentResponseServiceView(request):
+def incidentResponseServiceView(request,*args,**kwargs):
     context = {
 
     }
@@ -94,70 +94,70 @@ def hackRecoveryServiceView(request,*args,**kwargs):
     return render(request, 'mspages/pages/hack_recovery_service.html', context)
 
 
-def removeMalwareFromPCView(request):
+def removeMalwareFromPCView(request,*args,**kwargs):
     context = {
 
     }
     return render(request, 'mspages/pages/remove_malware_from_pc.html', context)
 
 
-def dataRemovalView(request):
+def dataRemovalView(request,*args,**kwargs):
     context = {
 
     }
     return render(request, 'mspages/pages/data_removal.html', context)
 
 
-def onBoardView(request):
+def onBoardView(request,*args,**kwargs):
     context = {
 
     }
     return render(request, 'mspages/pages/on_board.html', context)
 
 
-def pricingView(request):
+def pricingView(request,*args,**kwargs):
     context = {
 
     }
     return render(request, 'mspages/pages/pricing.html', context)
 
 
-def faqView(request):
+def faqView(request,*args,**kwargs):
     context = {
 
     }
     return render(request, 'mspages/pages/faq.html', context)
 
 
-def vipCyberDefenseView(request):
+def vipCyberDefenseView(request,*args,**kwargs):
     context = {
 
     }
     return render(request, 'mspages/pages/vip_cyber_defense.html', context)
 
 
-def executiveProtectionView(request):
+def executiveProtectionView(request,*args,**kwargs):
     context = {
 
     }
     return render(request, 'mspages/pages/executive_protection.html', context)
 
 
-def cyberSecurityForGovernmentView(request):
+def cyberSecurityForGovernmentView(request,*args,**kwargs):
     context = {
 
     }
     return render(request, 'mspages/pages/cyber_security_for_government.html', context)
 
 
-def mediaCelebritiesView(request):
+def mediaCelebritiesView(request,*args,**kwargs):
     context = {
 
     }
     return render(request, 'mspages/pages/media_celebrities.html', context)
 
 
-def siteMapView(request):
+def siteMapView(request,*args,**kwargs):
     context = {
 
     }
