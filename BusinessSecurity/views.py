@@ -95,10 +95,6 @@ def getStartView(request,*args,**kwargs):
 
 
 def aboutUsView(request,*args,**kwargs):
-    req_path = request.path
-    print(req_path)
-    if '.' in req_path:
-        return HttpResponseRedirect(redirect_to='/about_us')
     context = {
 
     }
