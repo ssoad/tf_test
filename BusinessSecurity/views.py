@@ -130,14 +130,14 @@ def redTeamPenetrationTestingView(request,*args,**kwargs):
     return render(request, 'pages/red_team_penetration_testing.html', context)
 
 
-def cybersecurityRiskAssessmentView(request):
+def cybersecurityRiskAssessmentView(request,*args,**kwargs):
     context = {
 
     }
     return render(request, 'pages/cybersecurity_risk_assessment.html', context)
 
 
-def incidentResponseServiceView(request):
+def incidentResponseServiceView(request,*args,**kwargs):
     context = {
 
     }
@@ -151,7 +151,7 @@ def hackRecoveryServiceView(request,*args,**kwargs):
     return render(request, 'pages/hack_recovery_service.html', context)
 
 
-def bestMalwareRemovalView(request):
+def bestMalwareRemovalView(request,*args,**kwargs):
     context = {
 
     }
@@ -165,7 +165,7 @@ def digitalForensicInvestigationView(request,*args,**kwargs):
     return render(request, 'pages/digital_forensic_investigation.html', context)
 
 
-def complianceConsultingView(request):
+def complianceConsultingView(request,*args,**kwargs):
     context = {
 
     }
@@ -200,77 +200,77 @@ def hippaComplianceConsultingView(request,*args,**kwargs):
     return render(request, 'pages/hippa_compliance_consulting.html', context)
 
 
-def smallBusinessCybersecurityView(request):
+def smallBusinessCybersecurityView(request,*args,**kwargs):
     context = {
 
     }
     return render(request, 'pages/small_business_cybersecurity.html', context)
 
 
-def managedCybersecurityServiceView(request):
+def managedCybersecurityServiceView(request,*args,**kwargs):
     context = {
 
     }
     return render(request, 'pages/managed_cybersecurity_service.html', context)
 
 
-def plugAndPlayCyberCecurityView(request):
+def plugAndPlayCyberCecurityView(request,*args,**kwargs):
     context = {
 
     }
     return render(request, 'pages/plug_and_play_cyber_security.html', context)
 
 
-def leaderView(request):
+def leaderView(request,*args,**kwargs):
     context = {
 
     }
     return render(request, 'pages/leader.html', context)
 
 
-def testimonialView(request):
+def testimonialView(request,*args,**kwargs):
     context = {
 
     }
     return render(request, 'pages/testimonial.html', context)
 
 
-def partnerView(request):
+def partnerView(request,*args,**kwargs):
     context = {
 
     }
     return render(request, 'pages/partner.html', context)
 
 
-def partnerFaqView(request):
+def partnerFaqView(request,*args,**kwargs):
     context = {
 
     }
     return render(request, 'pages/partner_faq.html', context)
 
 
-def franchiseView(request):
+def franchiseView(request,*args,**kwargs):
     context = {
 
     }
     return render(request, 'pages/franchise.html', context)
 
 
-def franchiseFaqView(request):
+def franchiseFaqView(request,*args,**kwargs):
     context = {
 
     }
     return render(request, 'pages/franchise_faq.html', context)
 
 
-def investorView(request):
+def investorView(request,*args,**kwargs):
     context = {
 
     }
     return render(request, 'pages/investor.html', context)
 
 
-def careerView(request):
+def careerView(request,*args,**kwargs):
     context = {
 
     }
@@ -287,14 +287,14 @@ def eventsView(request,*args,**kwargs):
     return render(request, 'pages/events.html', context)
 
 
-def policyView(request):
+def policyView(request,*args,**kwargs):
     context = {
 
     }
     return render(request, 'pages/policy.html', context)
 
 
-def termsView(request):
+def termsView(request,*args,**kwargs):
     context = {
 
     }
@@ -315,7 +315,7 @@ def bPartnerView(request):
     return render(request, 'pages/bpartner.html', context)
 
 
-def trustView(request):
+def trustView(request,*args,**kwargs):
     context = {
 
     }
