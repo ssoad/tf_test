@@ -24,13 +24,13 @@
                     <div class="row mx-0 mb-4 gy-4 pt-4 justify-content-center">
                         {% for service in category.service_category.all %}
                             <div class="col-md-4 px-0 pe-md-5">
-                                <div class="bg-lightgreen p-2 rounded shadow-md">
+                                <div class="bg-lightgreen p-2 rounded shadow-md d-flex flex-column">
                                     <div class="text-center">
                                         <img class="service-icon" src="{{ service.service_icon.url }}">
                                     </div>
                                     <div class="ps-2 mt-2 text-center">
                                         <h6 class="service-title">{{ service.service_title }}</h6>
-                                        <p class="lh-1 fs-14">
+                                        <p class="lh-1 fs-14 flex-grow-1">
                                             {{ service.short_description }}
                                         </p>
                                     </div>
@@ -45,13 +45,13 @@
                         {% for service in category.subscription_service_category.all %}
                             {% if service.category_choice == 'pcs' %}
                                 <div class="col-md-4 px-0 pe-md-5">
-                                    <div class="bg-lightgreen p-2 rounded shadow-md">
+                                    <div class="bg-lightgreen p-2 rounded shadow-md d-flex flex-column">
                                         <div class="text-center">
                                             <img class="service-icon" src="{{ service.service_icon.url }}">
                                         </div>
                                         <div class="ps-2 mt-2 text-center">
                                             <h6 class="service-title">{{ service.service_title }}</h6>
-                                            <p class="lh-1 fs-14">
+                                            <p class="lh-1 fs-14 flex-grow-1">
                                                 {{ service.short_description }}
                                             </p>
                                         </div>
@@ -72,13 +72,13 @@
                     <div class="row mx-0 mb-4 gy-4 pt-4 justify-content-center">
                         {% for course in category.course_coursecategory.all %}
                             <div class="col-md-4 px-0 pe-md-5">
-                                <div class="bg-lightgreen p-2 rounded shadow-md">
+                                <div class="bg-lightgreen p-2 rounded shadow-md d-flex flex-column">
                                     <div class="text-center">
                                         <img class="service-icon" src="{% static 'img/training hat.png' %}">
                                     </div>
                                     <div class="ps-2 mt-2 text-center">
                                         <h6 class="service-title">{{ course.course_name }}</h6>
-                                        <p class="lh-1 fs-14">
+                                        <p class="lh-1 fs-14 flex-grow-1">
                                             {{ course.short_description }}
                                         </p>
                                     </div>
@@ -101,13 +101,13 @@
                 <div class="row mx-0 mb-4 gy-4 pt-4 justify-content-center">
                     {% for course in courses %}
                         <div class="col-md-4 px-0 pe-md-5">
-                            <div class="bg-lightgreen p-2 rounded shadow-md">
+                            <div class="bg-lightgreen p-2 rounded shadow-md d-flex flex-column">
                                 <div class="text-center">
                                     <img class="service-icon" src="{% static 'img/training hat.png' %}">
                                 </div>
                                 <div class="ps-2 mt-2 text-center">
                                     <h6 class="service-title">{{ course.course_name }}</h6>
-                                    <p class="lh-1 fs-14">
+                                    <p class="lh-1 fs-14 flex-grow-1">
                                         {{ course.short_description }}
                                     </p>
                                 </div>
