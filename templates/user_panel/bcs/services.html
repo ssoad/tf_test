@@ -37,11 +37,11 @@
                     <div class="row mx-0 mb-4 gy-4 pt-4 justify-content-center">
                         {% for service in category.service_category.all %}
                             <div class="col-md-4 px-0 pe-md-5">
-                                <div class="bg-lightgreen p-2 rounded shadow-md">
+                                <div class="bg-lightgreen p-2 rounded shadow-md d-flex flex-column h-100">
                                     <div class="text-center">
                                         <img class="service-icon" src="{{ service.service_icon.url }}">
                                     </div>
-                                    <div class="ps-2 mt-2 text-center">
+                                    <div class="ps-2 mt-2 text-center flex-grow-1">
                                         <h6 class="service-title">{{ service.service_title }}</h6>
                                         <p class="lh-1 fs-14">
                                             {{ service.short_description }}
@@ -58,11 +58,11 @@
                         {% for service in category.subscription_service_category.all %}
                             {% if service.category_choice == 'bcs' %}
                                 <div class="col-md-4 px-0 pe-md-5">
-                                    <div class="bg-lightgreen p-2 rounded shadow-md">
+                                    <div class="bg-lightgreen p-2 rounded shadow-md d-flex flex-column h-100">
                                         <div class="text-center">
                                             <img class="service-icon" src="{{ service.service_icon.url }}">
                                         </div>
-                                        <div class="ps-2 mt-2 text-center">
+                                        <div class="ps-2 mt-2 text-center flex-grow-1">
                                             <h6 class="service-title">{{ service.service_title }}</h6>
                                             <p class="lh-1 fs-14">
                                                 {{ service.short_description }}
@@ -86,11 +86,11 @@
                     <div class="row mx-0 mb-4 gy-4 pt-4 justify-content-center">
                         {% for course in category.bcscourse_coursecategory.all %}
                             <div class="col-md-4 px-0 pe-md-5">
-                                <div class="bg-lightgreen p-2 rounded shadow-md">
+                                <div class="bg-lightgreen p-2 rounded shadow-md d-flex flex-column h-100">
                                     <div class="text-center">
                                         <img class="service-icon" src="{% static 'img/training hat.png' %}">
                                     </div>
-                                    <div class="ps-2 mt-2 text-center">
+                                    <div class="ps-2 mt-2 text-center flex-grow-1">
                                         <h6 class="service-title">{{ course.course_name }}</h6>
                                         <p class="lh-1 fs-14">
                                             {{ course.short_description }}
