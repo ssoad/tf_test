@@ -12,7 +12,7 @@ host_patterns = patterns(
     # host(r'pcs', 'PersonalSecurity.urls', name='mysecurity'),
     host(r'pcs', 'PersonalSecurity.urls', name='mysecurity'),
     # host(r'main', settings.ROOT_URLCONF, name='blog'), # <-- Change it to host(r'blog', settings.ROOT_URLCONF, name='blog')
-    host(r'blog', settings.ROOT_URLCONF, name='blog'), # <-- Change it to host(r'blog', settings.ROOT_URLCONF, name='blog')
+    host(r'main', settings.ROOT_URLCONF, name='blog'), # <-- Change it to host(r'blog', settings.ROOT_URLCONF, name='blog')
     host(r'main', settings.ROOT_URLCONF, name='account'),
     host(r'main', settings.ROOT_URLCONF, name='api'),
 
