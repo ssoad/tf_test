@@ -204,7 +204,7 @@ EMAIL_PORT = config('EMAIL_PORT')
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS')
-DEFAULT_FROM_EMAIL = 'Techforing <testtechforing@gmail.com>'
+DEFAULT_FROM_EMAIL = 'TechForing Limited <noreply@techforing.com>'
 
 MIDDLEWARE = [
     'django_hosts.middleware.HostsRequestMiddleware',  # for django-host
