@@ -87,10 +87,10 @@
                                 </li>
                             </ul>
                         </li>
-                    {% else %}
+                    {% comment %} {% else %}
                         <li class="nav-item">
                             <a class="nav-link text-success" href="{% host_url 'account_login' %}">LOGIN</a>
-                        </li>
+                        </li> {% endcomment %}
                     {% endif %}
 
                 </ul>
@@ -177,7 +177,7 @@
             </a>
         </div>
     </div>
-    <div class="footer-down">
+    {% comment %} <div class="footer-down">
         <div class="d-flex flex-wrap justify-content-center justify-content-md-around">
             <div>
                 {% if user.is_authenticated %}
@@ -197,7 +197,7 @@
                 </p>
             </div>
         </div>
-    </div>
+    </div> {% endcomment %}
 </footer>
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>

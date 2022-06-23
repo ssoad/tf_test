@@ -815,10 +815,10 @@
                                 <a href="{% host_url 'logout' %}">Log Out</a>
                             </div>
                         </li>
-                    {% else %}
+                    {% comment %} {% else %}
                         <li class="menus signin-btn-hover">
                             <a href="{% host_url 'account_login' %}" class="signin-btn-lg">Sign In</a>
-                        </li>
+                        </li> {% endcomment %}
                     {% endif %}
                 </ul>
             </div>
@@ -967,7 +967,7 @@
             </div>
         </div>
         <!-- This will come back later -->
-        <div class="footer-bottom footer-bottom-lg">
+        <div class="footer-bottom footer-bottom-lg pb-2">
             <div class="d-flex">
                 <a href="https://www.facebook.com/techforing/" target="_blank"><img
                         src="{% static 'tfimg/facebook.png' %}" alt="social logo"/></a>
@@ -980,7 +980,7 @@
             </div>
         </div>
     </div>
-    <div class="footer-down">
+    {% comment %} <div class="footer-down">
         <div class="container">
             <div class="footer-down-box">
                 <!-- This will come back later -->
@@ -1014,7 +1014,7 @@
         </div> -->
             </div>
         </div>
-    </div>
+    </div> {% endcomment %}
 </footer>
 <!-- jQuery and JS bundle w/ Popper.js -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
