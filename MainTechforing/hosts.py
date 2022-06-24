@@ -1,11 +1,11 @@
 from django.conf import settings
-from django_hosts import patterns, host
+from django_hosts import host, patterns
 
 host_patterns = patterns(
     '',
     # For Production
-    # host(r'main', settings.ROOT_URLCONF, name='main'), # <-- Change it to host(r'', settings.ROOT_URLCONF, name='')
-    host(r'main', settings.ROOT_URLCONF, name='main'), # <-- Change it to host(r'', settings.ROOT_URLCONF, name='')
+    # host(r'main', settings.ROOT_URLCONF, name='main'), # <-- Change it to host(r'', settings.ROOT_URLCONF, name='main')
+    host(r'main', settings.ROOT_URLCONF, name='main'),
     # <-- The `name` we used to in the `DEFAULT_HOST` setting
     # host(r'help', 'help.urls', name='help'),
     host(r'academy', 'Academy.urls', name='academy'),
