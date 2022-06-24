@@ -779,10 +779,10 @@
                         <li class="menus menus-sm">
                             <a href="{% host_url 'logout' %}" class="menu-link">Log Out</a>
                         </li>
-                    {% else %}
+                    {% comment %} {% else %}
                         <li class="menus menus-sm">
                             <a href="{% host_url 'account_login' %}" class="menu-link">Sign In</a>
-                        </li>
+                        </li> {% endcomment %}
                     {% endif %}
                     <!-- This will come back later -->
                     {% if user.is_authenticated %}
