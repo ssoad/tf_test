@@ -214,7 +214,7 @@
         <!-- services start  -->
 
         {% for service in services %}
-            <div class="{{ service | replacespace }} preview-service-info pt-3 pb-5 d-none">
+            <div class="{{ service | replacespace }} preview-service-info pt-3 pb-5 d-none image-fluid">
                 <div class='d-none'>
                     {{ service }}
                 </div>
@@ -263,7 +263,7 @@
 
         <!-- subscription services start.. loaded subscription services details  -->
         {% for service in subscription_services %}
-            <div class="{{ service | replacespace }}-sub preview-service-info pt-3 pb-5 d-none">
+            <div class="{{ service | replacespace }}-sub preview-service-info pt-3 pb-5 d-none image-fluid">
                 <div class='d-none'>
                     {{ service }}
                 </div>
@@ -307,7 +307,7 @@
 
         <!-- training details  -->
         {% for course in courses %}
-            <div class="{{ course.course_name | replacespace }}-training preview-service-info pt-3 pb-5 d-none">
+            <div class="{{ course.course_name | replacespace }}-training preview-service-info pt-3 pb-5 d-none image-fluid">
                 <div class='d-none'>
                     {{ course.course_name }}
                 </div>

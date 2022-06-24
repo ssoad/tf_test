@@ -1024,6 +1024,11 @@ footer a i {
     margin-bottom: 10px;
 }
 
+.image-fluid img {
+    width: 100% !important;
+    height: auto !important;
+}
+
 @media screen and (max-width: 575px) {
     .thank-section {
         padding: 65px 0px;
