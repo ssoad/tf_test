@@ -2,7 +2,7 @@ from django.urls import path, include
 from Blog import views
 
 urlpatterns = [
-    path('', views.indexView, name='index'),
+    path('blog/', views.indexView, name='index'),
 
     path('tinymce/', include('tinymce.urls')),
     path('category/', views.categoryView, name='category'),
@@ -32,7 +32,7 @@ urlpatterns = [
     path('related_posts/', views.relatedPostView, name='related_posts'),
     path('related_posts/<str:tag>/', views.relatedPostView, name='related_posts'),
 
-    path('dashboard/', views.adminDashboardView, name='admin_dashboard'),
+    path('blog/dashboard/', views.adminDashboardView, name='admin_dashboard'),
     path('new/', views.adminNewPostView, name='admin_new'),
     path('blogform/', views.adminBlogFormView, name='admin_blog_form'),
     path('blogformedit/', views.adminBlogEditFormView,

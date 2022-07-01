@@ -12,7 +12,7 @@ urlpatterns = [
     path('mysecurity/', include('PersonalSecurity.urls')),
     path('academy/', include('Academy.urls')),
     path('account/', include('Account.urls')),
-    path('blog/', include('Blog.urls')),
+    path('', include('Blog.urls')),
     path('api/', include('Api.urls')),
     path('accounts/', include('allauth.urls')),
     path('tinymce/', include('tinymce.urls')),
