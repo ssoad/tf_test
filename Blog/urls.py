@@ -3,8 +3,8 @@ from Blog import views
 
 urlpatterns = [
     path('blog/', views.indexView, name='index'),
-
     path('tinymce/', include('tinymce.urls')),
+    path('<name>/', views.redirect_old, name='old_redirect'), # redirect old urls
     path('category/', views.categoryView, name='category'),
     path('category/<name>/', views.categoryView, name='category'),
     path('category/<str:name1>/<str:name2>/',

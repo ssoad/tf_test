@@ -266,25 +266,25 @@ WSGI_APPLICATION = 'MainTechforing.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 # For Development
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-# For Production
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': env('DB_NAME'),
-        'USER': 'root',
-        'PASSWORD': env('DB_PASSWORD'),
-        'OPTIONS': {
-            'sql_mode': 'traditional',
-        }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# For Production
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': env('DB_NAME'),
+#         'USER': 'root',
+#         'PASSWORD': env('DB_PASSWORD'),
+#         'OPTIONS': {
+#             'sql_mode': 'traditional',
+#         }
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

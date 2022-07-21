@@ -510,6 +510,22 @@ def readingListPost(request, id):
         reverse(f'{(str(current_post.category).lower()).replace(" ", "_")}', kwargs={'name': current_post.post_url}))
 
 
+redirect_map={
+    'articles': 'articles',
+    'case_studies': 'case_studies',
+    'podcast': 'podcast',
+    'cybersecurity': 'category',
+}
+#Redirect_All_Old_URLS_to_New_URLs
+def redirect_old(request, name):
+    if '-' in name:
+        name = name.replace('-', '_')
+    category = redirect_map[name.split('_')[0]]
+    name = "_".join(name.split('_')[1:])
+    print((f'/{category}/{name}'))
+    return redirect(f'/{category}/{name}')
+
+
 # for specific category
 def categoryView(request, name):
     posts = models.Post.objects.filter(
